@@ -1,0 +1,666 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{8C4133C0-9A99-4A6D-8B0B-E9B1AF58C53B}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>HttpUploader6</RootNamespace>
+    <AssemblyName>HttpUploader6</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <UseIISExpress>false</UseIISExpress>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.XML" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="demoAccess\db\clear.aspx.cs">
+      <DependentUpon>clear.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="demoAccess\db\clear.aspx.designer.cs">
+      <DependentUpon>clear.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoAccess\db\DBFile.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="demoAccess\db\DBFolder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="demoAccess\db\DbHelper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="demoAccess\db\fd_complete.aspx.cs">
+      <DependentUpon>fd_complete.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="demoAccess\db\fd_complete.aspx.designer.cs">
+      <DependentUpon>fd_complete.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoAccess\db\fd_create.aspx.cs">
+      <DependentUpon>fd_create.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="demoAccess\db\fd_create.aspx.designer.cs">
+      <DependentUpon>fd_create.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoAccess\db\fd_del.aspx.cs">
+      <DependentUpon>fd_del.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="demoAccess\db\fd_del.aspx.designer.cs">
+      <DependentUpon>fd_del.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoAccess\db\fd_json.aspx.cs">
+      <DependentUpon>fd_json.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="demoAccess\db\fd_json.aspx.designer.cs">
+      <DependentUpon>fd_json.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoAccess\db\FileInf.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="demoAccess\db\FileResumer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="demoAccess\db\FileSynchronous.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="demoAccess\db\FolderInf.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="demoAccess\db\f_complete.aspx.cs">
+      <DependentUpon>f_complete.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="demoAccess\db\f_complete.aspx.designer.cs">
+      <DependentUpon>f_complete.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoAccess\db\f_create.aspx.cs">
+      <DependentUpon>f_create.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="demoAccess\db\f_create.aspx.designer.cs">
+      <DependentUpon>f_create.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoAccess\db\f_del.aspx.cs">
+      <DependentUpon>f_del.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="demoAccess\db\f_del.aspx.designer.cs">
+      <DependentUpon>f_del.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoAccess\db\f_list.aspx.cs">
+      <DependentUpon>f_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="demoAccess\db\f_list.aspx.designer.cs">
+      <DependentUpon>f_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoAccess\db\f_post.aspx.cs">
+      <DependentUpon>f_post.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="demoAccess\db\f_post.aspx.designer.cs">
+      <DependentUpon>f_post.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoAccess\db\UploaderCfg.cs" />
+    <Compile Include="demoAccess\db\xdb_files.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="demoAccess\db\XDebug.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="demoAccess\downloader\db\clear.aspx.cs">
+      <DependentUpon>clear.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoAccess\downloader\db\clear.aspx.designer.cs">
+      <DependentUpon>clear.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoAccess\downloader\db\DnFile.cs" />
+    <Compile Include="demoAccess\downloader\db\DnFileInf.cs" />
+    <Compile Include="demoAccess\downloader\db\DnFolder.cs" />
+    <Compile Include="demoAccess\downloader\db\DnFolderInf.cs" />
+    <Compile Include="demoAccess\downloader\db\d_list.aspx.cs">
+      <DependentUpon>d_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoAccess\downloader\db\d_list.aspx.designer.cs">
+      <DependentUpon>d_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoAccess\downloader\db\fd_create.aspx.cs">
+      <DependentUpon>fd_create.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoAccess\downloader\db\fd_create.aspx.designer.cs">
+      <DependentUpon>fd_create.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoAccess\downloader\db\fd_del.aspx.cs">
+      <DependentUpon>fd_del.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoAccess\downloader\db\fd_del.aspx.designer.cs">
+      <DependentUpon>fd_del.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoAccess\downloader\db\fd_json.aspx.cs">
+      <DependentUpon>fd_json.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoAccess\downloader\db\fd_json.aspx.designer.cs">
+      <DependentUpon>fd_json.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoAccess\downloader\db\fd_update.aspx.cs">
+      <DependentUpon>fd_update.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoAccess\downloader\db\fd_update.aspx.designer.cs">
+      <DependentUpon>fd_update.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoAccess\downloader\db\f_complete.aspx.cs">
+      <DependentUpon>f_complete.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoAccess\downloader\db\f_complete.aspx.designer.cs">
+      <DependentUpon>f_complete.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoAccess\downloader\db\f_create.aspx.cs">
+      <DependentUpon>f_create.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoAccess\downloader\db\f_create.aspx.designer.cs">
+      <DependentUpon>f_create.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoAccess\downloader\db\f_del.aspx.cs">
+      <DependentUpon>f_del.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoAccess\downloader\db\f_del.aspx.designer.cs">
+      <DependentUpon>f_del.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoAccess\downloader\db\f_down.aspx.cs">
+      <DependentUpon>f_down.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoAccess\downloader\db\f_down.aspx.designer.cs">
+      <DependentUpon>f_down.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoAccess\downloader\db\f_list_cmp.aspx.cs">
+      <DependentUpon>f_list_cmp.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoAccess\downloader\db\f_list_cmp.aspx.designer.cs">
+      <DependentUpon>f_list_cmp.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoAccess\downloader\db\f_update.aspx.cs">
+      <DependentUpon>f_update.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoAccess\downloader\db\f_update.aspx.designer.cs">
+      <DependentUpon>f_update.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoDistributed\db\ajax_complete.aspx.cs">
+      <DependentUpon>ajax_complete.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="demoDistributed\db\ajax_complete.aspx.designer.cs">
+      <DependentUpon>ajax_complete.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoDistributed\db\ajax_create.aspx.cs">
+      <DependentUpon>ajax_create.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="demoDistributed\db\ajax_create.aspx.designer.cs">
+      <DependentUpon>ajax_create.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoDistributed\db\ajax_del.aspx.cs">
+      <DependentUpon>ajax_del.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="demoDistributed\db\ajax_del.aspx.designer.cs">
+      <DependentUpon>ajax_del.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoDistributed\db\ajax_list.aspx.cs">
+      <DependentUpon>ajax_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="demoDistributed\db\ajax_list.aspx.designer.cs">
+      <DependentUpon>ajax_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoDistributed\db\ajax_post.aspx.cs">
+      <DependentUpon>ajax_post.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="demoDistributed\db\ajax_post.aspx.designer.cs">
+      <DependentUpon>ajax_post.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoDistributed\db\FileResumer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="demoDistributed\db\HttpUploaderCfg.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="demoDistributed\db\HttpUploaderDB.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="demoDistributed\db\xdb_files.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="demoDistributed\db\XDebug.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="demoSql2005NoMD5\db\ajax_complete.aspx.cs">
+      <DependentUpon>ajax_complete.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="demoSql2005NoMD5\db\ajax_complete.aspx.designer.cs">
+      <DependentUpon>ajax_complete.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoSql2005NoMD5\db\ajax_create.aspx.cs">
+      <DependentUpon>ajax_create.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="demoSql2005NoMD5\db\ajax_create.aspx.designer.cs">
+      <DependentUpon>ajax_create.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoSql2005NoMD5\db\ajax_del.aspx.cs">
+      <DependentUpon>ajax_del.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="demoSql2005NoMD5\db\ajax_del.aspx.designer.cs">
+      <DependentUpon>ajax_del.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoSql2005NoMD5\db\ajax_list.aspx.cs">
+      <DependentUpon>ajax_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="demoSql2005NoMD5\db\ajax_list.aspx.designer.cs">
+      <DependentUpon>ajax_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoSql2005NoMD5\db\ajax_post.aspx.cs">
+      <DependentUpon>ajax_post.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="demoSql2005NoMD5\db\ajax_post.aspx.designer.cs">
+      <DependentUpon>ajax_post.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoSql2005NoMD5\db\FileResumer.cs" />
+    <Compile Include="demoSql2005NoMD5\db\HttpUploaderCfg.cs" />
+    <Compile Include="demoSql2005NoMD5\db\HttpUploaderDB.cs" />
+    <Compile Include="demoSql2005NoMD5\db\xdb_files.cs" />
+    <Compile Include="demoSql2005NoMD5\db\XDebug.cs" />
+    <Compile Include="demoSql2005\db\clear.aspx.cs">
+      <DependentUpon>clear.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="demoSql2005\db\clear.aspx.designer.cs">
+      <DependentUpon>clear.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoSql2005\db\DBFile.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="demoSql2005\db\DBFolder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="demoSql2005\db\DbHelper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="demoSql2005\db\fd_complete.aspx.cs">
+      <DependentUpon>fd_complete.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="demoSql2005\db\fd_complete.aspx.designer.cs">
+      <DependentUpon>fd_complete.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoSql2005\db\fd_create.aspx.cs">
+      <DependentUpon>fd_create.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="demoSql2005\db\fd_create.aspx.designer.cs">
+      <DependentUpon>fd_create.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoSql2005\db\fd_del.aspx.cs">
+      <DependentUpon>fd_del.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="demoSql2005\db\fd_del.aspx.designer.cs">
+      <DependentUpon>fd_del.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoSql2005\db\fd_json.aspx.cs">
+      <DependentUpon>fd_json.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="demoSql2005\db\fd_json.aspx.designer.cs">
+      <DependentUpon>fd_json.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoSql2005\db\FileInf.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="demoSql2005\db\FileResumer.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="demoSql2005\db\FolderInf.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="demoSql2005\db\f_complete.aspx.cs">
+      <DependentUpon>f_complete.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="demoSql2005\db\f_complete.aspx.designer.cs">
+      <DependentUpon>f_complete.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoSql2005\db\f_create.aspx.cs">
+      <DependentUpon>f_create.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="demoSql2005\db\f_create.aspx.designer.cs">
+      <DependentUpon>f_create.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoSql2005\db\f_del.aspx.cs">
+      <DependentUpon>f_del.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="demoSql2005\db\f_del.aspx.designer.cs">
+      <DependentUpon>f_del.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoSql2005\db\f_list.aspx.cs">
+      <DependentUpon>f_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="demoSql2005\db\f_list.aspx.designer.cs">
+      <DependentUpon>f_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoSql2005\db\f_post.aspx.cs">
+      <DependentUpon>f_post.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="demoSql2005\db\f_post.aspx.designer.cs">
+      <DependentUpon>f_post.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoSql2005\db\UploaderCfg.cs" />
+    <Compile Include="demoSql2005\db\xdb_files.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="demoSql2005\db\XDebug.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="demoSql2005\downloader\db\clear.aspx.cs">
+      <DependentUpon>clear.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoSql2005\downloader\db\clear.aspx.designer.cs">
+      <DependentUpon>clear.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoSql2005\downloader\db\DnFile.cs" />
+    <Compile Include="demoSql2005\downloader\db\DnFileInf.cs" />
+    <Compile Include="demoSql2005\downloader\db\DnFolder.cs" />
+    <Compile Include="demoSql2005\downloader\db\DnFolderInf.cs" />
+    <Compile Include="demoSql2005\downloader\db\d_list.aspx.cs">
+      <DependentUpon>d_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoSql2005\downloader\db\d_list.aspx.designer.cs">
+      <DependentUpon>d_list.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoSql2005\downloader\db\fd_create.aspx.cs">
+      <DependentUpon>fd_create.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoSql2005\downloader\db\fd_create.aspx.designer.cs">
+      <DependentUpon>fd_create.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoSql2005\downloader\db\fd_del.aspx.cs">
+      <DependentUpon>fd_del.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoSql2005\downloader\db\fd_del.aspx.designer.cs">
+      <DependentUpon>fd_del.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoSql2005\downloader\db\fd_json.aspx.cs">
+      <DependentUpon>fd_json.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoSql2005\downloader\db\fd_json.aspx.designer.cs">
+      <DependentUpon>fd_json.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoSql2005\downloader\db\fd_update.aspx.cs">
+      <DependentUpon>fd_update.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoSql2005\downloader\db\fd_update.aspx.designer.cs">
+      <DependentUpon>fd_update.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoSql2005\downloader\db\f_complete.aspx.cs">
+      <DependentUpon>f_complete.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoSql2005\downloader\db\f_complete.aspx.designer.cs">
+      <DependentUpon>f_complete.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoSql2005\downloader\db\f_create.aspx.cs">
+      <DependentUpon>f_create.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoSql2005\downloader\db\f_create.aspx.designer.cs">
+      <DependentUpon>f_create.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoSql2005\downloader\db\f_del.aspx.cs">
+      <DependentUpon>f_del.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoSql2005\downloader\db\f_del.aspx.designer.cs">
+      <DependentUpon>f_del.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoSql2005\downloader\db\f_down.aspx.cs">
+      <DependentUpon>f_down.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoSql2005\downloader\db\f_down.aspx.designer.cs">
+      <DependentUpon>f_down.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoSql2005\downloader\db\f_list_cmp.aspx.cs">
+      <DependentUpon>f_list_cmp.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoSql2005\downloader\db\f_list_cmp.aspx.designer.cs">
+      <DependentUpon>f_list_cmp.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoSql2005\downloader\db\f_update.aspx.cs">
+      <DependentUpon>f_update.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoSql2005\downloader\db\f_update.aspx.designer.cs">
+      <DependentUpon>f_update.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="demoAccess\db\clear.aspx" />
+    <Content Include="demoAccess\db\db.mdb" />
+    <Content Include="demoAccess\db\fd_complete.aspx" />
+    <Content Include="demoAccess\db\fd_create.aspx" />
+    <Content Include="demoAccess\db\fd_del.aspx" />
+    <Content Include="demoAccess\db\fd_json.aspx" />
+    <Content Include="demoAccess\db\f_complete.aspx" />
+    <Content Include="demoAccess\db\f_create.aspx" />
+    <Content Include="demoAccess\db\f_del.aspx" />
+    <Content Include="demoAccess\db\f_list.aspx" />
+    <Content Include="demoAccess\db\f_post.aspx" />
+    <Content Include="demoAccess\debug\complete.html" />
+    <Content Include="demoAccess\debug\del.html" />
+    <Content Include="demoAccess\debug\fcreate.html" />
+    <Content Include="demoAccess\debug\list.html" />
+    <Content Include="demoAccess\debug\post.html" />
+    <Content Include="demoAccess\debug\process.html" />
+    <Content Include="demoAccess\debug\test.gif" />
+    <Content Include="demoAccess\debug\test.htm" />
+    <Content Include="demoAccess\debug\testcrx.htm" />
+    <Content Include="demoAccess\debug\testxpi.htm" />
+    <Content Include="demoAccess\downloader\db\clear.aspx" />
+    <Content Include="demoAccess\downloader\db\d_list.aspx" />
+    <Content Include="demoAccess\downloader\db\fd_create.aspx" />
+    <Content Include="demoAccess\downloader\db\fd_del.aspx" />
+    <Content Include="demoAccess\downloader\db\fd_json.aspx" />
+    <Content Include="demoAccess\downloader\db\fd_update.aspx" />
+    <Content Include="demoAccess\downloader\db\f_complete.aspx" />
+    <Content Include="demoAccess\downloader\db\f_create.aspx" />
+    <Content Include="demoAccess\downloader\db\f_del.aspx" />
+    <Content Include="demoAccess\downloader\db\f_down.aspx" />
+    <Content Include="demoAccess\downloader\db\f_list_cmp.aspx" />
+    <Content Include="demoAccess\downloader\db\f_update.aspx" />
+    <Content Include="demoAccess\downloader\index.htm" />
+    <Content Include="demoAccess\downloader\js\downer.css" />
+    <Content Include="demoAccess\downloader\js\downer.js" />
+    <Content Include="demoAccess\downloader\js\folder.png" />
+    <Content Include="demoAccess\downloader\js\jquery-1.4.min.js" />
+    <Content Include="demoAccess\index.htm" />
+    <Content Include="demoAccess\js\folder.png" />
+    <Content Include="demoAccess\js\jquery-1.4.min.js" />
+    <Content Include="demoAccess\js\setup.htm" />
+    <Content Include="demoAccess\js\up6.css" />
+    <Content Include="demoAccess\js\up6.js" />
+    <Content Include="demoDetail\css\HttpUploader.css" />
+    <Content Include="demoDetail\index.htm" />
+    <Content Include="demoDetail\js\HttpUploader.js" />
+    <Content Include="demoDetail\js\jquery-1.3.2.min.js" />
+    <Content Include="demoDistributed\css\HttpUploader.css" />
+    <Content Include="demoDistributed\db\ajax_complete.aspx" />
+    <Content Include="demoDistributed\db\ajax_create.aspx" />
+    <Content Include="demoDistributed\db\ajax_del.aspx" />
+    <Content Include="demoDistributed\db\ajax_list.aspx" />
+    <Content Include="demoDistributed\db\ajax_post.aspx" />
+    <Content Include="demoDistributed\db\db.mdb" />
+    <Content Include="demoDistributed\debug\complete.html" />
+    <Content Include="demoDistributed\debug\create.html" />
+    <Content Include="demoDistributed\debug\del.html" />
+    <Content Include="demoDistributed\debug\list.html" />
+    <Content Include="demoDistributed\debug\post.html" />
+    <Content Include="demoDistributed\debug\process.html" />
+    <Content Include="demoDistributed\debug\test.gif" />
+    <Content Include="demoDistributed\debug\test.htm" />
+    <Content Include="demoDistributed\index.htm" />
+    <Content Include="demoDistributed\js\HttpUploader.js" />
+    <Content Include="demoDistributed\js\jquery-1.3.2.min.js" />
+    <Content Include="demoDistributed\js\setup.htm" />
+    <Content Include="demoDistributed\readme.txt" />
+    <Content Include="demoSingle\css\HttpUploader.css" />
+    <Content Include="demoSingle\index.htm" />
+    <Content Include="demoSingle\js\HttpUploader.js" />
+    <Content Include="demoSingle\js\jquery-1.3.2.min.js" />
+    <Content Include="demoSql2005NoMD5\css\HttpUploader.css" />
+    <Content Include="demoSql2005NoMD5\db\ajax_complete.aspx" />
+    <Content Include="demoSql2005NoMD5\db\ajax_create.aspx" />
+    <Content Include="demoSql2005NoMD5\db\ajax_del.aspx" />
+    <Content Include="demoSql2005NoMD5\db\ajax_list.aspx" />
+    <Content Include="demoSql2005NoMD5\db\ajax_post.aspx" />
+    <Content Include="demoSql2005NoMD5\debug\complete.html" />
+    <Content Include="demoSql2005NoMD5\debug\create.html" />
+    <Content Include="demoSql2005NoMD5\debug\del.html" />
+    <Content Include="demoSql2005NoMD5\debug\list.html" />
+    <Content Include="demoSql2005NoMD5\debug\post.html" />
+    <Content Include="demoSql2005NoMD5\debug\process.html" />
+    <Content Include="demoSql2005NoMD5\debug\test.gif" />
+    <Content Include="demoSql2005NoMD5\debug\test.htm" />
+    <Content Include="demoSql2005NoMD5\index.htm" />
+    <Content Include="demoSql2005NoMD5\js\HttpUploader.js" />
+    <Content Include="demoSql2005NoMD5\js\jquery-1.3.2.min.js" />
+    <Content Include="demoSql2005NoMD5\js\setup.htm" />
+    <Content Include="demoSql2005NoMD5\readme.txt" />
+    <Content Include="demoSql2005NoMD5\spGetFileInfByFid.sql" />
+    <Content Include="demoSql2005NoMD5\spUpdateProcess.sql" />
+    <Content Include="demoSql2005NoMD5\xdb_files.sql" />
+    <Content Include="demoSql2005\db\clear.aspx" />
+    <Content Include="demoSql2005\db\fd_complete.aspx" />
+    <Content Include="demoSql2005\db\fd_create.aspx" />
+    <Content Include="demoSql2005\db\fd_del.aspx" />
+    <Content Include="demoSql2005\db\fd_json.aspx" />
+    <Content Include="demoSql2005\db\f_complete.aspx" />
+    <Content Include="demoSql2005\db\f_create.aspx" />
+    <Content Include="demoSql2005\db\f_del.aspx" />
+    <Content Include="demoSql2005\db\f_list.aspx" />
+    <Content Include="demoSql2005\db\f_post.aspx" />
+    <Content Include="demoSql2005\debug\complete.html" />
+    <Content Include="demoSql2005\debug\create.html" />
+    <Content Include="demoSql2005\debug\del.html" />
+    <Content Include="demoSql2005\debug\list.html" />
+    <Content Include="demoSql2005\debug\post.html" />
+    <Content Include="demoSql2005\debug\process.html" />
+    <Content Include="demoSql2005\debug\test.gif" />
+    <Content Include="demoSql2005\debug\test.htm" />
+    <Content Include="demoSql2005\downloader\db\clear.aspx" />
+    <Content Include="demoSql2005\downloader\db\d_list.aspx" />
+    <Content Include="demoSql2005\downloader\db\fd_create.aspx" />
+    <Content Include="demoSql2005\downloader\db\fd_del.aspx" />
+    <Content Include="demoSql2005\downloader\db\fd_json.aspx" />
+    <Content Include="demoSql2005\downloader\db\fd_update.aspx" />
+    <Content Include="demoSql2005\downloader\db\f_complete.aspx" />
+    <Content Include="demoSql2005\downloader\db\f_create.aspx" />
+    <Content Include="demoSql2005\downloader\db\f_del.aspx" />
+    <Content Include="demoSql2005\downloader\db\f_down.aspx" />
+    <Content Include="demoSql2005\downloader\db\f_list_cmp.aspx" />
+    <Content Include="demoSql2005\downloader\db\f_update.aspx" />
+    <Content Include="demoSql2005\downloader\index.htm" />
+    <Content Include="demoSql2005\downloader\js\downer.css" />
+    <Content Include="demoSql2005\downloader\js\downer.js" />
+    <Content Include="demoSql2005\downloader\js\folder.png" />
+    <Content Include="demoSql2005\downloader\js\jquery-1.4.min.js" />
+    <Content Include="demoSql2005\down_files.sql" />
+    <Content Include="demoSql2005\down_folders.sql" />
+    <Content Include="demoSql2005\index.htm" />
+    <Content Include="demoSql2005\js\folder.png" />
+    <Content Include="demoSql2005\js\jquery-1.4.min.js" />
+    <Content Include="demoSql2005\js\setup.htm" />
+    <Content Include="demoSql2005\js\up6.css" />
+    <Content Include="demoSql2005\js\up6.js" />
+    <Content Include="demoSql2005\xdb_folders.sql" />
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="demoSql2005\spGetFileInfByFid.sql" />
+    <None Include="demoSql2005\spUpdateProcess.sql" />
+    <None Include="demoSql2005\xdb_files.sql" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>4955</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>
+          </IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

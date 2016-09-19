@@ -1,0 +1,1 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="f_list.aspx.cs" Inherits="up6.demoSql2005.down2.db.f_list" %>
