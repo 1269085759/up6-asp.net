@@ -112,13 +112,13 @@
     <Content Include="demoSql2005\debug\test.gif" />
     <Content Include="demoSql2005\js\up6.file.js" />
     <Content Include="demoSql2005\js\up6.folder.js" />
-    <Content Include="demoSql2005\sql\down_files.sql" />
-    <Content Include="demoSql2005\sql\down_folders.sql" />
+    <Content Include="demoSql2005\sql.down\down_files.sql" />
+    <Content Include="demoSql2005\sql.down\down_folders.sql" />
     <Content Include="demoSql2005\index.htm" />
     <Content Include="demoSql2005\js\up6.js" />
     <Content Include="demoSql2005\js\setup.htm" />
     <Content Include="demoSql2005\debug\test.htm" />
-    <Content Include="demoSql2005\sql\fd_add_batch.sql" />
+    <Content Include="demoSql2005\sql.down\fd_add_batch.sql" />
     <Content Include="demoSql2005\sql\fd_fileProcess.sql" />
     <Content Include="demoSql2005\sql\fd_files_add_batch.sql" />
     <Content Include="demoSql2005\sql\fd_files_check.sql" />
