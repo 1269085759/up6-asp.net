@@ -21,14 +21,14 @@ namespace up6.demoSql2005.down2.biz
 
             cmd.Connection.Open();
             var r = cmd.ExecuteReader();
-            List<string> id_lst = new List<string>();
+            List<int> id_lst = new List<int>();
             while (r.Read())
             {
-                id_lst.Add(r.GetInt32(0).ToString());
+                id_lst.Add(r.GetInt32(0));
             }
             r.Close();
             cmd.Parameters.Clear();
-            string[] ids = id_lst.ToArray();
+            int[] ids = id_lst.ToArray();
 
             //批量更新文件
             sql = "update down_files set ";
@@ -56,14 +56,14 @@ namespace up6.demoSql2005.down2.biz
             System.Diagnostics.Debug.Write("files总数:"+fd.files.Count+"\n");
                         
             //更新文件夹
-            fd.idSvr = int.Parse( ids[0]);
+            fd.idSvr = ids[0];
             fd.fdTask = true;
             this.update_file(ref cmd, fd);
 
             //更新文件
             for(int i = 1,f_index=0 , l = ids.Length;i< l;++i,++f_index)
             {
-                fd.files[f_index].idSvr = int.Parse(ids[i]);
+                fd.files[f_index].idSvr = ids[i];
                 fd.files[f_index].pidRoot = fd.idSvr;
 
                 this.update_file(ref cmd, fd.files[f_index]);
