@@ -1,10 +1,7 @@
 ﻿using up6.demoSql2005.db;
 using up6.demoSql2005.down2.model;
-using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Common;
-using System.Web;
 
 namespace up6.demoSql2005.down2.biz
 {
@@ -21,13 +18,17 @@ namespace up6.demoSql2005.down2.biz
             DbCommand cmd = db.GetCommandStored(sql);
             db.AddInt(ref cmd, "@f_count", fd.files.Count+1);//单独增加一个文件夹
             db.AddInt(ref cmd, "@uid", fd.uid);
-            db.AddOutParameter(cmd, "@f_ids", (DbType)SqlDbType.VarChar, 8000);            
 
             cmd.Connection.Open();
-            cmd.ExecuteNonQuery();
-            string f_ids = cmd.Parameters["@f_ids"].Value.ToString();
-
+            var r = cmd.ExecuteReader();
+            List<string> id_lst = new List<string>();
+            while (r.Read())
+            {
+                id_lst.Add(r.GetInt32(0).ToString());
+            }
+            r.Close();
             cmd.Parameters.Clear();
+            string[] ids = id_lst.ToArray();
 
             //批量更新文件
             sql = "update down_files set ";
@@ -51,7 +52,6 @@ namespace up6.demoSql2005.down2.biz
             db.AddInt(ref cmd, "@f_id", 0);
             cmd.Prepare();
 
-            String[] ids = f_ids.Split(',');
             System.Diagnostics.Debug.Write("ids总数:"+ids.Length+"\n");
             System.Diagnostics.Debug.Write("files总数:"+fd.files.Count+"\n");
                         
@@ -67,7 +67,8 @@ namespace up6.demoSql2005.down2.biz
                 fd.files[f_index].pidRoot = fd.idSvr;
 
                 this.update_file(ref cmd, fd.files[f_index]);
-            }            
+            }
+            cmd.Connection.Close();
         }
 
         void update_file(ref DbCommand cmd,DnFileInf f)
