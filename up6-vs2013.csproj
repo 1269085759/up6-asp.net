@@ -61,7 +61,6 @@
     <Content Include="demoSql2005\debug\big_file.aspx" />
     <Content Include="demoSql2005\debug\check_config.aspx" />
     <Content Include="demoSql2005\debug\setup.html" />
-    <Content Include="demoSql2005\debug\test.aspx" />
     <Content Include="demoSql2005\down2\db\clear.aspx" />
     <Content Include="demoSql2005\down2\db\f_list.aspx" />
     <Content Include="demoSql2005\down2\db\fd_create.aspx" />
@@ -235,13 +234,6 @@
     </Compile>
     <Compile Include="demoSql2005\debug\check_config.aspx.designer.cs">
       <DependentUpon>check_config.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="demoSql2005\debug\test.aspx.cs">
-      <DependentUpon>test.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="demoSql2005\debug\test.aspx.designer.cs">
-      <DependentUpon>test.aspx</DependentUpon>
     </Compile>
     <Compile Include="demoSql2005\down2\biz\cmp_file.cs" />
     <Compile Include="demoSql2005\down2\biz\un_builder.cs" />
