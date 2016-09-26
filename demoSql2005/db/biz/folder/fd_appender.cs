@@ -340,8 +340,9 @@ namespace up6.demoSql2005.db.biz.folder
             this.cmd.Parameters["@f_sizeLoc"].Value = f.sizeLoc;
             this.cmd.Parameters["@f_pos"].Value = f.pos;
             this.cmd.Parameters["@f_lenSvr"].Value = f.lenSvr;
-            this.cmd.Parameters["@f_perSvr"].Value = f.perSvr;
-            this.cmd.Parameters["@f_complete"].Value = f.complete;
+            this.cmd.Parameters["@f_perSvr"].Value = f.lenLoc > 0 ? f.perSvr : "100%";
+            //fix(2016-09-21):0字节文件直接显示100%
+            this.cmd.Parameters["@f_complete"].Value = f.lenLoc > 0 ? f.complete : true;
             this.cmd.Parameters["@f_id"].Value = f.idSvr;
             this.cmd.ExecuteNonQuery();
         }
