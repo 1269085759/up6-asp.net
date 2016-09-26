@@ -35,7 +35,7 @@ namespace up6.demoSql2005.db.biz.folder
             this.update_rel();  //更新结构关系
 
             //更新文件夹信息
-            this.pre_udpate_fd();
+            this.pre_update_fd();
             foreach (fd_child fc in this.m_root.folders)
             {
                 this.update_fd(fc);
@@ -151,7 +151,7 @@ namespace up6.demoSql2005.db.biz.folder
             }
         }
 
-        void pre_udpate_fd()
+        void pre_update_fd()
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("update up6_folders set");
