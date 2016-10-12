@@ -33,18 +33,8 @@ namespace up6.demoSql2005.db
                 if(!Directory.Exists(filePath)) Directory.CreateDirectory(Path.GetDirectoryName(filePath));
 
                 FileStream fs = new FileStream(filePath, FileMode.Create);
-                fs.SetLength(len);
+                fs.SetLength(0);
                 fs.Close();
-				//FileStream fs = File.Create(filePath);
-				//BinaryWriter w = new BinaryWriter(fs);
-                //fix(2015-03-16):不再按实际大小创建文件，减少上传大文件时用户等待的时间。
-                //w.Write((byte)0);
-                //for (long i = 0; i < this.m_FileSize; ++i)
-                //{
-                //    w.Write((byte)0);
-                //}
-				//w.Close();
-				//fs.Close();
 			}
 		}
 
