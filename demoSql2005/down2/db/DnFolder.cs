@@ -1,9 +1,5 @@
 ﻿using up6.demoSql2005.db;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
 using System.Data.Common;
-using System.Text;
 
 namespace up6.demoSql2005.down2.db
 {

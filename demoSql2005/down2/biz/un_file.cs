@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Web;
+﻿using System.Data.Common;
 
 namespace up6.demoSql2005.down2.biz
 {

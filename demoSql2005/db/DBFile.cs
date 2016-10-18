@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
 using System.Data.Common;
-using Newtonsoft.Json.Linq;
 
 namespace up6.demoSql2005.db
 {
