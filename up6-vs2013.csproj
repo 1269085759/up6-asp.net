@@ -96,7 +96,6 @@
     <Content Include="demoSql2005\db\fd_complete.aspx" />
     <Content Include="demoSql2005\db\fd_create.aspx" />
     <Content Include="demoSql2005\db\fd_del.aspx" />
-    <Content Include="demoSql2005\db\fd_json.aspx" />
     <Content Include="demoSql2005\db\f_complete.aspx" />
     <Content Include="demoSql2005\db\f_create.aspx" />
     <Content Include="demoSql2005\db\f_del.aspx" />
@@ -172,13 +171,6 @@
     </Compile>
     <Compile Include="demoSql2005\db\fd_del.aspx.designer.cs">
       <DependentUpon>fd_del.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="demoSql2005\db\fd_json.aspx.cs">
-      <DependentUpon>fd_json.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="demoSql2005\db\fd_json.aspx.designer.cs">
-      <DependentUpon>fd_json.aspx</DependentUpon>
     </Compile>
     <Compile Include="demoSql2005\db\utils\MapBlockWriter.cs" />
     <Compile Include="demoSql2005\db\model\FileInf.cs" />
