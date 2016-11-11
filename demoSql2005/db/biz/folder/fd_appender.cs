@@ -229,7 +229,7 @@ namespace up6.demoSql2005.db.biz.folder
                 f.pos = long.Parse(r["f_pos"].ToString());
                 f.complete = Convert.ToBoolean(r["f_complete"]);
                 f.md5 = r["f_md5"].ToString();
-                this.svr_files.Add(f.md5, f);
+                if(!string.IsNullOrEmpty(f.md5))this.svr_files.Add(f.md5, f);
             }
             r.Close();
         }
