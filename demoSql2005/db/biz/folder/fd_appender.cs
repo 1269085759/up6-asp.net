@@ -29,10 +29,15 @@ namespace up6.demoSql2005.db.biz.folder
         {
             this.get_md5s();//提取所有文件的MD5
             this.make_ids();
-            this.get_md5_files();//查询相同MD5值。
+            //增加对空文件夹和0字节文件夹的处理
+            if (!string.IsNullOrEmpty(this.m_md5s)) this.get_md5_files();//查询相同MD5值。
 
             this.set_ids();     //设置文件和文件夹id
             this.update_rel();  //更新结构关系
+
+            //对空文件夹的处理，或者0字节文件夹的处理
+            if (this.m_root.lenLoc == 0) this.m_root.complete = true;
+            if (this.m_root.files.Count == 0) this.m_root.complete = true;
 
             //更新文件夹信息
             this.pre_update_fd();
@@ -66,7 +71,7 @@ namespace up6.demoSql2005.db.biz.folder
             List<string> md5_arr = new List<string>();
             foreach(fd_file f in this.m_root.files)
             {
-                if(!md5s.ContainsKey(f.md5))
+                if(!md5s.ContainsKey(f.md5) && !string.IsNullOrEmpty(f.md5))
                 {
                     md5s.Add(f.md5, true);
                     md5_arr.Add(f.md5);
