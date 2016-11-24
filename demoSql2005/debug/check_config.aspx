@@ -9,12 +9,13 @@
     <script type="text/javascript" src="../js/up6.config.js" charset="utf-8"></script>
     <script type="text/javascript" src="../js/up6.js" charset="utf-8"></script>
     <script type="text/javascript">
+        var svr = JSON.parse('<%=this.server%>');
         function add_msg(v) { $("#check_ret").append(v + "<br/>"); }
         function print_svr_inf()
         {
-            add_msg("数据库连接信息:<%=this.m_conStr%>");
-            add_msg("数据库连接测试:<%=this.m_conSucc%>");
-            add_msg("文件存储路径:<%=this.m_uploadPath%>");
+            add_msg("数据库连接信息:"+svr.conStr);
+            add_msg("数据库连接测试:"+svr.conState);
+            add_msg("文件存储路径:"+svr.uploadPath);
         }
         function check_create(mgr, fn)
         {
@@ -82,6 +83,7 @@
         }
         function check_clear()
         {
+            return;
             $.ajax({
                 type: "GET"
                 , url: "../db/clear.aspx"
