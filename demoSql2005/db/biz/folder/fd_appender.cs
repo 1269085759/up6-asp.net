@@ -37,7 +37,6 @@ namespace up6.demoSql2005.db.biz.folder
 
             //对空文件夹的处理，或者0字节文件夹的处理
             if (this.m_root.lenLoc == 0) this.m_root.complete = true;
-            if (this.m_root.files.Count == 0) this.m_root.complete = true;
 
             //更新文件夹信息
             this.pre_update_fd();
