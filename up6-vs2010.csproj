@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="demoSql2005\bigfile.aspx.cs">
       <DependentUpon>bigfile.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="demoSql2005\bigfile.aspx.designer.cs">
       <DependentUpon>bigfile.aspx</DependentUpon>
@@ -97,6 +98,7 @@
     </Compile>
     <Compile Include="demoSql2005\db\fd_create_uuid.aspx.cs">
       <DependentUpon>fd_create_uuid.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="demoSql2005\db\fd_create_uuid.aspx.designer.cs">
       <DependentUpon>fd_create_uuid.aspx</DependentUpon>
@@ -153,12 +155,14 @@
     </Compile>
     <Compile Include="demoSql2005\debug\big_file.aspx.cs">
       <DependentUpon>big_file.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="demoSql2005\debug\big_file.aspx.designer.cs">
       <DependentUpon>big_file.aspx</DependentUpon>
     </Compile>
     <Compile Include="demoSql2005\debug\check_config.aspx.cs">
       <DependentUpon>check_config.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="demoSql2005\debug\check_config.aspx.designer.cs">
       <DependentUpon>check_config.aspx</DependentUpon>
@@ -170,6 +174,7 @@
     <Compile Include="demoSql2005\down2\biz\un_file.cs" />
     <Compile Include="demoSql2005\down2\db\clear.aspx.cs">
       <DependentUpon>clear.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="demoSql2005\down2\db\clear.aspx.designer.cs">
       <DependentUpon>clear.aspx</DependentUpon>
@@ -178,48 +183,56 @@
     <Compile Include="demoSql2005\down2\db\DnFolder.cs" />
     <Compile Include="demoSql2005\down2\db\fd_create.aspx.cs">
       <DependentUpon>fd_create.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="demoSql2005\down2\db\fd_create.aspx.designer.cs">
       <DependentUpon>fd_create.aspx</DependentUpon>
     </Compile>
     <Compile Include="demoSql2005\down2\db\f_complete.aspx.cs">
       <DependentUpon>f_complete.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="demoSql2005\down2\db\f_complete.aspx.designer.cs">
       <DependentUpon>f_complete.aspx</DependentUpon>
     </Compile>
     <Compile Include="demoSql2005\down2\db\f_create.aspx.cs">
       <DependentUpon>f_create.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="demoSql2005\down2\db\f_create.aspx.designer.cs">
       <DependentUpon>f_create.aspx</DependentUpon>
     </Compile>
     <Compile Include="demoSql2005\down2\db\f_del.aspx.cs">
       <DependentUpon>f_del.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="demoSql2005\down2\db\f_del.aspx.designer.cs">
       <DependentUpon>f_del.aspx</DependentUpon>
     </Compile>
     <Compile Include="demoSql2005\down2\db\f_down.aspx.cs">
       <DependentUpon>f_down.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="demoSql2005\down2\db\f_down.aspx.designer.cs">
       <DependentUpon>f_down.aspx</DependentUpon>
     </Compile>
     <Compile Include="demoSql2005\down2\db\f_list.aspx.cs">
       <DependentUpon>f_list.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="demoSql2005\down2\db\f_list.aspx.designer.cs">
       <DependentUpon>f_list.aspx</DependentUpon>
     </Compile>
     <Compile Include="demoSql2005\down2\db\f_list_cmp.aspx.cs">
       <DependentUpon>f_list_cmp.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="demoSql2005\down2\db\f_list_cmp.aspx.designer.cs">
       <DependentUpon>f_list_cmp.aspx</DependentUpon>
     </Compile>
     <Compile Include="demoSql2005\down2\db\f_update.aspx.cs">
       <DependentUpon>f_update.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="demoSql2005\down2\db\f_update.aspx.designer.cs">
       <DependentUpon>f_update.aspx</DependentUpon>
@@ -228,6 +241,7 @@
     <Compile Include="demoSql2005\down2\model\DnFolderInf.cs" />
     <Compile Include="demoSql2005\index.aspx.cs">
       <DependentUpon>index.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="demoSql2005\index.aspx.designer.cs">
       <DependentUpon>index.aspx</DependentUpon>
@@ -238,6 +252,8 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="3rd\ICSharpCode.SharpZipLib.dll" />
+    <Content Include="3rd\Newtonsoft.Json.dll" />
     <Content Include="demoSql2005\bigfile.aspx" />
     <Content Include="demoSql2005\db\clear.aspx" />
     <Content Include="demoSql2005\db\fd_complete.aspx" />
