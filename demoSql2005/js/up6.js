@@ -81,12 +81,12 @@ function HttpUploaderMgr()
 		, "FilesLimit"		: "0"//文件选择数限制。0表示不限制
 		, "AllowMultiSelect": true//多选开关。1:开启多选。0:关闭多选
 		, "RangeSize"		: "1048576"//文件块大小，以字节为单位。必须为64KB的倍数。推荐大小：1MB。
-		, "Debug"			: true//是否打开调式模式。true,false
+		, "Debug"			: false//是否打开调式模式。true,false
 		, "LogFile"			: "F:\\log.txt"//日志文件路径。需要先打开调试模式。
 		, "InitDir"			: ""//初始化路径。示例：D:\\Soft
 		, "AppPath"			: ""//网站虚拟目录名称。子文件夹 web
         , "Cookie"			: ""//服务器cookie
-        , "QueueCount"      : 1//同时上传的任务数
+        , "QueueCount"      : 3//同时上传的任务数
 		//文件夹操作相关
 		, "UrlFdCreate"		: "http://localhost:4959/demoSql2005/db/fd_create.aspx"
 		, "UrlFdComplete"	: "http://localhost:4959/demoSql2005/db/fd_complete.aspx"
@@ -127,6 +127,7 @@ function HttpUploaderMgr()
     	
 	//http://www.ncmem.com/
 	this.Domain = "http://" + document.location.host;
+	this.working = false;
 
 	this.FileFilter = new Array(); //文件过滤器
 	this.idCount = 1; 	//上传项总数，只累加
@@ -895,7 +896,8 @@ function HttpUploaderMgr()
 				//上传队列已满
 				if (_this.IsPostQueueFull()) return;
 				var index = _this.QueueFiles.shift();
-			    _this.filesMap[index].post();
+				_this.filesMap[index].post();
+				_this.working = true;//
 			}
 		}
 	};
@@ -922,7 +924,11 @@ function HttpUploaderMgr()
                 && this.QueuePost.length == 0//上传队列为空
                 && this.QueueWait.length == 0)//等待队列为空
 			{
-			    this.event.queueComplete();
+		        if (this.working)
+		        {
+		            this.event.queueComplete();
+		            this.working = false;
+		        }
 			}
 		}
 	};
