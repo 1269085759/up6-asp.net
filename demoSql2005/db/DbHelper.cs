@@ -57,11 +57,6 @@ namespace up6.demoSql2005.db
     /// </summary>
     public class DbHelper
     {
-        private static string m_dbServer = @"(local)\SQL2005";	//数据库地址
-        private static string m_dbUser = "sa";			    //数据库帐号
-        private static string m_dbPass = "123456";			//数据库密码
-        private static string m_dbName = "HttpUploader6";	//数据库名称
-        private static string dbProviderName = "System.Data.SqlClient";
         private DbConnection connection;
 
         /// <summary>
@@ -71,13 +66,14 @@ namespace up6.demoSql2005.db
         /// <returns></returns>
         public static string GetConStr()
         {
-            string conStr = "Data Source=%server%;Initial Catalog=%database%;User Id=%uid%;Password=%pwd%;";
-            conStr = conStr.Replace("%server%", m_dbServer);
-            conStr = conStr.Replace("%database%", m_dbName);
-            conStr = conStr.Replace("%uid%", m_dbUser);
-            conStr = conStr.Replace("%pwd%", m_dbPass);
+            var str = System.Configuration.ConfigurationManager.ConnectionStrings["sql2005"];
+            return str.ConnectionString;
+        }
 
-            return conStr;
+        public static string GetProvider()
+        {
+            var str = System.Configuration.ConfigurationManager.ConnectionStrings["sql2005"];
+            return str.ProviderName;
         }
 
         public DbHelper()
@@ -92,7 +88,7 @@ namespace up6.demoSql2005.db
 
         public static DbConnection CreateConnection()
         {
-            //DbProviderFactory dbfactory = DbProviderFactories.GetFactory(DbHelper.dbProviderName);
+            //DbProviderFactory dbfactory = DbProviderFactories.GetFactory(DbHelper.GetProvider());
             DbConnection con = SqlClientFactory.Instance.CreateConnection();
             con.ConnectionString = GetConStr();
 
@@ -101,7 +97,7 @@ namespace up6.demoSql2005.db
 
         public static DbConnection CreateConnection(string connectionString)
         {
-            //DbProviderFactory dbfactory = DbProviderFactories.GetFactory(DbHelper.dbProviderName);
+            //DbProviderFactory dbfactory = DbProviderFactories.GetFactory(DbHelper.GetProvider());
             DbConnection con = SqlClientFactory.Instance.CreateConnection();
             con.ConnectionString = GetConStr();
             return con;
@@ -296,7 +292,7 @@ namespace up6.demoSql2005.db
         #region 执行
         public DataSet ExecuteDataSet(DbCommand cmd)
         {
-            DbProviderFactory dbfactory = DbProviderFactories.GetFactory(DbHelper.dbProviderName);
+            DbProviderFactory dbfactory = DbProviderFactories.GetFactory(DbHelper.GetProvider());
             DbDataAdapter dbDataAdapter = dbfactory.CreateDataAdapter();
             dbDataAdapter.SelectCommand = cmd;
             DataSet ds = new DataSet();
@@ -306,7 +302,7 @@ namespace up6.demoSql2005.db
 
         public DataTable ExecuteDataTable(DbCommand cmd)
         {
-            DbProviderFactory dbfactory = DbProviderFactories.GetFactory(DbHelper.dbProviderName);
+            DbProviderFactory dbfactory = DbProviderFactories.GetFactory(DbHelper.GetProvider());
             DbDataAdapter dbDataAdapter = dbfactory.CreateDataAdapter();
             dbDataAdapter.SelectCommand = cmd;
             DataTable dataTable = new DataTable();
@@ -367,7 +363,7 @@ namespace up6.demoSql2005.db
         {
             cmd.Connection = t.DbConnection;
             cmd.Transaction = t.DbTrans;
-            DbProviderFactory dbfactory = DbProviderFactories.GetFactory(DbHelper.dbProviderName);
+            DbProviderFactory dbfactory = DbProviderFactories.GetFactory(DbHelper.GetProvider());
             DbDataAdapter dbDataAdapter = dbfactory.CreateDataAdapter();
             dbDataAdapter.SelectCommand = cmd;
             DataSet ds = new DataSet();
@@ -379,7 +375,7 @@ namespace up6.demoSql2005.db
         {
             cmd.Connection = t.DbConnection;
             cmd.Transaction = t.DbTrans;
-            DbProviderFactory dbfactory = DbProviderFactories.GetFactory(DbHelper.dbProviderName);
+            DbProviderFactory dbfactory = DbProviderFactories.GetFactory(DbHelper.GetProvider());
             DbDataAdapter dbDataAdapter = dbfactory.CreateDataAdapter();
             dbDataAdapter.SelectCommand = cmd;
             DataTable dataTable = new DataTable();
