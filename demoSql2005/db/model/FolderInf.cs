@@ -10,9 +10,9 @@ namespace up6.demoSql2005.db
     {
         public FolderInf()
         {
-            this.nameLoc = this.size = this.pathLoc = this.pathSvr = this.pathRel = string.Empty;
+            this.nameLoc = this.size = this.pathLoc = this.pathSvr = string.Empty;
             this.lenSvr = this.lenLoc = 0;//fix:
-            this.uid = this.pidLoc = this.pidSvr = this.idLoc = this.idSvr = this.pidRoot = 0;
+            this.uid = this.pidLoc = this.pidSvr = this.idLoc = this.idSvr = 0;
         }
 
         public string nameLoc;
@@ -75,7 +75,7 @@ namespace up6.demoSql2005.db
         /// 文件夹在服务端路径。E:\\Web
         /// </summary>
         public string pathSvr;
-        public int pidRoot;
-        public string pathRel;
+        public int pidRoot = 0;
+        public string pathRel = string.Empty;
     }
 }
