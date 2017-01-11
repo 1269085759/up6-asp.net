@@ -61,6 +61,7 @@
     <Content Include="demoSql2005\debug\big_file.aspx" />
     <Content Include="demoSql2005\debug\check_config.aspx" />
     <Content Include="demoSql2005\debug\setup.html" />
+    <Content Include="demoSql2005\debug\websocket.html" />
     <Content Include="demoSql2005\down2\db\clear.aspx" />
     <Content Include="demoSql2005\down2\db\f_list.aspx" />
     <Content Include="demoSql2005\down2\db\fd_create.aspx" />
@@ -108,6 +109,8 @@
     <Content Include="demoSql2005\debug\post.html" />
     <Content Include="demoSql2005\debug\process.html" />
     <Content Include="demoSql2005\debug\test.gif" />
+    <Content Include="demoSql2005\js\up6.edge.js" />
+    <Content Include="demoSql2005\js\up6.event.js" />
     <Content Include="demoSql2005\js\up6.file.js" />
     <Content Include="demoSql2005\js\up6.folder.js" />
     <Content Include="demoSql2005\sql.down\down_files.sql" />
