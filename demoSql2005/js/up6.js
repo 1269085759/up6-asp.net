@@ -44,6 +44,21 @@ var HttpUploaderState = {
 	,MD5Working:9
 };
 
+function getRoot()
+{
+    for (var i = 0, l = document.scripts.length; i < l; ++i)
+    {
+        var src = document.scripts[i].src;
+        if (src.lastIndexOf("/up6.js")!=-1)
+        {
+            src = src.replace("/up6.js", "/");
+            return src;
+        }
+    }
+}
+var root = getRoot();
+//jQuery.getScript(root+"up6.edge.js", function (data, status, xhr) { console.log("加载完毕");});
+
 //删除元素值
 Array.prototype.remove = function(val)
 {
@@ -71,7 +86,7 @@ function HttpUploaderMgr()
 		  "EncodeType"		: "utf-8"
 		, "Company"			: "荆门泽优软件有限公司"
 		, "Version"			: "2,7,103,31652"
-		, "License"			: ""//
+		, "License"			: "D01E5CEEDF40A0857E0A1A17F0DE03B263970EDC4F935BE8CCD2CCE1AFC62BE8883E9F8301E3B3BBD3B0C6"//
 		, "Authenticate"	: ""//域验证方式：basic,ntlm
 		, "AuthName"		: ""//域帐号
 		, "AuthPass"		: ""//域密码
@@ -88,15 +103,15 @@ function HttpUploaderMgr()
         , "Cookie"			: ""//服务器cookie
         , "QueueCount"      : 3//同时上传的任务数
 		//文件夹操作相关
-		, "UrlFdCreate"		: "http://localhost:87/demoSql2005/db/fd_create.aspx"
-		, "UrlFdComplete"	: "http://localhost:87/demoSql2005/db/fd_complete.aspx"
-		, "UrlFdDel"	    : "http://localhost:87/demoSql2005/db/fd_del.aspx"
+		, "UrlFdCreate"		: "http://192.168.0.2:87/demoSql2005/db/fd_create.aspx"
+		, "UrlFdComplete"	: "http://192.168.0.2:87/demoSql2005/db/fd_complete.aspx"
+		, "UrlFdDel"	    : "http://192.168.0.2:87/demoSql2005/db/fd_del.aspx"
 		//文件操作相关
-		, "UrlCreate"		: "http://localhost:87/demoSql2005/db/f_create.aspx"
-		, "UrlPost"			: "http://localhost:87/demoSql2005/db/f_post.aspx"
-		, "UrlComplete"		: "http://localhost:87/demoSql2005/db/f_complete.aspx"
-		, "UrlList"			: "http://localhost:87/demoSql2005/db/f_list.aspx"
-		, "UrlDel"			: "http://localhost:87/demoSql2005/db/f_del.aspx"
+		, "UrlCreate"		: "http://192.168.0.2:87/demoSql2005/db/f_create.aspx"
+		, "UrlPost"			: "http://192.168.0.2:87/demoSql2005/db/f_post.aspx"
+		, "UrlComplete"		: "http://192.168.0.2:87/demoSql2005/db/f_complete.aspx"
+		, "UrlList"			: "http://192.168.0.2:87/demoSql2005/db/f_list.aspx"
+		, "UrlDel"			: "http://192.168.0.2:87/demoSql2005/db/f_del.aspx"
 	    //x86
         , ie: {
               drop: { clsid: "0868BADD-C17E-4819-81DE-1D60E5E734A6", name: "Xproer.HttpDroper6" }
@@ -112,6 +127,7 @@ function HttpUploaderMgr()
         , firefox: { name: "", type: "application/npHttpUploader6", path: "http://www.ncmem.com/download/up6.2/up6.xpi" }
         , chrome: { name: "npHttpUploader6", type: "application/npHttpUploader6", path: "http://www.ncmem.com/download/up6.2/up6.crx" }
         , chrome45: { name: "com.xproer.up6", path: "http://www.ncmem.com/download/up6.2/up6.nat.crx" }
+        , edge: {protocol:"up6",port:9100}
         , exe: { path: "http://www.ncmem.com/download/up6.2/up6.exe" }
 		, "SetupPath": "http://localhost:4955/demoAccess/js/setup.htm"
         , "Fields": {"uname": "test","upass": "test","uid":"0","fid":"0"}
@@ -122,7 +138,30 @@ function HttpUploaderMgr()
 	      "md5Complete": function (obj/*HttpUploader对象*/, md5) { }
         , "fileComplete": function (obj/*文件上传完毕，参考：FileUploader*/) { }
         , "fdComplete": function (obj/*文件夹上传完毕，参考：FolderUploader*/) { }
-        , "queueComplete":function(){/*队列上传完毕*/}
+        , "queueComplete": function () {/*队列上传完毕*/ }
+	};
+    //pageClose
+	this.event2 = {
+	    on: function (eventName, callback)
+	    {
+	        if (!this[eventName])
+	        {
+	            this[eventName] = [];
+	        }
+	        this[eventName].push(callback);
+	    },
+	    emit: function (eventName)
+	    {
+	        var that = this;
+	        var params = arguments.length > 1 ? Array.prototype.slice.call(arguments, 1) : [];
+	        if (that[eventName])
+	        {
+	            Array.prototype.forEach.call(that[eventName], function (arg)
+	            {
+	                arg.apply(self, params);
+	            });
+	        }
+	    }
 	};
     	
 	//http://www.ncmem.com/
@@ -153,8 +192,10 @@ function HttpUploaderMgr()
 	this.chrome = browserName.indexOf("chrome") > 0;
 	this.chrome45 = false;
 	this.nat_load = false;
+	this.edge_load = false;
 	this.chrVer = navigator.appVersion.match(/Chrome\/(\d+)/);
 	this.edge = navigator.userAgent.indexOf("Edge") > 0;
+	this.webSvr = new WebServer(this);
 	if (this.edge) { this.ie = this.firefox = this.chrome = this.chrome45 = false;}
 
 	//服务器文件列表面板
@@ -501,6 +542,15 @@ function HttpUploaderMgr()
 	    p.md5_error(json);
 	};
 	this.load_complete = function (json) { this.nat_load = true; this.btnSetup.hide(); };
+	this.load_complete_edge = function (json)
+	{
+	    this.edge_load = true;
+	    this.btnSetup.hide();
+	    _this.event2.on("pageClose", function ()
+	    {
+	        _this.webSvr.close();
+	    });
+	};
 	this.recvMessage = function (str)
 	{
 	    var json = JSON.parse(str);
@@ -513,7 +563,8 @@ function HttpUploaderMgr()
 	    else if (json.name == "md5_process") { _this.md5_process(json); }
 	    else if (json.name == "md5_complete") { _this.md5_complete(json); }
 	    else if (json.name == "md5_error") { _this.md5_error(json); }
-	    else if (json.name == "load_complete") { _this.load_complete();}
+	    else if (json.name == "load_complete") { _this.load_complete(json); }
+	    else if (json.name == "load_complete_edge") { _this.load_complete_edge(json); }
 	};
 
 	//IE浏览器信息管理对象
@@ -547,6 +598,7 @@ function HttpUploaderMgr()
         }
         , checkChr: function () { }
         , checkNat: function () { }
+        , checkEdge: function () { return _this.edge_load; }
         , NeedUpdate: function ()
         {
             return this.GetVersion() != _this.Config["Version"];
@@ -584,6 +636,10 @@ function HttpUploaderMgr()
             {
                 _this.recvMessage(JSON.stringify(evt.detail));
             });
+        }
+        , initEdge: function ()
+        {
+            _this.webSvr.run();
         }
         , exit: function ()
         {
@@ -659,6 +715,10 @@ function HttpUploaderMgr()
             evt.initCustomEvent(this.entID, true, false, par);
             document.dispatchEvent(evt);
         }
+        , postMessageEdge: function (par)
+        {
+            if(this.check())_this.webSvr.send(par);
+        }
 	};
 
 	this.checkBrowser = function ()
@@ -690,6 +750,12 @@ function HttpUploaderMgr()
 	                _this.chrome45 = true;//
 	            }
 	        }
+	    }
+	    else if (this.edge)
+	    {
+	        this.browser.postMessage = this.browser.postMessageEdge;
+	        this.browser.check = this.browser.checkEdge;
+	        this.browser.initEdge();//
 	    }
 	};
 	this.checkBrowser();
@@ -727,7 +793,8 @@ function HttpUploaderMgr()
 		});
 
 		$(window).bind("unload", function()
-		{ 
+		{
+		    _this.event2.emit("pageClose");
 			if (_this.QueuePost.length > 0)
 			{
 				_this.StopAll();
