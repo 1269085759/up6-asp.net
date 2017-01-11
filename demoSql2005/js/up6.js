@@ -141,7 +141,7 @@ function HttpUploaderMgr()
         , "queueComplete": function () {/*队列上传完毕*/ }
 	};
     //pageClose
-	this.event2 = {
+	this.eventSys = {
 	    on: function (eventName, callback)
 	    {
 	        if (!this[eventName])
@@ -163,7 +163,9 @@ function HttpUploaderMgr()
 	        }
 	    }
 	};
-    	
+
+	this.eventSys.on("edgeLoad", function () { _this.browser.init();});
+
 	//http://www.ncmem.com/
 	this.Domain = "http://" + document.location.host;
 	this.working = false;
@@ -546,10 +548,11 @@ function HttpUploaderMgr()
 	{
 	    this.edge_load = true;
 	    this.btnSetup.hide();
-	    _this.event2.on("pageClose", function ()
+	    _this.eventSys.on("pageClose", function ()
 	    {
 	        _this.webSvr.close();
 	    });
+	    _this.eventSys.emit("edgeLoad");
 	};
 	this.recvMessage = function (str)
 	{
@@ -794,7 +797,7 @@ function HttpUploaderMgr()
 
 		$(window).bind("unload", function()
 		{
-		    _this.event2.emit("pageClose");
+		    _this.eventSys.emit("pageClose");
 			if (_this.QueuePost.length > 0)
 			{
 				_this.StopAll();

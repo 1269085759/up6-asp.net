@@ -110,7 +110,6 @@
     <Content Include="demoSql2005\debug\process.html" />
     <Content Include="demoSql2005\debug\test.gif" />
     <Content Include="demoSql2005\js\up6.edge.js" />
-    <Content Include="demoSql2005\js\up6.event.js" />
     <Content Include="demoSql2005\js\up6.file.js" />
     <Content Include="demoSql2005\js\up6.folder.js" />
     <Content Include="demoSql2005\sql.down\down_files.sql" />
