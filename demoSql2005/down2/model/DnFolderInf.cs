@@ -10,7 +10,7 @@ namespace up6.demoSql2005.down2.model
         public DnFolderInf()
         {
             this.fdTask = true;
-            this.m_files = new List<DnFileInf>();
+            this.files = new List<DnFileInf>();
         }
     }
 }

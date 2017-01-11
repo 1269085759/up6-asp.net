@@ -51,8 +51,8 @@ namespace up6.demoSql2005.db
             db.AddInt(ref cmd, "@uid", inf.uid);
             db.AddInt64(ref cmd, "@length", inf.lenLoc);
             db.AddString(ref cmd, "@size", inf.size, 50);
-            db.AddString(ref cmd, "@pathLoc", inf.m_pathLoc, 255);
-            db.AddString(ref cmd, "@pathSvr", inf.m_pathSvr, 255);
+            db.AddString(ref cmd, "@pathLoc", inf.pathLoc, 255);
+            db.AddString(ref cmd, "@pathSvr", inf.pathSvr, 255);
             db.AddInt(ref cmd, "@folders", inf.foldersCount);
             db.AddInt(ref cmd, "@files", inf.filesCount);
             db.AddInt(ref cmd, "@pidRoot", inf.pidRoot);//为下载控件提供支持
