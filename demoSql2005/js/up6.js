@@ -624,9 +624,7 @@ function HttpUploaderMgr()
         }
         , checkFolder: function (fd)
         {
-            var param = { name: "check_folder", config: _this.Config };
-            jQuery.extend(param, fd);
-            param.name = "check_folder";
+            var param = { name: "check_folder", config: _this.Config ,folder:JSON.stringify(fd)};
             this.postMessage(param);
         }
         , postFile: function (f)
