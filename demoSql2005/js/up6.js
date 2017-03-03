@@ -624,10 +624,8 @@ function HttpUploaderMgr()
         }
         , checkFolder: function (fd)
         {
-            var param = { name: "check_folder", config: _this.Config };
-            jQuery.extend(param, fd);
-            param.name = "check_folder";
-            this.postMessage(param);
+            var param = { name: "check_folder", config: _this.Config ,folder:JSON.stringify(fd)};
+            this.postMessage( param);
         }
         , postFile: function (f)
         {
@@ -655,6 +653,7 @@ function HttpUploaderMgr()
         {
             var evt = document.createEvent("CustomEvent");
             evt.initCustomEvent(this.entID, true, false, par);
+            console.log(JSON.stringify(par));
             document.dispatchEvent(evt);
         }
 	};
