@@ -425,15 +425,20 @@ function HttpUploaderMgr()
 	{
 	    var html 		= this.GetHtml();
 	    var dom 		= $(document.body).append(html);
-		this.init(dom);
+        $(function () {
+            _this.init(dom);
+        });
+		
 	};
 
 	//加截容器，上传面板，文件列表面板
 	this.LoadTo = function(oid)
 	{
 	    var html 		= this.GetHtml();
-		var dom 		= $("#"+oid).html(html);
-		this.init(dom);
+        var dom = $("#" + oid).html(html);
+        $(function () {
+            _this.init(dom);
+        });		
 	};
 	
 	this.init = function(dom)
