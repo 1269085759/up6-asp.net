@@ -27,7 +27,7 @@
         //cbMgr.set_config(up6_config.share_point);
         //cbMgr.set_config(up6_config.vm);
 
-        $(document).ready(function ()
+        $(function ()
         {
             cbMgr.load_to("FilePanel");
         });
