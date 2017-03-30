@@ -662,6 +662,11 @@ function HttpUploaderMgr()
             jQuery.extend(param, json);
             this.postMessage(param);
         }
+        , addFolder: function (json) {
+            var param = { name: "add_folder", config: _this.Config };
+            jQuery.extend(param, json);
+            this.postMessage(param);
+        }
         , openFiles: function ()
         {
             var param = { name: "open_files", config: _this.Config };
@@ -688,6 +693,11 @@ function HttpUploaderMgr()
             var param = { name: "check_folder", config: _this.Config };
             jQuery.extend(param, fd);
             param.name = "check_folder";
+            this.postMessage(param);
+        }
+        , checkFolderNat: function (fd)
+        {
+            var param = { name: "check_folder", config: _this.Config, folder: JSON.stringify(fd) };
             this.postMessage(param);
         }
         , postFile: function (f)
@@ -748,6 +758,7 @@ function HttpUploaderMgr()
 	            if (!this.browser.checkFF())//仍然支持npapi
 	            {
 	                this.browser.postMessage = this.browser.postMessageNat;
+	                this.browser.checkFolder = this.browser.checkFolderNat;
 	                _this.firefox = false;
 	                _this.chrome = false;
 	                _this.chrome45 = true;//
@@ -1168,8 +1179,8 @@ function HttpUploaderMgr()
 	    var fdLoc = json;
 		//本地文件夹存在
 	    if (this.Exist(fdLoc.pathLoc)) return;
-	    //针对空文件夹的处理
-	    if (json.files == null) jQuery.extend(fdLoc,{files:{}});
+        //针对空文件夹的处理
+	    if (json.files == null) jQuery.extend(fdLoc,{files:[]});
 	    //if (json.lenLoc == 0) return;
 
 	    var idLoc = this.idCount++;

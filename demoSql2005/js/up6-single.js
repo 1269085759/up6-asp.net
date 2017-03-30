@@ -122,15 +122,17 @@ function HttpUploaderMgr()
 	this.firefox = browserName.indexOf("firefox") > 0;
 	this.chrome = browserName.indexOf("chrome") > 0;
 	this.chrome45 = false;
+	this.nat_load = false;
 	this.chrVer = navigator.appVersion.match(/Chrome\/(\d+)/);
 
 	this.open_files = function (json)
 	{
+	    var f = null;
 	    for (var i = 0, l = json.files.length; i < l; ++i)
 	    {
-	        this.addFileLoc(json.files[i]);
+	        f = this.addFileLoc(json.files[i]);
 	    }
-	    //setTimeout(function () { _this.PostFirst(); },500);
+	    setTimeout(function () { f.post(); },500);
 	};
 	this.open_folders = function (json)
 	{
@@ -174,7 +176,7 @@ function HttpUploaderMgr()
 	    var p = this.filesMap[json.id];
 	    p.md5_error(json);
 	};
-	this.load_complete = function (json) { this.nat_load = true; if (this.btnSetup) this.btnSetup.hide();};
+	this.load_complete = function (json) { this.nat_load = true; if (this.btnSetup) this.btnSetup.hide(); }
 	this.recvMessage = function (str)
 	{
 	    var json = JSON.parse(str);
@@ -253,6 +255,7 @@ function HttpUploaderMgr()
         }
         , initNat: function ()
         {
+            if (!_this.chrome45) return;
             this.exitEvent();
             document.addEventListener('Uploader6EventCallBack', function (evt)
             {
@@ -311,7 +314,7 @@ function HttpUploaderMgr()
         }
         , postMessage: function (json)
         {
-            _this.parter.postMessage(JSON.stringify(json));
+            if (this.check()) _this.parter.postMessage(JSON.stringify(json));
         }
         , postMessageNat: function (par)
         {
@@ -355,7 +358,8 @@ function HttpUploaderMgr()
 	this.CheckVersion();
 	this.setup_tip = function ()
 	{
-	    this.btnSetup = $(document.body).append('<a href="' + _this.Config.exe.path + '" target="_blank">请安装控件</a>');
+	    $(document.body).append('<a id="btnSetup" href="' + _this.Config.exe.path + '" target="_blank">请安装控件</a>');
+	    this.btnSetup = $("#btnSetup");
 	};
 
     //安装检查
@@ -420,22 +424,27 @@ function HttpUploaderMgr()
 		return acx;
 	};
 
-	this.Load = function()
+	this.loadAuto = function ()
 	{
 	    var html 		= this.GetHtml();
 	    var dom 		= $(document.body).append(html);
-		this.init(dom);
+        $(function () {
+            _this.initUI(dom);
+        });
+		
 	};
 
 	//加截容器，上传面板，文件列表面板
-	this.LoadTo = function(oid)
+	this.loadTo = function (oid)
 	{
 	    var html 		= this.GetHtml();
-		var dom 		= $("#"+oid).html(html);
-		this.init(dom);
+        var dom = $("#" + oid).html(html);
+        $(function () {
+            _this.initUI(dom);
+        });		
 	};
 	
-	this.init = function(dom)
+	this.initUI = function (dom)
 	{
 	    this.fileItem = dom.find('div[name="fileItem"]');
 	    this.parter = dom.find('object[name="parter"]').get(0);
@@ -449,16 +458,35 @@ function HttpUploaderMgr()
     //oid,显示上传项的层ID
 	this.postAuto = function (oid)
 	{
-	    if (this.fileCur != null) return;//有上传项
-	    this.uiContainer = $("#" + oid);
-	    this.browser.openFiles();
+		var file_free = this.fileCur != null;
+		if(file_free)
+		{
+			file_free = this.fileCur.State == HttpUploaderState.Complete;
+			if(!file_free) file_free = this.fileCur.State == HttpUploaderState.Error;			
+		}		
+		if(this.fileCur == null) file_free = true;
+		if(file_free)
+		{
+			this.uiContainer = $("#" + oid);
+			this.browser.openFiles();
+		}
 	};
 	
 	//上传文件
 	this.postLoc = function (path_loc, oid)
 	{
-	    this.uiContainer = $("#" + oid);
-	    this.browser.addFile({ pathLoc: path_loc });
+		var file_free = this.fileCur != null;
+		if(file_free)
+		{
+			file_free = this.fileCur.State == HttpUploaderState.Complete;
+			if(!file_free) file_free = this.fileCur.State == HttpUploaderState.Error;			
+		}		
+		if(this.fileCur == null) file_free = true;
+		if(file_free)
+		{
+		    this.uiContainer = $("#" + oid);
+		    this.browser.addFile({ pathLoc: path_loc });
+		}
 	};
     
 	this.addFileLoc = function(fileLoc)
@@ -466,8 +494,13 @@ function HttpUploaderMgr()
 		var idLoc = this.idCount++;
 		var nameLoc = fileLoc.nameLoc;
 
-		var ui = _this.fileItem.clone();//文件信息
-		_this.uiContainer.append(ui);//添加文件信息
+		var ui = null;
+		if(this.fileCur != null) ui = this.fileCur.ui.div;
+		if(ui == null)
+		{
+			ui = _this.fileItem.clone();//文件信息
+			_this.uiContainer.append(ui);//添加文件信息
+		}
 		ui.css("display", "block");
 
 		var uiName      = ui.find("div[name='fileName']");
@@ -509,7 +542,7 @@ function HttpUploaderMgr()
 		});
 		btnDel.click(function(){upFile.remove();});
 		
-		upFile.post(); //准备
+		//upFile.post(); //准备
 		this.fileCur = upFile;
 		return upFile;
 	};
