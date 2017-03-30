@@ -86,7 +86,7 @@ function HttpUploaderMgr()
 		  "EncodeType"		: "utf-8"
 		, "Company"			: "荆门泽优软件有限公司"
 		, "Version"			: "2,7,103,31652"
-		, "License"			: "D01E5CEEDF40A0857E0A1A17F0DE03B263970EDC4F935BE8CCD2CCE1AFC62BE8883E9F8301E3B3BBD3B0C6"//
+		, "License"			: "D01E5CEEDF40A0857E0A1A17F0DE03B263970EDC4F935BE8CCD2CCE1AFC62BE8883E9F830EE3B3BAD3B2C6"//
 		, "Authenticate"	: ""//域验证方式：basic,ntlm
 		, "AuthName"		: ""//域帐号
 		, "AuthPass"		: ""//域密码
