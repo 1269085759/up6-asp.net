@@ -30,6 +30,15 @@
         $(function ()
         {
             cbMgr.load_to("FilePanel");
+            //上传指定文件
+            $("#btnUpF").click(function () {
+                //上传指定目录
+                cbMgr.browser.addFile({ pathLoc: "D:\\360safe-inst.exe" });
+            });
+            $("#btnUpFd").click(function () {
+                //上传指定目录
+                cbMgr.browser.addFolder({ pathLoc: "C:\\Users\\Administrator\\Desktop\\test" });
+            });
         });
     </script>
 </head>
@@ -37,6 +46,8 @@
     <p>up6.2多文件上传演示页面</p>
     <p><a href="db/clear.aspx" target="_blank">清空数据库</a></p>
     <p><a href="down2/index.htm" target="_blank">打开下载页面</a></p>
+    <input id="btnUpF" type="button" value="上传本地文件" />
+    <input id="btnUpFd" type="button" value="上传本地目录" />
 	<div id="FilePanel"></div>
     <div id="msg"></div>
 </body>
