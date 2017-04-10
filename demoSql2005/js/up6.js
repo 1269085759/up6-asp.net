@@ -737,7 +737,7 @@ function HttpUploaderMgr()
         }
         , postMessageEdge: function (par)
         {
-            if(this.check())_this.webSvr.send(par);
+            if (_this.edge_load) _this.webSvr.send(par);
         }
 	};
 
