@@ -85,7 +85,7 @@ function HttpUploaderMgr()
 	this.Config = {
 		  "EncodeType"		: "utf-8"
 		, "Company"			: "荆门泽优软件有限公司"
-		, "Version"			: "2,7,103,31652"
+		, "Version"			: "2,7,104,50854"
 		, "License"			: "D01E5CEEDF40A0857E0A1A17F0DE03B263970EDC4F935BE8CCD2CCE1AFC62BE8883E9F830EE3B3BAD3B2C6"//
 		, "Authenticate"	: ""//域验证方式：basic,ntlm
 		, "AuthName"		: ""//域帐号
@@ -543,7 +543,18 @@ function HttpUploaderMgr()
 	    var p = this.filesMap[json.id];
 	    p.md5_error(json);
 	};
-	this.load_complete = function (json) { this.nat_load = true; this.btnSetup.hide(); };
+    this.load_complete = function (json)
+    {
+        this.btnSetup.hide();
+        var needUpdate = true;
+        if (typeof (json.version) != "undefined") {
+            if (json.version == this.Config.Version) {
+                needUpdate = false;
+            }
+        }
+        if (needUpdate) this.update_notice();
+        else { this.btnSetup.hide(); }
+    };
 	this.load_complete_edge = function (json)
 	{
 	    this.edge_load = true;
@@ -599,13 +610,7 @@ function HttpUploaderMgr()
             }
             return false;
         }
-        , checkChr: function () { }
-        , checkNat: function () { }
         , checkEdge: function () { return _this.edge_load; }
-        , NeedUpdate: function ()
-        {
-            return this.GetVersion() != _this.Config["Version"];
-        }
 		, GetVersion: function ()
 		{
 		    var v = null;
@@ -720,7 +725,9 @@ function HttpUploaderMgr()
         }
         , postMessage:function(json)
         {
-            if(this.check()) _this.parter.postMessage(JSON.stringify(json));
+            try {
+                _this.parter.postMessage(JSON.stringify(json));
+            } catch (e) { }
         }
         , postMessageNat: function (par)
         {
@@ -772,15 +779,13 @@ function HttpUploaderMgr()
 	        this.browser.initEdge();//
 	    }
 	};
-	this.checkBrowser();
-
-	//安装检查
-	this.setup_check = function ()
-	{
-	    if (!_this.browser.check()) { this.btnSetup.show(); }
-	    else { this.btnSetup.hide(); }
-	};
-
+    this.checkBrowser();
+    //升级通知
+    this.update_notice = function () {
+        this.btnSetup.text("升级控件");
+        this.btnSetup.css("color", "red");
+        this.btnSetup.show();
+    };
 	//安装控件
 	this.Install = function ()
 	{
@@ -870,7 +875,6 @@ function HttpUploaderMgr()
 	    this.FileListMgr.filesUI.height(post_panel.height() - 28);
 
 	    this.InitContainer();
-	    this.setup_check();
 	    this.browser.init();
 	};
 	
