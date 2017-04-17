@@ -523,8 +523,9 @@ function HttpUploaderMgr()
 	    else if (json.name == "post_complete") { _this.post_complete(json); }
 	    else if (json.name == "md5_process") { _this.md5_process(json); }
 	    else if (json.name == "md5_complete") { _this.md5_complete(json); }
-	    else if (json.name == "md5_error") { _this.md5_error(json); }
-	    else if (json.name == "load_complete") { _this.load_complete(json);}
+        else if (json.name == "md5_error") { _this.md5_error(json); }
+        else if (json.name == "load_complete") { _this.load_complete(json); }
+        else if (json.name == "extension_complete") { console.log("chrome 45+扩展连接成功"); setTimeout(function () { _this.browser.init(); },1000) }
 	};
 
 	//IE浏览器信息管理对象
