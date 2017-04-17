@@ -2,7 +2,7 @@
 	版权所有 2009-2016 荆门泽优软件有限公司
 	保留所有权利
 	官方网站：http://www.ncmem.com/
-	产品首页：http://www.ncmem.com/webplug/http-uploader6/
+	产品首页：http://www.ncmem.com/webapp/up6.2/index.asp
 	产品介绍：http://www.cnblogs.com/xproer/archive/2012/05/29/2523757.html
 	开发文档-ASP：http://www.cnblogs.com/xproer/archive/2012/02/17/2355458.html
 	开发文档-PHP：http://www.cnblogs.com/xproer/archive/2012/02/17/2355467.html
@@ -13,6 +13,7 @@
 	VC运行库：http://www.microsoft.com/en-us/download/details.aspx?id=29
 	联系信箱：1085617561@qq.com
 	联系QQ：1085617561
+    版本：2.3
 	更新记录：
 		2015-07-31 优化更新进度逻辑
 */
@@ -579,6 +580,13 @@ function HttpUploaderMgr()
 	    else if (json.name == "md5_error") { _this.md5_error(json); }
 	    else if (json.name == "load_complete") { _this.load_complete(json); }
 	    else if (json.name == "load_complete_edge") { _this.load_complete_edge(json); }
+	    else if (json.name == "extension_complete")
+        {
+            setTimeout(function () {
+                var param = { name: "init", config: _this.Config };
+                _this.browser.postMessage(param);
+                 }, 1000);
+        }
 	};
 
 	//IE浏览器信息管理对象
