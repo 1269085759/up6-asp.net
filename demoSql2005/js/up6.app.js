@@ -1,5 +1,6 @@
 var up6_app = {
-    webSvr: null
+    ins: null
+    ,webSvr: null
     ,Config:null
     , checkFF: function ()
     {
@@ -17,7 +18,7 @@ var up6_app = {
         }
         else
         {
-            mimetype = [_this.Config.firefox.type];
+            mimetype = [this.Config.firefox.type];
         }
         if (mimetype)
         {
@@ -40,11 +41,11 @@ var up6_app = {
     }
     , initNat: function ()
     {
-        if (!_this.chrome45) return;
+        if (!this.chrome45) return;
         this.exitEvent();
         document.addEventListener('Uploader6EventCallBack', function (evt)
         {
-            _this.recvMessage(JSON.stringify(evt.detail));
+            this.recvMessage(JSON.stringify(evt.detail));
         });
     }
     , initEdge: function ()
@@ -128,7 +129,7 @@ var up6_app = {
     , postMessage:function(json)
     {
         try {
-            _this.parter.postMessage(JSON.stringify(json));
+            this.ins.parter.postMessage(JSON.stringify(json));
         } catch (e) { }
     }
     , postMessageNat: function (par)
@@ -139,6 +140,6 @@ var up6_app = {
     }
     , postMessageEdge: function (par)
     {
-        if (this.edge_load) this.webSvr.send(par);
+        this.webSvr.send(par);
     }
 };

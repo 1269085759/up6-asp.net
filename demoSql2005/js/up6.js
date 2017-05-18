@@ -200,6 +200,7 @@ function HttpUploaderMgr()
     this.app = up6_app;
     this.app.webSvr = this.webSvr;
     this.app.Config = this.Config;
+    this.app.ins = this;
 	if (this.edge) { this.ie = this.firefox = this.chrome = this.chrome45 = false;}
 
 	//服务器文件列表面板
@@ -729,8 +730,8 @@ function HttpUploaderMgr()
         $(function ()
         {
             if (_this.edge) return;
-            _this.parter.recvMessage = this.recvMessage;
-            this.app.init();
+            _this.parter.recvMessage = _this.recvMessage;
+            _this.app.init();
         });
 	};
 	
