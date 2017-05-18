@@ -602,6 +602,7 @@ function HttpUploaderMgr()
             var ver = browserName.match(/firefox\/(\d+)/);
             if (parseInt(ver[1]) >= 47)
             {
+                this.edge = true;
                 this.app.postMessage = this.app.postMessageEdge;
                 this.webSvr.runChr();
             }
@@ -618,10 +619,8 @@ function HttpUploaderMgr()
 	            _this.firefox = true;
 	            if (!this.app.checkFF())//仍然支持npapi
                 {
+                    this.edge = true;
                     this.app.postMessage = this.app.postMessageEdge;
-	                _this.firefox = false;
-	                _this.chrome = false;
-                    _this.chrome45 = true;//
                     this.webSvr.runChr();
 	            }
 	        }
@@ -693,8 +692,6 @@ function HttpUploaderMgr()
 	    var filesLoc = dom.find('li[name="filesLoc"]');
 	    this.parter = dom.find('object[name="parter"]').get(0);
 	    this.Droper = dom.find('object[name="droper"]').get(0);
-	    if (this.firefox||this.chrome) this.parter = dom.find('embed[name="parter"]').get(0);
-	    if(!this.chrome45) this.parter.recvMessage = this.recvMessage;
 
 	    var panel           = filesLoc.html(this.GetHtmlFiles());
         var post_panel      = dom.find("div[name='tab-body']");
@@ -727,8 +724,14 @@ function HttpUploaderMgr()
 	    var files_head = dom.find('ul[name="file-list-head"]');
 	    this.FileListMgr.filesUI.height(post_panel.height() - 28);
 
-	    this.InitContainer();
-        this.app.init();
+        this.InitContainer();
+
+        $(function ()
+        {
+            if (_this.edge) return;
+            _this.parter.recvMessage = this.recvMessage;
+            this.app.init();
+        });
 	};
 	
 	//初始化容器

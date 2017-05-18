@@ -91,6 +91,7 @@
     <Content Include="demoSql2005\js\post.png" />
     <Content Include="demoSql2005\js\stop.png" />
     <Content Include="demoSql2005\js\up6-single.js" />
+    <Content Include="demoSql2005\js\up6.app.js" />
     <Content Include="demoSql2005\js\up6.config.js" />
     <Content Include="demoSql2005\js\up6.css" />
     <Content Include="demoSql2005\db\clear.aspx" />
