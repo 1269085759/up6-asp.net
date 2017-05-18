@@ -599,7 +599,12 @@ function HttpUploaderMgr()
 	    }
 	    else if (this.firefox)
 	    {
-            this.app.check = this.app.checkFF;
+            var ver = browserName.match(/firefox\/(\d+)/);
+            if (parseInt(ver[1]) >= 47)
+            {
+                this.app.postMessage = this.app.postMessageEdge;
+                this.webSvr.runChr();
+            }
 	    }
 	    else if (this.chrome)
 	    {
