@@ -577,7 +577,7 @@ function HttpUploaderMgr()
             {
                 this.edge = true;
                 this.app.postMessage = this.app.postMessageEdge;
-                    this.edgeApp.run = this.edgeApp.runChr;
+                this.edgeApp.run = this.edgeApp.runChr;
             }
 	    }
 	    else if (this.chrome)
@@ -700,11 +700,11 @@ function HttpUploaderMgr()
         $(function ()
         {
             if (!_this.edge) {
-                if (null != this.Droper) this.Droper.recvMessage = _this.recvMessage;
+                if (null != _this.Droper) _this.Droper.recvMessage = _this.recvMessage;
                 _this.parter.recvMessage = _this.recvMessage;
             }
 
-            if (this.edge) {
+            if (_this.edge) {
                 _this.edgeApp.run();
             }
             else {
