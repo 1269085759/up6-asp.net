@@ -175,7 +175,7 @@ function HttpUploaderMgr()
 	this.edge = navigator.userAgent.indexOf("Edge") > 0;
     this.edgeApp = new WebServer(this);
     this.app = up6_app;
-    this.app.webSvr = this.edgeApp;
+    this.app.edgeApp = this.edgeApp;
     this.app.Config = this.Config;
     this.app.ins = this;
 	if (this.edge) { this.ie = this.firefox = this.chrome = this.chrome45 = false;}
