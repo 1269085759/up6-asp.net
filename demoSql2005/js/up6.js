@@ -87,7 +87,7 @@ function HttpUploaderMgr()
 		  "EncodeType"		: "utf-8"
 		, "Company"			: "荆门泽优软件有限公司"
 		, "Version"			: "2,7,104,50854"
-		, "License"			: "D01E5CEEDF40A0857E0A1A17F0DE03B263970EDC4F935BE8CCD2CCE1AFC62BE8883E9F830EE3B3BAD3B2C6"//
+		, "License"			: ""//
 		, "Authenticate"	: ""//域验证方式：basic,ntlm
 		, "AuthName"		: ""//域帐号
 		, "AuthPass"		: ""//域密码
@@ -104,15 +104,15 @@ function HttpUploaderMgr()
         , "Cookie"			: ""//服务器cookie
         , "QueueCount"      : 3//同时上传的任务数
 		//文件夹操作相关
-		, "UrlFdCreate"		: "http://192.168.0.2:87/demoSql2005/db/fd_create.aspx"
-		, "UrlFdComplete"	: "http://192.168.0.2:87/demoSql2005/db/fd_complete.aspx"
-		, "UrlFdDel"	    : "http://192.168.0.2:87/demoSql2005/db/fd_del.aspx"
+		, "UrlFdCreate"		: "http://localhost:87/demoSql2005/db/fd_create.aspx"
+		, "UrlFdComplete"	: "http://localhost:87/demoSql2005/db/fd_complete.aspx"
+		, "UrlFdDel"	    : "http://localhost:87/demoSql2005/db/fd_del.aspx"
 		//文件操作相关
-		, "UrlCreate"		: "http://192.168.0.2:87/demoSql2005/db/f_create.aspx"
-		, "UrlPost"			: "http://192.168.0.2:87/demoSql2005/db/f_post.aspx"
-		, "UrlComplete"		: "http://192.168.0.2:87/demoSql2005/db/f_complete.aspx"
-		, "UrlList"			: "http://192.168.0.2:87/demoSql2005/db/f_list.aspx"
-		, "UrlDel"			: "http://192.168.0.2:87/demoSql2005/db/f_del.aspx"
+		, "UrlCreate"		: "http://localhost:87/demoSql2005/db/f_create.aspx"
+		, "UrlPost"			: "http://localhost:87/demoSql2005/db/f_post.aspx"
+		, "UrlComplete"		: "http://localhost:87/demoSql2005/db/f_complete.aspx"
+		, "UrlList"			: "http://localhost:87/demoSql2005/db/f_list.aspx"
+		, "UrlDel"			: "http://localhost:87/demoSql2005/db/f_del.aspx"
 	    //x86
         , ie: {
               drop: { clsid: "0868BADD-C17E-4819-81DE-1D60E5E734A6", name: "Xproer.HttpDroper6" }
@@ -140,29 +140,6 @@ function HttpUploaderMgr()
         , "fileComplete": function (obj/*文件上传完毕，参考：FileUploader*/) { }
         , "fdComplete": function (obj/*文件夹上传完毕，参考：FolderUploader*/) { }
         , "queueComplete": function () {/*队列上传完毕*/ }
-	};
-    //pageClose
-	this.eventSys = {
-	    on: function (eventName, callback)
-	    {
-	        if (!this[eventName])
-	        {
-	            this[eventName] = [];
-	        }
-	        this[eventName].push(callback);
-	    },
-	    emit: function (eventName)
-	    {
-	        var that = this;
-	        var params = arguments.length > 1 ? Array.prototype.slice.call(arguments, 1) : [];
-	        if (that[eventName])
-	        {
-	            Array.prototype.forEach.call(that[eventName], function (arg)
-	            {
-	                arg.apply(self, params);
-	            });
-	        }
-	    }
 	};
 
 	//http://www.ncmem.com/
@@ -562,11 +539,6 @@ function HttpUploaderMgr()
 	{
 	    this.edge_load = true;
 	    this.btnSetup.hide();
-	    _this.eventSys.on("pageClose", function ()
-	    {
-	        _this.webSvr.close();
-	    });
-	    _this.eventSys.emit("edgeLoad");
 	};
 	this.recvMessage = function (str)
 	{
@@ -666,7 +638,7 @@ function HttpUploaderMgr()
 
 		$(window).bind("unload", function()
 		{
-		    _this.eventSys.emit("pageClose");
+            if(this.edge) _this.webSvr.close();
 			if (_this.QueuePost.length > 0)
 			{
 				_this.StopAll();
