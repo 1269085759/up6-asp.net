@@ -153,7 +153,8 @@ function HttpUploaderMgr()
 	this.QueueWait = new Array(); //等待队列，数据:id1,id2,id3
 	this.QueuePost = new Array(); //上传队列，数据:id1,id2,id3
 	this.arrFilesComplete = new Array(); //已上传完的文件列表
-	this.filesUI = null;//上传列表面板
+    this.filesUI = null;//上传列表面板
+    this.iePart = null;
 	this.parter = null;
 	this.Droper = null;
 	this.tmpFile = null;
@@ -370,8 +371,7 @@ function HttpUploaderMgr()
 	this.GetHtmlContainer = function()
 	{
 	    //npapi
-	    var com = "";
-        if(this.firefox||this.chrome) com += '<embed name="parter" type="' + this.Config.firefox.type + '" pluginspage="' + this.Config.firefox.path + '" width="1" height="1"/>';
+        var com = '<embed name="ffParter" type="' + this.Config.firefox.type + '" pluginspage="' + this.Config.firefox.path + '" width="1" height="1"/>';
 	    //acx += '<div style="display:none">';
 	    //拖拽组件
         com += '<object name="droper" classid="clsid:' + this.Config.ie.drop.clsid + '"';
@@ -662,8 +662,9 @@ function HttpUploaderMgr()
 	{
 	    var filesSvr = dom.find('li[name="filesSvr"]');
 	    var filesLoc = dom.find('li[name="filesLoc"]');
-	    this.parter = dom.find('object[name="parter"]').get(0);
-	    this.Droper = dom.find('object[name="droper"]').get(0);
+        this.parter  = dom.find('embed[name="ffParter"]').get(0);
+        this.ieParter= dom.find('object[name="parter"]').get(0);
+	    this.Droper  = dom.find('object[name="droper"]').get(0);
 
 	    var panel           = filesLoc.html(this.GetHtmlFiles());
         var post_panel      = dom.find("div[name='tab-body']");
@@ -700,7 +701,10 @@ function HttpUploaderMgr()
         $(function ()
         {
             if (!_this.edge) {
-                if (null != _this.Droper) _this.Droper.recvMessage = _this.recvMessage;
+                if (_this.ie) {
+                    _this.parter = _this.iePart;
+                    if (null != _this.Droper) _this.Droper.recvMessage = _this.recvMessage;
+                }
                 _this.parter.recvMessage = _this.recvMessage;
             }
 
