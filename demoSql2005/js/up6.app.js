@@ -1,6 +1,6 @@
 var up6_app = {
     ins: null
-    ,webSvr: null
+    ,edgeApp: null
     ,Config:null
     , checkFF: function ()
     {
@@ -48,7 +48,7 @@ var up6_app = {
     }
     , initEdge: function ()
     {
-        this.webSvr.run();
+        this.edgeApp.run();
     }
     , exit: function ()
     {
@@ -138,6 +138,6 @@ var up6_app = {
     }
     , postMessageEdge: function (par)
     {
-        this.webSvr.send(par);
+        this.edgeApp.send(par);
     }
 };

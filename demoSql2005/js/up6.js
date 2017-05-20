@@ -173,9 +173,9 @@ function HttpUploaderMgr()
 	this.edge_load = false;
 	this.chrVer = navigator.appVersion.match(/Chrome\/(\d+)/);
 	this.edge = navigator.userAgent.indexOf("Edge") > 0;
-    this.webSvr = new WebServer(this);
+    this.edgeApp = new WebServer(this);
     this.app = up6_app;
-    this.app.webSvr = this.webSvr;
+    this.app.webSvr = this.edgeApp;
     this.app.Config = this.Config;
     this.app.ins = this;
 	if (this.edge) { this.ie = this.firefox = this.chrome = this.chrome45 = false;}
@@ -637,7 +637,7 @@ function HttpUploaderMgr()
 
 		$(window).bind("unload", function()
 		{
-            if(this.edge) _this.webSvr.close();
+            if(this.edge) _this.edgeApp.close();
 			if (_this.QueuePost.length > 0)
 			{
 				_this.StopAll();
