@@ -9,11 +9,9 @@ var up6_app = {
         {
             for (var i = 0; i < mimetype.length; i++)
             {
-                try {
-                    var enabled = mimetype[i].type == this.Config.firefox.type;
-                    if (!enabled) enabled = mimetype[i].type == this.Config.firefox.type.toLowerCase();
-                    if (enabled) return mimetype[i].enabledPlugin;
-                } catch (e) { return false; }
+                var enabled = mimetype[i].type == this.Config.firefox.type;
+                if (!enabled) enabled = mimetype[i].type == this.Config.firefox.type.toLowerCase();
+                if (enabled) return mimetype[i].enabledPlugin;
             }
         }
         else

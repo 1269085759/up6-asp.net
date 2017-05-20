@@ -538,7 +538,8 @@ function HttpUploaderMgr()
 	this.load_complete_edge = function (json)
 	{
 	    this.edge_load = true;
-	    this.btnSetup.hide();
+        this.btnSetup.hide();
+        _this.app.init();
 	};
 	this.recvMessage = function (str)
 	{
@@ -572,12 +573,11 @@ function HttpUploaderMgr()
 	    }
 	    else if (this.firefox)
 	    {
-            var ver = browserName.match(/firefox\/(\d+)/);
-            if (parseInt(ver[1]) >= 47)
+	        if (!this.app.checkFF())//仍然支持npapi
             {
                 this.edge = true;
                 this.app.postMessage = this.app.postMessageEdge;
-                this.webSvr.runChr();
+                    this.edgeApp.run = this.edgeApp.runChr;
             }
 	    }
 	    else if (this.chrome)
@@ -594,14 +594,13 @@ function HttpUploaderMgr()
                 {
                     this.edge = true;
                     this.app.postMessage = this.app.postMessageEdge;
-                    this.webSvr.runChr();
+                    this.edgeApp.run = this.edgeApp.runChr;
 	            }
 	        }
 	    }
 	    else if (this.edge)
 	    {
             this.app.postMessage = this.app.postMessageEdge;
-            this.webSvr.run();
 	    }
 	};
     this.checkBrowser();
@@ -680,7 +679,6 @@ function HttpUploaderMgr()
 	    this.pnlHeader      = panel.find('div[name="pnlHeader"]');
         this.btnSetup       = panel.find('a[name="btnSetup"]').attr("href",this.Config.exe.path);
 	    //drag files
-	    if (null != this.Droper) this.Droper.recvMessage = _this.recvMessage;
 
 	    //添加多个文件
 	    panel.find('a[name="btnAddFiles"]').click(function () { _this.openFile(); });
@@ -701,9 +699,17 @@ function HttpUploaderMgr()
 
         $(function ()
         {
-            if (_this.edge) return;
-            _this.parter.recvMessage = _this.recvMessage;
-            _this.app.init();
+            if (!_this.edge) {
+                if (null != this.Droper) this.Droper.recvMessage = _this.recvMessage;
+                _this.parter.recvMessage = _this.recvMessage;
+            }
+
+            if (this.edge) {
+                _this.edgeApp.run();
+            }
+            else {
+                _this.app.init();
+            }
         });
 	};
 	
