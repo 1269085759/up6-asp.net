@@ -702,7 +702,7 @@ function HttpUploaderMgr()
         {
             if (!_this.edge) {
                 if (_this.ie) {
-                    _this.parter = _this.iePart;
+                    _this.parter = _this.ieParter;
                     if (null != _this.Droper) _this.Droper.recvMessage = _this.recvMessage;
                 }
                 _this.parter.recvMessage = _this.recvMessage;
