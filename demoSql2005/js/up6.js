@@ -154,7 +154,7 @@ function HttpUploaderMgr()
 	this.QueuePost = new Array(); //上传队列，数据:id1,id2,id3
 	this.arrFilesComplete = new Array(); //已上传完的文件列表
     this.filesUI = null;//上传列表面板
-    this.iePart = null;
+    this.ieParter = null;
 	this.parter = null;
 	this.Droper = null;
 	this.tmpFile = null;
