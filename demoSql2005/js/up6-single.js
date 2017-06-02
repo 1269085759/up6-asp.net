@@ -426,6 +426,7 @@ function HttpUploaderMgr()
 		uiSize.text(fileLoc.sizeLoc);
 		uiMsg.text("");
 		uiPercent.text("(0%)");
+        uiProcess.css("width", "0");
 		btnCancel.click(function(){upFile.remove();});
 		btnPost.click(function ()
 		{
