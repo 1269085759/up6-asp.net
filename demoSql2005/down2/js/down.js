@@ -288,7 +288,7 @@ function DownloaderMgr()
 	this.remove_url = function (url) { this.filesUrl.remove(url); };
 	this.open_folder = function (json)
 	{
-	    this.browser.openFolder();
+	    this.app.openFolder();
 	};
 	this.down_file = function (json) { };
 	this.init_end = function (json)
@@ -336,10 +336,10 @@ function DownloaderMgr()
 	    var p = this.filesMap[json.id];
 	    p.down_stoped(json);
 	};
-	this.start_queue = function () { this.browser.startQueue();};
+	this.start_queue = function () { this.app.startQueue();};
 	this.stop_queue = function (json)
 	{
-	    this.browser.stopQueue();
+	    this.app.stopQueue();
 	};
 	this.queue_begin = function (json) { this.working = true;};
 	this.queue_end = function (json) { this.working = false;};
@@ -426,16 +426,6 @@ function DownloaderMgr()
         this.btnSetup.css("color", "red");
         this.btnSetup.show();
     };
-	this.setup_tip = function ()
-	{
-	    this.btnSetup.attr("href", this.Config.ExePath);
-	    this.btnSetup.show();
-	};
-	this.setup_check = function ()
-	{
-	    if (!_this.browser.check()) { this.setup_tip(); /*_this.browser.Setup();*/ }
-	    else { this.btnSetup.hide();}
-	};
 
 	//安全检查，在用户关闭网页时自动停止所有上传任务。
 	this.safeCheck = function()
