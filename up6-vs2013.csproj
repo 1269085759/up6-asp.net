@@ -73,7 +73,9 @@
     <Content Include="demoSql2005\down2\db\f_update.aspx" />
     <Content Include="demoSql2005\down2\index.htm" />
     <Content Include="demoSql2005\down2\js\down-single.js" />
+    <Content Include="demoSql2005\down2\js\down.app.js" />
     <Content Include="demoSql2005\down2\js\down.css" />
+    <Content Include="demoSql2005\down2\js\down.edge.js" />
     <Content Include="demoSql2005\down2\js\down.file.js" />
     <Content Include="demoSql2005\down2\js\down.folder.js" />
     <Content Include="demoSql2005\down2\js\down.js" />
