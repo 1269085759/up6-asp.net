@@ -398,7 +398,7 @@ function DownloaderMgr()
 	    }
 	    else if (this.chrome)
 	    {
-	        this.browser.check = this.browser.checkFF;
+	        this.app.check = this.app.checkFF;
 	        jQuery.extend(this.Config.firefox, this.Config.chrome);
 	        //_this.Config["XpiPath"] = _this.Config["CrxPath"];
 	        //_this.Config["XpiType"] = _this.Config["CrxType"];
