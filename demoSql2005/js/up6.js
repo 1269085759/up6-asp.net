@@ -45,6 +45,21 @@ var HttpUploaderState = {
 	,MD5Working:9
 };
 
+function getRoot()
+{
+    for (var i = 0, l = document.scripts.length; i < l; ++i)
+    {
+        var src = document.scripts[i].src;
+        if (src.lastIndexOf("/up6.js")!=-1)
+        {
+            src = src.replace("/up6.js", "/");
+            return src;
+        }
+    }
+}
+var root = getRoot();
+//jQuery.getScript(root+"up6.edge.js", function (data, status, xhr) { console.log("加载完毕");});
+
 //删除元素值
 Array.prototype.remove = function(val)
 {
@@ -89,15 +104,15 @@ function HttpUploaderMgr()
         , "Cookie"			: ""//服务器cookie
         , "QueueCount"      : 3//同时上传的任务数
 		//文件夹操作相关
-		, "UrlFdCreate"		: "http://localhost:4959/demoSql2005/db/fd_create.aspx"
-		, "UrlFdComplete"	: "http://localhost:4959/demoSql2005/db/fd_complete.aspx"
-		, "UrlFdDel"	    : "http://localhost:4959/demoSql2005/db/fd_del.aspx"
+		, "UrlFdCreate"		: "http://localhost:87/demoSql2005/db/fd_create.aspx"
+		, "UrlFdComplete"	: "http://localhost:87/demoSql2005/db/fd_complete.aspx"
+		, "UrlFdDel"	    : "http://localhost:87/demoSql2005/db/fd_del.aspx"
 		//文件操作相关
-		, "UrlCreate"		: "http://localhost:4959/demoSql2005/db/f_create.aspx"
-		, "UrlPost"			: "http://localhost:4959/demoSql2005/db/f_post.aspx"
-		, "UrlComplete"		: "http://localhost:4959/demoSql2005/db/f_complete.aspx"
-		, "UrlList"			: "http://localhost:4959/demoSql2005/db/f_list.aspx"
-		, "UrlDel"			: "http://localhost:4959/demoSql2005/db/f_del.aspx"
+		, "UrlCreate"		: "http://localhost:87/demoSql2005/db/f_create.aspx"
+		, "UrlPost"			: "http://localhost:87/demoSql2005/db/f_post.aspx"
+		, "UrlComplete"		: "http://localhost:87/demoSql2005/db/f_complete.aspx"
+		, "UrlList"			: "http://localhost:87/demoSql2005/db/f_list.aspx"
+		, "UrlDel"			: "http://localhost:87/demoSql2005/db/f_del.aspx"
 	    //x86
         , ie: {
               drop: { clsid: "0868BADD-C17E-4819-81DE-1D60E5E734A6", name: "Xproer.HttpDroper6" }
@@ -113,6 +128,7 @@ function HttpUploaderMgr()
         , firefox: { name: "", type: "application/npHttpUploader6", path: "http://www.ncmem.com/download/up6.2/up6.xpi" }
         , chrome: { name: "npHttpUploader6", type: "application/npHttpUploader6", path: "http://www.ncmem.com/download/up6.2/up6.crx" }
         , chrome45: { name: "com.xproer.up6", path: "http://www.ncmem.com/download/up6.2/up6.nat.crx" }
+        , edge: {protocol:"up6",port:9100,visible:false}
         , exe: { path: "http://www.ncmem.com/download/up6.2/up6.exe" }
 		, "SetupPath": "http://localhost:4955/demoAccess/js/setup.htm"
         , "Fields": {"uname": "test","upass": "test","uid":"0","fid":"0"}
@@ -123,9 +139,9 @@ function HttpUploaderMgr()
 	      "md5Complete": function (obj/*HttpUploader对象*/, md5) { }
         , "fileComplete": function (obj/*文件上传完毕，参考：FileUploader*/) { }
         , "fdComplete": function (obj/*文件夹上传完毕，参考：FolderUploader*/) { }
-        , "queueComplete":function(){/*队列上传完毕*/}
+        , "queueComplete": function () {/*队列上传完毕*/ }
 	};
-    	
+
 	//http://www.ncmem.com/
 	this.Domain = "http://" + document.location.host;
 	this.working = false;
@@ -137,7 +153,8 @@ function HttpUploaderMgr()
 	this.QueueWait = new Array(); //等待队列，数据:id1,id2,id3
 	this.QueuePost = new Array(); //上传队列，数据:id1,id2,id3
 	this.arrFilesComplete = new Array(); //已上传完的文件列表
-	this.filesUI = null;//上传列表面板
+    this.filesUI = null;//上传列表面板
+    this.ieParter = null;
 	this.parter = null;
 	this.Droper = null;
 	this.tmpFile = null;
@@ -153,7 +170,16 @@ function HttpUploaderMgr()
 	this.firefox = browserName.indexOf("firefox") > 0;
 	this.chrome = browserName.indexOf("chrome") > 0;
 	this.chrome45 = false;
+	this.nat_load = false;
+	this.edge_load = false;
 	this.chrVer = navigator.appVersion.match(/Chrome\/(\d+)/);
+	this.edge = navigator.userAgent.indexOf("Edge") > 0;
+    this.edgeApp = new WebServer(this);
+    this.app = up6_app;
+    this.app.edgeApp = this.edgeApp;
+    this.app.Config = this.Config;
+    this.app.ins = this;
+	if (this.edge) { this.ie = this.firefox = this.chrome = this.chrome45 = false;}
 
 	//服务器文件列表面板
 	this.FileListMgr =
@@ -345,8 +371,7 @@ function HttpUploaderMgr()
 	this.GetHtmlContainer = function()
 	{
 	    //npapi
-	    var com = "";
-        if(this.firefox||this.chrome) com += '<embed name="parter" type="' + this.Config.firefox.type + '" pluginspage="' + this.Config.firefox.path + '" width="1" height="1"/>';
+        var com = '<embed name="ffParter" type="' + this.Config.firefox.type + '" pluginspage="' + this.Config.firefox.path + '" width="1" height="1"/>';
 	    //acx += '<div style="display:none">';
 	    //拖拽组件
         com += '<object name="droper" classid="clsid:' + this.Config.ie.drop.clsid + '"';
@@ -502,16 +527,20 @@ function HttpUploaderMgr()
     {
         this.btnSetup.hide();
         var needUpdate = true;
-        if (typeof(json.version) != "undefined")
-        {
-            if (json.version == this.Config.Version)
-            {
+        if (typeof (json.version) != "undefined") {
+            if (json.version == this.Config.Version) {
                 needUpdate = false;
             }
         }
         if (needUpdate) this.update_notice();
         else { this.btnSetup.hide(); }
     };
+	this.load_complete_edge = function (json)
+	{
+	    this.edge_load = true;
+        this.btnSetup.hide();
+        _this.app.init();
+	};
 	this.recvMessage = function (str)
 	{
 	    var json = JSON.parse(str);
@@ -523,155 +552,15 @@ function HttpUploaderMgr()
 	    else if (json.name == "post_complete") { _this.post_complete(json); }
 	    else if (json.name == "md5_process") { _this.md5_process(json); }
 	    else if (json.name == "md5_complete") { _this.md5_complete(json); }
-        else if (json.name == "md5_error") { _this.md5_error(json); }
-        else if (json.name == "load_complete") { _this.load_complete(json); }
-        else if (json.name == "extension_complete")
+	    else if (json.name == "md5_error") { _this.md5_error(json); }
+	    else if (json.name == "load_complete") { _this.load_complete(json); }
+	    else if (json.name == "load_complete_edge") { _this.load_complete_edge(json); }
+	    else if (json.name == "extension_complete")
         {
             setTimeout(function () {
                 var param = { name: "init", config: _this.Config };
-                _this.browser.postMessage(param);
+                _this.app.postMessage(param);
                  }, 1000);
-        }
-	};
-
-	//IE浏览器信息管理对象
-	this.browser = {
-	      entID: "Uploader6Event"
-		, check : function ()//检查插件是否已安装
-		  {
-		      return null != this.GetVersion();
-		  }
-        , checkFF: function ()
-        {
-            var mimetype = navigator.mimeTypes;
-            if (typeof mimetype == "object" && mimetype.length)
-            {
-                for (var i = 0; i < mimetype.length; i++)
-                {
-                    var enabled = mimetype[i].type == _this.Config.firefox.type;
-                    if (!enabled) enabled = mimetype[i].type == _this.Config.firefox.type.toLowerCase();
-                    if (enabled) return mimetype[i].enabledPlugin;
-                }
-            }
-            else
-            {
-                mimetype = [_this.Config.firefox.type];
-            }
-            if (mimetype)
-            {
-                return mimetype.enabledPlugin;
-            }
-            return false;
-        }
-		, Setup: function ()
-		{
-			//文件夹选择控件
-			acx += '<object id="objHttpPartition" classid="clsid:' + _this.Config.ie.part.clsid + '"';
-			acx += ' codebase="' + _this.Config.ie.path + '" width="1" height="1" ></object>';
-
-			$("body").append(acx);
-		}
-        , init: function ()
-        {
-            this.initNat();//
-            var param = { name: "init", config: _this.Config };
-            this.postMessage(param);
-        }
-        , initNat: function ()
-        {
-            if (!_this.chrome45) return;
-            this.exitEvent();
-            document.addEventListener('Uploader6EventCallBack', function (evt)
-            {
-                _this.recvMessage(JSON.stringify(evt.detail));
-            });
-        }
-        , exit: function ()
-        {
-            var par = { name: 'exit' };
-            var evt = document.createEvent("CustomEvent");
-            evt.initCustomEvent(this.entID, true, false, par);
-            document.dispatchEvent(evt);
-        }
-        , exitEvent: function ()
-        {
-            var obj = this;
-            $(window).bind("beforeunload", function () { obj.exit(); });
-        }
-        , addFile: function (json)
-        {
-            var param = { name: "add_file", config: _this.Config };
-            jQuery.extend(param, json);
-            this.postMessage(param);
-        }
-        , addFolder: function (json) {
-            var param = { name: "add_folder", config: _this.Config };
-            jQuery.extend(param, json);
-            this.postMessage(param);
-        }
-        , openFiles: function ()
-        {
-            var param = { name: "open_files", config: _this.Config };
-            this.postMessage(param);
-        }
-        , openFolders: function ()
-        {
-            var param = { name: "open_folders", config: _this.Config };
-            this.postMessage(param);
-        }
-        , pasteFiles: function ()
-        {
-            var param = { name: "paste_files", config: _this.Config };
-            this.postMessage(param);
-        }
-        , checkFile: function (f)
-        {
-            var param = { name: "check_file", config: _this.Config };
-            jQuery.extend(param, f);
-            this.postMessage(param);
-        }
-        , checkFolder: function (fd)
-        {
-            var param = { name: "check_folder", config: _this.Config };
-            jQuery.extend(param, fd);
-            param.name = "check_folder";
-            this.postMessage(param);
-        }
-        , checkFolderNat: function (fd)
-        {
-            var param = { name: "check_folder", config: _this.Config, folder: JSON.stringify(fd) };
-            this.postMessage(param);
-        }
-        , postFile: function (f)
-        {
-            var param = { name: "post_file", config: _this.Config };
-            jQuery.extend(param, f);
-            this.postMessage(param);
-        }
-        , postFolder: function (fd)
-        {
-            var param = { name: "post_folder", config: _this.Config };
-            jQuery.extend(param, fd);
-            param.name = "post_folder";
-            this.postMessage(param);
-        }
-        , stopFile: function (f)
-        {
-            var param = { name: "stop_file", id: f.id,config:_this.Config};
-            this.postMessage(param);
-        }
-        , postMessage:function(json)
-        {
-            try
-            {
-                _this.parter.postMessage(JSON.stringify(json));
-            } catch (e){ }
-        }
-        , postMessageNat: function (par)
-        {
-            var evt = document.createEvent("CustomEvent");
-            evt.initCustomEvent(this.entID, true, false, par);
-            document.dispatchEvent(evt);
         }
 	};
 
@@ -684,11 +573,16 @@ function HttpUploaderMgr()
 	    }
 	    else if (this.firefox)
 	    {
-	        this.browser.check = this.browser.checkFF;
+	        if (!this.app.checkFF())//仍然支持npapi
+            {
+                this.edge = true;
+                this.app.postMessage = this.app.postMessageEdge;
+                this.edgeApp.run = this.edgeApp.runChr;
+            }
 	    }
 	    else if (this.chrome)
 	    {
-	        this.browser.check = this.browser.checkFF;
+            this.app.check = this.app.checkFF;
 	        jQuery.extend(this.Config.firefox, this.Config.chrome);
 	        //_this.Config["XpiPath"] = _this.Config["CrxPath"];
 	        //_this.Config["XpiType"] = _this.Config["CrxType"];
@@ -696,33 +590,32 @@ function HttpUploaderMgr()
 	        if (parseInt(this.chrVer[1]) >= 44)
 	        {
 	            _this.firefox = true;
-	            if (!this.browser.checkFF())//仍然支持npapi
-	            {
-	                this.browser.postMessage = this.browser.postMessageNat;
-	                this.browser.checkFolder = this.browser.checkFolderNat;
-	                _this.firefox = false;
-	                _this.chrome = false;
-	                _this.chrome45 = true;//
+	            if (!this.app.checkFF())//仍然支持npapi
+                {
+                    this.edge = true;
+                    this.app.postMessage = this.app.postMessageEdge;
+                    this.edgeApp.run = this.edgeApp.runChr;
 	            }
 	        }
 	    }
+	    else if (this.edge)
+	    {
+            this.app.postMessage = this.app.postMessageEdge;
+	    }
 	};
-	this.checkBrowser();
-    
+    this.checkBrowser();
     //升级通知
-    this.update_notice = function ()
-    {
+    this.update_notice = function () {
         this.btnSetup.text("升级控件");
         this.btnSetup.css("color", "red");
         this.btnSetup.show();
     };
-
 	//安装控件
 	this.Install = function ()
 	{
-	    if (!_this.browser.Check())
+        if (!_this.app.Check())
 		{
-	        _this.browser.Setup();
+            _this.app.Setup();
 		}
 		else
 		{
@@ -743,7 +636,8 @@ function HttpUploaderMgr()
 		});
 
 		$(window).bind("unload", function()
-		{ 
+		{
+            if(this.edge) _this.edgeApp.close();
 			if (_this.QueuePost.length > 0)
 			{
 				_this.StopAll();
@@ -768,10 +662,9 @@ function HttpUploaderMgr()
 	{
 	    var filesSvr = dom.find('li[name="filesSvr"]');
 	    var filesLoc = dom.find('li[name="filesLoc"]');
-	    this.parter = dom.find('object[name="parter"]').get(0);
-	    this.Droper = dom.find('object[name="droper"]').get(0);
-	    if (this.firefox||this.chrome) this.parter = dom.find('embed[name="parter"]').get(0);
-	    if(!this.chrome45) this.parter.recvMessage = this.recvMessage;
+        this.parter  = dom.find('embed[name="ffParter"]').get(0);
+        this.ieParter= dom.find('object[name="parter"]').get(0);
+	    this.Droper  = dom.find('object[name="droper"]').get(0);
 
 	    var panel           = filesLoc.html(this.GetHtmlFiles());
         var post_panel      = dom.find("div[name='tab-body']");
@@ -787,7 +680,6 @@ function HttpUploaderMgr()
 	    this.pnlHeader      = panel.find('div[name="pnlHeader"]');
         this.btnSetup       = panel.find('a[name="btnSetup"]').attr("href",this.Config.exe.path);
 	    //drag files
-	    if (null != this.Droper) this.Droper.recvMessage = _this.recvMessage;
 
 	    //添加多个文件
 	    panel.find('a[name="btnAddFiles"]').click(function () { _this.openFile(); });
@@ -804,8 +696,25 @@ function HttpUploaderMgr()
 	    var files_head = dom.find('ul[name="file-list-head"]');
 	    this.FileListMgr.filesUI.height(post_panel.height() - 28);
 
-	    this.InitContainer();
-	    this.browser.init();
+        this.InitContainer();
+
+        $(function ()
+        {
+            if (!_this.edge) {
+                if (_this.ie) {
+                    _this.parter = _this.ieParter;
+                    if (null != _this.Droper) _this.Droper.recvMessage = _this.recvMessage;
+                }
+                _this.parter.recvMessage = _this.recvMessage;
+            }
+
+            if (_this.edge) {
+                _this.edgeApp.run();
+            }
+            else {
+                _this.app.init();
+            }
+        });
 	};
 	
 	//初始化容器
@@ -1006,19 +915,19 @@ function HttpUploaderMgr()
 	//打开文件选择对话框
 	this.openFile = function()
 	{
-	    _this.browser.openFiles();
+        _this.app.openFiles();
 	};
 	
 	//打开文件夹选择对话框
 	this.openFolder = function()
 	{
-	    _this.browser.openFolders();
+        _this.app.openFolders();
 	};
 
 	//粘贴文件
 	this.pasteFiles = function()
 	{
-	    _this.browser.pasteFiles();
+        _this.app.pasteFiles();
 	};
 
 	this.ResumeFile = function (fileSvr)
