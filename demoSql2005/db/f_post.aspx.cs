@@ -26,6 +26,7 @@ namespace up6.demoSql2005.db
             string lenLoc       = Request.Form["lenLoc"];//本地文件大小
             string f_pos        = Request.Form["RangePos"];
             string rangeSize    = Request.Form["rangeSize"];//当前块大小
+            string rangeIndex   = Request.Form["rangeIndex"];//当前块索引，基于1
             string complete     = Request.Form["complete"];//true/false
             string fd_idSvr     = Request.Form["fd-idSvr"];//文件夹ID,与up6_files.fid对应
             string fd_lenSvr    = Request.Form["fd-lenSvr"];//文件夹已传大小
