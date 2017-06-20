@@ -315,7 +315,11 @@ function DownloaderMgr()
 	{
 	    var p = this.filesMap[json.id];
 	    p.down_error(json);
-	};
+    };
+    this.down_open_folder = function (json) {
+        //用户选择的路径
+        //json.path
+    };
 	this.down_recv_size = function (json)
 	{
 	    var p = this.filesMap[json.id];
@@ -363,7 +367,7 @@ function DownloaderMgr()
 	{
 	    var json = JSON.parse(str);
 	         if (json.name == "open_files") { _this.open_files(json); }
-	    else if (json.name == "open_folder") { _this.open_folders(json); }
+	    else if (json.name == "open_folder") { _this.down_open_folder(json); }
 	    else if (json.name == "down_recv_size") { _this.down_recv_size(json); }
 	    else if (json.name == "down_recv_name") { _this.down_recv_name(json); }
 	    else if (json.name == "init_end") { _this.init_end(json); }
