@@ -1,12 +1,4 @@
-﻿USE [HttpUploader6]
-GO
-/****** 对象:  StoredProcedure [dbo].[fd_add_batch]    脚本日期: 07/28/2016 17:42:12 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-
--- =============================================
+﻿-- =============================================
 -- Author:		zysoft
 -- 2016-08-04 创建
 -- 2016-09-06 更新，单个md5长度和md5字符串总长度由外部传入

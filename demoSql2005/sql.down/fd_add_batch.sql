@@ -1,12 +1,4 @@
-﻿USE [HttpUploader6]
-GO
-/****** 对象:  StoredProcedure [dbo].[fd_add_batch]    脚本日期: 07/28/2016 17:42:12 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-
--- =============================================
+﻿-- =============================================
 -- Author:		zysoft
 -- Create date: 2016-07-31
 -- Description:	批量添加文件
