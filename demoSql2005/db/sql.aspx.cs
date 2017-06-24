@@ -40,14 +40,13 @@ namespace up6.demoSql2005.db
             SqlConnection con = new SqlConnection(this.GetConStr());
             SqlCommand cmd = con.CreateCommand();
 
-            if (!checkDataBase(m_dbName, cmd)) 
-            {
-                cmd.Connection.Open();
-                cmd.CommandText = "CREATE DATABASE " + m_dbName;
-                cmd.ExecuteNonQuery();
-                cmd.Connection.Close();
-            }
-            //con.ChangeDatabase(m_dbName);
+            string sb = "if db_id('" + m_dbName + "') is null create database " + m_dbName;
+
+            cmd.Connection.Open();
+            cmd.CommandText = sb;
+            cmd.ExecuteNonQuery();
+            cmd.Connection.Close();
+
             createTable();
         }
 
@@ -75,19 +74,14 @@ namespace up6.demoSql2005.db
 
                             DbHelper db = new DbHelper();
                             DbCommand cmd;
-                            if (checkTable(fname)) 
-                            {
-                                string dt = "drop table " + fname;
-                                cmd = db.GetCommand(dt);
-                                db.ExecuteNonQuery(cmd);
-                            }
 
-                            if(checkProcedure(fname))
-                            {
-                                string dp = "drop procedure " + fname;
-                                cmd = db.GetCommand(dp);
-                                db.ExecuteNonQuery(cmd);
-                            }
+                            string dt = "if exists(select object_id from sys.tables where name='" + fname + "') drop table " + fname;
+                            cmd = db.GetCommand(dt);
+                            db.ExecuteNonQuery(cmd);
+
+                            string dp = "if exists(select name from sysobjects where xtype='P' and name='" + fname + "') drop procedure " + fname;
+                            cmd = db.GetCommand(dp);
+                            db.ExecuteNonQuery(cmd);
 
                             StreamReader st = finf.OpenText();
                             string s = st.ReadToEnd();
@@ -118,19 +112,14 @@ namespace up6.demoSql2005.db
 
                             DbHelper db = new DbHelper();
                             DbCommand cmd;
-                            if (checkTable(fname)) 
-                            {
-                                string dt = "drop table " + fname;
-                                cmd = db.GetCommand(dt);
-                                db.ExecuteNonQuery(cmd);
-                            }
 
-                            if(checkProcedure(fname))
-                            {
-                                string dp = "drop procedure " + fname;
-                                cmd = db.GetCommand(dp);
-                                db.ExecuteNonQuery(cmd);
-                            }
+                            string dt = "if exists(select object_id from sys.tables where name='" + fname + "') drop table " + fname;
+                            cmd = db.GetCommand(dt);
+                            db.ExecuteNonQuery(cmd);
+
+                            string dp = "if exists(select name from sysobjects where xtype='P' and name='" + fname + "') drop procedure " + fname;
+                            cmd = db.GetCommand(dp);
+                            db.ExecuteNonQuery(cmd);
 
                             StreamReader st = finf.OpenText();
                             string s = st.ReadToEnd();
@@ -141,40 +130,6 @@ namespace up6.demoSql2005.db
                     }
                 }
             }
-        }
-
-        public bool checkDataBase(string name, SqlCommand cmd) 
-        {
-            bool result = false;
-            string sb = "select * from master.dbo.sysdatabases where name='" + name + "'";
-            cmd.CommandText = sb;
-            cmd.Connection.Open();
-            Object obj = cmd.ExecuteScalar();
-            cmd.Connection.Close();
-            result = obj != null;
-            return result;
-        }
-
-        public bool checkTable(string name) 
-        {
-            bool result = false;
-            string sb = "select object_id from sys.tables where name='" + name + "'";
-            DbHelper db = new DbHelper();
-            DbCommand cmd = db.GetCommand(sb);
-            object obj = db.ExecuteScalar(cmd);
-            result = obj != null;
-            return result;
-        }
-
-        public bool checkProcedure(string name)
-        {
-            bool result = false;
-            string sb = "select name from sysobjects where xtype = 'P' and name = '" + name + "'";
-            DbHelper db = new DbHelper();
-            DbCommand cmd = db.GetCommand(sb);
-            object obj = db.ExecuteScalar(cmd);
-            result = obj != null;
-            return result;
         }
 
         protected void Page_Load(object sender, EventArgs e)

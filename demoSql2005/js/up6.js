@@ -173,6 +173,7 @@ function HttpUploaderMgr()
 	this.nat_load = false;
 	this.edge_load = false;
 	this.chrVer = navigator.appVersion.match(/Chrome\/(\d+)/);
+	this.ffVer = navigator.userAgent.match(/Firefox\/(\d+)/);
 	this.edge = navigator.userAgent.indexOf("Edge") > 0;
     this.edgeApp = new WebServer(this);
     this.app = up6_app;
@@ -574,7 +575,7 @@ function HttpUploaderMgr()
 	    }
 	    if (this.firefox)
 	    {
-	        if (!this.app.checkFF())//仍然支持npapi
+	        if (!this.app.checkFF() || parseInt(this.ffVer[1]) >= 50)//仍然支持npapi
             {
                 this.edge = true;
                 this.app.postMessage = this.app.postMessageEdge;
