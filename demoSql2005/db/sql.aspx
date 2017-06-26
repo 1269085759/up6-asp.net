@@ -6,12 +6,9 @@
     <title></title>
 </head>
 <body>
-    <form action="sql.aspx" method="post">
-        数据库连接信息：<br/>
-        User Id:        <input type="text" name="uid" value="<%=this.m_dbUser %>" /><br/>
-        Password:       <input type="text" name="pwd" value="<%=this.m_dbPass %>" /><br/>
-        Initial Catalog:<input type="text" name="dbname" value="<%=this.m_dbName %>" /><br/>
-        <input type="submit" value="提交" />
-    </form>
+    <p>数据库连接信息：<br/></p>
+    <p>User Id：<%=this.m_dbUser %></p>
+    <p>Password：<%=this.m_dbPass %></p>
+    <p>Initial Catalog：<%=this.m_dbName %></p>
 </body>
 </html>

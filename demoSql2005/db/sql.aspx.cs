@@ -17,47 +17,36 @@ namespace up6.demoSql2005.db
         public string m_dbUser;
         public string m_dbPass;
 
-        /*public string GetConStr()
-        {
-            var str = System.Configuration.ConfigurationManager.ConnectionStrings["sql2005"];
-            string cs = str.ConnectionString;
-            string rs = replace(cs);
-            return rs;
-        }
-
-        public string replace(string str) 
-        {
-            string ic = "Initial Catalog";
-            int index = str.IndexOf(ic);
-            int start = index + ic.Length + 1;
-            int end = str.IndexOf(";", start);
-            string dbname = str.Substring(start, end - start);
-            this.m_dbName = dbname;
-            string mst = "master";
-            string rs = str.Replace(dbname, mst);
-            return rs;
-        }
-
-        public string createDataBase() 
-        {
-            SqlConnection con = new SqlConnection(this.GetConStr());
-            SqlCommand cmd = con.CreateCommand();
-
-            string sb = "if db_id('" + m_dbName + "') is null create database " + m_dbName;
-
-            cmd.Connection.Open();
-            cmd.CommandText = sb;
-            cmd.ExecuteNonQuery();
-            cmd.Connection.Close();
-
-            createTable();
-            return "";
-        }*/
-
         public void createTable() 
         {
+            clear();
             createUpload();
             createDown();
+        }
+
+        public void clear() 
+        {
+            string[] sql_clear = { 
+                                     "if object_id('f_process') is not null drop procedure f_process"
+                                    ,"if object_id('fd_fileProcess') is not null drop procedure fd_fileProcess"
+ 　　　　                           ,"if object_id('fd_files_add_batch') is not null drop procedure fd_files_add_batch"
+                                    ,"if object_id('fd_files_check') is not null drop procedure fd_files_check"
+                                    ,"if object_id('spGetFileInfByFid') is not null drop procedure spGetFileInfByFid"
+                                    ,"if object_id('fd_add_batch') is not null drop procedure fd_add_batch"
+                                    ,"if object_id('up6_files') is not null drop table up6_files"
+                                    ,"if object_id('up6_folders') is not null drop table up6_folders"
+                                    ,"if object_id('down_files') is not null drop table down_files"
+                                    ,"if object_id('down_folders') is not null drop table down_folders",
+                                 };
+            
+            DbHelper db = new DbHelper();
+            DbCommand cmd;
+
+            foreach(string str in sql_clear)
+            {
+                cmd = db.GetCommand(str);
+                db.ExecuteNonQuery(cmd);
+            }
         }
 
         public void createUpload() 
@@ -73,23 +62,11 @@ namespace up6.demoSql2005.db
                     {
                         if (finf.Extension.Equals(".sql"))
                         {
-                            string fname = finf.Name;
-                            fname = fname.Replace(".sql","");
+                            StreamReader st = finf.OpenText();
+                            string str = st.ReadToEnd();
 
                             DbHelper db = new DbHelper();
-                            DbCommand cmd;
-
-                            string dt = "if exists(select object_id from sys.tables where name='" + fname + "') drop table " + fname;
-                            cmd = db.GetCommand(dt);
-                            db.ExecuteNonQuery(cmd);
-
-                            string dp = "if exists(select name from sysobjects where xtype='P' and name='" + fname + "') drop procedure " + fname;
-                            cmd = db.GetCommand(dp);
-                            db.ExecuteNonQuery(cmd);
-
-                            StreamReader st = finf.OpenText();
-                            string s = st.ReadToEnd();
-                            cmd = db.GetCommand(s);
+                            DbCommand cmd = db.GetCommand(str);
                             db.ExecuteNonQuery(cmd);
                             st.Close();
                         }
@@ -111,23 +88,11 @@ namespace up6.demoSql2005.db
                     {
                         if (finf.Extension.Equals(".sql"))
                         {
-                            string fname = finf.Name;
-                            fname = fname.Replace(".sql","");
-
-                            DbHelper db = new DbHelper();
-                            DbCommand cmd;
-
-                            string dt = "if exists(select object_id from sys.tables where name='" + fname + "') drop table " + fname;
-                            cmd = db.GetCommand(dt);
-                            db.ExecuteNonQuery(cmd);
-
-                            string dp = "if exists(select name from sysobjects where xtype='P' and name='" + fname + "') drop procedure " + fname;
-                            cmd = db.GetCommand(dp);
-                            db.ExecuteNonQuery(cmd);
-
                             StreamReader st = finf.OpenText();
                             string s = st.ReadToEnd();
-                            cmd = db.GetCommand(s);
+
+                            DbHelper db = new DbHelper();
+                            DbCommand cmd = db.GetCommand(s);
                             db.ExecuteNonQuery(cmd);
                             st.Close();
                         }
@@ -175,104 +140,13 @@ namespace up6.demoSql2005.db
                 }
             }
         }
-        
-        public void updateConfig(string id,string pwd,string dbname) 
-        {
-            XmlDocument doc = new XmlDocument();
-            string strFileName = AppDomain.CurrentDomain.BaseDirectory.ToString() + "Web.config";
-
-            doc.Load(strFileName);
-
-            bool result = false;
-            XmlNodeList nodes = doc.GetElementsByTagName("add");
-            for (int i = 0; i < nodes.Count; i++)
-            {   
-                XmlAttribute name = nodes[i].Attributes["name"];
-                if (name != null)
-                {
-                    if (name.Value == "sql2005")
-                    {
-                        name = nodes[i].Attributes["connectionString"];
-                        string str = name.Value;
-                        name.Value = replaceAll(str,id,pwd,dbname);
-                        
-                        if(!string.Equals(str,name.Value))
-                        {
-                            result = true;
-                        }
-                        break;
-                    }
-                }
-            }
-            if (result)
-            {
-                doc.Save(strFileName);
-            }
-        }
-
-        public string replaceAll(string str,string id,string pwd,string dbname)
-        {
-            string ic = "Initial Catalog";
-            string uid = "User Id";
-            string password = "Password";
-            List<string> lst = new List<string>();
-            lst.Add(ic);
-            lst.Add(uid);
-            lst.Add(password);
-
-            foreach(string s in lst)
-            {
-                int index = str.IndexOf(s);
-                int start = index + s.Length + 1;
-
-                int end = str.IndexOf(";", start);
-                string name = str.Substring(start, end - start);
-
-                if(string.Equals(s,ic))
-                {
-                    str = str.Replace(name, dbname);
-                }
-                else if (string.Equals(s, uid))
-                {
-                    str = str.Replace(name, id);
-                }
-                else 
-                {
-                    str = str.Replace(name, pwd);
-                }
-            }
-            return str;
-        }
 
         protected void Page_Load(object sender, EventArgs e)
         {
             showConfig();
 
-            string id = Request.Form["uid"];
-            string pwd = Request.Form["pwd"];
-            string dbname = Request.Form["dbname"];
-
-            if (id != null)
-            {
-                this.m_dbUser = id;
-            }
-            if (pwd != null)
-            {
-                this.m_dbPass = pwd;
-            }
-            if (dbname != null)
-            {
-                this.m_dbName = dbname;
-            }
-            updateConfig(this.m_dbUser,this.m_dbPass,this.m_dbName);
-
-            if (id != null || pwd != null || dbname != null)
-            {
-                createTable();
-                Response.Write("创建成功");
-            }
-            //createDataBase();
-            //Response.Write("创建成功");
+            createTable();
+            Response.Write("创建成功");
         }
     }
 }
