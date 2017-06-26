@@ -266,9 +266,10 @@ namespace up6.demoSql2005.db
             }
             updateConfig(this.m_dbUser,this.m_dbPass,this.m_dbName);
 
-            if(id!= null || pwd!= null || dbname!= null)
+            if (id != null || pwd != null || dbname != null)
             {
                 createTable();
+                Response.Write("创建成功");
             }
             //createDataBase();
             //Response.Write("创建成功");
