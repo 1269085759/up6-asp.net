@@ -21,6 +21,7 @@ namespace up6.demoSql2005.db
             string uid          = Request.Form["uid"];
             string idSvr        = Request.Form["idSvr"];
             string md5          = Request.Form["md5"];
+            string guid          = Request.Form["guid"];
             string perSvr       = Request.Form["perSvr"];//文件百分比
             string lenSvr       = Request.Form["lenSvr"];//已传大小
             string lenLoc       = Request.Form["lenLoc"];//本地文件大小

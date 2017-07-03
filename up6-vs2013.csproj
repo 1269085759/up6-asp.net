@@ -139,7 +139,6 @@
     <Compile Include="demoSql2005\db\biz\PathMd5Builder.cs" />
     <Compile Include="demoSql2005\db\biz\PathUuidBuilder.cs" />
     <Compile Include="demoSql2005\db\biz\un_builder.cs" />
-    <Compile Include="demoSql2005\db\biz\un_file.cs" />
     <Compile Include="demoSql2005\db\clear.aspx.cs">
       <DependentUpon>clear.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

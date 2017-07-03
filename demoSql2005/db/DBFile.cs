@@ -284,8 +284,8 @@ namespace up6.demoSql2005.db
 
             DbHelper db = new DbHelper();
             DbCommand cmd = db.GetCommand(sb.ToString());
-            db.AddInt(ref cmd, "@f_pid", inf.pidSvr);
-            db.AddInt(ref cmd, "@f_pidRoot", inf.pidRoot);
+            db.AddString(ref cmd, "@f_pid", inf.pid,32);
+            db.AddString(ref cmd, "@f_pidRoot", inf.pidRoot,32);
             db.AddInBool(cmd, "@f_fdChild", true);
             db.AddInt(ref cmd, "@f_uid", inf.uid);
             db.AddString(ref cmd, "@f_nameLoc", inf.nameLoc, 255);

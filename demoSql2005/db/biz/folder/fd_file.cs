@@ -9,18 +9,15 @@ namespace up6.demoSql2005.db.biz.folder
     /// </summary>
     public class fd_file
     {
-        public int idLoc = 0;
-        public int idSvr = 0;//与up6_files.f_id对应
+        public string guid = string.Empty;//与up6_files.f_guid对应
         public string nameLoc = string.Empty;
         public string nameSvr = string.Empty;
         public string pathLoc = string.Empty;
         public string pathSvr = string.Empty;
         public string pathRel = string.Empty;
         public string md5 = string.Empty;
-        public int pidLoc = 0;
-        public int pidSvr = 0;
-        public int pidRoot = 0;//
-        public int fdID = 0;//与up6_folders.fd_id对应，提供给文件夹使用。
+        public string pid = string.Empty;
+        public string pidRoot = string.Empty;//
         public bool fdChild;//是否是一个子文件
         public long lenLoc = 0;
         public string sizeLoc = "0";//sizeLoc

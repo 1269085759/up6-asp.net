@@ -10,10 +10,14 @@ namespace up6.demoSql2005.db
         public FileInf()
         {
             this.nameLoc = this.pathLoc = this.pathSvr = this.sizeLoc = string.Empty;
-            this.uid = this.pidLoc = this.pidSvr = this.idLoc = this.idSvr = 0;
+            this.uid = 0;
             this.lenLoc = 0;
         }
 
+        //文件唯一标识
+        public string guid = string.Empty;
+        public string pid = string.Empty;
+        public string pidRoot = string.Empty;
         /// <summary>
         /// 文件名称。示例：QQ2014.exe
         /// </summary>
@@ -31,29 +35,6 @@ namespace up6.demoSql2005.db
         /// 文件MD5
         /// </summary>
         public string md5 = string.Empty;
-        /// <summary>
-        /// 客户端父ID(文件夹ID)
-        /// </summary>
-        public int pidLoc;
-        /// <summary>
-        /// 服务端父ID(文件夹在数据库中的ID)
-        /// </summary>
-        public int pidSvr;
-        /// <summary>
-        /// 根级文件夹ID，数据库ID，与xdb_folders.fd_id对应
-        /// </summary>
-        public int pidRoot;
-        /// <summary>
-        /// 本地文件ID。
-        /// </summary>
-        public int idLoc = 0;
-        /// <summary>
-        /// 文件在服务器中的ID。
-        /// </summary>
-        public int idSvr = 0;
-        /// <summary>
-        /// 用户ID
-        /// </summary>
         public int uid = 0;
         /// <summary>
         /// 数字化的长度。以字节为单位，示例：1021021
@@ -80,5 +61,6 @@ namespace up6.demoSql2005.db
         /// </summary>
         public string pathRel = string.Empty;
         public bool complete = false;
+        public bool m_fdTask = false;
     }
 }

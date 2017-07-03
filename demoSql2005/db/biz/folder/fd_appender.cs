@@ -14,8 +14,8 @@ namespace up6.demoSql2005.db.biz.folder
         DbHelper db;
         DbCommand cmd;
         protected PathBuilder pb = new PathMd5Builder();
-        protected Dictionary<int/*fd.idLoc*/, int/*fd.idSvr*/> map_pids = new Dictionary<int, int>();
-        protected Dictionary<int/*fd.idLoc*/, int/*fd.index*/> map_fd_ids= new Dictionary<int, int>();
+        protected Dictionary<string/*fd.idLoc*/, string/*fd.idSvr*/> map_pids = new Dictionary<string, string>();
+        protected Dictionary<string/*fd.idLoc*/, int/*fd.index*/> map_fd_ids= new Dictionary<string, int>();
         Dictionary<string/*md5*/, fd_file> svr_files = new Dictionary<string, fd_file>();
         public fd_root m_root;//
         private string m_md5s = "0";
@@ -32,7 +32,6 @@ namespace up6.demoSql2005.db.biz.folder
             //增加对空文件夹和0字节文件夹的处理
             if (!string.IsNullOrEmpty(this.m_md5s)) this.get_md5_files();//查询相同MD5值。
 
-            this.set_ids();     //设置文件和文件夹id
             this.update_rel();  //更新结构关系
 
             //对空文件夹的处理，或者0字节文件夹的处理
@@ -46,11 +45,7 @@ namespace up6.demoSql2005.db.biz.folder
             }
 
             //更新根级文件夹信息
-            int id_file = this.m_root.idSvr;
-            this.m_root.idSvr = this.m_root.fdID;//设为文件夹表的ID
             this.update_fd(this.m_root);
-            this.m_root.idSvr = id_file;//设为文件表的ID。
-            this.m_root.idFile = id_file;
 
             //检查相同文件
             this.check_files();
@@ -105,25 +100,6 @@ namespace up6.demoSql2005.db.biz.folder
         /// </summary>
         void set_ids()
         {
-            this.m_root.idSvr = int.Parse(this.f_ids[this.m_root.files.Count]);//取最后一个
-            this.m_root.fdID = int.Parse(this.fd_ids[this.m_root.folders.Count]); //取最后一个
-            this.map_pids.Add(0, this.m_root.fdID);
-
-            //设置文件夹ID，
-            for (int i = 0, l = this.m_root.folders.Count; i < l; ++i)
-            {
-                this.m_root.folders[i].idSvr = int.Parse(this.fd_ids[i]);
-                this.m_root.folders[i].pidRoot = this.m_root.idSvr;
-                this.map_pids.Add(this.m_root.folders[i].idLoc, this.m_root.folders[i].idSvr);
-                this.map_fd_ids.Add(this.m_root.folders[i].idLoc, i);//添加idLoc,index索引
-            }
-
-            for (int i = 0, l = this.m_root.files.Count; i < l; ++i)
-            {
-                this.m_root.files[i].idSvr = int.Parse(this.f_ids[i]);
-                this.m_root.files[i].pidRoot = this.m_root.fdID;
-                this.m_root.files[i].fdChild = true;//
-            }
         }
 
         /// <summary>
@@ -134,20 +110,12 @@ namespace up6.demoSql2005.db.biz.folder
         /// <param name="fd"></param>
         public virtual void update_rel()
         {
-            //更新文件夹的层级ID
-            foreach(fd_child fd in this.m_root.folders)
-            {
-                int pidSvr = 0;
-                this.map_pids.TryGetValue(fd.pidLoc, out pidSvr);
-                fd.pidSvr = pidSvr;
-            }
 
             //更新文件的层级ID
             foreach(fd_file f in this.m_root.files)
             {
-                int pidSvr = 0;
-                this.map_pids.TryGetValue(f.pidLoc, out pidSvr);
-                f.pidSvr = pidSvr;
+                string pidSvr = string.Empty;
+                this.map_pids.TryGetValue(f.pid, out pidSvr);
                 //生成服务器文件名称
                 f.nameSvr = f.md5 + Path.GetExtension(f.pathLoc).ToLower();
                 //生成文件路径
@@ -191,7 +159,6 @@ namespace up6.demoSql2005.db.biz.folder
         void update_fd(fd_child fd)
         {
             this.cmd.Parameters["@fd_name"].Value = fd.nameLoc;
-            this.cmd.Parameters["@fd_pid"].Value = fd.pidSvr;
             this.cmd.Parameters["@fd_uid"].Value = fd.uid;
             this.cmd.Parameters["@fd_length"].Value = fd.lenLoc;
             this.cmd.Parameters["@fd_size"].Value = fd.sizeLoc;
@@ -200,7 +167,6 @@ namespace up6.demoSql2005.db.biz.folder
             this.cmd.Parameters["@fd_folders"].Value = fd.foldersCount;
             this.cmd.Parameters["@fd_files"].Value = fd.filesCount;
             this.cmd.Parameters["@fd_pidRoot"].Value = fd.pidRoot;
-            this.cmd.Parameters["@fd_id"].Value = fd.idSvr;
             this.cmd.ExecuteNonQuery();
         }
 
@@ -217,13 +183,10 @@ namespace up6.demoSql2005.db.biz.folder
             while (r.Read())
             {
                 fd_file f = new fd_file();
-                f.idSvr = Convert.ToInt32(r["f_id"]);
                 f.nameLoc = r["f_nameLoc"].ToString();
                 f.nameSvr = r["f_nameSvr"].ToString();
-                f.pidSvr = int.Parse(r["f_pid"].ToString());
                 f.fdTask = Convert.ToBoolean(r["f_fdTask"]);
                 f.fdChild = Convert.ToBoolean(r["f_fdChild"]);
-                f.fdID = int.Parse(r["f_fdID"].ToString());
                 f.pathLoc = r["f_pathLoc"].ToString();
                 f.pathSvr = r["f_pathSvr"].ToString();
                 f.lenLoc = long.Parse(r["f_lenLoc"].ToString());
@@ -328,10 +291,8 @@ namespace up6.demoSql2005.db.biz.folder
                 fr.make(f.pathSvr, f.lenLoc);
             }
 
-            this.cmd.Parameters["@f_pid"].Value = f.pidSvr;
             this.cmd.Parameters["@f_pidRoot"].Value = f.pidRoot;
             this.cmd.Parameters["@f_fdTask"].Value = f.fdTask;
-            this.cmd.Parameters["@f_fdID"].Value = f.fdID;
             this.cmd.Parameters["@f_fdChild"].Value = f.fdChild;
             this.cmd.Parameters["@f_uid"].Value = f.uid;
             this.cmd.Parameters["@f_nameLoc"].Value = f.nameLoc;
@@ -347,7 +308,7 @@ namespace up6.demoSql2005.db.biz.folder
             this.cmd.Parameters["@f_perSvr"].Value = f.lenLoc > 0 ? f.perSvr : "100%";
             //fix(2016-09-21):0字节文件直接显示100%
             this.cmd.Parameters["@f_complete"].Value = f.lenLoc > 0 ? f.complete : true;
-            this.cmd.Parameters["@f_id"].Value = f.idSvr;
+            this.cmd.Parameters["@f_guid"].Value = f.guid;
             this.cmd.ExecuteNonQuery();
         }
     }
