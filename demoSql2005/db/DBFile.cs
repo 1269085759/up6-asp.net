@@ -81,14 +81,12 @@ namespace up6.demoSql2005.db
             bool ret = false;
             StringBuilder sb = new StringBuilder();
             sb.Append("select top 1 ");
-            sb.Append(" f_id");
             sb.Append(",f_uid");
             sb.Append(",f_nameLoc");
             sb.Append(",f_nameSvr");
             sb.Append(",f_pathLoc");
             sb.Append(",f_pathSvr");
             sb.Append(",f_pathRel");
-            sb.Append(",f_md5");
             sb.Append(",f_lenLoc");
             sb.Append(",f_sizeLoc");
             sb.Append(",f_pos");
@@ -105,22 +103,21 @@ namespace up6.demoSql2005.db
             DbDataReader r = db.ExecuteReader(cmd);
             if (r.Read())
             {
-                inf.idSvr = r.GetInt32(0);
-                inf.uid = r.GetInt32(1);
-                inf.nameLoc = r.GetString(2);
-                inf.nameSvr = r.GetString(3);
-                inf.pathLoc = r.GetString(4);
-                inf.pathSvr = r.GetString(5);
-                inf.pathRel = r.GetString(6);
+                inf.uid = r.GetInt32(0);
+                inf.nameLoc = r.GetString(1);
+                inf.nameSvr = r.GetString(2);
+                inf.pathLoc = r.GetString(3);
+                inf.pathSvr = r.GetString(4);
+                inf.pathRel = r.GetString(5);
                 inf.md5     = md5;
-                inf.lenLoc = r.GetInt64(8);
-                inf.sizeLoc = r.GetString(9);
-                inf.FilePos = r.GetInt64(10);
-                inf.lenSvr = r.GetInt64(11);
-                inf.perSvr = r.GetString(12);
-                inf.complete = r.GetBoolean(13);
-                inf.time = r.GetDateTime(14);
-                inf.deleted = r.GetBoolean(15);
+                inf.lenLoc = r.GetInt64(6);
+                inf.sizeLoc = r.GetString(7);
+                inf.FilePos = r.GetInt64(8);
+                inf.lenSvr = r.GetInt64(9);
+                inf.perSvr = r.GetString(10);
+                inf.complete = r.GetBoolean(11);
+                inf.time = r.GetDateTime(12);
+                inf.deleted = r.GetBoolean(13);
                 ret = true;
             }
             r.Close();

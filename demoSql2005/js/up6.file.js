@@ -237,7 +237,6 @@ function FileUploader(fileLoc, mgr)
     };
     this.post = function ()
     {
-        debugMsg("post ");
         this.Manager.AppendQueuePost(this.fileSvr.guid);
         if (this.fileSvr.md5.length > 0)
         {
