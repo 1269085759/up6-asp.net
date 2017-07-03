@@ -7,6 +7,10 @@ namespace up6.demoSql2005.db
     {
         public int idSvr = 0;
         /// <summary>
+        /// 6.3版本新增字段
+        /// </summary>
+        public string guid = string.Empty;
+        /// <summary>
         /// 文件夹ID
         /// </summary>
         public int pid = 0;

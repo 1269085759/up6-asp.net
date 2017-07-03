@@ -133,11 +133,12 @@ namespace up6.demoSql2005.db
         /// 文件名称，本地路径，远程路径，相对路径都使用原始字符串。
         /// d:\soft\QQ2012.exe
         /// </summary>
-        public int Add(ref xdb_files model)
+        public void Add(ref xdb_files model)
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("insert into up6_files(");
-            sb.Append("f_sizeLoc");
+            sb.Append(" f_guid");
+            sb.Append(",f_sizeLoc");
             sb.Append(",f_pos");
             sb.Append(",f_lenSvr");
             sb.Append(",f_perSvr");
@@ -156,7 +157,8 @@ namespace up6.demoSql2005.db
 
             sb.Append(") values (");
 
-            sb.Append("@f_sizeLoc");
+            sb.Append(",@f_guid");
+            sb.Append(",@f_sizeLoc");
             sb.Append(",@f_pos");
             sb.Append(",@f_lenSvr");
             sb.Append(",@f_perSvr");
@@ -173,12 +175,11 @@ namespace up6.demoSql2005.db
             sb.Append(",@f_md5");
             sb.Append(",@f_lenLoc");
             sb.Append(") ;");
-            //获取新插入ID
-            sb.Append("SELECT @@IDENTITY");
 
             DbHelper db = new DbHelper();
             DbCommand cmd = db.GetCommand(sb.ToString());
 
+            db.AddString(ref cmd, "@f_guid", model.guid, 32);
             db.AddString(ref cmd, "@f_sizeLoc", model.sizeLoc, 10);
             db.AddInt64(ref cmd, "@f_pos", model.FilePos);
             db.AddInt64(ref cmd, "@f_lenSvr", model.lenSvr);
@@ -196,12 +197,7 @@ namespace up6.demoSql2005.db
             db.AddString(ref cmd, "@f_md5", model.md5, 40);
             db.AddInt64(ref cmd, "@f_lenLoc", model.lenLoc);
 
-            //db.ExecuteNonQuery(cmd);
-
-            //cmd.Parameters.Clear();
-            //cmd.CommandText = "SELECT @@IDENTITY";
-            object f_id = db.ExecuteScalar(cmd);
-            return Convert.ToInt32(f_id);
+            db.ExecuteNonQuery(cmd);
         }
 
         /// <summary>

@@ -17,6 +17,7 @@ namespace up6.demoSql2005.db
         protected void Page_Load(object sender, EventArgs e)
         {
             string md5          = Request.QueryString["md5"];
+            string guid         = Request.QueryString["guid"];
             string uid          = Request.QueryString["uid"];
             string lenLoc       = Request.QueryString["lenLoc"];
             string sizeLoc      = Request.QueryString["sizeLoc"];
@@ -36,6 +37,7 @@ namespace up6.demoSql2005.db
             xdb_files fileSvr = new xdb_files();
             fileSvr.f_fdChild = false;
             fileSvr.uid = int.Parse(uid);//将当前文件UID设置为当前用户UID
+            fileSvr.guid = guid;
             fileSvr.nameLoc = Path.GetFileName(pathLoc);
             fileSvr.pathLoc = pathLoc;
             fileSvr.lenLoc = Convert.ToInt64(lenLoc);
@@ -57,11 +59,11 @@ namespace up6.demoSql2005.db
                 fileSvr.perSvr = fileExist.perSvr;
                 fileSvr.lenSvr = fileExist.lenSvr;
                 fileSvr.complete = fileExist.complete;
-                fileSvr.idSvr = db.Add(ref fileSvr);
+                db.Add(ref fileSvr);
             }//数据库不存在相同文件
             else
             {
-                fileSvr.idSvr = db.Add(ref fileSvr);
+                db.Add(ref fileSvr);
 
                 //2.0创建器。仅创建一个空白文件
                 FileBlockWriter fr = new FileBlockWriter();
