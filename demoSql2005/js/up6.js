@@ -147,7 +147,6 @@ function HttpUploaderMgr()
 	this.working = false;
 
 	this.FileFilter = new Array(); //文件过滤器
-	this.idCount = 1; 	//上传项总数，只累加
 	this.filesMap = new Object(); //本地文件列表映射表
 	this.QueueFiles = new Array();//文件队列，数据:id1,id2,id3
 	this.QueueWait = new Array(); //等待队列，数据:id1,id2,id3
@@ -949,10 +948,8 @@ function HttpUploaderMgr()
 		//此类型为过滤类型
 		if (_this.NeedFilter(fileLoc.ext)) return;
 
-		var idLoc = this.idCount++;
 		var nameLoc = fileLoc.nameLoc;
-		jQuery.extend(fileLoc, { idLoc: idLoc });
-		_this.AppendQueue(idLoc);//添加到队列
+		_this.AppendQueue(fileLoc.guid);//添加到队列
 
 		var ui = _this.tmpFile.clone();//文件信息
 		var sp = _this.tmpSpliter.clone();//分隔线
@@ -1028,8 +1025,7 @@ function HttpUploaderMgr()
 	    if (json.files == null) jQuery.extend(fdLoc,{files:[]});
 	    //if (json.lenLoc == 0) return;
 
-	    var idLoc = this.idCount++;
-		this.AppendQueue(idLoc);//添加到队列
+		this.AppendQueue(json.guid);//添加到队列
 
 		var ui = this.tmpFolder.clone();//文件夹信息
 		var sp = this.tmpSpliter.clone();//分隔线
