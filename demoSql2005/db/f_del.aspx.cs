@@ -6,7 +6,7 @@ namespace up6.demoSql2005.db
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            string fid = Request.QueryString["fid"];
+            string fid = Request.QueryString["guid"];
             string uid = Request.QueryString["uid"];
             string callback = Request.QueryString["callback"];
             int ret = 0;
@@ -18,7 +18,7 @@ namespace up6.demoSql2005.db
             else
             {
                 DBFile db = new DBFile();
-                db.Delete(Convert.ToInt32(uid), Convert.ToInt32(fid));
+                db.Delete(Convert.ToInt32(uid), fid);
                 ret = 1;
             }
             Response.Write(callback + "(" + ret + ")");//返回jsonp格式数据

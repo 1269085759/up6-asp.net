@@ -107,12 +107,12 @@ namespace up6.demoSql2005.db
         /// 子文件上传完毕
         /// </summary>
         /// <param name="fd_idSvr"></param>
-        static public void child_complete(int fd_idSvr)
+        static public void child_complete(string guid)
         {
             string sql = "update up6_folders set fd_filesComplete=fd_filesComplete+1 where fd_id=@fd_id";
             DbHelper db = new DbHelper();
             DbCommand cmd = db.GetCommand(sql);
-            db.AddInt(ref cmd, "@fd_id", fd_idSvr);
+            db.AddString(ref cmd, "@fd_id", guid,32);
             db.ExecuteNonQuery(cmd);
         }
     }

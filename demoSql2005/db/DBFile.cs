@@ -409,14 +409,14 @@ namespace up6.demoSql2005.db
         /// </summary>
         /// <param name="f_uid"></param>
         /// <param name="f_id"></param>
-        public void Delete(int f_uid, int f_id)
+        public void Delete(int f_uid, string f_id)
         {
-            string sql = "update up6_files set f_deleted=1 where f_uid=@f_uid and f_id=@f_id";
+            string sql = "update up6_files set f_deleted=1 where f_uid=@f_uid and f_guid=@f_id";
             DbHelper db = new DbHelper();
             DbCommand cmd = db.GetCommand(sql);
 
             db.AddInt(ref cmd, "@f_uid", f_uid);
-            db.AddInt(ref cmd, "@f_id", f_id);
+            db.AddString(ref cmd, "@f_id", f_id,32);
             db.ExecuteNonQuery(cmd);
         }
     }
