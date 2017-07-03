@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="demoSql2005\db\fd_create_uuid.aspx" />
+    <Content Include="demoSql2005\db\f_process.aspx" />
     <Content Include="demoSql2005\db\sql.aspx" />
     <Content Include="demoSql2005\debug\big_file.aspx" />
     <Content Include="demoSql2005\debug\check_config.aspx" />
@@ -176,6 +177,13 @@
     </Compile>
     <Compile Include="demoSql2005\db\fd_del.aspx.designer.cs">
       <DependentUpon>fd_del.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="demoSql2005\db\f_process.aspx.cs">
+      <DependentUpon>f_process.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="demoSql2005\db\f_process.aspx.designer.cs">
+      <DependentUpon>f_process.aspx</DependentUpon>
     </Compile>
     <Compile Include="demoSql2005\db\sql.aspx.cs">
       <DependentUpon>sql.aspx</DependentUpon>

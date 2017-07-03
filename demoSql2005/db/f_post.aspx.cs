@@ -19,9 +19,8 @@ namespace up6.demoSql2005.db
         protected void Page_Load(object sender, EventArgs e)
         {
             string uid          = Request.Form["uid"];
-            string idSvr        = Request.Form["idSvr"];
+            string guid         = Request.Form["guid"];
             string md5          = Request.Form["md5"];
-            string guid          = Request.Form["guid"];
             string perSvr       = Request.Form["perSvr"];//文件百分比
             string lenSvr       = Request.Form["lenSvr"];//已传大小
             string lenLoc       = Request.Form["lenLoc"];//本地文件大小
@@ -29,7 +28,7 @@ namespace up6.demoSql2005.db
             string rangeSize    = Request.Form["rangeSize"];//当前块大小
             string rangeIndex   = Request.Form["rangeIndex"];//当前块索引，基于1
             string complete     = Request.Form["complete"];//true/false
-            string fd_idSvr     = Request.Form["fd-idSvr"];//文件夹ID,与up6_files.fid对应
+            string fd_guid     = Request.Form["fd-guid"];//文件夹ID,与up6_files.fid对应
             string fd_lenSvr    = Request.Form["fd-lenSvr"];//文件夹已传大小
             string fd_perSvr    = Request.Form["fd-perSvr"];//文件夹百分比
             string pathSvr      = Request.Form["pathSvr"];//add(2015-03-19):
@@ -38,17 +37,17 @@ namespace up6.demoSql2005.db
             //参数为空
             if (string.IsNullOrEmpty(lenLoc)
                 || string.IsNullOrEmpty(uid)
-                || string.IsNullOrEmpty(idSvr)
+                || string.IsNullOrEmpty(guid)
                 || string.IsNullOrEmpty(md5)
                 || string.IsNullOrEmpty(f_pos)
                 || string.IsNullOrEmpty(pathSvr))
             {
                 XDebug.Output("lenLoc", lenLoc);
                 XDebug.Output("uid", uid);
-                XDebug.Output("idSvr", idSvr);
+                XDebug.Output("guid", guid);
                 XDebug.Output("md5", md5);
                 XDebug.Output("pathSvr", pathSvr);
-                XDebug.Output("fd-idSvr", fd_idSvr);
+                XDebug.Output("fd-guid", fd_guid);
                 XDebug.Output("fd-lenSvr", fd_lenSvr);
                 Response.Write("param is null");
                 return;
@@ -64,11 +63,11 @@ namespace up6.demoSql2005.db
 
                 XDebug.Output("lenLoc", lenLoc);
                 XDebug.Output("uid", uid);
-                XDebug.Output("idSvr", idSvr);
+                XDebug.Output("idSvr", guid);
                 XDebug.Output("rangePos", rangePos);
                 XDebug.Output("lenSvr", lenSvr);
                 XDebug.Output("perSvr", perSvr);
-                XDebug.Output("fd_idSvr", fd_idSvr);
+                XDebug.Output("fd_idSvr", fd_guid);
                 XDebug.Output("fd_lenSvr", fd_lenSvr);
                 XDebug.Output("fd_perSvr", fd_perSvr);
 
@@ -76,20 +75,20 @@ namespace up6.demoSql2005.db
                 FileBlockWriter res = new FileBlockWriter();
                 res.write(pathSvr, rangePos, ref file);
 
-                bool fd = !string.IsNullOrEmpty(fd_idSvr);
+                bool fd = !string.IsNullOrEmpty(fd_guid);
                 if (fd) fd = !string.IsNullOrEmpty(fd_lenSvr);
-                if(fd)  fd = int.Parse(fd_idSvr) > 0;
+                if (fd) fd = !string.IsNullOrEmpty(fd_guid);
                 if(fd) fd = long.Parse(fd_lenSvr) > 0;
                 
                 //文件夹进度
                 DBFile db = new DBFile();
                 if(fd)
                 {
-                    db.fd_fileProcess(Convert.ToInt32(uid), Convert.ToInt32(idSvr), rangePos, Convert.ToInt64(lenSvr), perSvr, Convert.ToInt32(fd_idSvr), Convert.ToInt64(fd_lenSvr),fd_perSvr,complete=="true");
+                    //db.fd_fileProcess(Convert.ToInt32(uid), Convert.ToInt32(guid), rangePos, Convert.ToInt64(lenSvr), perSvr, Convert.ToInt32(fd_guid), Convert.ToInt64(fd_lenSvr),fd_perSvr,complete=="true");
                 }//文件进度
                 else
                 {
-                    db.f_process(Convert.ToInt32(uid), Convert.ToInt32(idSvr), rangePos, Convert.ToInt64(lenSvr), perSvr,complete=="true");
+                    //db.f_process(Convert.ToInt32(uid), Convert.ToInt32(guid), rangePos, Convert.ToInt64(lenSvr), perSvr,complete=="true");
                 }
 
                 Response.Write("ok");
