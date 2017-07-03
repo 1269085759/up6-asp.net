@@ -81,7 +81,7 @@ namespace up6.demoSql2005.db
             bool ret = false;
             StringBuilder sb = new StringBuilder();
             sb.Append("select top 1 ");
-            sb.Append(",f_uid");
+            sb.Append(" f_uid");
             sb.Append(",f_nameLoc");
             sb.Append(",f_nameSvr");
             sb.Append(",f_pathLoc");
@@ -154,7 +154,7 @@ namespace up6.demoSql2005.db
 
             sb.Append(") values (");
 
-            sb.Append(",@f_guid");
+            sb.Append(" @f_guid");
             sb.Append(",@f_sizeLoc");
             sb.Append(",@f_pos");
             sb.Append(",@f_lenSvr");
