@@ -330,7 +330,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="demoSql2005\sql\spGetFileInfByFid.sql" />
-    <None Include="demoSql2005\sql\f_process.sql" />
     <None Include="demoSql2005\sql\up6_files.sql" />
   </ItemGroup>
   <ItemGroup>
