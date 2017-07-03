@@ -1,21 +1,21 @@
 ﻿CREATE TABLE [dbo].[up6_folders](
-	[fd_id]				[int] IDENTITY(1,1) NOT NULL,
-	[fd_name]			[varchar](50) COLLATE Chinese_PRC_CI_AS NULL CONSTRAINT [DF_up6_folders_fd_name]  DEFAULT (''),
-	[fd_pid]			[int] NULL CONSTRAINT [DF_up6_folders_fd_pid]  DEFAULT ((0)),
-	[fd_uid]			[int] NULL CONSTRAINT [DF_up6_folders_fd_uid]  DEFAULT ((0)),
-	[fd_length]			[bigint] NULL CONSTRAINT [DF_up6_folders_fd_length]  DEFAULT ((0)),
-	[fd_size]			[varchar](50) COLLATE Chinese_PRC_CI_AS NULL CONSTRAINT [DF_up6_folders_fd_size]  DEFAULT (''),
-	[fd_pathLoc]		[varchar](255) COLLATE Chinese_PRC_CI_AS NULL CONSTRAINT [DF_up6_folders_fd_pathLoc]  DEFAULT (''),
-	[fd_pathSvr]		[varchar](255) COLLATE Chinese_PRC_CI_AS NULL CONSTRAINT [DF_up6_folders_fd_pathSvr]  DEFAULT (''),
-	[fd_folders]		[int] NULL CONSTRAINT [DF_up6_folders_fd_folders]  DEFAULT ((0)),
-	[fd_files]			[int] NULL CONSTRAINT [DF_up6_folders_fd_files]  DEFAULT ((0)),
-	[fd_filesComplete]	[int] NULL CONSTRAINT [DF_up6_folders_fd_filesComplete]  DEFAULT ((0)),
-	[fd_complete]		[bit] NULL CONSTRAINT [DF_up6_folders_fd_complete]  DEFAULT ((0)),
-	[fd_delete]			[bit] NULL CONSTRAINT [DF_up6_folders_fd_delete]  DEFAULT ((0)),
-	[fd_json]			[varchar](max) COLLATE Chinese_PRC_CI_AS NULL CONSTRAINT [DF_up6_folders_fd_json]  DEFAULT (''),
-	[timeUpload]		[datetime] NULL CONSTRAINT [DF_up6_folders_timeUpload]  DEFAULT (getdate()),
-	[fd_pidRoot]		[int] NULL CONSTRAINT [DF_up6_folders_fd_pidRoot]  DEFAULT ((0)),
-	[fd_pathRel]		[nvarchar](255) COLLATE Chinese_PRC_CI_AS NULL CONSTRAINT [DF_up6_folders_fd_pathRel]  DEFAULT ('')
+	[fd_id] [char](32) COLLATE Chinese_PRC_CI_AS NOT NULL,
+	[fd_name] [varchar](50) COLLATE Chinese_PRC_CI_AS NULL CONSTRAINT [DF_up6_folders_fd_name]  DEFAULT (''),
+	[fd_pid] [char](32) COLLATE Chinese_PRC_CI_AS NULL CONSTRAINT [DF_up6_folders_fd_pid]  DEFAULT ((0)),
+	[fd_uid] [int] NULL CONSTRAINT [DF_up6_folders_fd_uid]  DEFAULT ((0)),
+	[fd_length] [bigint] NULL CONSTRAINT [DF_up6_folders_fd_length]  DEFAULT ((0)),
+	[fd_size] [varchar](50) COLLATE Chinese_PRC_CI_AS NULL CONSTRAINT [DF_up6_folders_fd_size]  DEFAULT (''),
+	[fd_pathLoc] [varchar](255) COLLATE Chinese_PRC_CI_AS NULL CONSTRAINT [DF_up6_folders_fd_pathLoc]  DEFAULT (''),
+	[fd_pathSvr] [varchar](255) COLLATE Chinese_PRC_CI_AS NULL CONSTRAINT [DF_up6_folders_fd_pathSvr]  DEFAULT (''),
+	[fd_folders] [int] NULL CONSTRAINT [DF_up6_folders_fd_folders]  DEFAULT ((0)),
+	[fd_files] [int] NULL CONSTRAINT [DF_up6_folders_fd_files]  DEFAULT ((0)),
+	[fd_filesComplete] [int] NULL CONSTRAINT [DF_up6_folders_fd_filesComplete]  DEFAULT ((0)),
+	[fd_complete] [bit] NULL CONSTRAINT [DF_up6_folders_fd_complete]  DEFAULT ((0)),
+	[fd_delete] [bit] NULL CONSTRAINT [DF_up6_folders_fd_delete]  DEFAULT ((0)),
+	[fd_json] [varchar](max) COLLATE Chinese_PRC_CI_AS NULL CONSTRAINT [DF_up6_folders_fd_json]  DEFAULT (''),
+	[timeUpload] [datetime] NULL CONSTRAINT [DF_up6_folders_timeUpload]  DEFAULT (getdate()),
+	[fd_pidRoot] [char](32) COLLATE Chinese_PRC_CI_AS NULL CONSTRAINT [DF_up6_folders_fd_pidRoot]  DEFAULT ((0)),
+	[fd_pathRel] [nvarchar](255) COLLATE Chinese_PRC_CI_AS NULL CONSTRAINT [DF_up6_folders_fd_pathRel]  DEFAULT ('')
 ) ON [PRIMARY]
 
 SET ANSI_PADDING OFF
