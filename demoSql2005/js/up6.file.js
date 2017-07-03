@@ -2,6 +2,7 @@
 function FileUploader(fileLoc, mgr)
 {
     var _this = this;
+    this.guid = fileLoc.guid;
     //fileLoc:{nameLoc,ext,lenLoc,sizeLoc,pathLoc,md5,lenSvr},控件传递的值
     this.ui = { msg: null, process: null, percent: null, btn: { del: null, cancel: null,post:null,stop:null }, div: null, split: null };
     this.isFolder = false; //不是文件夹

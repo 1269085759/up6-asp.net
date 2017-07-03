@@ -969,10 +969,9 @@ function HttpUploaderMgr()
 		var uiPercent	= ui.find("div[name='percent']");
 		
 		var upFile = new FileUploader(fileLoc, _this);
-		this.filesMap[idLoc] = upFile;//添加到映射表
+		this.filesMap[fileLoc.guid] = upFile;//添加到映射表
 		var ui_eles = { msg: uiMsg, process: uiProcess,percent:uiPercent, btn: { del: btnDel, cancel: btnCancel,post:btnPost,stop:btnStop }, div: ui, split: sp };
 		upFile.ui = ui_eles;
-		upFile.idLoc = idLoc;
 
 		uiName.text(nameLoc).attr("title", nameLoc);
 		uiSize.text(fileLoc.sizeLoc);
@@ -998,7 +997,7 @@ function HttpUploaderMgr()
 		    {
 		        upFile.Ready();
 		        //添加到队列
-		        _this.AppendQueue(idLoc);
+                _this.AppendQueue(fileLoc.guid);
 		    }
 		});
 		btnStop.click(function ()
@@ -1053,8 +1052,8 @@ function HttpUploaderMgr()
 		uiName.attr("title", fdLoc.nameLoc + "\n文件：" + fdLoc.files.length + "\n文件夹：" + fdLoc.foldersCount + "\n大小：" + fdLoc.sizeLoc);
 		uiSize.text(fdLoc.sizeLoc);
 
-		var fdTask = new FolderUploader(idLoc, fdLoc, this);
-		this.filesMap[idLoc] = fdTask;//添加到映射表
+		var fdTask = new FolderUploader( fdLoc, this);
+		this.filesMap[fdLoc.guid] = fdTask;//添加到映射表
 		fdTask.ui = ui_eles;
 	    btnCancel.click(function()
 		{
@@ -1076,7 +1075,7 @@ function HttpUploaderMgr()
 	        else
 	        {
 	            fdTask.Ready();
-	            _this.AppendQueue(fdTask.idLoc);
+	            _this.AppendQueue(fdTask.guid);
 	        }
 	    });
 	    btnStop.click(function ()
