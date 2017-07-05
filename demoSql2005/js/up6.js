@@ -191,7 +191,7 @@ function HttpUploaderMgr()
 		, filesUI: null //文件列表容器,JQuery
 		, filesUiMap: new Object()//ui映射表,JQuery
         , filesSvr: new Array()//服务器文件列表(json obj)
-        , filesSvrMap:new Object()//服务器文件映射表：(guid,json obj)
+        , filesSvrMap:new Object()//服务器文件映射表：(id,json obj)
 		, "GetHtml": function ()//加载控件
 		{
 			var html = '<div class="file-list-view" name="file-list-view">\
@@ -243,7 +243,7 @@ function HttpUploaderMgr()
 			            var files = JSON.parse(decodeURIComponent(msg.value));
 			            for (var i = 0, l = files.length; i < l; ++i)
 			            {
-			                ref.filesSvr.push(files[i].guid);
+			                ref.filesSvr.push(files[i].id);
 			                ref.addFileSvr(files[i]);
 			            }
 			        }
@@ -255,8 +255,8 @@ function HttpUploaderMgr()
         , "addFileSvr": function (fileSvr)
         {
             var ref = this;
-            var guid = fileSvr.guid;
-            this.filesSvrMap[guid] = fileSvr;
+            var id = fileSvr.id;
+            this.filesSvrMap[id] = fileSvr;
             var ui = this.FileItemTemp.clone();
             var liName = ui.find('li[name="fname"]');
             var liSize = ui.find('li[name="fsize"]');
@@ -270,7 +270,7 @@ function HttpUploaderMgr()
 
             if (fileSvr.complete)
             {
-                liOp.html('<span fid="' + guid + '">删除</span>').css("cursor", "pointer").click(function ()
+                liOp.html('<span fid="' + id + '">删除</span>').css("cursor", "pointer").click(function ()
                 {
                     ref.RemoveFile(fileSvr);
                 });
@@ -282,17 +282,17 @@ function HttpUploaderMgr()
                 liOp.find('span[name="btnDel"]').click(function () { ref.RemoveFile(fileSvr); });
             }
             //添加到文件列表项集合
-            this.filesUiMap[fileSvr.guid] = ui;
+            this.filesUiMap[fileSvr.id] = ui;
             this.filesUI.append(ui);
         }
 		, "UploadComplete": function (fileSvr)//上传完成，将操作改为删除。
 		{
 			//文件已存在
-		    if ( this.filesSvrMap[fileSvr.guid] != null)
+		    if ( this.filesSvrMap[fileSvr.id] != null)
 		    {
 		        var ref = this;
-		        var guid = fileSvr.guid;
-		        var ui = this.filesUiMap[guid];
+		        var id = fileSvr.id;
+		        var ui = this.filesUiMap[id];
 		        var liPer = ui.find('li[name="fper"]');
 		        var liOp = ui.find('li[name="fop"]');
 
@@ -316,7 +316,7 @@ function HttpUploaderMgr()
 		        _this.ResumeFile(fileSvr);
 			}
 			_this.OpenPnlUpload(); //打开上传面板
-			this.RemoveFileCache(fileSvr.guid); //从内存中删除
+			this.RemoveFileCache(fileSvr.id); //从内存中删除
 			this.UploaderMgr.PostFirst();
 		}
 		, "RemoveFile": function (fileSvr)//删除文件
@@ -327,16 +327,16 @@ function HttpUploaderMgr()
 		        return;
 		    }
 		    var ref = this;
-		    var guid = fileSvr.guid;
-			var item = this.filesSvrMap[guid];
-			var ui = this.filesUiMap[guid];
+		    var id = fileSvr.id;
+			var item = this.filesSvrMap[id];
+			var ui = this.filesUiMap[id];
 
 			$.ajax({
 				type: "GET"
 				, dataType: 'jsonp'
 				, jsonp: "callback" //自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名
 				, url: this.Config["UrlDel"]
-				, data: { uid: fileSvr.uid, guid: fileSvr.guid, time: new Date().getTime() }
+				, data: { uid: fileSvr.uid, id: fileSvr.id, time: new Date().getTime() }
 				, success: function (msg) {if (msg == 1) {ui.empty();}}
 				, error: function () { alert("发送删除文件信息失败！"+req.responseText); }
 				, complete: function (req, sta) { req = null; }
@@ -345,25 +345,25 @@ function HttpUploaderMgr()
         , "RemoveFolder": function (fileSvr)
         {
             var ref = this;
-            var guid = fileSvr.guid;
-            var ui = this.filesUiMap[guid];
+            var id = fileSvr.id;
+            var ui = this.filesUiMap[id];
 
             $.ajax({
                 type: "GET"
 				, dataType: 'jsonp'
 				, jsonp: "callback" //自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名
 				, url: this.Config["UrlFdDel"]
-				, data: { uid: fileSvr.uid, guid: fileSvr.guid,fd_id:fileSvr.guid, time: new Date().getTime() }
+				, data: { uid: fileSvr.uid, id: fileSvr.id,fd_id:fileSvr.id, time: new Date().getTime() }
 			    , success:function (msg){if (msg.value == 1){ui.empty();}}
 			    , error: function () { alert("发送删除文件信息失败！"); }
 			    , complete: function (req, sta) { req = null; }
             });
         }
-		, "RemoveFileCache": function (guid)
+		, "RemoveFileCache": function (id)
 		{
-		    this.filesSvrMap[guid] = null;
-		    this.filesUiMap[guid].empty();
-		    this.filesUiMap[guid] = null;
+		    this.filesSvrMap[id] = null;
+		    this.filesUiMap[id].empty();
+		    this.filesUiMap[id] = null;
 		}
 	};
 
@@ -940,7 +940,7 @@ function HttpUploaderMgr()
 	    setTimeout(function () { _this.PostFirst();},500);
 	};
 
-	//fileLoc:name,id,ext,size,length,pathLoc,md5,lenSvr,guid
+	//fileLoc:name,id,ext,size,length,pathLoc,md5,lenSvr,id
 	this.addFileLoc = function(fileLoc)
 	{
 		//本地文件名称存在
@@ -949,7 +949,7 @@ function HttpUploaderMgr()
 		if (_this.NeedFilter(fileLoc.ext)) return;
 
 		var nameLoc = fileLoc.nameLoc;
-		_this.AppendQueue(fileLoc.guid);//添加到队列
+		_this.AppendQueue(fileLoc.id);//添加到队列
 
 		var ui = _this.tmpFile.clone();//文件信息
 		var sp = _this.tmpSpliter.clone();//分隔线
@@ -969,7 +969,7 @@ function HttpUploaderMgr()
 		var uiPercent	= ui.find("div[name='percent']");
 		
 		var upFile = new FileUploader(fileLoc, _this);
-		this.filesMap[fileLoc.guid] = upFile;//添加到映射表
+		this.filesMap[fileLoc.id] = upFile;//添加到映射表
 		var ui_eles = { msg: uiMsg, process: uiProcess,percent:uiPercent, btn: { del: btnDel, cancel: btnCancel,post:btnPost,stop:btnStop }, div: ui, split: sp };
 		upFile.ui = ui_eles;
 
@@ -997,7 +997,7 @@ function HttpUploaderMgr()
 		    {
 		        upFile.Ready();
 		        //添加到队列
-                _this.AppendQueue(fileLoc.guid);
+                _this.AppendQueue(fileLoc.id);
 		    }
 		});
 		btnStop.click(function ()
@@ -1024,7 +1024,7 @@ function HttpUploaderMgr()
 	    if (json.files == null) jQuery.extend(fdLoc,{files:[]});
 	    //if (json.lenLoc == 0) return;
 
-		this.AppendQueue(json.guid);//添加到队列
+		this.AppendQueue(json.id);//添加到队列
 
 		var ui = this.tmpFolder.clone();//文件夹信息
 		var sp = this.tmpSpliter.clone();//分隔线
@@ -1053,7 +1053,7 @@ function HttpUploaderMgr()
 		uiSize.text(fdLoc.sizeLoc);
 
 		var fdTask = new FolderUploader( fdLoc, this);
-		this.filesMap[fdLoc.guid] = fdTask;//添加到映射表
+		this.filesMap[fdLoc.id] = fdTask;//添加到映射表
 		fdTask.ui = ui_eles;
 	    btnCancel.click(function()
 		{
@@ -1075,7 +1075,7 @@ function HttpUploaderMgr()
 	        else
 	        {
 	            fdTask.Ready();
-	            _this.AppendQueue(fdTask.guid);
+	            _this.AppendQueue(fdTask.id);
 	        }
 	    });
 	    btnStop.click(function ()

@@ -19,7 +19,7 @@ namespace up6.demoSql2005.db.biz
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("select ");
-            sb.Append(" f_guid");//0
+            sb.Append(" f_id");//0
             sb.Append(",f_fdTask");//1
             sb.Append(",f_nameLoc");//2
             sb.Append(",f_nameSvr");//3
