@@ -413,7 +413,7 @@ namespace up6.demoSql2005.db
         /// <param name="f_id"></param>
         public void Delete(int f_uid, string f_id)
         {
-            string sql = "update up6_files set f_deleted=1 where f_uid=@f_uid and f_guid=@f_id";
+            string sql = "update up6_files set f_deleted=1 where f_uid=@f_uid and f_id=@f_id";
             DbHelper db = new DbHelper();
             DbCommand cmd = db.GetCommand(sql);
 

@@ -11,7 +11,7 @@ namespace up6.demoSql2005.db
         {
             string md5 = Request.QueryString["md5"];
             string uid = Request.QueryString["uid"];
-            string guid = Request.QueryString["guid"];
+            string id = Request.QueryString["id"];
             string guidFD= Request.QueryString["fd-guid"];
             string cbk = Request.QueryString["callback"];
 
@@ -20,7 +20,7 @@ namespace up6.demoSql2005.db
 
             if (string.IsNullOrEmpty(md5)
                 || string.IsNullOrEmpty(uid)
-                || string.IsNullOrEmpty(guid))
+                || string.IsNullOrEmpty(id))
             {
             }//参数不为空
             else

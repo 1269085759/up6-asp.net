@@ -109,7 +109,7 @@ function FileUploader(fileLoc, mgr)
         //从未上传列表中删除
         this.Manager.RemoveQueueWait(this.fileSvr.id);
 
-        var param = { md5: this.fileSvr.md5, uid: this.uid, idSvr: this.fileSvr.idSvr, time: new Date().getTime() };
+        var param = { md5: this.fileSvr.md5, uid: this.uid, id: this.fileSvr.id, time: new Date().getTime() };
 
         $.ajax({
             type: "GET"

@@ -17,7 +17,7 @@ namespace up6.demoSql2005.db
         protected void Page_Load(object sender, EventArgs e)
         {
             string md5          = Request.QueryString["md5"];
-            string guid         = Request.QueryString["guid"];
+            string id         = Request.QueryString["id"];
             string uid          = Request.QueryString["uid"];
             string lenLoc       = Request.QueryString["lenLoc"];
             string sizeLoc      = Request.QueryString["sizeLoc"];
@@ -37,7 +37,7 @@ namespace up6.demoSql2005.db
             xdb_files fileSvr = new xdb_files();
             fileSvr.f_fdChild = false;
             fileSvr.uid = int.Parse(uid);//将当前文件UID设置为当前用户UID
-            fileSvr.id = guid;
+            fileSvr.id = id;
             fileSvr.nameLoc = Path.GetFileName(pathLoc);
             fileSvr.pathLoc = pathLoc;
             fileSvr.lenLoc = Convert.ToInt64(lenLoc);

@@ -6,7 +6,7 @@ namespace up6.demoSql2005.db
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            string fid = Request.QueryString["guid"];
+            string fid = Request.QueryString["id"];
             string uid = Request.QueryString["uid"];
             string callback = Request.QueryString["callback"];
             int ret = 0;
