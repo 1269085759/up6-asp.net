@@ -182,6 +182,7 @@ namespace up6.demoSql2005.db.biz.folder
 
             this.saveFiles();
             this.saveFolders();
+            this.cmd.Connection.Close();
         }
 
         protected virtual void get_md5s()
