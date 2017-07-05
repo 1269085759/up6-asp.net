@@ -19,7 +19,7 @@ namespace up6.demoSql2005.db
         protected void Page_Load(object sender, EventArgs e)
         {
             string uid          = Request.Form["uid"];
-            string guid         = Request.Form["guid"];
+            string f_id         = Request.Form["id"];
             string md5          = Request.Form["md5"];
             string perSvr       = Request.Form["perSvr"];//文件百分比
             string lenSvr       = Request.Form["lenSvr"];//已传大小
@@ -28,7 +28,7 @@ namespace up6.demoSql2005.db
             string rangeSize    = Request.Form["rangeSize"];//当前块大小
             string rangeIndex   = Request.Form["rangeIndex"];//当前块索引，基于1
             string complete     = Request.Form["complete"];//true/false
-            string fd_guid     = Request.Form["fd-guid"];//文件夹ID,与up6_files.fid对应
+            string fd_id        = Request.Form["fd-id"];//文件夹ID,与up6_files.fid对应
             string fd_lenSvr    = Request.Form["fd-lenSvr"];//文件夹已传大小
             string fd_perSvr    = Request.Form["fd-perSvr"];//文件夹百分比
             string pathSvr      = Request.Form["pathSvr"];//add(2015-03-19):
@@ -37,17 +37,17 @@ namespace up6.demoSql2005.db
             //参数为空
             if (string.IsNullOrEmpty(lenLoc)
                 || string.IsNullOrEmpty(uid)
-                || string.IsNullOrEmpty(guid)
+                || string.IsNullOrEmpty(f_id)
                 || string.IsNullOrEmpty(md5)
                 || string.IsNullOrEmpty(f_pos)
                 || string.IsNullOrEmpty(pathSvr))
             {
                 XDebug.Output("lenLoc", lenLoc);
                 XDebug.Output("uid", uid);
-                XDebug.Output("guid", guid);
+                XDebug.Output("guid", f_id);
                 XDebug.Output("md5", md5);
                 XDebug.Output("pathSvr", pathSvr);
-                XDebug.Output("fd-guid", fd_guid);
+                XDebug.Output("fd-guid", fd_id);
                 XDebug.Output("fd-lenSvr", fd_lenSvr);
                 Response.Write("param is null");
                 return;
@@ -63,11 +63,11 @@ namespace up6.demoSql2005.db
 
                 XDebug.Output("lenLoc", lenLoc);
                 XDebug.Output("uid", uid);
-                XDebug.Output("idSvr", guid);
+                XDebug.Output("idSvr", f_id);
                 XDebug.Output("rangePos", rangePos);
                 XDebug.Output("lenSvr", lenSvr);
                 XDebug.Output("perSvr", perSvr);
-                XDebug.Output("fd_idSvr", fd_guid);
+                XDebug.Output("fd_idSvr", fd_id);
                 XDebug.Output("fd_lenSvr", fd_lenSvr);
                 XDebug.Output("fd_perSvr", fd_perSvr);
 
@@ -75,9 +75,9 @@ namespace up6.demoSql2005.db
                 FileBlockWriter res = new FileBlockWriter();
                 res.write(pathSvr, rangePos, ref file);
 
-                bool fd = !string.IsNullOrEmpty(fd_guid);
+                bool fd = !string.IsNullOrEmpty(fd_id);
                 if (fd) fd = !string.IsNullOrEmpty(fd_lenSvr);
-                if (fd) fd = !string.IsNullOrEmpty(fd_guid);
+                if (fd) fd = !string.IsNullOrEmpty(fd_id);
                 if(fd) fd = long.Parse(fd_lenSvr) > 0;
                 
                 //文件夹进度
