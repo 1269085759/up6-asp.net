@@ -17,7 +17,7 @@ namespace up6.demoSql2005.db
         protected void Page_Load(object sender, EventArgs e)
         {
             string md5          = Request.QueryString["md5"];
-            string id         = Request.QueryString["id"];
+            string id           = Request.QueryString["id"];
             string uid          = Request.QueryString["uid"];
             string lenLoc       = Request.QueryString["lenLoc"];
             string sizeLoc      = Request.QueryString["sizeLoc"];

@@ -101,6 +101,13 @@ namespace up6.demoSql2005.db.biz.folder
                 cmd.Parameters["@f_complete"].Value = f.lenLoc>0 ? f.perSvr : "0%";
                 cmd.Parameters["@f_complete"].Value = f.lenLoc>0 ? f.complete : true;
                 cmd.ExecuteNonQuery();
+
+                //创建文件
+                if (!f.complete && f.lenSvr < 1)
+                {
+                    FileBlockWriter fr = new FileBlockWriter();
+                    fr.make(f.pathSvr, f.lenLoc);
+                }
             }
             var rt = this.m_root;
             //添加根目录
