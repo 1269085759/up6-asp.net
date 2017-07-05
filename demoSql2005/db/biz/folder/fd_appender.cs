@@ -11,7 +11,7 @@ namespace up6.demoSql2005.db.biz.folder
         DbHelper db;
         DbCommand cmd;
         protected PathBuilder pb = new PathMd5Builder();
-        Dictionary<string/*md5*/, fd_file> svr_files = new Dictionary<string, fd_file>();
+        Dictionary<string/*md5*/, xdb_files> svr_files = new Dictionary<string, xdb_files>();
         public fd_root m_root;//
         private string m_md5s = "0";
 
@@ -189,7 +189,7 @@ namespace up6.demoSql2005.db.biz.folder
         {
             Dictionary<string, bool> md5s = new Dictionary<string, bool>();
             List<string> md5_arr = new List<string>();
-            foreach(fd_file f in this.m_root.files)
+            foreach(var f in this.m_root.files)
             {
                 if(!md5s.ContainsKey(f.md5) && !string.IsNullOrEmpty(f.md5))
                 {
@@ -222,7 +222,7 @@ namespace up6.demoSql2005.db.biz.folder
             var r = this.cmd.ExecuteReader();
             while (r.Read())
             {
-                fd_file f = new fd_file();
+                var f = new xdb_files();
                 f.nameLoc = r["f_nameLoc"].ToString();
                 f.nameSvr = r["f_nameSvr"].ToString();
                 f.fdTask = Convert.ToBoolean(r["f_fdTask"]);
@@ -233,7 +233,7 @@ namespace up6.demoSql2005.db.biz.folder
                 f.sizeLoc = r["f_sizeLoc"].ToString();
                 f.lenSvr = long.Parse(r["f_lenSvr"].ToString());
                 f.perSvr = r["f_perSvr"].ToString();
-                f.pos = long.Parse(r["f_pos"].ToString());
+                f.offset = long.Parse(r["f_pos"].ToString());
                 f.complete = Convert.ToBoolean(r["f_complete"]);
                 f.md5 = r["f_md5"].ToString();
                 if(!string.IsNullOrEmpty(f.md5))this.svr_files.Add(f.md5, f);
@@ -249,7 +249,7 @@ namespace up6.demoSql2005.db.biz.folder
             if (this.svr_files.Count < 1) return;
             foreach(var f in this.m_root.files)
             {
-                fd_file f_svr;
+                xdb_files f_svr;
                 if(this.svr_files.TryGetValue(f.md5,out f_svr))
                 {
                     this.m_root.lenSvr += f_svr.lenSvr;
@@ -266,7 +266,7 @@ namespace up6.demoSql2005.db.biz.folder
                     f.sizeLoc = f_svr.sizeLoc;
                     f.lenSvr = f_svr.lenSvr;
                     f.perSvr = f_svr.perSvr;
-                    f.pos = f_svr.pos;
+                    f.offset = f_svr.offset;
                     f.complete = f_svr.complete;
                     //f.md5 = f_svr.md5;
                 }
@@ -274,7 +274,7 @@ namespace up6.demoSql2005.db.biz.folder
         }
 
 
-        void update_file(fd_file f)
+        void update_file(xdb_files f)
         {
             if (!f.fdTask)
             { 
@@ -294,7 +294,7 @@ namespace up6.demoSql2005.db.biz.folder
             this.cmd.Parameters["@f_md5"].Value = f.md5;
             this.cmd.Parameters["@f_lenLoc"].Value = f.lenLoc;
             this.cmd.Parameters["@f_sizeLoc"].Value = f.sizeLoc;
-            this.cmd.Parameters["@f_pos"].Value = f.pos;
+            this.cmd.Parameters["@f_pos"].Value = f.offset;
             this.cmd.Parameters["@f_lenSvr"].Value = f.lenSvr;
             this.cmd.Parameters["@f_perSvr"].Value = f.lenLoc > 0 ? f.perSvr : "100%";
             //fix(2016-09-21):0字节文件直接显示100%

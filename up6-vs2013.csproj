@@ -133,7 +133,6 @@
   <ItemGroup>
     <Compile Include="demoSql2005\db\biz\folder\fd_appender.cs" />
     <Compile Include="demoSql2005\db\biz\folder\fd_child.cs" />
-    <Compile Include="demoSql2005\db\biz\folder\fd_file.cs" />
     <Compile Include="demoSql2005\db\biz\folder\fd_root.cs" />
     <Compile Include="demoSql2005\db\biz\folder\fd_uuid_appender.cs" />
     <Compile Include="demoSql2005\db\biz\PathBuilder.cs" />

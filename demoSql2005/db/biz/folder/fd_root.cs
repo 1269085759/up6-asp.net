@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Web;
+﻿using System.Collections.Generic;
 
 namespace up6.demoSql2005.db.biz.folder
 {
@@ -10,6 +8,6 @@ namespace up6.demoSql2005.db.biz.folder
     public class fd_root : fd_child
     {
         public List<fd_child> folders;
-        public List<fd_file> files;
+        public List<xdb_files> files;
     }
 }

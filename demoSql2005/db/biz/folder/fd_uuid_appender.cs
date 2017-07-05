@@ -30,7 +30,7 @@ namespace up6.demoSql2005.db.biz.folder
         {
 
             //更新文件的层级ID
-            foreach (fd_file f in this.m_root.files)
+            foreach (var f in this.m_root.files)
             {
                 f.nameSvr = f.nameLoc;
 

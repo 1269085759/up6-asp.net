@@ -19,14 +19,14 @@ namespace up6.demoSql2005.db
         /// <summary>
         /// 表示当前项是否是一个文件夹项。
         /// </summary>
-        public bool f_fdTask = false;
+        public bool fdTask = false;
         /// <summary>
         /// 与xdb_folders.fd_id对应
         /// </summary>
         /// <summary>
         /// 是否是文件夹中的子文件
         /// </summary>
-        public bool f_fdChild = false;
+        public bool fdChild = false;
         /// <summary>
         /// 用户ID。与第三方系统整合使用。
         /// </summary>
@@ -68,7 +68,7 @@ namespace up6.demoSql2005.db
         /// 文件续传位置。
         /// 文件大小可能超过2G，所以使用long
         /// </summary>
-        public long FilePos = 0;
+        public long offset = 0;
         /// <summary>
         /// 已上传大小。以字节为单位
         /// 文件大小可能超过2G，所以使用long

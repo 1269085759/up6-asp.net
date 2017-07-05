@@ -35,7 +35,7 @@ namespace up6.demoSql2005.db
             }
 
             xdb_files fileSvr = new xdb_files();
-            fileSvr.f_fdChild = false;
+            fileSvr.fdChild = false;
             fileSvr.uid = int.Parse(uid);//将当前文件UID设置为当前用户UID
             fileSvr.id = id;
             fileSvr.nameLoc = Path.GetFileName(pathLoc);

@@ -56,7 +56,7 @@ namespace up6.demoSql2005.db
                 inf.md5 = r.GetString(6);
                 inf.lenLoc = r.GetInt64(7);
                 inf.sizeLoc = r.GetString(8);
-                inf.FilePos = r.GetInt64(9);
+                inf.offset = r.GetInt64(9);
                 inf.lenSvr = r.GetInt64(10);
                 inf.perSvr = r.GetString(11);
                 inf.complete = r.GetBoolean(12);
@@ -112,7 +112,7 @@ namespace up6.demoSql2005.db
                 inf.md5     = md5;
                 inf.lenLoc = r.GetInt64(6);
                 inf.sizeLoc = r.GetString(7);
-                inf.FilePos = r.GetInt64(8);
+                inf.offset = r.GetInt64(8);
                 inf.lenSvr = r.GetInt64(9);
                 inf.perSvr = r.GetString(10);
                 inf.complete = r.GetBoolean(11);
@@ -178,13 +178,13 @@ namespace up6.demoSql2005.db
 
             db.AddString(ref cmd, "@f_id", model.id, 32);
             db.AddString(ref cmd, "@f_sizeLoc", model.sizeLoc, 10);
-            db.AddInt64(ref cmd, "@f_pos", model.FilePos);
+            db.AddInt64(ref cmd, "@f_pos", model.offset);
             db.AddInt64(ref cmd, "@f_lenSvr", model.lenSvr);
             db.AddString(ref cmd, "@f_perSvr", model.perSvr, 6);
             db.AddInBool(cmd, "@f_complete",model.complete);
             db.AddDate(ref cmd, "@f_time", model.time);
             db.AddInBool(cmd, "@f_deleted", false);
-            db.AddInBool(cmd, "@f_fdChild", model.f_fdChild);
+            db.AddInBool(cmd, "@f_fdChild", model.fdChild);
             db.AddInt(ref cmd, "@f_uid", model.uid);
             db.AddString(ref cmd, "@f_nameLoc", model.nameLoc, 255);
             db.AddString(ref cmd, "@f_nameSvr", model.nameSvr, 255);
