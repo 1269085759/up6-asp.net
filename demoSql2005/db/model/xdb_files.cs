@@ -5,15 +5,14 @@ namespace up6.demoSql2005.db
 {
     public class xdb_files
     {
-        public int idSvr = 0;
         /// <summary>
         /// 6.3版本新增字段
         /// </summary>
-        public string guid = string.Empty;
+        public string id = string.Empty;
         /// <summary>
         /// 文件夹ID
         /// </summary>
-        public int pid = 0;
+        public string pid = string.Empty;
         /// <summary>
         /// 根级文件夹ID
         /// </summary>
@@ -25,7 +24,6 @@ namespace up6.demoSql2005.db
         /// <summary>
         /// 与xdb_folders.fd_id对应
         /// </summary>
-        public int f_fdID = 0;
         /// <summary>
         /// 是否是文件夹中的子文件
         /// </summary>

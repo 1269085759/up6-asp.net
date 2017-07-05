@@ -72,7 +72,7 @@ namespace up6.demoSql2005.down2.db
             demoSql2005.db.DBFile f = new demoSql2005.db.DBFile();
             demoSql2005.db.xdb_files inf = new demoSql2005.db.xdb_files();
             //数据库不存在文件
-            if (!f.GetFileInfByFid(int.Parse(fid), ref inf))
+            if (!f.GetFileInfByFid(fid, ref inf))
             {
                 Response.AddHeader("Content-Range", "0-0/0");
                 Response.AddHeader("Content-Length", "0");

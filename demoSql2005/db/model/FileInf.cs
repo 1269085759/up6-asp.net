@@ -15,7 +15,7 @@ namespace up6.demoSql2005.db
         }
 
         //文件唯一标识
-        public string guid = string.Empty;
+        public string id = string.Empty;
         public string pid = string.Empty;
         public string pidRoot = string.Empty;
         /// <summary>

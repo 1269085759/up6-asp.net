@@ -45,7 +45,7 @@ namespace up6.demoSql2005.db.biz
             while (r.Read())
             {
                 var f = new FileInf();
-                f.guid = r.GetString(0);
+                f.id = r.GetString(0);
                 f.m_fdTask = r.GetBoolean(1);
                 f.nameLoc = r.GetString(2);
                 f.nameSvr = r.GetString(3);

@@ -17,12 +17,12 @@ namespace up6.demoSql2005.db
         /// </summary>
         /// <param name="f_id"></param>
         /// <returns></returns>
-        public bool GetFileInfByFid(int f_id, ref xdb_files inf)
+        public bool GetFileInfByFid(string f_id, ref xdb_files inf)
         {
             bool ret = false;
             StringBuilder sb = new StringBuilder();
             sb.Append("select top 1 ");
-            sb.Append("f_uid");
+            sb.Append(" f_uid");
             sb.Append(",f_nameLoc");
             sb.Append(",f_nameSvr");
             sb.Append(",f_pathLoc");
@@ -41,12 +41,12 @@ namespace up6.demoSql2005.db
 
             DbHelper db = new DbHelper();
             DbCommand cmd = db.GetCommand(sb.ToString());
-            db.AddInt(ref cmd, "@f_id", f_id);
+            db.AddString(ref cmd, "@f_id", f_id,32);
             DbDataReader r = db.ExecuteReader(cmd);
 
             if (r.Read())
             {
-                inf.idSvr = f_id;
+                inf.id = f_id;
                 inf.uid = r.GetInt32(0);
                 inf.nameLoc = r.GetString(1);
                 inf.nameSvr = r.GetString(2);
@@ -134,7 +134,7 @@ namespace up6.demoSql2005.db
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("insert into up6_files(");
-            sb.Append(" f_guid");
+            sb.Append(" f_id");
             sb.Append(",f_sizeLoc");
             sb.Append(",f_pos");
             sb.Append(",f_lenSvr");
@@ -154,7 +154,7 @@ namespace up6.demoSql2005.db
 
             sb.Append(") values (");
 
-            sb.Append(" @f_guid");
+            sb.Append(" @f_id");
             sb.Append(",@f_sizeLoc");
             sb.Append(",@f_pos");
             sb.Append(",@f_lenSvr");
@@ -176,7 +176,7 @@ namespace up6.demoSql2005.db
             DbHelper db = new DbHelper();
             DbCommand cmd = db.GetCommand(sb.ToString());
 
-            db.AddString(ref cmd, "@f_guid", model.guid, 32);
+            db.AddString(ref cmd, "@f_id", model.id, 32);
             db.AddString(ref cmd, "@f_sizeLoc", model.sizeLoc, 10);
             db.AddInt64(ref cmd, "@f_pos", model.FilePos);
             db.AddInt64(ref cmd, "@f_lenSvr", model.lenSvr);
