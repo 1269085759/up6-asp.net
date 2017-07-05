@@ -1,5 +1,4 @@
 ﻿using System;
-using Newtonsoft.Json;
 
 namespace up6.demoSql2005.db
 {
@@ -16,7 +15,7 @@ namespace up6.demoSql2005.db
         /// <summary>
         /// 根级文件夹ID
         /// </summary>
-        public int pidRoot = 0;
+        public string pidRoot = string.Empty;
         /// <summary>
         /// 表示当前项是否是一个文件夹项。
         /// </summary>
@@ -82,9 +81,5 @@ namespace up6.demoSql2005.db
         public bool complete = false;
         public DateTime time = DateTime.Now;
         public bool deleted = false;
-        /// <summary>
-        /// 文件夹JSON信息
-        /// </summary>
-        public string fd_json = string.Empty;
     }
 }

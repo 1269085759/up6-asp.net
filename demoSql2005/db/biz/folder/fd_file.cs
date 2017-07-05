@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Web;
-
-namespace up6.demoSql2005.db.biz.folder
+﻿namespace up6.demoSql2005.db.biz.folder
 {
     /// <summary>
     /// 文件
     /// </summary>
     public class fd_file
     {
-        public string guid = string.Empty;//与up6_files.f_guid对应
+        public string id = string.Empty;//与up6_files.f_guid对应
         public string nameLoc = string.Empty;
         public string nameSvr = string.Empty;
         public string pathLoc = string.Empty;

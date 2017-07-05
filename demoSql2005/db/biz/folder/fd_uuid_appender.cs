@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Web;
+﻿using System.IO;
 
 namespace up6.demoSql2005.db.biz.folder
 {
@@ -41,7 +38,7 @@ namespace up6.demoSql2005.db.biz.folder
                 string parentPath = this.m_root.pathSvr;
                 string parentRel = this.m_root.pathRel;
                 int parentIndex = 0;
-                if ( !string.IsNullOrEmpty(f.pid)) parentIndex = this.map_fd_ids[f.pid];
+                //if ( !string.IsNullOrEmpty(f.pid)) parentIndex = this.map_fd_ids[f.pid];
                 if ( !string.IsNullOrEmpty(f.pid) ) parentPath = this.m_root.folders[parentIndex].pathSvr;
                 if ( !string.IsNullOrEmpty(f.pid) ) parentRel = this.m_root.folders[parentIndex].pathRel;
                 f.pathSvr = Path.Combine(parentPath, f.nameLoc);

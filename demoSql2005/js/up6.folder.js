@@ -31,7 +31,7 @@ function FolderUploader(fdLoc, mgr)
     };
     this.svr_create = function (fdSvr)
     {
-		jQuery.extend(this.folderSvr,fdSvr);
+		//jQuery.extend(this.folderSvr,fdSvr);
         if (fdSvr.complete)
         {
             this.all_complete();
@@ -42,7 +42,7 @@ function FolderUploader(fdLoc, mgr)
         this.ui.btn.post.hide();
         this.ui.btn.del.hide();
         this.folderInit = true;
-        this.post_fd();
+        //this.post_fd();
     };
     this.svr_create_err = function ()
     {
