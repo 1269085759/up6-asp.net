@@ -67,6 +67,7 @@ namespace up6.demoSql2005.db.biz.folder
             this.db.AddString(ref cmd, "@f_id", string.Empty, 32);
             this.db.AddString(ref cmd, "@f_pid", string.Empty, 32);
             this.db.AddString(ref cmd, "@f_pidRoot", string.Empty, 32);
+            this.db.AddBool(ref cmd, "@f_fdTask", false);
             this.db.AddString(ref cmd, "@f_sizeLoc", string.Empty, 32);
             this.db.AddBool(ref cmd, "@f_fdChild", true);
             this.db.AddInt(ref cmd, "@f_uid", 0);
@@ -114,6 +115,7 @@ namespace up6.demoSql2005.db.biz.folder
             cmd.Parameters["@f_id"].Value = rt.id;
             cmd.Parameters["@f_pid"].Value = string.Empty;
             cmd.Parameters["@f_pidRoot"].Value = string.Empty;
+            cmd.Parameters["@f_fdTask"].Value = true;
             cmd.Parameters["@f_fdChild"].Value = false;
             cmd.Parameters["@f_sizeLoc"].Value = rt.sizeLoc;
             cmd.Parameters["@f_uid"].Value = rt.uid;
