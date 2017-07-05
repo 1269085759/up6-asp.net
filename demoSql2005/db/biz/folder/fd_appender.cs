@@ -40,6 +40,8 @@ namespace up6.demoSql2005.db.biz.folder
             sb.Append(",f_pathRel");
             sb.Append(",f_md5");
             sb.Append(",f_lenLoc");
+            sb.Append(",f_perSvr");
+            sb.Append(",f_complete");
 
             sb.Append(") values (");
 
@@ -57,6 +59,8 @@ namespace up6.demoSql2005.db.biz.folder
             sb.Append(",@f_pathRel");
             sb.Append(",@f_md5");
             sb.Append(",@f_lenLoc");
+            sb.Append(",@f_perSvr");
+            sb.Append(",@f_complete");
             sb.Append(") ;");
 
             var cmd = this.db.GetCommand(sb.ToString());
@@ -73,6 +77,8 @@ namespace up6.demoSql2005.db.biz.folder
             this.db.AddString(ref cmd, "@f_pathRel", string.Empty, 255);
             this.db.AddString(ref cmd, "@f_md5", string.Empty, 40);
             this.db.AddInt64(ref cmd, "@f_lenLoc", 0);
+            this.db.AddString(ref cmd, "@f_perSvr", string.Empty, 6);
+            this.db.AddBool(ref cmd, "@f_complete", false);
             cmd.Prepare();
             foreach(var f in this.m_root.files)
             {
@@ -92,6 +98,8 @@ namespace up6.demoSql2005.db.biz.folder
                 cmd.Parameters["@f_pathRel"].Value = f.pathRel;
                 cmd.Parameters["@f_md5"].Value = f.md5;
                 cmd.Parameters["@f_lenLoc"].Value = f.lenLoc;
+                cmd.Parameters["@f_complete"].Value = f.lenLoc>0 ? f.perSvr : "0%";
+                cmd.Parameters["@f_complete"].Value = f.lenLoc>0 ? f.complete : true;
                 cmd.ExecuteNonQuery();
             }
             var rt = this.m_root;
