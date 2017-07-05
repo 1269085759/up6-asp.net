@@ -6,11 +6,11 @@
 function FolderUploader(fdLoc, mgr)
 {
     var _this = this;
-    this.guid = fdLoc.guid;
+    this.id = fdLoc.id;
     this.ui = { msg: null, process: null, percent: null, btn: { del: null, cancel: null,stop:null,post:null }, div: null, split: null };
     this.isFolder = true; //是文件夹
     this.folderInit = false;//文件夹已初始化
-    this.folderSvr = { nameLoc: "",nameSvr:"",lenLoc:0,sizeLoc: "0byte", lenSvr: 0,perSvr:"0%", guid:"",uid: 0, foldersCount: 0, filesCount: 0, filesComplete: 0, pathLoc: "", pathSvr: "", pathRel: "", pidRoot: 0, complete: false, folders: [], files: [] };
+    this.folderSvr = { nameLoc: "",nameSvr:"",lenLoc:0,sizeLoc: "0byte", lenSvr: 0,perSvr:"0%", id:"",uid: 0, foldersCount: 0, filesCount: 0, filesComplete: 0, pathLoc: "", pathSvr: "", pathRel: "", pidRoot: 0, complete: false, folders: [], files: [] };
     jQuery.extend(true,this.folderSvr, fdLoc);//续传信息
     this.manager = mgr;
     this.event = mgr.event;
@@ -78,7 +78,7 @@ function FolderUploader(fdLoc, mgr)
         this.ui.btn.stop.show();
         this.ui.btn.post.hide();
         this.State = HttpUploaderState.MD5Working;
-        var par = jQuery.extend(this.folderSvr, { id: this.guid});
+        var par = jQuery.extend(this.folderSvr, { id: this.id});
         this.app.checkFolder(par);
     };
     this.post_fd = function ()
@@ -86,7 +86,7 @@ function FolderUploader(fdLoc, mgr)
         this.ui.btn.stop.show();
         this.ui.btn.post.hide();
         this.State = HttpUploaderState.Posting;
-        var fd = jQuery.extend(this.folderSvr, { id: this.guid});
+        var fd = jQuery.extend(this.folderSvr, { id: this.id});
         this.app.postFolder({ folder: fd, fields: this.fields });
     };
     this.post_error = function (json)
@@ -104,9 +104,9 @@ function FolderUploader(fdLoc, mgr)
 
         this.State = HttpUploaderState.Error;
         //从上传列表中删除
-        this.manager.RemoveQueuePost(this.guid);
+        this.manager.RemoveQueuePost(this.id);
         //添加到未上传列表
-        this.manager.AppendQueueWait(this.guid);
+        this.manager.AppendQueueWait(this.id);
 
         setTimeout(function () { _this.manager.PostNext(); }, 500);
     };
@@ -143,9 +143,9 @@ function FolderUploader(fdLoc, mgr)
         this.folderSvr.perSvr = "100%";
         this.manager.arrFilesComplete.push(this);
         //从上传列表中删除
-        this.manager.RemoveQueuePost(this.guid);
+        this.manager.RemoveQueuePost(this.id);
         //从未上传列表中删除
-        this.manager.RemoveQueueWait(this.guid);
+        this.manager.RemoveQueueWait(this.id);
         var str = "文件数：" + this.folderSvr.files.length + "，成功：" + json.completes;
         if(json.errors > 0 ) str += " 失败：" + json.errors
         this.ui.msg.text(str);
@@ -231,9 +231,9 @@ function FolderUploader(fdLoc, mgr)
         this.folderSvr.complete = true;
         this.folderSvr.perSvr = "100%";
         //从上传列表中删除
-        this.manager.RemoveQueuePost(this.guid);
+        this.manager.RemoveQueuePost(this.id);
         //从未上传列表中删除
-        this.manager.RemoveQueueWait(this.guid);
+        this.manager.RemoveQueueWait(this.id);
         this.ui.msg.text("共" + this.folderSvr.filesCount + "个文件，成功上传" + this.folderSvr.filesCount + "个文件");
 
         $.ajax({
@@ -256,7 +256,7 @@ function FolderUploader(fdLoc, mgr)
     //一般在StopAll()中调用
     this.stop_manual = function ()
     {
-        this.app.stopFile({ id: this.guid });
+        this.app.stopFile({ id: this.id });
         this.State = HttpUploaderState.Stop;
     };
     //手动点击“停止”按钮时
@@ -274,9 +274,9 @@ function FolderUploader(fdLoc, mgr)
             return;
         }
         //
-        this.app.stopFile({ id: this.guid });
-        this.manager.RemoveQueuePost(this.guid);
-        this.manager.AppendQueueWait(this.guid);
+        this.app.stopFile({ id: this.id });
+        this.manager.RemoveQueuePost(this.id);
+        this.manager.AppendQueueWait(this.id);
         this.ui.btn.post.show();
         this.ui.btn.del.show();
         this.ui.btn.cancel.hide();
@@ -293,7 +293,7 @@ function FolderUploader(fdLoc, mgr)
     //从上传列表中删除上传任务
     this.remove = function ()
     {
-        this.manager.Delete(this.guid);
+        this.manager.Delete(this.id);
         this.ui.div.remove();
         this.ui.split.remove();
     };
