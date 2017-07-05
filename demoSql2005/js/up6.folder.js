@@ -60,7 +60,7 @@ function FolderUploader(fdLoc, mgr)
         this.ui.btn.del.hide();
         this.ui.btn.post.hide();
         this.ui.btn.cancel.hide();
-        this.manager.AppendQueuePost(this.idLoc);//添加到队列中
+        this.manager.AppendQueuePost(this.id);//添加到队列中
         this.State = HttpUploaderState.Posting;
         //如果文件夹已初始化，表示续传。
         if (this.folderInit)
@@ -268,8 +268,8 @@ function FolderUploader(fdLoc, mgr)
             this.ui.btn.cancel.text("续传").show;
             this.ui.msg.text("传输已停止....");
             this.ui.btn.del.show();
-            this.manager.RemoveQueue(this.idLoc);
-            this.manager.AppendQueueWait(this.idLoc);//添加到未上传列表
+            this.manager.RemoveQueue(this.id);
+            this.manager.AppendQueueWait(this.id);//添加到未上传列表
             this.post_next();
             return;
         }
