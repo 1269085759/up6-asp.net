@@ -98,7 +98,7 @@ namespace up6.demoSql2005.db.biz.folder
                 cmd.Parameters["@f_pathRel"].Value = f.pathRel;
                 cmd.Parameters["@f_md5"].Value = f.md5;
                 cmd.Parameters["@f_lenLoc"].Value = f.lenLoc;
-                cmd.Parameters["@f_complete"].Value = f.lenLoc>0 ? f.perSvr : "0%";
+                cmd.Parameters["@f_perSvr"].Value = f.lenLoc>0 ? f.perSvr : "0%";
                 cmd.Parameters["@f_complete"].Value = f.lenLoc>0 ? f.complete : true;
                 cmd.ExecuteNonQuery();
 
@@ -124,6 +124,8 @@ namespace up6.demoSql2005.db.biz.folder
             cmd.Parameters["@f_pathRel"].Value = string.Empty;
             cmd.Parameters["@f_md5"].Value = rt.md5;
             cmd.Parameters["@f_lenLoc"].Value = rt.lenLoc;
+            cmd.Parameters["@f_perSvr"].Value = rt.lenLoc>0 ? rt.perSvr : "0%";
+            cmd.Parameters["@f_complete"].Value = rt.lenLoc>0 ? rt.complete : true;
             cmd.ExecuteNonQuery();
         }
         void saveFolders()
