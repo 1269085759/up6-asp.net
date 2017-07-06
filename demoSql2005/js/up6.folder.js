@@ -42,7 +42,7 @@ function FolderUploader(fdLoc, mgr)
         this.ui.btn.post.hide();
         this.ui.btn.del.hide();
         this.folderInit = true;
-        //this.post_fd();
+        this.post_fd();
     };
     this.svr_create_err = function ()
     {
@@ -86,8 +86,8 @@ function FolderUploader(fdLoc, mgr)
         this.ui.btn.stop.show();
         this.ui.btn.post.hide();
         this.State = HttpUploaderState.Posting;
-        var fd = jQuery.extend(this.folderSvr, { id: this.id});
-        this.app.postFolder({ folder: fd, fields: this.fields });
+        var fd = jQuery.extend({}, { id: this.id, pathLoc: this.FolderSvr.pathLoc, fields: this.fields });
+        this.app.postFolder(fd);
     };
     this.post_error = function (json)
     {
@@ -113,8 +113,8 @@ function FolderUploader(fdLoc, mgr)
     this.post_process = function (json)
     {
         if (this.State == HttpUploaderState.Stop) return;
-        this.folderSvr.files[json.id_f].lenSvr = json.lenSvr;
-        this.folderSvr.files[json.id_f].perSvr = json.perSvr;
+        //this.folderSvr.files[json.id_f].lenSvr = json.lenSvr;
+        //this.folderSvr.files[json.id_f].perSvr = json.perSvr;
         this.folderSvr.lenSvr = json.lenSvrFD;
         this.ui.percent.text("("+json.percentFD+")");
         this.ui.process.css("width", json.percentFD);
