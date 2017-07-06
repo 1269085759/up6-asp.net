@@ -9,7 +9,7 @@ namespace up6.demoSql2005.db.biz
     /// 所有文件夹中的文件按原始文件名称存储
     /// 文件存在重复
     /// </summary>
-    public class PathUuidBuilder : PathBuilder
+    public class PathBuilderUuid : PathBuilder
     {
         /// <summary>
         /// 构建存储路径，保留客户端文件名称

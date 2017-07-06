@@ -9,7 +9,7 @@ namespace up6.demoSql2005.db.biz.folder
     {
         public fd_uuid_appender()
         {
-            this.pb = new PathUuidBuilder();
+            this.pb = new PathBuilderUuid();
         }
 
         public override void save()

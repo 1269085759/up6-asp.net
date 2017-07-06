@@ -10,7 +10,7 @@ namespace up6.demoSql2005.db.biz.folder
     {
         DbHelper db;
         DbCommand cmd;
-        protected PathBuilder pb = new PathMd5Builder();
+        protected PathBuilder pb = new PathBuilderMd5();
         Dictionary<string/*md5*/, xdb_files> svr_files = new Dictionary<string, xdb_files>();
         public fd_root m_root;//
         private string m_md5s = "0";

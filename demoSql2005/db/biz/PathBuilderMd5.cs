@@ -8,7 +8,7 @@ namespace up6.demoSql2005.db.biz
     /// 所有文件夹中的文件以md5模式存储
     /// 所有文件均不重复
     /// </summary>
-    public class PathMd5Builder : PathBuilder
+    public class PathBuilderMd5 : PathBuilder
     {
         /// <summary>
         /// 不创建文件夹，所有文件统一以日期格式存储

@@ -26,7 +26,7 @@ namespace up6.demoSql2005.debug
 
 
             //输出服务器存储路径
-            PathMd5Builder pb = new PathMd5Builder();
+            PathBuilderMd5 pb = new PathBuilderMd5();
             string pathSvr = pb.genFile(0, "md5", "QQ2016.exe");
             pathSvr = pathSvr.Replace("\\", "/");
             cfg["uploadPath"] = pathSvr;

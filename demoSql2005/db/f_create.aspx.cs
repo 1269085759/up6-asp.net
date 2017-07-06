@@ -47,7 +47,7 @@ namespace up6.demoSql2005.db
             fileSvr.nameSvr = md5 + Path.GetExtension(pathLoc).ToLower();
             
             //所有单个文件均以md5方式存储
-            PathMd5Builder pb = new PathMd5Builder();
+            PathBuilderMd5 pb = new PathBuilderMd5();
             fileSvr.pathSvr = pb.genFile(fileSvr.uid, ref fileSvr);
 
             //数据库存在相同文件
