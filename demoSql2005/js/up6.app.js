@@ -122,7 +122,8 @@ var up6_app = {
     , updateFolder: function (fd) {
         var param = { name: "update_folder"};
         jQuery.extend(param, fd);
-        this.postMessage(param);}
+        this.postMessage(param);
+    }
     , stopFile: function (f)
     {
         var param = { name: "stop_file", id: f.id, config: this.Config};

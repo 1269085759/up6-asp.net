@@ -93,7 +93,7 @@ function FolderUploader(fdLoc, mgr)
     };
     this.update_fd = function () {
         var fd = jQuery.extend({}, { id: this.id, pathSvr: this.folderSvr.pathSvr});
-        this.app.postFolder(fd);
+        this.app.updateFolder(fd);
     };
     this.post_error = function (json)
     {

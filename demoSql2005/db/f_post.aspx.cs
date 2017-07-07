@@ -74,23 +74,7 @@ namespace up6.demoSql2005.db
                 //2.0保存文件块数据
                 FileBlockWriter res = new FileBlockWriter();
                 res.write(pathSvr, rangePos, ref file);
-
-                bool fd = !string.IsNullOrEmpty(fd_id);
-                if (fd) fd = !string.IsNullOrEmpty(fd_lenSvr);
-                if (fd) fd = !string.IsNullOrEmpty(fd_id);
-                if(fd) fd = long.Parse(fd_lenSvr) > 0;
                 
-                //文件夹进度
-                DBFile db = new DBFile();
-                if(fd)
-                {
-                    //db.fd_fileProcess(Convert.ToInt32(uid), Convert.ToInt32(guid), rangePos, Convert.ToInt64(lenSvr), perSvr, Convert.ToInt32(fd_guid), Convert.ToInt64(fd_lenSvr),fd_perSvr,complete=="true");
-                }//文件进度
-                else
-                {
-                    //db.f_process(Convert.ToInt32(uid), Convert.ToInt32(guid), rangePos, Convert.ToInt64(lenSvr), perSvr,complete=="true");
-                }
-
                 Response.Write("ok");
             }
         }
