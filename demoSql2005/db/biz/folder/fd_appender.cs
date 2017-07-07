@@ -227,6 +227,7 @@ namespace up6.demoSql2005.db.biz.folder
 
             this.cmd.Parameters.Clear();
             this.cmd.CommandText = sql;
+            this.cmd.CommandType = System.Data.CommandType.StoredProcedure;
             this.db.AddString(ref cmd, "@md5s", this.m_md5s, int.MaxValue);
             this.db.AddInt(ref cmd, "@md5_len", this.m_root.files[0].md5.Length);
             this.db.AddInt(ref cmd, "@md5s_len",this.m_md5s.Length);

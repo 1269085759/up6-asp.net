@@ -178,13 +178,7 @@ function FolderUploader(fdLoc, mgr)
     };
     this.md5_complete = function (json)
     {
-        //单个文件计算完毕
-        if (!json.all)
-        {
-            this.folderSvr.files[json.id_f].md5 = json.md5;
-            return;
-        }
-
+        jQuery.extend(this.folderSvr,json.data);
         //在此处增加服务器验证代码。
         this.ui.msg.text("初始化...");
 		var f_data = jQuery.extend({},this.fields,{folder: encodeURIComponent(JSON.stringify(this.folderSvr)), time: new Date().getTime()});
