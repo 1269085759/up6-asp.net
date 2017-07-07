@@ -41,6 +41,8 @@ function FolderUploader(fdLoc, mgr)
         this.ui.btn.cancel.hide();
         this.ui.btn.post.hide();
         this.ui.btn.del.hide();
+        this.folderSvr.pathSvr = fdSvr.pathSvr;
+        this.update_fd();
         this.folderInit = true;
         this.post_fd();
     };
@@ -86,7 +88,11 @@ function FolderUploader(fdLoc, mgr)
         this.ui.btn.stop.show();
         this.ui.btn.post.hide();
         this.State = HttpUploaderState.Posting;
-        var fd = jQuery.extend({}, { id: this.id, pathLoc: this.FolderSvr.pathLoc, fields: this.fields });
+        var fd = jQuery.extend({}, { id: this.id, pathLoc: this.folderSvr.pathLoc, fields: this.fields });
+        this.app.postFolder(fd);
+    };
+    this.update_fd = function () {
+        var fd = jQuery.extend({}, { id: this.id, pathSvr: this.folderSvr.pathSvr});
         this.app.postFolder(fd);
     };
     this.post_error = function (json)
