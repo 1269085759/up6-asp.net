@@ -8,8 +8,8 @@ namespace up6.demoSql2005.db.biz.folder
 {
     public class fd_appender
     {
-        DbHelper db;
-        DbCommand cmd;
+        protected DbHelper db;
+        protected DbCommand cmd;
         protected PathBuilder pb = new PathBuilderMd5();
         Dictionary<string/*md5*/, xdb_files> svr_files = new Dictionary<string, xdb_files>();
         public fd_root m_root;//
@@ -22,7 +22,7 @@ namespace up6.demoSql2005.db.biz.folder
             this.cmd.Connection.Open();
         }
 
-        void saveFiles() {
+        protected virtual void saveFiles() {
 
             StringBuilder sb = new StringBuilder();
             sb.Append("insert into up6_files(");
@@ -183,8 +183,6 @@ namespace up6.demoSql2005.db.biz.folder
             //增加对空文件夹和0字节文件夹的处理
             if (!string.IsNullOrEmpty(this.m_md5s)) this.get_md5_files();//查询相同MD5值。
 
-            //this.update_rel();  //更新结构关系
-
             //对空文件夹的处理，或者0字节文件夹的处理
             if (this.m_root.lenLoc == 0) this.m_root.complete = true;
 
@@ -209,16 +207,6 @@ namespace up6.demoSql2005.db.biz.folder
                 }
             }
             this.m_md5s = string.Join(",", md5_arr.ToArray());
-        }
-
-        /// <summary>
-        /// 更新层级结构信息
-        /// 更新文件夹父级ID
-        /// 更新文件父级ID
-        /// </summary>
-        /// <param name="fd"></param>
-        public virtual void update_rel()
-        {
         }
 
         protected virtual void get_md5_files()
@@ -283,36 +271,6 @@ namespace up6.demoSql2005.db.biz.folder
                     //f.md5 = f_svr.md5;
                 }
             }
-        }
-
-
-        void update_file(xdb_files f)
-        {
-            if (!f.fdTask)
-            { 
-                FileBlockWriter fr = new FileBlockWriter();
-                fr.make(f.pathSvr, f.lenLoc);
-            }
-
-            this.cmd.Parameters["@f_pidRoot"].Value = f.pidRoot;
-            this.cmd.Parameters["@f_fdTask"].Value = f.fdTask;
-            this.cmd.Parameters["@f_fdChild"].Value = f.fdChild;
-            this.cmd.Parameters["@f_uid"].Value = f.uid;
-            this.cmd.Parameters["@f_nameLoc"].Value = f.nameLoc;
-            this.cmd.Parameters["@f_nameSvr"].Value = f.nameSvr;
-            this.cmd.Parameters["@f_pathLoc"].Value = f.pathLoc;
-            this.cmd.Parameters["@f_pathSvr"].Value = f.pathSvr;
-            this.cmd.Parameters["@f_pathRel"].Value = f.pathRel;
-            this.cmd.Parameters["@f_md5"].Value = f.md5;
-            this.cmd.Parameters["@f_lenLoc"].Value = f.lenLoc;
-            this.cmd.Parameters["@f_sizeLoc"].Value = f.sizeLoc;
-            this.cmd.Parameters["@f_pos"].Value = f.offset;
-            this.cmd.Parameters["@f_lenSvr"].Value = f.lenSvr;
-            this.cmd.Parameters["@f_perSvr"].Value = f.lenLoc > 0 ? f.perSvr : "100%";
-            //fix(2016-09-21):0字节文件直接显示100%
-            this.cmd.Parameters["@f_complete"].Value = f.lenLoc > 0 ? f.complete : true;
-            this.cmd.Parameters["@f_guid"].Value = f.id;
-            this.cmd.ExecuteNonQuery();
         }
     }
 }
