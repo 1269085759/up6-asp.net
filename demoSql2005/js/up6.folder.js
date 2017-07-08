@@ -119,12 +119,9 @@ function FolderUploader(fdLoc, mgr)
     this.post_process = function (json)
     {
         if (this.State == HttpUploaderState.Stop) return;
-        //this.folderSvr.files[json.id_f].lenSvr = json.lenSvr;
-        //this.folderSvr.files[json.id_f].perSvr = json.perSvr;
-        this.folderSvr.lenSvr = json.lenSvrFD;
-        this.ui.percent.text("("+json.percentFD+")");
-        this.ui.process.css("width", json.percentFD);
-        var str = "("+json.fileIndex +"/"+this.folderSvr.files.length+") " + json.lenPostFD + " " + json.speed + " " + json.timeFD;
+        this.ui.percent.text("(" + json.percent+")");
+        this.ui.process.css("width", json.percent);
+        var str = "(" + json.fileIndex + "/" + json.fileCount + ") " + json.lenPost + " " + json.speed + " " + json.time;
         this.ui.msg.text(str);
     };
     this.post_complete = function (json)
@@ -293,6 +290,7 @@ function FolderUploader(fdLoc, mgr)
     //从上传列表中删除上传任务
     this.remove = function ()
     {
+        this.app.delFolder({ id: this.id });
         this.manager.Delete(this.id);
         this.ui.div.remove();
         this.ui.split.remove();

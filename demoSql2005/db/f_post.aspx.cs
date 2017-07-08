@@ -61,15 +61,6 @@ namespace up6.demoSql2005.db
                 //临时文件大小
                 HttpPostedFile file = Request.Files.Get(0);
 
-                XDebug.Output("lenLoc", lenLoc);
-                XDebug.Output("uid", uid);
-                XDebug.Output("idSvr", f_id);
-                XDebug.Output("rangePos", rangePos);
-                XDebug.Output("lenSvr", lenSvr);
-                XDebug.Output("perSvr", perSvr);
-                XDebug.Output("fd_idSvr", fd_id);
-                XDebug.Output("fd_lenSvr", fd_lenSvr);
-                XDebug.Output("fd_perSvr", fd_perSvr);
 
                 //2.0保存文件块数据
                 FileBlockWriter res = new FileBlockWriter();

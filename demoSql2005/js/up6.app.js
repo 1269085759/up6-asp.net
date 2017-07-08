@@ -124,6 +124,12 @@ var up6_app = {
         jQuery.extend(param, fd);
         this.postMessage(param);
     }
+    , delFolder: function (v)
+    {
+        var param = { name: "del_folder"};
+        jQuery.extend(param, v);
+        this.postMessage(param);
+    }
     , stopFile: function (f)
     {
         var param = { name: "stop_file", id: f.id, config: this.Config};
