@@ -110,6 +110,7 @@ function HttpUploaderMgr()
 		//文件操作相关
 		, "UrlCreate"		: "http://localhost:87/demoSql2005/db/f_create.aspx"
 		, "UrlPost"			: "http://localhost:87/demoSql2005/db/f_post.aspx"
+        , "UrlProcess"		: "http://localhost:87/demoSql2005/db/f_process.aspx"
 		, "UrlComplete"		: "http://localhost:87/demoSql2005/db/f_complete.aspx"
 		, "UrlList"			: "http://localhost:87/demoSql2005/db/f_list.aspx"
 		, "UrlDel"			: "http://localhost:87/demoSql2005/db/f_del.aspx"

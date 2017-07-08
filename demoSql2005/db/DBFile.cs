@@ -272,7 +272,7 @@ namespace up6.demoSql2005.db
         ///<param name="f_pos">文件位置，大小可能超过2G，所以需要使用long保存</param>
         ///<param name="f_lenSvr">已上传长度，文件大小可能超过2G，所以需要使用long保存</param>
         ///<param name="f_perSvr">已上传百分比</param>
-        public bool f_process(int f_uid, string f_id, long f_pos, long f_lenSvr, string f_perSvr,bool complete)
+        public bool f_process(int f_uid, string f_id, long offset, long f_lenSvr, string f_perSvr)
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("update up6_files ");
@@ -280,16 +280,15 @@ namespace up6.demoSql2005.db
             sb.Append(" f_pos =@f_pos");
             sb.Append(",f_lenSvr=@f_lenSvr");
             sb.Append(",f_perSvr=@f_perSvr");
-            sb.Append("where f_uid =@f_uid and f_guid=@f_id");
+            sb.Append("where f_uid =@f_uid and f_id=@f_id");
             DbHelper db = new DbHelper();
             DbCommand cmd = db.GetCommandStored(sb.ToString() );
 
-            db.AddInt64(ref cmd, "@f_pos", f_pos);
+            db.AddInt64(ref cmd, "@f_pos", offset);
             db.AddInt64(ref cmd, "@f_lenSvr", f_lenSvr);
             db.AddString(ref cmd, "@f_perSvr", f_perSvr, 6);
-            db.AddBool(ref cmd, "@f_complete", complete);
             db.AddInt(ref cmd, "@f_uid", f_uid);
-            db.AddString(ref cmd, "@f_guid", f_id,32);
+            db.AddString(ref cmd, "@f_id", f_id,32);
 
             db.ExecuteNonQuery(cmd);
             return true;

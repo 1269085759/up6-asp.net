@@ -46,6 +46,21 @@ function FolderUploader(fdLoc, mgr)
         this.folderInit = true;
         this.post_fd();
     };
+    this.svr_update = function ()
+    {
+        if (this.folderSvr.lenSvr == 0) return;
+        var param = { uid: this.fields["uid"], id: this.id, offset: 0, lenSvr: this.folderSvr.lenSvr, perSvr: this.folderSvr.perSvr, time: new Date().getTime() };
+        $.ajax({
+            type: "GET"
+            , dataType: 'jsonp'
+            , jsonp: "callback" //自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名
+            , url: this.Config["UrlProcess"]
+            , data: param
+            , success: function (msg) {}
+            , error: function (req, txt, err) { alert("更新文件夹进度失败！" + req.responseText); }
+            , complete: function (req, sta) { req = null; }
+        });
+    };
     this.svr_create_err = function ()
     {
         this.folderInit = false;
@@ -130,7 +145,8 @@ function FolderUploader(fdLoc, mgr)
     };
     this.post_process = function (json)
     {
-        if (this.State == HttpUploaderState.Stop) return;
+        this.folderSvr.lenSvr = json.lenSvr;
+        this.folderSvr.perSvr = json.lenSvr;
         this.ui.percent.text("(" + json.percent+")");
         this.ui.process.css("width", json.percent);
         var str = "(" + json.fileIndex + "/" + json.fileCount + ") " + json.lenPost + " " + json.speed + " " + json.time;
@@ -268,6 +284,7 @@ function FolderUploader(fdLoc, mgr)
         this.ui.btn.cancel.hide();
         this.ui.btn.stop.hide();
         this.ui.btn.post.hide();
+        this.svr_update();
         this.app.stopFile({ id: this.id });
     };
 

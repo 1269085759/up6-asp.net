@@ -81,6 +81,21 @@ function FileUploader(fileLoc, mgr)
             this.post_file();
         }
     };
+    this.svr_update = function () {
+        if (this.fileSvr.lenSvr == 0) return;
+        var param = { uid: this.fields["uid"], offset: this.fileSvr.lenSvr, lenSvr: this.fileSvr.lenSvr, perSvr: this.fileSvr.perSvr, id: this.id, time: new Date().getTime() };
+        $.ajax({
+            type: "GET"
+            , dataType: 'jsonp'
+            , jsonp: "callback" //自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名
+            , url: this.Config["UrlProcess"]
+            , data: param
+            , success: function (msg) {
+            }
+            , error: function (req, txt, err) { alert("更新文件进度错误！" + req.responseText); }
+            , complete: function (req, sta) { req = null; }
+        });
+    };
     this.post_process = function (json)
     {
         //debugMsg("127-file-this.post_process");
