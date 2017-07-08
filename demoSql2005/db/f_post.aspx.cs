@@ -47,7 +47,7 @@ namespace up6.demoSql2005.db
             //有文件块数据
             if (Request.Files.Count > 0)
             {
-                long rangePos = Convert.ToInt64(blockOffset);
+                long offset = Convert.ToInt64(blockOffset);
 
                 //临时文件大小
                 HttpPostedFile file = Request.Files.Get(0);
@@ -55,7 +55,7 @@ namespace up6.demoSql2005.db
 
                 //2.0保存文件块数据
                 FileBlockWriter res = new FileBlockWriter();
-                res.write(pathSvr, rangePos, ref file);
+                res.write(pathSvr, offset, ref file);
                 
                 Response.Write("ok");
             }
