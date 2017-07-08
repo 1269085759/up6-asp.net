@@ -218,11 +218,6 @@ function FolderUploader(fdLoc, mgr)
 
         });
     };
-    this.md5_stoped = function (json) {
-        this.manager.RemoveQueuePost(this.id);
-        var ref = this;
-        setTimeout(function () { ref.remove(); ref.manager.PostNext();}, 200);
-    };
     
     //所有文件全部上传完成
     this.all_complete = function ()
