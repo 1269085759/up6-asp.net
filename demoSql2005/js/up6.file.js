@@ -282,7 +282,7 @@ function FileUploader(fileLoc, mgr)
     };
     this.stop = function ()
     {
-        //this.ui.btn.cancel.text("续传").show();
+        this.svr_update();
         this.ui.msg.text("传输已停止....");
         this.Manager.AppendQueueWait(this.fileSvr.id);//添加到未上传列表
 

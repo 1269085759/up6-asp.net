@@ -275,14 +275,14 @@ namespace up6.demoSql2005.db
         public bool f_process(int f_uid, string f_id, long offset, long f_lenSvr, string f_perSvr)
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("update up6_files ");
+            sb.Append("update up6_files");
             sb.Append(" set");
             sb.Append(" f_pos =@f_pos");
             sb.Append(",f_lenSvr=@f_lenSvr");
             sb.Append(",f_perSvr=@f_perSvr");
-            sb.Append("where f_uid =@f_uid and f_id=@f_id");
+            sb.Append(" where f_uid =@f_uid and f_id=@f_id");
             DbHelper db = new DbHelper();
-            DbCommand cmd = db.GetCommandStored(sb.ToString() );
+            DbCommand cmd = db.GetCommand(sb.ToString() );
 
             db.AddInt64(ref cmd, "@f_pos", offset);
             db.AddInt64(ref cmd, "@f_lenSvr", f_lenSvr);
