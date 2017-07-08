@@ -95,6 +95,18 @@ function FolderUploader(fdLoc, mgr)
         var fd = jQuery.extend({}, { id: this.id, pathSvr: this.folderSvr.pathSvr});
         this.app.updateFolder(fd);
     };
+    this.post_stoped = function (json)
+    {
+        this.State = HttpUploaderState.Stop;
+        this.ui.btn.post.show();
+        this.ui.btn.del.show();
+        this.ui.btn.cancel.hide();
+        this.ui.btn.stop.hide();
+        this.ui.msg.text("传输已停止....");
+        this.manager.RemoveQueuePost(this.id);
+        this.manager.AppendQueueWait(this.id);//添加到未上传列表
+        this.post_next();
+    };
     this.post_error = function (json)
     {
         //this.ui.btn.cancel.text("续传").show();
@@ -252,32 +264,11 @@ function FolderUploader(fdLoc, mgr)
     //手动点击“停止”按钮时
     this.stop = function ()
     {
-        this.State = HttpUploaderState.Stop;
-        if (HttpUploaderState.Ready == this.State)
-        {
-            this.ui.btn.cancel.text("续传").show;
-            this.ui.msg.text("传输已停止....");
-            this.ui.btn.del.show();
-            this.manager.RemoveQueue(this.id);
-            this.manager.AppendQueueWait(this.id);//添加到未上传列表
-            this.post_next();
-            return;
-        }
-        //
-        this.app.stopFile({ id: this.id });
-        this.manager.RemoveQueuePost(this.id);
-        this.manager.AppendQueueWait(this.id);
-        this.ui.btn.post.show();
-        this.ui.btn.del.show();
+        this.ui.btn.del.hide();
         this.ui.btn.cancel.hide();
         this.ui.btn.stop.hide();
-
-        if (this.arrFiles.length > 0)
-        {
-        }
-        else
-        {
-        }
+        this.ui.btn.post.hide();
+        this.app.stopFile({ id: this.id });
     };
 
     //从上传列表中删除上传任务

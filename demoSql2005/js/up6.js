@@ -508,7 +508,11 @@ function HttpUploaderMgr()
 	{
 	    var p = this.filesMap[json.id];
 	    p.post_complete(json);
-	};
+    };
+    this.post_stoped = function (json) {
+        var p = this.filesMap[json.id];
+        p.post_stoped(json);
+    };
 	this.md5_process = function (json)
 	{
 	    var p = this.filesMap[json.id];
@@ -551,6 +555,7 @@ function HttpUploaderMgr()
 	    else if (json.name == "post_process") { _this.post_process(json); }
 	    else if (json.name == "post_error") { _this.post_error(json); }
 	    else if (json.name == "post_complete") { _this.post_complete(json); }
+	    else if (json.name == "post_stoped") { _this.post_stoped(json); }
 	    else if (json.name == "md5_process") { _this.md5_process(json); }
 	    else if (json.name == "md5_complete") { _this.md5_complete(json); }
 	    else if (json.name == "md5_error") { _this.md5_error(json); }
@@ -1081,10 +1086,6 @@ function HttpUploaderMgr()
 	    btnStop.click(function ()
 	    {
 	        fdTask.stop();
-	        btnPost.show();
-	        btnDel.show();
-	        btnCancel.hide();
-	        btnStop.hide();
 	    });
 		btnDel.click(function(){fdTask.remove();});
 		fdTask.Ready(); //准备
