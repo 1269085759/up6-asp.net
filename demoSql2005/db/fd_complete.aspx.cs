@@ -6,19 +6,18 @@ namespace up6.demoSql2005.db
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            string id_file = Request.QueryString["id_file"];
-            string id_fd = Request.QueryString["id_folder"];
+            string id = Request.QueryString["id"];
             string uid = Request.QueryString["uid"];
             string cak = Request.QueryString["callback"];
             int ret = 0;
 
-            if ( string.IsNullOrEmpty(id_fd)
+            if ( string.IsNullOrEmpty(id)
                 || uid.Length < 1)
             {
             }
             else
             {
-                DBFile.fd_complete(id_file,id_fd,uid);
+                DBFile.fd_complete(id,uid);
                 ret = 1;
             }
             Response.Write(cak + "(" + ret + ")");

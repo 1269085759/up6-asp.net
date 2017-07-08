@@ -251,15 +251,14 @@ namespace up6.demoSql2005.db
         /// </summary>
         /// <param name="f_uid"></param>
         /// <param name="f_id">文件夹ID</param>
-        static public void fd_complete(string f_id,string fd_id,string uid)
+        static public void fd_complete(string f_id,string uid)
         {
             string sql = "update up6_files set f_perSvr='100%',f_lenSvr=f_lenLoc,f_complete=1 where f_id=@f_id and f_uid=@uid;";
-            sql += "update up6_folders set fd_complete=1 where fd_id=@fd_id and fd_uid=@uid;";
+            sql += "update up6_folders set fd_complete=1 where fd_id=@f_id and fd_uid=@uid;";
 
             DbHelper db = new DbHelper();
             DbCommand cmd = db.GetCommand(sql);
-            db.AddInt(ref cmd, "@f_id", int.Parse(f_id));
-            db.AddInt(ref cmd, "@fd_id", int.Parse(fd_id));
+            db.AddString(ref cmd, "@f_id", f_id,32);
             db.AddInt(ref cmd, "@uid", int.Parse(uid));
             db.ExecuteNonQuery(cmd);
         }

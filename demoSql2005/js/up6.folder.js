@@ -126,13 +126,6 @@ function FolderUploader(fdLoc, mgr)
     };
     this.post_complete = function (json)
     {
-        if (!json.all)
-        {
-            this.folderSvr.files[json.id_f].complete = true;
-            this.folderSvr.filesComplete++;//
-            return;
-        }
-
         this.event.fdComplete(this);
         $.each(this.ui.btn, function (i, n)
         {
@@ -149,7 +142,7 @@ function FolderUploader(fdLoc, mgr)
         this.manager.RemoveQueuePost(this.id);
         //从未上传列表中删除
         this.manager.RemoveQueueWait(this.id);
-        var str = "文件数：" + this.folderSvr.files.length + "，成功：" + json.completes;
+        var str = "文件数：" + json.fileCount + "，成功：" + json.completes;
         if(json.errors > 0 ) str += " 失败：" + json.errors
         this.ui.msg.text(str);
 
@@ -158,7 +151,7 @@ function FolderUploader(fdLoc, mgr)
 			, dataType: 'jsonp'
 			, jsonp: "callback" //自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名
 			, url: this.Config["UrlFdComplete"]
-			, data: { uid: this.fields["uid"], id_folder: this.folderSvr.fdID,id_file:this.folderSvr.idFile, time: new Date().getTime() }
+			, data: { uid: this.fields["uid"], id: this.id,time: new Date().getTime() }
 			, success: function (msg)
 			{
 			    //添加到文件列表
