@@ -18,45 +18,36 @@ namespace up6.demoSql2005.db
         /// <param name="e"></param>
         protected void Page_Load(object sender, EventArgs e)
         {
-            string uid          = Request.Form["uid"];
-            string f_id         = Request.Form["id"];
-            string md5          = Request.Form["md5"];
-            string perSvr       = Request.Form["perSvr"];//文件百分比
-            string lenSvr       = Request.Form["lenSvr"];//已传大小
-            string lenLoc       = Request.Form["lenLoc"];//本地文件大小
-            string f_pos        = Request.Form["RangePos"];
-            string rangeSize    = Request.Form["rangeSize"];//当前块大小
-            string rangeIndex   = Request.Form["rangeIndex"];//当前块索引，基于1
-            string complete     = Request.Form["complete"];//true/false
-            string fd_id        = Request.Form["fd-id"];//文件夹ID,与up6_files.fid对应
-            string fd_lenSvr    = Request.Form["fd-lenSvr"];//文件夹已传大小
-            string fd_perSvr    = Request.Form["fd-perSvr"];//文件夹百分比
-            string pathSvr      = Request.Form["pathSvr"];//add(2015-03-19):
+            string uid          = Request.Headers["uid"];
+            string f_id         = Request.Headers["id"];
+            string lenSvr       = Request.Headers["lenSvr"];//已传大小
+            string lenLoc       = Request.Headers["lenLoc"];//本地文件大小
+            string blockOffset  = Request.Headers["blockOffset"];
+            string blockSize    = Request.Headers["blockSize"];//当前块大小
+            string blockIndex   = Request.Headers["blockIndex"];//当前块索引，基于1
+            string complete     = Request.Headers["complete"];//true/false
+            string pathSvr      = Request.Headers["pathSvr"];//add(2015-03-19):
             pathSvr             = HttpUtility.UrlDecode(pathSvr);
 
             //参数为空
             if (string.IsNullOrEmpty(lenLoc)
                 || string.IsNullOrEmpty(uid)
                 || string.IsNullOrEmpty(f_id)
-                || string.IsNullOrEmpty(md5)
-                || string.IsNullOrEmpty(f_pos)
+                || string.IsNullOrEmpty(blockOffset)
                 || string.IsNullOrEmpty(pathSvr))
             {
-                XDebug.Output("lenLoc", lenLoc);
-                XDebug.Output("uid", uid);
-                XDebug.Output("guid", f_id);
-                XDebug.Output("md5", md5);
-                XDebug.Output("pathSvr", pathSvr);
-                XDebug.Output("fd-guid", fd_id);
-                XDebug.Output("fd-lenSvr", fd_lenSvr);
-                Response.Write("param is null");
+                foreach (string key in Request.Headers.Keys)
+                {
+                    var vs = Request.Headers.GetValues(key);
+                    XDebug.Output("key:" + key + String.Join(",", vs));
+                }
                 return;
             }
 
             //有文件块数据
             if (Request.Files.Count > 0)
             {
-                long rangePos = Convert.ToInt64(f_pos);
+                long rangePos = Convert.ToInt64(blockOffset);
 
                 //临时文件大小
                 HttpPostedFile file = Request.Files.Get(0);
