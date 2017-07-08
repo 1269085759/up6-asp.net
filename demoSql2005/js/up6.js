@@ -527,7 +527,11 @@ function HttpUploaderMgr()
 	{
 	    var p = this.filesMap[json.id];
 	    p.md5_error(json);
-	};
+    };
+    this.md5_stoped = function (json) {
+        var p = this.filesMap[json.id];
+        p.md5_stoped(json);
+    };
     this.load_complete = function (json)
     {
         this.btnSetup.hide();
@@ -559,6 +563,7 @@ function HttpUploaderMgr()
 	    else if (json.name == "md5_process") { _this.md5_process(json); }
 	    else if (json.name == "md5_complete") { _this.md5_complete(json); }
 	    else if (json.name == "md5_error") { _this.md5_error(json); }
+	    else if (json.name == "md5_stoped") { _this.md5_stoped(json); }
 	    else if (json.name == "load_complete") { _this.load_complete(json); }
 	    else if (json.name == "load_complete_edge") { _this.load_complete_edge(json); }
 	    else if (json.name == "extension_complete")

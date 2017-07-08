@@ -105,7 +105,7 @@ function FolderUploader(fdLoc, mgr)
         this.ui.msg.text("传输已停止....");
         this.manager.RemoveQueuePost(this.id);
         this.manager.AppendQueueWait(this.id);//添加到未上传列表
-        this.post_next();
+        this.manager.PostNext();
     };
     this.post_error = function (json)
     {
@@ -217,6 +217,11 @@ function FolderUploader(fdLoc, mgr)
 			, complete: function (req, sta) { req = null; }
 
         });
+    };
+    this.md5_stoped = function (json) {
+        this.manager.RemoveQueuePost(this.id);
+        var ref = this;
+        setTimeout(function () { ref.remove(); ref.manager.PostNext();}, 200);
     };
     
     //所有文件全部上传完成
