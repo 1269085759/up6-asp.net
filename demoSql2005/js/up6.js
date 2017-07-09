@@ -1011,10 +1011,6 @@ function HttpUploaderMgr()
 		btnStop.click(function ()
 		{
 		    upFile.stop();
-		    btnPost.show();
-		    btnDel.show();
-		    btnCancel.hide();
-		    btnStop.hide();
 		});
 		btnDel.click(function () { upFile.remove(); });
 		
