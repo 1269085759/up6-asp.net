@@ -3,10 +3,8 @@ function FileUploader(fileLoc, mgr)
 {
     var _this = this;
     this.id = fileLoc.id;
-    //fileLoc:{nameLoc,ext,lenLoc,sizeLoc,pathLoc,md5,lenSvr},控件传递的值
     this.ui = { msg: null, process: null, percent: null, btn: { del: null, cancel: null,post:null,stop:null }, div: null, split: null };
     this.isFolder = false; //不是文件夹
-    this.root = null;//根级文件夹对象。一般为FolderUploader
     this.app = mgr.app;
     this.Manager = mgr; //上传管理器指针
     this.event = mgr.event;
@@ -41,7 +39,6 @@ function FileUploader(fileLoc, mgr)
     //准备
     this.Ready = function ()
     {
-        //this.pButton.style.display = "none";
         this.ui.msg.text("正在上传队列中等待...");
         this.State = HttpUploaderState.Ready;
     };
@@ -50,15 +47,7 @@ function FileUploader(fileLoc, mgr)
     {
         alert("服务器返回信息为空，请检查服务器配置");
         this.ui.msg.text("向服务器发送MD5信息错误");
-        //文件夹项
-        if (this.root)
-        {
-            this.root.item_md5_error(obj);
-        } //文件项
-        else
-        {
-            this.ui.btn.cancel.text("续传");
-        }
+        this.ui.btn.cancel.text("续传");
     };
     this.svr_create = function (sv)
     {
@@ -76,8 +65,8 @@ function FileUploader(fileLoc, mgr)
         } //服务器文件没有上传完成
         else
         {
-            if (null == this.root) this.ui.process.css("width", this.fileSvr.perSvr);
-            if (null == this.root) this.ui.percent.text(this.fileSvr.perSvr);
+            this.ui.process.css("width", this.fileSvr.perSvr);
+            this.ui.percent.text(this.fileSvr.perSvr);
             this.post_file();
         }
     };
@@ -161,6 +150,27 @@ function FileUploader(fileLoc, mgr)
         this.post_next();
         this.event.fileComplete(this);//触发事件
     };
+    this.post_stoped = function (json)
+    {
+        this.ui.btn.post.show();
+        this.ui.btn.del.show();
+        this.ui.btn.cancel.hide();
+        this.ui.btn.stop.hide();
+        this.ui.msg.text("传输已停止....");
+
+        if (HttpUploaderState.Ready == this.State)
+        {
+            this.Manager.RemoveQueue(this.fileSvr.id);
+            this.post_next();
+            return;
+        }
+        this.State = HttpUploaderState.Stop;
+        //从上传列表中删除
+        this.Manager.RemoveQueuePost(this.fileSvr.id);
+        this.Manager.AppendQueueWait(this.fileSvr.id);//添加到未上传列表
+        //传输下一个
+        this.post_next();
+    };
     this.post_error = function (json)
     {
         this.ui.msg.text(HttpUploaderErrorCode[json.value]);
@@ -183,12 +193,6 @@ function FileUploader(fileLoc, mgr)
     };
     this.md5_process = function (json)
     {
-        if (this.root)
-        {
-            this.root.md5_process(json);
-            return;
-        }
-
         var msg = "正在扫描本地文件，已完成：" + json.percent;
         this.ui.msg.text(msg);
     };
@@ -282,24 +286,12 @@ function FileUploader(fileLoc, mgr)
     };
     this.stop = function ()
     {
+        this.ui.btn.del.hide();
+        this.ui.btn.cancel.hide();
+        this.ui.btn.stop.hide();
+        this.ui.btn.post.hide();
         this.svr_update();
-        this.ui.msg.text("传输已停止....");
-        this.Manager.AppendQueueWait(this.fileSvr.id);//添加到未上传列表
-
-        if (HttpUploaderState.Ready == this.State)
-        {
-            this.Manager.RemoveQueue(this.fileSvr.id);
-            this.post_next();
-            return;
-        }
-        this.State = HttpUploaderState.Stop;
-
-        this.app.stopFile({ id: this.fileSvr.id });
-
-        //从上传列表中删除
-        if (null == this.root) this.Manager.RemoveQueuePost(this.fileSvr.id);
-        //传输下一个
-        this.post_next();
+        this.app.stopFile({ id: this.fileSvr.id });        
     };
     //手动停止，一般在StopAll中调用
     this.stop_manual = function ()
