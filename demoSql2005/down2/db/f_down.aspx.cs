@@ -70,7 +70,7 @@ namespace up6.demoSql2005.down2.db
                 return;
             }
             demoSql2005.db.DBFile f = new demoSql2005.db.DBFile();
-            demoSql2005.db.xdb_files inf = new demoSql2005.db.xdb_files();
+            demoSql2005.db.FileInf inf = new demoSql2005.db.FileInf();
             //数据库不存在文件
             if (!f.GetFileInfByFid(fid, ref inf))
             {

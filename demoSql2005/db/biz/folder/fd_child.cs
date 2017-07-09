@@ -3,7 +3,7 @@
     /// <summary>
     /// 子文件夹
     /// </summary>
-    public class fd_child : xdb_files
+    public class fd_child : FileInf
     {
         public fd_child() { this.fdTask = true; }
     }

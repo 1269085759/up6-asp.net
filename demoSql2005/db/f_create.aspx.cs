@@ -34,7 +34,7 @@ namespace up6.demoSql2005.db
                 return;
             }
 
-            xdb_files fileSvr = new xdb_files();
+            FileInf fileSvr = new FileInf();
             fileSvr.fdChild = false;
             fileSvr.uid = int.Parse(uid);//将当前文件UID设置为当前用户UID
             fileSvr.id = id;
@@ -52,7 +52,7 @@ namespace up6.demoSql2005.db
 
             //数据库存在相同文件
             DBFile db = new DBFile();
-            xdb_files fileExist = new xdb_files();
+            FileInf fileExist = new FileInf();
             if (db.exist_file(md5, ref fileExist))
             {
                 fileSvr.pathSvr = fileExist.pathSvr;

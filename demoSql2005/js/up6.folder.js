@@ -146,7 +146,7 @@ function FolderUploader(fdLoc, mgr)
     this.post_process = function (json)
     {
         this.folderSvr.lenSvr = json.lenSvr;
-        this.folderSvr.perSvr = json.lenSvr;
+        this.folderSvr.perSvr = json.percent;
         this.ui.percent.text("(" + json.percent+")");
         this.ui.process.css("width", json.percent);
         var str = "(" + json.fileIndex + "/" + json.fileCount + ") " + json.lenPost + " " + json.speed + " " + json.time;

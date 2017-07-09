@@ -8,6 +8,6 @@ namespace up6.demoSql2005.db.biz.folder
     public class fd_root : fd_child
     {
         public List<fd_child> folders;
-        public List<xdb_files> files;
+        public List<FileInf> files;
     }
 }

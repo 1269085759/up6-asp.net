@@ -29,7 +29,7 @@ namespace up6.demoSql2005.db.biz
             return string.Empty;
         }
 
-        public virtual string genFile(int uid, ref xdb_files f)
+        public virtual string genFile(int uid, ref FileInf f)
         {
             return string.Empty;
         }

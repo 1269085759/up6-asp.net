@@ -191,7 +191,6 @@
       <DependentUpon>sql.aspx</DependentUpon>
     </Compile>
     <Compile Include="demoSql2005\db\utils\MapBlockWriter.cs" />
-    <Compile Include="demoSql2005\db\model\FileInf.cs" />
     <Compile Include="demoSql2005\db\utils\FileBlockWriter.cs" />
     <Compile Include="demoSql2005\db\model\FolderInf.cs" />
     <Compile Include="demoSql2005\db\f_complete.aspx.cs">
@@ -229,7 +228,7 @@
     <Compile Include="demoSql2005\db\f_post.aspx.designer.cs">
       <DependentUpon>f_post.aspx</DependentUpon>
     </Compile>
-    <Compile Include="demoSql2005\db\model\xdb_files.cs" />
+    <Compile Include="demoSql2005\db\model\FileInf.cs" />
     <Compile Include="demoSql2005\db\XDebug.cs" />
     <Compile Include="demoSql2005\debug\big_file.aspx.cs">
       <DependentUpon>big_file.aspx</DependentUpon>

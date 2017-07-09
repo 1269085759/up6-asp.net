@@ -17,7 +17,7 @@ namespace up6.demoSql2005.db
         /// </summary>
         /// <param name="f_id"></param>
         /// <returns></returns>
-        public bool GetFileInfByFid(string f_id, ref xdb_files inf)
+        public bool GetFileInfByFid(string f_id, ref FileInf inf)
         {
             bool ret = false;
             StringBuilder sb = new StringBuilder();
@@ -74,7 +74,7 @@ namespace up6.demoSql2005.db
         /// <param name="md5"></param>
         /// <param name="inf"></param>
         /// <returns></returns>
-        public bool exist_file(string md5, ref xdb_files inf)
+        public bool exist_file(string md5, ref FileInf inf)
         {
             if (string.IsNullOrEmpty(md5)) return false;
 
@@ -130,7 +130,7 @@ namespace up6.demoSql2005.db
         /// 文件名称，本地路径，远程路径，相对路径都使用原始字符串。
         /// d:\soft\QQ2012.exe
         /// </summary>
-        public void Add(ref xdb_files model)
+        public void Add(ref FileInf model)
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("insert into up6_files(");

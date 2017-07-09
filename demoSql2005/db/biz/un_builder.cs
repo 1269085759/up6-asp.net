@@ -46,7 +46,7 @@ namespace up6.demoSql2005.db.biz
             {
                 var f = new FileInf();
                 f.id = r.GetString(0);
-                f.m_fdTask = r.GetBoolean(1);
+                f.fdTask = r.GetBoolean(1);
                 f.nameLoc = r.GetString(2);
                 f.nameSvr = r.GetString(3);
                 f.pathLoc = r.GetString(4);
@@ -55,7 +55,7 @@ namespace up6.demoSql2005.db.biz
                 f.md5 = r.GetString(7);
                 f.lenLoc = r.GetInt64(8);
                 f.sizeLoc = r.GetString(9);
-                f.postPos = r.GetInt64(10);
+                f.offset = r.GetInt64(10);
                 f.lenSvr = r.GetInt64(11);
                 f.perSvr = r.GetString(12);
                 this.files.Add(f);

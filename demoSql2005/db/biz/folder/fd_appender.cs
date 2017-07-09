@@ -11,7 +11,7 @@ namespace up6.demoSql2005.db.biz.folder
         protected DbHelper db;
         protected DbCommand cmd;
         protected PathBuilder pb = new PathBuilderMd5();
-        Dictionary<string/*md5*/, xdb_files> svr_files = new Dictionary<string, xdb_files>();
+        Dictionary<string/*md5*/, FileInf> svr_files = new Dictionary<string, FileInf>();
         public fd_root m_root;//
         private string m_md5s = "0";
 
@@ -222,7 +222,7 @@ namespace up6.demoSql2005.db.biz.folder
             var r = this.cmd.ExecuteReader();
             while (r.Read())
             {
-                var f = new xdb_files();
+                var f = new FileInf();
                 f.nameLoc = r["f_nameLoc"].ToString();
                 f.nameSvr = r["f_nameSvr"].ToString();
                 f.fdTask = Convert.ToBoolean(r["f_fdTask"]);
@@ -249,7 +249,7 @@ namespace up6.demoSql2005.db.biz.folder
             if (this.svr_files.Count < 1) return;
             foreach(var f in this.m_root.files)
             {
-                xdb_files f_svr;
+                FileInf f_svr;
                 if(this.svr_files.TryGetValue(f.md5,out f_svr))
                 {
                     this.m_root.lenSvr += f_svr.lenSvr;
