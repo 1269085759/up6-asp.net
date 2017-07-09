@@ -135,6 +135,10 @@ var up6_app = {
         var param = { name: "stop_file", id: f.id, config: this.Config};
         this.postMessage(param);
     }
+    , delFile: function (f) {
+        var param = { name: "del_file", id: f.id};
+        this.postMessage(param);
+    }
     , postMessage:function(json)
     {
         try {

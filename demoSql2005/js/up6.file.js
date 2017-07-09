@@ -79,8 +79,7 @@ function FileUploader(fileLoc, mgr)
             , jsonp: "callback" //自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名
             , url: this.Config["UrlProcess"]
             , data: param
-            , success: function (msg) {
-            }
+            , success: function (msg) {}
             , error: function (req, txt, err) { alert("更新文件进度错误！" + req.responseText); }
             , complete: function (req, sta) { req = null; }
         });
@@ -310,6 +309,7 @@ function FileUploader(fileLoc, mgr)
     //删除，一般在用户点击"删除"按钮时调用
     this.remove = function ()
     {
+        this.app.delFile(this.fileSvr);
         this.Manager.Delete(this.fileSvr.id);
         this.ui.div.remove();
         this.ui.split.remove();
