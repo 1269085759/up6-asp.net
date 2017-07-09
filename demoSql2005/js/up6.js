@@ -103,6 +103,8 @@ function HttpUploaderMgr()
 		, "AppPath"			: ""//网站虚拟目录名称。子文件夹 web
         , "Cookie"			: ""//服务器cookie
         , "QueueCount"      : 3//同时上传的任务数
+        , "Md5Thread"       : 10//最大为10
+        , "FolderThread"    : 3//最大为10
 		//文件夹操作相关
 		, "UrlFdCreate"		: "http://localhost:87/demoSql2005/db/fd_create_uuid.aspx"
 		, "UrlFdComplete"	: "http://localhost:87/demoSql2005/db/fd_complete.aspx"
