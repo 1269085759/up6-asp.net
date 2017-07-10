@@ -1,1 +1,0 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="fd_complete.aspx.cs" Inherits="up6.demoSql2005.db.fd_complete" %>
