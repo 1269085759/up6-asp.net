@@ -140,6 +140,8 @@ namespace up6.db.biz.folder
             sb.Append(",fd_name");
             sb.Append(",fd_pid");
             sb.Append(",fd_uid");
+            sb.Append(",fd_files");
+            sb.Append(",fd_folders");
             sb.Append(",fd_pidRoot");
 
             sb.Append(") values (");
@@ -148,6 +150,8 @@ namespace up6.db.biz.folder
             sb.Append(",@fd_name");
             sb.Append(",@fd_pid");
             sb.Append(",@fd_uid");
+            sb.Append(",@fd_files");
+            sb.Append(",@fd_folders");
             sb.Append(",@fd_pidRoot");
             sb.Append(") ;");
 
@@ -155,6 +159,8 @@ namespace up6.db.biz.folder
             this.db.AddString(ref cmd, "@fd_id", string.Empty, 32);
             this.db.AddString(ref cmd, "@fd_name", string.Empty, 50);
             this.db.AddString(ref cmd, "@fd_pid", string.Empty, 32);
+            this.db.AddInt(ref cmd, "@fd_files", 0);
+            this.db.AddInt(ref cmd, "@fd_folders", 0);
             this.db.AddString(ref cmd, "@fd_pidRoot", string.Empty, 32);
             this.db.AddInt(ref cmd, "@fd_uid", 0);
             cmd.Prepare();
@@ -175,6 +181,8 @@ namespace up6.db.biz.folder
             cmd.Parameters["@fd_name"].Value = rt.nameLoc;
             cmd.Parameters["@fd_pid"].Value = string.Empty;
             cmd.Parameters["@fd_uid"].Value = rt.uid;
+            cmd.Parameters["@fd_files"].Value = rt.files.Count;
+            cmd.Parameters["@fd_folders"].Value = rt.folders.Count;
             cmd.Parameters["@fd_pidRoot"].Value = string.Empty;
             cmd.ExecuteNonQuery();
         }
