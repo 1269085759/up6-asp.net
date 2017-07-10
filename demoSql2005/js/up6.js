@@ -106,16 +106,16 @@ function HttpUploaderMgr()
         , "Md5Thread"       : 10//最大为10
         , "FolderThread"    : 3//最大为10
 		//文件夹操作相关
-		, "UrlFdCreate"		: "http://localhost:87/demoSql2005/db/fd_create_uuid.aspx"
-		, "UrlFdComplete"	: "http://localhost:87/demoSql2005/db/fd_complete.aspx"
-		, "UrlFdDel"	    : "http://localhost:87/demoSql2005/db/fd_del.aspx"
+		, "UrlFdCreate"		: "http://localhost:8888/demoSql2005/db/fd_create_uuid.aspx"
+		, "UrlFdComplete"	: "http://localhost:8888/demoSql2005/db/fd_complete.aspx"
+		, "UrlFdDel"	    : "http://localhost:8888/demoSql2005/db/fd_del.aspx"
 		//文件操作相关
-		, "UrlCreate"		: "http://localhost:87/demoSql2005/db/f_create.aspx"
-		, "UrlPost"			: "http://localhost:87/demoSql2005/db/f_post.aspx"
-        , "UrlProcess"		: "http://localhost:87/demoSql2005/db/f_process.aspx"
-		, "UrlComplete"		: "http://localhost:87/demoSql2005/db/f_complete.aspx"
-		, "UrlList"			: "http://localhost:87/demoSql2005/db/f_list.aspx"
-		, "UrlDel"			: "http://localhost:87/demoSql2005/db/f_del.aspx"
+		, "UrlCreate"		: "http://localhost:8888/demoSql2005/db/f_create.aspx"
+		, "UrlPost"			: "http://localhost:8888/demoSql2005/db/f_post.aspx"
+        , "UrlProcess"		: "http://localhost:8888/demoSql2005/db/f_process.aspx"
+		, "UrlComplete"		: "http://localhost:8888/demoSql2005/db/f_complete.aspx"
+		, "UrlList"			: "http://localhost:8888/demoSql2005/db/f_list.aspx"
+		, "UrlDel"			: "http://localhost:8888/demoSql2005/db/f_del.aspx"
 	    //x86
         , ie: {
               drop: { clsid: "0868BADD-C17E-4819-81DE-1D60E5E734A6", name: "Xproer.HttpDroper6" }
