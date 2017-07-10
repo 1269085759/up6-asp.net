@@ -15,8 +15,6 @@ namespace up6.demoSql2005.db.biz.folder
 
         public override void save()
         {
-            this.m_root.pathRel = this.m_root.nameLoc;//
-            
             this.m_root.pathSvr = this.pb.genFolder(this.m_root.uid, this.m_root.nameLoc);
             if (!Directory.Exists(this.m_root.pathSvr)) Directory.CreateDirectory(this.m_root.pathSvr);
 
@@ -126,7 +124,7 @@ namespace up6.demoSql2005.db.biz.folder
             cmd.Parameters["@f_nameLoc"].Value = rt.nameLoc;
             cmd.Parameters["@f_nameSvr"].Value = string.Empty;
             cmd.Parameters["@f_pathLoc"].Value = rt.pathLoc;
-            cmd.Parameters["@f_pathSvr"].Value = string.Empty;
+            cmd.Parameters["@f_pathSvr"].Value = rt.pathSvr;
             cmd.Parameters["@f_pathRel"].Value = string.Empty;
             cmd.Parameters["@f_md5"].Value = rt.md5;
             cmd.Parameters["@f_lenLoc"].Value = rt.lenLoc;
