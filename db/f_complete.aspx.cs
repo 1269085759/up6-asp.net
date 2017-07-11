@@ -13,7 +13,6 @@ namespace up6.db
             string md5 = Request.QueryString["md5"];
             string uid = Request.QueryString["uid"];
             string id = Request.QueryString["id"];
-            string guidFD= Request.QueryString["fd-guid"];
             string cbk = Request.QueryString["callback"];
 
             //返回值。1表示成功
@@ -29,12 +28,6 @@ namespace up6.db
                 DBFile db = new DBFile();
                 db.UploadComplete(md5);
                 ret = 1;
-            }
-
-            //更新文件夹已上传文件数
-            if (!string.IsNullOrEmpty(guidFD))
-            {
-                DBFolder.child_complete(guidFD);
             }
             Response.Write(cbk + "(" + ret + ")");//必须返回jsonp格式数据
         }
