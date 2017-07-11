@@ -9,7 +9,7 @@
         {
             this.nameLoc = this.size = this.pathLoc = this.pathSvr = string.Empty;
             this.lenSvr = this.lenLoc = 0;//fix:
-            this.uid   = this.idSvr = 0;
+            this.uid   = 0;
         }
 
         public string nameLoc;
@@ -26,14 +26,6 @@
         /// </summary>
         public long lenSvr;
         public string perSvr;
-        /// <summary>
-        /// 服务端文件夹ID,与数据库对应
-        /// </summary>
-        public int idSvr;
-        /// <summary>
-        /// 与xdb_files.id关联
-        /// </summary>
-        public int idFile;
         /// <summary>
         /// 用户ID
         /// </summary>
