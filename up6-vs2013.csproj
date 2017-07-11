@@ -192,7 +192,6 @@
     </Compile>
     <Compile Include="db\utils\MapBlockWriter.cs" />
     <Compile Include="db\utils\FileBlockWriter.cs" />
-    <Compile Include="db\model\FolderInf.cs" />
     <Compile Include="db\f_complete.aspx.cs">
       <DependentUpon>f_complete.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
