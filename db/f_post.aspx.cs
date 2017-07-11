@@ -6,6 +6,20 @@ namespace up6.db
 {
     public partial class f_post : System.Web.UI.Page
     {
+        bool safe_check(params string[] ps)
+        {
+            foreach (var v in ps)
+            {
+                if (string.IsNullOrEmpty(v)) return false;
+            }
+            foreach (string key in Request.Headers.Keys)
+            {
+                var vs = Request.Headers.GetValues(key);
+                XDebug.Output("key:" + key + String.Join(",", vs));
+            }
+            return true;
+        }
+
         /// <summary>
         /// 只负责拼接文件块。将接收的文件块数据写入到文件中。
         /// 更新记录：
@@ -14,6 +28,7 @@ namespace up6.db
         ///		2012-10-30 增加更新文件进度功能。
         ///		2015-03-19 文件路径由客户端提供，此页面不再查询文件在服务端的路径。减少一次数据库访问操作。
         ///     2016-03-31 增加文件夹信息字段
+        ///     2017-07-11 优化参数检查逻辑
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -30,20 +45,7 @@ namespace up6.db
             string pathSvr      = Request.Headers["pathSvr"];//add(2015-03-19):
             pathSvr             = HttpUtility.UrlDecode(pathSvr);
 
-            //参数为空
-            if (string.IsNullOrEmpty(lenLoc)
-                || string.IsNullOrEmpty(uid)
-                || string.IsNullOrEmpty(f_id)
-                || string.IsNullOrEmpty(blockOffset)
-                || string.IsNullOrEmpty(pathSvr))
-            {
-                foreach (string key in Request.Headers.Keys)
-                {
-                    var vs = Request.Headers.GetValues(key);
-                    XDebug.Output("key:" + key + String.Join(",", vs));
-                }
-                return;
-            }
+            if( !this.safe_check(lenLoc,uid,f_id,blockOffset,pathSvr)) return;
 
             //有文件块数据
             if (Request.Files.Count > 0)
