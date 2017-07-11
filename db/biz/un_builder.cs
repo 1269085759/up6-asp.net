@@ -3,6 +3,7 @@ using System.Data.Common;
 using System.Text;
 using Newtonsoft.Json;
 using up6.db.model;
+using up6.db.database;
 
 namespace up6.db.biz
 {

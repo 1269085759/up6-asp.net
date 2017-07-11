@@ -3,7 +3,7 @@ using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
 
-namespace up6.db
+namespace up6.db.database
 {
     /// <summary>
     /// 参考：http://www.cnblogs.com/JemBai/archive/2008/09/02/1281864.html

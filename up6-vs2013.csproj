@@ -145,9 +145,9 @@
     <Compile Include="db\clear.aspx.designer.cs">
       <DependentUpon>clear.aspx</DependentUpon>
     </Compile>
-    <Compile Include="db\DBFile.cs" />
-    <Compile Include="db\DBFolder.cs" />
-    <Compile Include="db\DbHelper.cs" />
+    <Compile Include="db\database\DBFile.cs" />
+    <Compile Include="db\database\DBFolder.cs" />
+    <Compile Include="db\database\DbHelper.cs" />
     <Compile Include="db\fd_complete.aspx.cs">
       <DependentUpon>fd_complete.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

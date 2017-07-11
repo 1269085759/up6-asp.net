@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.IO;
 using System.Text;
+using up6.db.database;
 using up6.db.model;
 using up6.db.utils;
 

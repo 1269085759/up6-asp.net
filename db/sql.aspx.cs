@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using System.IO;
+using up6.db.database;
 
 namespace up6.db
 {

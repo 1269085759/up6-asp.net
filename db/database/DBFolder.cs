@@ -3,7 +3,7 @@ using System.Data.Common;
 using System.Text;
 using up6.db.model;
 
-namespace up6.db
+namespace up6.db.database
 {
     public class DBFolder
     {
