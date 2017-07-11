@@ -198,46 +198,6 @@ namespace up6.db.database
             db.ExecuteNonQuery(cmd);
         }
 
-        /// <summary>
-        /// 添加一个文件夹上传任务
-        /// 更新记录：
-        ///     2016-03-30 返回up6_files.f_id
-        /// </summary>
-        /// <param name="fd"></param>
-        /// <returns></returns>
-        static public int Add(ref FolderInf fd)
-        {
-            StringBuilder sb = new StringBuilder();
-            sb.Append("insert into up6_files(");
-            sb.Append(" f_nameLoc");
-            sb.Append(",f_fdTask");
-            sb.Append(",f_fdID");
-            sb.Append(",f_lenLoc");
-            sb.Append(",f_sizeLoc");
-            sb.Append(",f_pathLoc");//add(2016-07-27):
-            //param
-            sb.Append(") values(");
-            sb.Append("@f_nameLoc");
-            sb.Append(",1");
-            sb.Append(",@f_fdID");
-            sb.Append(",@fd_lenLoc");
-            sb.Append(",@fd_sizeLoc");
-            sb.Append(",@f_pathLoc");
-            sb.Append(");");
-            //获取新插入ID
-            sb.Append("SELECT @@IDENTITY");
-
-            DbHelper db = new DbHelper();
-            DbCommand cmd = db.GetCommand(sb.ToString());
-            db.AddString(ref cmd, "@f_nameLoc", fd.nameLoc, 255);
-            db.AddInt(ref cmd, "@f_fdID", fd.idSvr);
-            db.AddInt64(ref cmd, "@fd_lenLoc", fd.lenLoc);
-            db.AddString(ref cmd, "@fd_sizeLoc", fd.size,10);
-            db.AddString(ref cmd, "@f_pathLoc", fd.pathLoc,255);
-            object f_id = db.ExecuteScalar(cmd);
-            return Convert.ToInt32(f_id);
-        }
-
         static public void Clear()
         {
             DbHelper db = new DbHelper();
@@ -290,38 +250,6 @@ namespace up6.db.database
             db.AddString(ref cmd, "@f_perSvr", f_perSvr, 6);
             db.AddInt(ref cmd, "@f_uid", f_uid);
             db.AddString(ref cmd, "@f_id", f_id,32);
-
-            db.ExecuteNonQuery(cmd);
-            return true;
-        }
-
-        /// <summary>
-        /// 更新文件夹-文件进度
-        /// </summary>
-        /// <param name="f_uid"></param>
-        /// <param name="f_id"></param>
-        /// <param name="f_pos"></param>
-        /// <param name="lenSvr"></param>
-        /// <param name="perSvr"></param>
-        /// <param name="fd_idSvr"></param>
-        /// <param name="fd_lenSvr"></param>
-        /// <returns></returns>
-        public bool fd_fileProcess(int uid, int f_id, long f_pos, long lenSvr, string perSvr, int fd_idSvr, long fd_lenSvr,string perSvrFD,bool f_complete)
-        {
-            //string sql = "update up6_files set f_pos=@f_pos,f_lenSvr=@f_lenSvr,f_perSvr=@f_perSvr where uid=@uid and f_id=@f_id";
-            string sql = "fd_fileProcess";
-            DbHelper db = new DbHelper();
-            DbCommand cmd = db.GetCommandStored(sql);
-
-            db.AddInt64(ref cmd, "@f_pos", f_pos);
-            db.AddInt(ref cmd, "@uid", uid);
-            db.AddInt(ref cmd, "@idSvr", f_id);
-            db.AddInt64(ref cmd, "@lenSvr", lenSvr);
-            db.AddString(ref cmd, "@perSvr", perSvr, 6);
-            db.AddBool(ref cmd, "@complete", f_complete);
-            db.AddInt(ref cmd, "@fd_idSvr", fd_idSvr);
-            db.AddInt64(ref cmd, "@fd_lenSvr", fd_lenSvr);
-            db.AddString(ref cmd,"@fd_perSvr", perSvrFD,6);
 
             db.ExecuteNonQuery(cmd);
             return true;

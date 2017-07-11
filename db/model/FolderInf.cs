@@ -9,7 +9,7 @@
         {
             this.nameLoc = this.size = this.pathLoc = this.pathSvr = string.Empty;
             this.lenSvr = this.lenLoc = 0;//fix:
-            this.uid = this.pidLoc = this.pidSvr = this.idLoc = this.idSvr = 0;
+            this.uid   = this.idSvr = 0;
         }
 
         public string nameLoc;
@@ -26,18 +26,6 @@
         /// </summary>
         public long lenSvr;
         public string perSvr;
-        /// <summary>
-        /// 客户端父ID，提供给JS使用。
-        /// </summary>
-        public int pidLoc;
-        /// <summary>
-        /// 服务端父ID，与数据库对应。
-        /// </summary>
-        public int pidSvr;
-        /// <summary>
-        /// 客户端文件夹ID，提供给JS使用。
-        /// </summary>
-        public int idLoc;
         /// <summary>
         /// 服务端文件夹ID,与数据库对应
         /// </summary>
