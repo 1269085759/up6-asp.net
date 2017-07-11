@@ -12,27 +12,6 @@ namespace up6.db.biz
     /// </summary>
     public class PathBuilderUuid : PathBuilder
     {
-        /// <summary>
-        /// 构建存储路径，保留客户端文件名称
-        /// 格式：
-        ///     upload/uid/folders/uuid/folder_name
-        /// </summary>
-        /// <param name="uid"></param>
-        /// <param name="fd"></param>
-        /// <returns></returns>
-        public override string genFolder(int uid, ref FolderInf fd)
-        {
-            var uuid = Guid.NewGuid().ToString("N"); // e0a953c3ee6040eaa9fae2b667060e09   
-            DateTime timeCur = DateTime.Now;
-            string path = Path.Combine(this.getRoot(), timeCur.ToString("yyyy"));
-            path = Path.Combine(path, timeCur.ToString("MM"));
-            path = Path.Combine(path, timeCur.ToString("dd"));
-            path = Path.Combine(path, uuid);
-            path = Path.Combine(path, fd.nameLoc);
-
-            return path;
-        }
-
         public override string genFolder(int uid,string nameLoc)
         {
             var uuid = Guid.NewGuid().ToString("N"); // e0a953c3ee6040eaa9fae2b667060e09   

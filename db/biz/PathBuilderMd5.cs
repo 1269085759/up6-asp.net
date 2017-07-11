@@ -12,17 +12,6 @@ namespace up6.db.biz
     public class PathBuilderMd5 : PathBuilder
     {
         /// <summary>
-        /// 不创建文件夹，所有文件统一以日期格式存储
-        /// </summary>
-        /// <param name="uid"></param>
-        /// <param name="fd"></param>
-        /// <returns></returns>
-        public override string genFolder(int uid, ref FolderInf fd)
-        {
-            return string.Empty;
-        }
-
-        /// <summary>
         /// 所有文件均以md5模式存储
         /// 格式：
         ///     upload/年/月/日/md5.ext

@@ -23,11 +23,6 @@ namespace up6.db.biz
             return string.Empty;
         }
 
-        public virtual string genFolder(int uid, ref FolderInf fd)
-        {
-            return string.Empty;
-        }
-
         public virtual string genFile(int uid, ref FileInf f)
         {
             return string.Empty;

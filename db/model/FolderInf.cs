@@ -31,18 +31,6 @@
         /// </summary>
         public int uid;
         /// <summary>
-        /// 子文件夹总数
-        /// </summary>
-        public int foldersCount;
-        /// <summary>
-        /// 子文件数
-        /// </summary>
-        public int filesCount;
-        /// <summary>
-        /// 已上传完的文件数
-        /// </summary>
-        public int filesComplete;
-        /// <summary>
         /// 不进行URL编码，由ASPX页面进行统一编码
         /// 文件夹在客户端的路径。D:\\Soft\\Image
         /// </summary>
@@ -52,7 +40,6 @@
         /// 文件夹在服务端路径。E:\\Web
         /// </summary>
         public string pathSvr;
-        public int pidRoot = 0;
         public string pathRel = string.Empty;
     }
 }
