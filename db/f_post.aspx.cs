@@ -50,15 +50,12 @@ namespace up6.db
             //有文件块数据
             if (Request.Files.Count > 0)
             {
-                long offset = Convert.ToInt64(blockOffset);
-
                 //临时文件大小
                 HttpPostedFile file = Request.Files.Get(0);
 
-
                 //2.0保存文件块数据
                 FileBlockWriter res = new FileBlockWriter();
-                res.write(pathSvr, offset, ref file);
+                res.write(pathSvr, Convert.ToInt64(blockOffset), ref file);
                 
                 Response.Write("ok");
             }
