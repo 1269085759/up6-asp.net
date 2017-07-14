@@ -14,6 +14,7 @@ namespace up6.db.biz.folder
         public fd_root()
         {
             this.fdTask = true;
+            this.fdChild = false;
         }
     }
 }

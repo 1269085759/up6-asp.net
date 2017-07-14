@@ -12,7 +12,8 @@ namespace up6.db.biz.folder
     public class fd_appender
     {
         protected DbHelper db;
-        protected DbCommand cmd;
+        protected DbCommand cmd_add_f = null;
+        protected DbCommand cmd_add_fd = null;
         protected PathBuilder pb = new PathBuilderMd5();
         Dictionary<string/*md5*/, FileInf> svr_files = new Dictionary<string, FileInf>();
         public fd_root m_root;//
@@ -21,175 +22,141 @@ namespace up6.db.biz.folder
         public fd_appender()
         {
             this.db = new DbHelper();
-            this.cmd = this.db.GetCommand("select * from up6_files");
-            this.cmd.Connection.Open();
         }
 
-        protected virtual void saveFiles() {
-
-            StringBuilder sb = new StringBuilder();
-            sb.Append("insert into up6_files(");
-            sb.Append(" f_id");
-            sb.Append(",f_pid");
-            sb.Append(",f_pidRoot");
-            sb.Append(",f_fdTask");
-            sb.Append(",f_fdChild");
-            sb.Append(",f_sizeLoc");
-            sb.Append(",f_uid");
-            sb.Append(",f_nameLoc");
-            sb.Append(",f_nameSvr");
-            sb.Append(",f_pathLoc");
-            sb.Append(",f_pathSvr");
-            sb.Append(",f_pathRel");
-            sb.Append(",f_md5");
-            sb.Append(",f_lenLoc");
-            sb.Append(",f_perSvr");
-            sb.Append(",f_complete");
-
-            sb.Append(") values (");
-
-            sb.Append(" @f_id");
-            sb.Append(",@f_pid");
-            sb.Append(",@f_pidRoot");
-            sb.Append(",@f_fdTask");
-            sb.Append(",@f_fdChild");
-            sb.Append(",@f_sizeLoc");
-            sb.Append(",@f_uid");
-            sb.Append(",@f_nameLoc");
-            sb.Append(",@f_nameSvr");
-            sb.Append(",@f_pathLoc");
-            sb.Append(",@f_pathSvr");
-            sb.Append(",@f_pathRel");
-            sb.Append(",@f_md5");
-            sb.Append(",@f_lenLoc");
-            sb.Append(",@f_perSvr");
-            sb.Append(",@f_complete");
-            sb.Append(") ;");
-
-            var cmd = this.db.GetCommand(sb.ToString());
-            this.db.AddString(ref cmd, "@f_id", string.Empty, 32);
-            this.db.AddString(ref cmd, "@f_pid", string.Empty, 32);
-            this.db.AddString(ref cmd, "@f_pidRoot", string.Empty, 32);
-            this.db.AddBool(ref cmd, "@f_fdTask", false);
-            this.db.AddString(ref cmd, "@f_sizeLoc", string.Empty, 32);
-            this.db.AddBool(ref cmd, "@f_fdChild", true);
-            this.db.AddInt(ref cmd, "@f_uid", 0);
-            this.db.AddString(ref cmd, "@f_nameLoc", string.Empty, 255);
-            this.db.AddString(ref cmd, "@f_nameSvr", string.Empty, 255);
-            this.db.AddString(ref cmd, "@f_pathLoc", string.Empty, 255);
-            this.db.AddString(ref cmd, "@f_pathSvr", string.Empty, 255);
-            this.db.AddString(ref cmd, "@f_pathRel", string.Empty, 255);
-            this.db.AddString(ref cmd, "@f_md5", string.Empty, 40);
-            this.db.AddInt64(ref cmd, "@f_lenLoc", 0);
-            this.db.AddString(ref cmd, "@f_perSvr", string.Empty, 6);
-            this.db.AddBool(ref cmd, "@f_complete", false);
-            cmd.Prepare();
-            foreach(var f in this.m_root.files)
-            {
-                if( string.IsNullOrEmpty(f.pathSvr ) )
-                f.pathSvr = this.pb.genFile(this.m_root.uid, f.md5, f.nameLoc);
-                if( string.IsNullOrEmpty(f.nameSvr) )
-                f.nameSvr = f.md5 + Path.GetExtension(f.pathLoc).ToLower();
-                cmd.Parameters["@f_id"].Value = f.id;
-                cmd.Parameters["@f_pid"].Value = f.pid;
-                cmd.Parameters["@f_pidRoot"].Value = this.m_root.id;
-                cmd.Parameters["@f_sizeLoc"].Value = f.sizeLoc;
-                cmd.Parameters["@f_uid"].Value = f.uid;
-                cmd.Parameters["@f_nameLoc"].Value = f.nameLoc;
-                cmd.Parameters["@f_nameSvr"].Value = f.nameSvr;
-                cmd.Parameters["@f_pathLoc"].Value = f.pathLoc;
-                cmd.Parameters["@f_pathSvr"].Value = f.pathSvr;
-                cmd.Parameters["@f_pathRel"].Value = f.pathRel;
-                cmd.Parameters["@f_md5"].Value = f.md5;
-                cmd.Parameters["@f_lenLoc"].Value = f.lenLoc;
-                cmd.Parameters["@f_perSvr"].Value = f.lenLoc>0 ? f.perSvr : "0%";
-                cmd.Parameters["@f_complete"].Value = f.lenLoc>0 ? f.complete : true;
-                cmd.ExecuteNonQuery();
-
-                //创建文件
-                if (!f.complete && f.lenSvr < 1)
-                {
-                    FileBlockWriter fr = new FileBlockWriter();
-                    fr.make(f.pathSvr, f.lenLoc);
-                }
-            }
-            var rt = this.m_root;
-            //添加根目录
-            cmd.Parameters["@f_id"].Value = rt.id;
-            cmd.Parameters["@f_pid"].Value = string.Empty;
-            cmd.Parameters["@f_pidRoot"].Value = string.Empty;
-            cmd.Parameters["@f_fdTask"].Value = true;
-            cmd.Parameters["@f_fdChild"].Value = false;
-            cmd.Parameters["@f_sizeLoc"].Value = rt.sizeLoc;
-            cmd.Parameters["@f_uid"].Value = rt.uid;
-            cmd.Parameters["@f_nameLoc"].Value = rt.nameLoc;
-            cmd.Parameters["@f_nameSvr"].Value = string.Empty;
-            cmd.Parameters["@f_pathLoc"].Value = rt.pathLoc;
-            cmd.Parameters["@f_pathSvr"].Value = string.Empty;
-            cmd.Parameters["@f_pathRel"].Value = string.Empty;
-            cmd.Parameters["@f_md5"].Value = rt.md5;
-            cmd.Parameters["@f_lenLoc"].Value = rt.lenLoc;
-            cmd.Parameters["@f_perSvr"].Value = rt.lenLoc>0 ? rt.perSvr : "0%";
-            cmd.Parameters["@f_complete"].Value = rt.lenLoc>0 ? rt.complete : true;
-            cmd.ExecuteNonQuery();
-        }
-        void saveFolders()
+        protected virtual void save_file(FileInf f)
         {
-            StringBuilder sb = new StringBuilder();
-            sb.Append("insert into up6_folders(");
-            sb.Append(" fd_id");
-            sb.Append(",fd_name");
-            sb.Append(",fd_pid");
-            sb.Append(",fd_uid");
-            sb.Append(",fd_files");
-            sb.Append(",fd_folders");
-            sb.Append(",fd_pidRoot");
-
-            sb.Append(") values (");
-
-            sb.Append(" @fd_id");
-            sb.Append(",@fd_name");
-            sb.Append(",@fd_pid");
-            sb.Append(",@fd_uid");
-            sb.Append(",@fd_files");
-            sb.Append(",@fd_folders");
-            sb.Append(",@fd_pidRoot");
-            sb.Append(") ;");
-
-            DbCommand cmd = this.db.GetCommand(sb.ToString());
-            this.db.AddString(ref cmd, "@fd_id", string.Empty, 32);
-            this.db.AddString(ref cmd, "@fd_name", string.Empty, 50);
-            this.db.AddString(ref cmd, "@fd_pid", string.Empty, 32);
-            this.db.AddInt(ref cmd, "@fd_files", 0);
-            this.db.AddInt(ref cmd, "@fd_folders", 0);
-            this.db.AddString(ref cmd, "@fd_pidRoot", string.Empty, 32);
-            this.db.AddInt(ref cmd, "@fd_uid", 0);
-            cmd.Prepare();
-
-            foreach (var f in this.m_root.folders)
+            if (this.cmd_add_f == null)
             {
-                cmd.Parameters["@fd_id"].Value = f.id;
-                cmd.Parameters["@fd_name"].Value = f.nameLoc;
-                cmd.Parameters["@fd_pid"].Value = f.pid;
-                cmd.Parameters["@fd_uid"].Value = f.uid;
-                cmd.Parameters["@fd_pidRoot"].Value = this.m_root.id;
-                cmd.ExecuteNonQuery();
-            }
+                StringBuilder sb = new StringBuilder();
+                sb.Append("insert into up6_files(");
+                sb.Append(" f_id");
+                sb.Append(",f_pid");
+                sb.Append(",f_pidRoot");
+                sb.Append(",f_fdTask");
+                sb.Append(",f_fdChild");
+                sb.Append(",f_sizeLoc");
+                sb.Append(",f_uid");
+                sb.Append(",f_nameLoc");
+                sb.Append(",f_nameSvr");
+                sb.Append(",f_pathLoc");
+                sb.Append(",f_pathSvr");
+                sb.Append(",f_pathRel");
+                sb.Append(",f_md5");
+                sb.Append(",f_lenLoc");
+                sb.Append(",f_perSvr");
+                sb.Append(",f_complete");
 
-            //添加根目录
-            var rt = this.m_root;
-            cmd.Parameters["@fd_id"].Value = rt.id;
-            cmd.Parameters["@fd_name"].Value = rt.nameLoc;
-            cmd.Parameters["@fd_pid"].Value = string.Empty;
-            cmd.Parameters["@fd_uid"].Value = rt.uid;
-            cmd.Parameters["@fd_files"].Value = rt.files.Count;
-            cmd.Parameters["@fd_folders"].Value = rt.folders.Count;
-            cmd.Parameters["@fd_pidRoot"].Value = string.Empty;
-            cmd.ExecuteNonQuery();
+                sb.Append(") values (");
+
+                sb.Append(" @f_id");
+                sb.Append(",@f_pid");
+                sb.Append(",@f_pidRoot");
+                sb.Append(",@f_fdTask");
+                sb.Append(",@f_fdChild");
+                sb.Append(",@f_sizeLoc");
+                sb.Append(",@f_uid");
+                sb.Append(",@f_nameLoc");
+                sb.Append(",@f_nameSvr");
+                sb.Append(",@f_pathLoc");
+                sb.Append(",@f_pathSvr");
+                sb.Append(",@f_pathRel");
+                sb.Append(",@f_md5");
+                sb.Append(",@f_lenLoc");
+                sb.Append(",@f_perSvr");
+                sb.Append(",@f_complete");
+                sb.Append(") ;");
+
+                this.cmd_add_f = this.db.GetCommand(sb.ToString());
+                this.db.AddString(ref cmd_add_f, "@f_id", string.Empty, 32);
+                this.db.AddString(ref cmd_add_f, "@f_pid", string.Empty, 32);
+                this.db.AddString(ref cmd_add_f, "@f_pidRoot", string.Empty, 32);
+                this.db.AddBool(ref cmd_add_f, "@f_fdTask", false);
+                this.db.AddString(ref cmd_add_f, "@f_sizeLoc", string.Empty, 32);
+                this.db.AddBool(ref cmd_add_f, "@f_fdChild", true);
+                this.db.AddInt(ref cmd_add_f, "@f_uid", 0);
+                this.db.AddString(ref cmd_add_f, "@f_nameLoc", string.Empty, 255);
+                this.db.AddString(ref cmd_add_f, "@f_nameSvr", string.Empty, 255);
+                this.db.AddString(ref cmd_add_f, "@f_pathLoc", string.Empty, 255);
+                this.db.AddString(ref cmd_add_f, "@f_pathSvr", string.Empty, 255);
+                this.db.AddString(ref cmd_add_f, "@f_pathRel", string.Empty, 255);
+                this.db.AddString(ref cmd_add_f, "@f_md5", string.Empty, 40);
+                this.db.AddInt64(ref cmd_add_f, "@f_lenLoc", 0);
+                this.db.AddString(ref cmd_add_f, "@f_perSvr", string.Empty, 6);
+                this.db.AddBool(ref cmd_add_f, "@f_complete", false);
+                cmd_add_f.Prepare();
+            }
+            cmd_add_f.Parameters["@f_id"].Value = f.id;
+            cmd_add_f.Parameters["@f_pid"].Value = f.pid;
+            cmd_add_f.Parameters["@f_pidRoot"].Value = this.m_root.id;
+            cmd_add_f.Parameters["@f_fdTask"].Value = f.fdTask;
+            cmd_add_f.Parameters["@f_fdChild"].Value = f.fdChild;
+            cmd_add_f.Parameters["@f_sizeLoc"].Value = f.sizeLoc;
+            cmd_add_f.Parameters["@f_uid"].Value = f.uid;
+            cmd_add_f.Parameters["@f_nameLoc"].Value = f.nameLoc;
+            cmd_add_f.Parameters["@f_nameSvr"].Value = f.nameSvr;
+            cmd_add_f.Parameters["@f_pathLoc"].Value = f.pathLoc;
+            cmd_add_f.Parameters["@f_pathSvr"].Value = f.pathSvr;
+            cmd_add_f.Parameters["@f_pathRel"].Value = f.pathRel;
+            cmd_add_f.Parameters["@f_md5"].Value = f.md5;
+            cmd_add_f.Parameters["@f_lenLoc"].Value = f.lenLoc;
+            cmd_add_f.Parameters["@f_perSvr"].Value = f.lenLoc > 0 ? f.perSvr : "0%";
+            cmd_add_f.Parameters["@f_complete"].Value = f.lenLoc > 0 ? f.complete : true;
+            cmd_add_f.ExecuteNonQuery();
+        }
+
+        protected void save_folder(FileInf f)
+        {
+            if (this.cmd_add_fd == null)
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.Append("insert into up6_folders(");
+                sb.Append(" fd_id");
+                sb.Append(",fd_pid");
+                sb.Append(",fd_pidRoot");
+                sb.Append(",fd_uid");
+                sb.Append(",fd_name");
+                sb.Append(",fd_pathLoc");
+                sb.Append(",fd_pathSvr");
+                sb.Append(",fd_pathRel");
+
+                sb.Append(") values (");
+
+                sb.Append(" @f_id");
+                sb.Append(",@f_pid");
+                sb.Append(",@f_pidRoot");
+                sb.Append(",@f_uid");
+                sb.Append(",@f_name");
+                sb.Append(",@f_pathLoc");
+                sb.Append(",@f_pathSvr");
+                sb.Append(",@f_pathRel");
+                sb.Append(") ;");
+
+                this.cmd_add_fd = this.db.GetCommand(sb.ToString());
+                this.db.AddString(ref cmd_add_fd, "@f_id", string.Empty, 32);
+                this.db.AddString(ref cmd_add_fd, "@f_pid", string.Empty, 32);
+                this.db.AddString(ref cmd_add_fd, "@f_pidRoot", string.Empty, 32);
+                this.db.AddInt(ref cmd_add_fd, "@f_uid", 0);
+                this.db.AddString(ref cmd_add_fd, "@f_name", string.Empty, 255);
+                this.db.AddString(ref cmd_add_fd, "@f_pathLoc", string.Empty, 255);
+                this.db.AddString(ref cmd_add_fd, "@f_pathSvr", string.Empty, 255);
+                this.db.AddString(ref cmd_add_fd, "@f_pathRel", string.Empty, 255);
+                cmd_add_fd.Prepare();
+            }
+            cmd_add_fd.Parameters["@f_id"].Value = f.id;
+            cmd_add_fd.Parameters["@f_pid"].Value = f.pid;
+            cmd_add_fd.Parameters["@f_pidRoot"].Value = this.m_root.id;
+            cmd_add_fd.Parameters["@f_uid"].Value = f.uid;
+            cmd_add_fd.Parameters["@f_name"].Value = f.nameLoc;
+            cmd_add_fd.Parameters["@f_pathLoc"].Value = f.pathLoc;
+            cmd_add_fd.Parameters["@f_pathSvr"].Value = f.pathSvr;
+            cmd_add_fd.Parameters["@f_pathRel"].Value = f.pathRel;
+            cmd_add_fd.ExecuteNonQuery();
         }
 
         public virtual void save()
         {
+            this.db.connection.Open();
             this.get_md5s();//提取所有文件的MD5
             //增加对空文件夹和0字节文件夹的处理
             if (!string.IsNullOrEmpty(this.m_md5s)) this.get_md5_files();//查询相同MD5值。
@@ -200,9 +167,32 @@ namespace up6.db.biz.folder
             //检查相同文件
             this.check_files();
 
-            this.saveFiles();
-            this.saveFolders();
-            this.cmd.Connection.Close();
+            this.save_file(this.m_root);
+            this.save_folder(this.m_root);
+
+            foreach (FileInf f in this.m_root.files)
+            {
+                f.pathSvr = this.pb.genFile(this.m_root.uid, f.md5, f.nameLoc);
+                f.nameSvr = f.md5 + Path.GetExtension(f.pathLoc).ToLower();
+                f.fdChild = true;
+
+                //创建文件
+                if (!f.complete && f.lenSvr < 1)
+                {
+                    FileBlockWriter fr = new FileBlockWriter();
+                    fr.make(f.pathSvr, f.lenLoc);
+                }
+
+                this.save_file(f);
+            }
+
+            foreach(FileInf fd in this.m_root.folders)
+            {
+                fd.nameSvr = fd.nameLoc;
+                this.save_folder(fd);
+            }
+
+            this.db.connection.Close();
         }
 
         protected virtual void get_md5s()
@@ -223,14 +213,12 @@ namespace up6.db.biz.folder
         protected virtual void get_md5_files()
         {
             string sql = "fd_files_check";
+            var cmd = this.db.GetCommandStored(sql);
 
-            this.cmd.Parameters.Clear();
-            this.cmd.CommandText = sql;
-            this.cmd.CommandType = System.Data.CommandType.StoredProcedure;
             this.db.AddString(ref cmd, "@md5s", this.m_md5s, int.MaxValue);
             this.db.AddInt(ref cmd, "@md5_len", this.m_root.files[0].md5.Length);
             this.db.AddInt(ref cmd, "@md5s_len",this.m_md5s.Length);
-            var r = this.cmd.ExecuteReader();
+            var r = cmd.ExecuteReader();
             while (r.Read())
             {
                 var f = new FileInf();

@@ -57,7 +57,7 @@ namespace up6.db.database
     /// </summary>
     public class DbHelper
     {
-        private DbConnection connection;
+        public DbConnection connection;
 
         /// <summary>
         /// 获取数据库连接字符串
