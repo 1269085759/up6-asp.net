@@ -10,6 +10,7 @@ function FolderUploader(fdLoc, mgr)
     this.ui = { msg: null, process: null, percent: null, btn: { del: null, cancel: null,stop:null,post:null }, div: null, split: null };
     this.isFolder = true; //是文件夹
     this.folderInit = false;//文件夹已初始化
+    this.Scaned = false;//是否已经扫描
     this.folderSvr = { nameLoc: "",nameSvr:"",lenLoc:0,sizeLoc: "0byte", lenSvr: 0,perSvr:"0%", id:"",uid: 0, foldersCount: 0, filesCount: 0, filesComplete: 0, pathLoc: "", pathSvr: "", pathRel: "", pidRoot: 0, complete: false, folders: [], files: [] };
     jQuery.extend(true,this.folderSvr, fdLoc);//续传信息
     this.manager = mgr;
@@ -86,9 +87,17 @@ function FolderUploader(fdLoc, mgr)
         }
         else
         {
+            if (!this.Scaned) 
             this.check_fd();//计算文件夹md5
             return;
         }
+    };
+    this.scan = function ()
+    {
+        this.ui.btn.stop.show();
+        this.ui.btn.post.hide();
+        this.State = HttpUploaderState.scan;
+        this.app.scanFolder({ id: this.id });
     };
     this.check_fd = function ()
     {

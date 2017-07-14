@@ -43,6 +43,7 @@ var HttpUploaderState = {
 	None: 7,
 	Waiting: 8
 	,MD5Working:9
+    , scan: 10
 };
 
 function getRoot()
@@ -1094,7 +1095,8 @@ function HttpUploaderMgr()
 	this.ResumeFolder = function (fileSvr)
 	{
 	    var fd = this.addFolderLoc(fileSvr);
-		fd.folderInit = true;
+        fd.folderInit = true;
+        fd.Scaned = true;
 	    //
 		if (null == fileSvr.files)
 		{
