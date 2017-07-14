@@ -105,7 +105,8 @@ function FolderUploader(fdLoc, mgr)
     };
     this.scan_process = function (json)
     {
-        this.ui.msg.text("正在扫描："+json.count);
+        this.ui.msg.text("正在扫描：" + json.count);
+        this.ui.size.text(json.size);
     };
     this.scan_complete = function (json)
     {
