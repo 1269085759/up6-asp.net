@@ -16,7 +16,6 @@ function FolderUploader(fdLoc, mgr)
     this.manager = mgr;
     this.event = mgr.event;
     this.arrFiles = new Array(); //子文件列表(未上传文件列表)，存HttpUploader对象
-    this.arrFilesComplete = new Array();//已上传完的文件列表，存储HttpUploader对象
     this.FileListMgr = mgr.FileListMgr;//文件列表管理器
     this.Config = mgr.Config;
     this.fields = jQuery.extend({}, mgr.Config.Fields);//每一个对象自带一个fields幅本
@@ -87,7 +86,12 @@ function FolderUploader(fdLoc, mgr)
         }
         else
         {
-            if (!this.Scaned) 
+            if (!this.Scaned)
+            {
+                this.scan();
+                return;
+            }
+
             this.check_fd();//计算文件夹md5
             return;
         }
@@ -98,6 +102,18 @@ function FolderUploader(fdLoc, mgr)
         this.ui.btn.post.hide();
         this.State = HttpUploaderState.scan;
         this.app.scanFolder({ id: this.id });
+    };
+    this.scan_process = function (json)
+    {
+        this.ui.msg.text("正在扫描："+json.count);
+    };
+    this.scan_complete = function (json)
+    {
+        this.ui.size.text(json.sizeLoc);
+        this.Scaned = true;
+        this.ui.msg.text("扫描完毕，开始上传");
+        var self = this;
+        setTimeout(function () { self.post();},300);
     };
     this.check_fd = function ()
     {
@@ -174,7 +190,6 @@ function FolderUploader(fdLoc, mgr)
         this.State = HttpUploaderState.Complete;
         this.folderSvr.complete = true;
         this.folderSvr.perSvr = "100%";
-        this.manager.arrFilesComplete.push(this);
         //从上传列表中删除
         this.manager.RemoveQueuePost(this.id);
         //从未上传列表中删除
@@ -207,7 +222,7 @@ function FolderUploader(fdLoc, mgr)
     this.md5_process = function (json)
     {
         if (this.State == HttpUploaderState.Stop) return;
-        this.ui.msg.text(json.percent);
+        this.ui.msg.text("正在计算MD5："+json.percent);
     };
     this.md5_complete = function (json)
     {
