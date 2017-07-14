@@ -124,7 +124,6 @@
     <Content Include="js\setup.htm" />
     <Content Include="debug\test.htm" />
     <Content Include="sql.down\fd_add_batch.sql" />
-    <Content Include="sql\fd_fileProcess.sql" />
     <Content Include="sql\fd_files_check.sql" />
     <Content Include="sql\up6_folders.sql" />
     <Content Include="Web.config" />
@@ -324,7 +323,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="sql\spGetFileInfByFid.sql" />
     <None Include="sql\up6_files.sql" />
   </ItemGroup>
   <ItemGroup>
