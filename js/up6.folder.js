@@ -109,6 +109,7 @@ function FolderUploader(fdLoc, mgr)
     };
     this.scan_complete = function (json)
     {
+        this.manager.RemoveQueuePost(this.id);
         this.ui.size.text(json.sizeLoc);
         this.Scaned = true;
         this.ui.msg.text("扫描完毕，开始上传");
