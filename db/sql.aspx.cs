@@ -22,11 +22,7 @@ namespace up6.db
         public void clear() 
         {
             string[] sql_clear = { 
-                                     "if object_id('f_process') is not null drop procedure f_process"
-                                    ,"if object_id('fd_fileProcess') is not null drop procedure fd_fileProcess"
- 　　　　                           ,"if object_id('fd_files_add_batch') is not null drop procedure fd_files_add_batch"
-                                    ,"if object_id('fd_files_check') is not null drop procedure fd_files_check"
-                                    ,"if object_id('spGetFileInfByFid') is not null drop procedure spGetFileInfByFid"
+                                     "if object_id('fd_files_check') is not null drop procedure fd_files_check"
                                     ,"if object_id('fd_add_batch') is not null drop procedure fd_add_batch"
                                     ,"if object_id('up6_files') is not null drop table up6_files"
                                     ,"if object_id('up6_folders') is not null drop table up6_folders"
@@ -46,7 +42,7 @@ namespace up6.db
 
         public void createUpload() 
         {
-            string path = Server.MapPath("/demoSql2005/sql");
+            string path = Server.MapPath("/sql");
             DirectoryInfo dir = new DirectoryInfo(path);
             if (dir.Exists)
             {
@@ -72,7 +68,7 @@ namespace up6.db
 
         public void createDown()
         {
-            string path = Server.MapPath("/demoSql2005/sql.down");
+            string path = Server.MapPath("/sql.down");
             DirectoryInfo dir = new DirectoryInfo(path);
             if (dir.Exists)
             {
