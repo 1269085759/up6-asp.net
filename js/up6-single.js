@@ -49,7 +49,7 @@ function HttpUploaderMgr()
 	this.Config = {
 		  "EncodeType"		: "utf-8"
 		, "Company"			: "荆门泽优软件有限公司"
-		, "Version"			: "2,7,104,50854"
+		, "Version"			: "2,7,108,51163"
 		, "License"			: ""//
 		, "Authenticate"	: ""//域验证方式：basic,ntlm
 		, "AuthName"		: ""//域帐号
@@ -66,33 +66,33 @@ function HttpUploaderMgr()
 		, "AppPath"			: ""//网站虚拟目录名称。子文件夹 web
         , "Cookie"			: ""//服务器cookie
 		//文件夹操作相关
-		, "UrlFdCreate"		: "http://localhost:87/demoSql2005/db/fd_create.aspx"
-		, "UrlFdComplete"	: "http://localhost:87/demoSql2005/db/fd_complete.aspx"
-		, "UrlFdDel"	    : "http://localhost:87/demoSql2005/db/fd_del.aspx"
-		, "UrlFdFile"	    : "http://localhost:87/demoSql2005/db/fd_file.aspx"
+		, "UrlFdCreate"		: "http://localhost:8888/db/fd_create.aspx"
+		, "UrlFdComplete"	: "http://localhost:8888/db/fd_complete.aspx"
+		, "UrlFdDel"	    : "http://localhost:8888/db/fd_del.aspx"
+		, "UrlFdFile"	    : "http://localhost:8888/db/fd_file.aspx"
 		//文件操作相关
-		, "UrlCreate"		: "http://localhost:87/demoSql2005/db/f_create.aspx"
-		, "UrlPost"			: "http://localhost:87/demoSql2005/db/f_post.aspx"
-		, "UrlComplete"		: "http://localhost:87/demoSql2005/db/f_complete.aspx"
-		, "UrlList"			: "http://localhost:87/demoSql2005/db/f_list.aspx"
-		, "UrlDel"			: "http://localhost:87/demoSql2005/db/f_del.aspx"
+		, "UrlCreate"		: "http://localhost:8888/db/f_create.aspx"
+		, "UrlPost"			: "http://localhost:8888/db/f_post.aspx"
+		, "UrlComplete"		: "http://localhost:8888/db/f_complete.aspx"
+		, "UrlList"			: "http://localhost:8888/db/f_list.aspx"
+		, "UrlDel"			: "http://localhost:8888/db/f_del.aspx"
 	    //x86
         , ie: {
               drop: { clsid: "0868BADD-C17E-4819-81DE-1D60E5E734A6", name: "Xproer.HttpDroper6" }
             , part: { clsid: "BA0B719E-F4B7-464b-A664-6FC02126B652", name: "Xproer.HttpPartition6" }
-            , path: "http://www.ncmem.com/download/up6.2/up6.cab"
+            , path: "http://www.ncmem.com/download/up6.2/guid/up6.cab"
         }
 	    //x64
         , ie64: {
               drop: { clsid: "7B9F1B50-A7B9-4665-A6D1-0406E643A856", name: "Xproer.HttpDroper6x64" }
             , part: { clsid: "307DE0A1-5384-4CD0-8FA8-500F0FFEA388", name: "Xproer.HttpPartition6x64" }
-            , path: "http://www.ncmem.com/download/up6.2/up64.cab"
+            , path: "http://www.ncmem.com/download/up6.2/guid/up64.cab"
         }
-        , firefox: { name: "", type: "application/npHttpUploader6", path: "http://www.ncmem.com/download/up6.2/up6.xpi" }
-        , chrome: { name: "npHttpUploader6", type: "application/npHttpUploader6", path: "http://www.ncmem.com/download/up6.2/up6.crx" }
-        , chrome45: { name: "com.xproer.up6", path: "http://www.ncmem.com/download/up6.2/up6.nat.crx" }
+        , firefox: { name: "", type: "application/npHttpUploader6", path: "http://www.ncmem.com/download/up6.2/guid/up6.xpi" }
+        , chrome: { name: "npHttpUploader6", type: "application/npHttpUploader6", path: "http://www.ncmem.com/download/up6.2/guid/up6.crx" }
+        , chrome45: { name: "com.xproer.up6", path: "http://www.ncmem.com/download/up6.2/guid/up6.nat.crx" }
         , edge: {protocol:"up6",port:9100,visible:false}
-        , exe: { path: "http://www.ncmem.com/download/up6.2/up6.exe" }
+        , exe: { path: "http://www.ncmem.com/download/up6.2/guid/up6.exe" }
 		, "SetupPath": "http://localhost:4955/demoAccess/js/setup.htm"
         , "Fields": {"uname": "test","upass": "test","uid":"0","fid":"0"}
 	};
@@ -417,10 +417,9 @@ function HttpUploaderMgr()
 		var uiPercent	= ui.find("div[name='percent']");
 		
 		var upFile = new FileUploader(fileLoc, _this);
-		this.filesMap[idLoc] = upFile;//添加到映射表
+        this.filesMap[fileLoc.id] = upFile;//添加到映射表
 		var ui_eles = { msg: uiMsg, process: uiProcess,percent:uiPercent, btn: { del: btnDel, cancel: btnCancel,post:btnPost,stop:btnStop }, div: ui};
 		upFile.ui = ui_eles;
-		upFile.idLoc = idLoc;
 
 		uiName.text(nameLoc).attr("title", nameLoc);
 		uiSize.text(fileLoc.sizeLoc);
@@ -439,10 +438,6 @@ function HttpUploaderMgr()
 		btnStop.click(function ()
 		{
 		    upFile.stop();
-		    btnPost.show();
-		    btnDel.show();
-		    btnCancel.hide();
-		    btnStop.hide();
 		});
 		btnDel.click(function(){upFile.remove();});
 		
@@ -469,7 +464,7 @@ function FileUploader(fileLoc, mgr)
 {
     var _this = this;
     //fileLoc:{nameLoc,ext,lenLoc,sizeLoc,pathLoc,md5,lenSvr},控件传递的值
-    this.idLoc = 0;
+    this.id = fileLoc.id;
     this.ui = { msg: null, process: null, percent: null, btn: { del: null, cancel: null,stop:null,post:null }, div: null};
     this.app = mgr.app;
     this.Manager = mgr; //上传管理器指针
@@ -479,12 +474,11 @@ function FileUploader(fileLoc, mgr)
     this.State = HttpUploaderState.None;
     this.uid = this.fields.uid;
     this.fileSvr = {
-        idSvr: 0
-        , pid: 0
-        , pidRoot: 0
-        , f_fdTask: false
-        , f_fdID: 0
-        , f_fdChild: false
+        id: ""
+        , pid: ""
+        , pidRoot: ""
+        , fdTask: false
+        , fdChild: false
         , uid: 0
         , nameLoc: ""
         , nameSvr: ""
@@ -545,6 +539,20 @@ function FileUploader(fileLoc, mgr)
             this.post_file();
         }
     };
+    this.svr_update = function () {
+        if (this.fileSvr.lenSvr == 0) return;
+        var param = { uid: this.fields["uid"], offset: this.fileSvr.lenSvr, lenSvr: this.fileSvr.lenSvr, perSvr: this.fileSvr.perSvr, id: this.id, time: new Date().getTime() };
+        $.ajax({
+            type: "GET"
+            , dataType: 'jsonp'
+            , jsonp: "callback" //自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名
+            , url: this.Config["UrlProcess"]
+            , data: param
+            , success: function (msg) { }
+            , error: function (req, txt, err) { alert("更新文件进度错误！" + req.responseText); }
+            , complete: function (req, sta) { req = null; }
+        });
+    };
     this.post_process = function (json)
     {
         this.fileSvr.lenSvr = json.lenSvr;//保存上传进度
@@ -564,7 +572,7 @@ function FileUploader(fileLoc, mgr)
         this.ui.msg.text("上传完成");
         this.State = HttpUploaderState.Complete;
 
-        var param = { md5: this.fileSvr.md5, uid: this.uid, idSvr: this.fileSvr.idSvr, time: new Date().getTime() };
+        var param = { md5: this.fileSvr.md5, uid: this.uid, id: this.fileSvr.id, time: new Date().getTime() };
 
         $.ajax({
             type: "GET"
@@ -695,27 +703,23 @@ function FileUploader(fileLoc, mgr)
         this.fields["lenLoc"] = this.fileSvr.lenLoc;
         this.fields["idSvr"] = this.fileSvr.idSvr;
         this.fields["md5"] = this.fileSvr.md5;
-        this.app.postFile({ id: this.idLoc, pathLoc: path_loc, lenSvr: this.fileSvr.lenSvr, folder: false, fields: this.fields });
+        this.app.postFile({ id: this.id, pathLoc: path_loc, lenSvr: this.fileSvr.lenSvr, folder: false, fields: this.fields });
     };
     this.check_file = function ()
     {
         this.ui.btn.stop.show();
         this.ui.btn.cancel.hide();
         this.State = HttpUploaderState.MD5Working;
-        this.app.checkFile({ id: this.idLoc, pathLoc: this.fileSvr.pathLoc });
+        this.app.checkFile({ id: this.id, pathLoc: this.fileSvr.pathLoc });
     };
     this.stop = function ()
     {
-        this.ui.btn.post.show();
-        this.ui.btn.del.show();
-        this.ui.msg.text("传输已停止....");
-
-        if (HttpUploaderState.Ready == this.State)
-        {
-        }
-        this.State = HttpUploaderState.Stop;
-
-        this.app.stopFile({ id: this.idLoc });
+        this.ui.btn.del.hide();
+        this.ui.btn.cancel.hide();
+        this.ui.btn.stop.hide();
+        this.ui.btn.post.hide();
+        this.svr_update();
+        this.app.stopFile({ id: this.fileSvr.id });        
     };
     //手动停止，一般在StopAll中调用
     this.stop_manual = function ()
@@ -726,7 +730,7 @@ function FileUploader(fileLoc, mgr)
             this.ui.btn.post.show();
             this.ui.btn.del.show();
             this.ui.msg.text("传输已停止....");
-            this.app.stopFile({ id: this.idLoc });
+            this.app.stopFile({ id: this.id});
             this.State = HttpUploaderState.Stop;
         }
     };
