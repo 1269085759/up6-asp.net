@@ -42,6 +42,7 @@ namespace up6.db.biz.folder
             foreach (FileInf fd in this.m_root.folders)
             {
                 fd.pathSvr = Path.Combine(this.m_root.pathSvr, fd.pathRel);
+                if (!Directory.Exists(fd.pathSvr)) Directory.CreateDirectory(fd.pathSvr);
                 fd.nameSvr = fd.nameLoc;
                 this.save_folder(fd);
             }
