@@ -19,6 +19,8 @@ namespace up6.db.biz.folder
             this.db.connection.Open();
             this.m_root.pathSvr = this.pb.genFolder(this.m_root.uid, this.m_root.nameLoc);
             if (!Directory.Exists(this.m_root.pathSvr)) Directory.CreateDirectory(this.m_root.pathSvr);
+            //对空文件夹的处理，或者0字节文件夹的处理
+            if (this.m_root.lenLoc == 0) this.m_root.complete = true;
 
             this.save_file(this.m_root);
             this.save_folder(this.m_root);
@@ -42,6 +44,7 @@ namespace up6.db.biz.folder
             foreach (FileInf fd in this.m_root.folders)
             {
                 fd.pathSvr = Path.Combine(this.m_root.pathSvr, fd.pathRel);
+                if (!Directory.Exists(fd.pathSvr)) Directory.CreateDirectory(fd.pathSvr);
                 fd.nameSvr = fd.nameLoc;
                 this.save_folder(fd);
             }
