@@ -135,48 +135,47 @@ namespace up6.db.database
         public void Add(ref FileInf model)
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("insert into up6_files(");
-            sb.Append(" f_id");
-            sb.Append(",f_sizeLoc");
-            sb.Append(",f_pos");
-            sb.Append(",f_lenSvr");
-            sb.Append(",f_perSvr");
-            sb.Append(",f_complete");
-            sb.Append(",f_time");
-            sb.Append(",f_deleted");
-            sb.Append(",f_fdChild");
-            sb.Append(",f_uid");
-            sb.Append(",f_nameLoc");
-            sb.Append(",f_nameSvr");
-            sb.Append(",f_pathLoc");
-            sb.Append(",f_pathSvr");
-            sb.Append(",f_pathRel");
-            sb.Append(",f_md5");
-            sb.Append(",f_lenLoc");
+            string sql = @"insert into up6_files(
+                             f_id
+                            ,f_sizeLoc
+                            ,f_pos
+                            ,f_lenSvr
+                            ,f_perSvr
+                            ,f_complete
+                            ,f_time
+                            ,f_deleted
+                            ,f_fdChild
+                            ,f_uid
+                            ,f_nameLoc
+                            ,f_nameSvr
+                            ,f_pathLoc
+                            ,f_pathSvr
+                            ,f_pathRel
+                            ,f_md5
+                            ,f_lenLoc
 
-            sb.Append(") values (");
-
-            sb.Append(" @f_id");
-            sb.Append(",@f_sizeLoc");
-            sb.Append(",@f_pos");
-            sb.Append(",@f_lenSvr");
-            sb.Append(",@f_perSvr");
-            sb.Append(",@f_complete");
-            sb.Append(",@f_time");
-            sb.Append(",@f_deleted");
-            sb.Append(",@f_fdChild");
-            sb.Append(",@f_uid");
-            sb.Append(",@f_nameLoc");
-            sb.Append(",@f_nameSvr");
-            sb.Append(",@f_pathLoc");
-            sb.Append(",@f_pathSvr");
-            sb.Append(",@f_pathRel");
-            sb.Append(",@f_md5");
-            sb.Append(",@f_lenLoc");
-            sb.Append(") ;");
+                            ) values (
+                             @f_id
+                            ,@f_sizeLoc
+                            ,@f_pos
+                            ,@f_lenSvr
+                            ,@f_perSvr
+                            ,@f_complete
+                            ,@f_time
+                            ,@f_deleted
+                            ,@f_fdChild
+                            ,@f_uid
+                            ,@f_nameLoc
+                            ,@f_nameSvr
+                            ,@f_pathLoc
+                            ,@f_pathSvr
+                            ,@f_pathRel
+                            ,@f_md5
+                            ,@f_lenLoc
+                            ) ;";
 
             DbHelper db = new DbHelper();
-            DbCommand cmd = db.GetCommand(sb.ToString());
+            DbCommand cmd = db.GetCommand(sql);
 
             db.AddString(ref cmd, "@f_id", model.id, 32);
             db.AddString(ref cmd, "@f_sizeLoc", model.sizeLoc, 10);
