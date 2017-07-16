@@ -507,16 +507,9 @@ function FileUploader(fileLoc, mgr)
     {
         alert("服务器返回信息为空，请检查服务器配置");
         this.ui.msg.text("向服务器发送MD5信息错误");
-        //文件夹项
-        if (this.root)
-        {
-            this.root.item_md5_error(obj);
-        } //文件项
-        else
-        {
-            this.ui.btn.stop.hide();
-            this.ui.btn.post.show();
-        }
+        
+        this.ui.btn.stop.hide();
+        this.ui.btn.post.show();
     };
     this.svr_create = function (sv)
     {
@@ -599,14 +592,6 @@ function FileUploader(fileLoc, mgr)
     };
     this.post_error = function (json)
     {
-        if (this.root)
-        {
-            this.root.post_error(json);
-            return;
-        }
-
-        debugMsg("post_error");
-        debugMsg(json.value);
         this.ui.msg.text(HttpUploaderErrorCode[json.value]);
         //文件大小超过限制,文件大小为0
         if ("4" == json.value || "5" == json.value)
@@ -623,12 +608,6 @@ function FileUploader(fileLoc, mgr)
     };
     this.md5_process = function (json)
     {
-        if (this.root)
-        {
-            this.root.md5_process(json);
-            return;
-        }
-
         var msg = "正在扫描本地文件，已完成：" + json.percent;
         this.ui.msg.text(msg);
     };
@@ -641,7 +620,7 @@ function FileUploader(fileLoc, mgr)
         var loc_path = encodeURIComponent(this.fileSvr.pathLoc);
         var loc_len = this.fileSvr.lenLoc;
         var loc_size = this.fileSvr.sizeLoc;
-        var param = { md5: json.md5, uid: this.uid, lenLoc: loc_len, sizeLoc: loc_size, pathLoc: loc_path, time: new Date().getTime() };
+        var param = { md5: json.md5, id:this.id,uid: this.uid, lenLoc: loc_len, sizeLoc: loc_size, pathLoc: loc_path, time: new Date().getTime() };
 
         $.ajax({
             type: "GET"
@@ -701,7 +680,6 @@ function FileUploader(fileLoc, mgr)
         var path_loc = this.fileSvr.pathLoc;
         this.fields["pathSvr"] = encodeURIComponent(this.fileSvr.pathSvr);
         this.fields["lenLoc"] = this.fileSvr.lenLoc;
-        this.fields["idSvr"] = this.fileSvr.idSvr;
         this.fields["md5"] = this.fileSvr.md5;
         this.app.postFile({ id: this.id, pathLoc: path_loc, lenSvr: this.fileSvr.lenSvr, folder: false, fields: this.fields });
     };
