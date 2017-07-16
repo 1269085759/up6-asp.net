@@ -71,6 +71,7 @@ namespace up6.db.database
 
         /// <summary>
         /// 根据文件MD5获取文件信息
+        /// 最进度最大的文件信息
         /// </summary>
         /// <param name="md5"></param>
         /// <param name="inf"></param>

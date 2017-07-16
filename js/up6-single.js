@@ -73,7 +73,8 @@ function HttpUploaderMgr()
 		//文件操作相关
 		, "UrlCreate"		: "http://localhost:8888/db/f_create.aspx"
 		, "UrlPost"			: "http://localhost:8888/db/f_post.aspx"
-		, "UrlComplete"		: "http://localhost:8888/db/f_complete.aspx"
+        , "UrlProcess"		: "http://localhost:8888/db/f_process.aspx"
+        , "UrlComplete"		: "http://localhost:8888/db/f_complete.aspx"
 		, "UrlList"			: "http://localhost:8888/db/f_list.aspx"
 		, "UrlDel"			: "http://localhost:8888/db/f_del.aspx"
 	    //x86
@@ -168,7 +169,11 @@ function HttpUploaderMgr()
 	{
 	    var p = this.filesMap[json.id];
 	    p.post_complete(json);
-	};
+    };
+    this.post_stoped = function (json) {
+        var p = this.filesMap[json.id];
+        p.post_stoped(json);
+    };
 	this.md5_process = function (json)
 	{
 	    var p = this.filesMap[json.id];
@@ -209,6 +214,7 @@ function HttpUploaderMgr()
 	    else if (json.name == "post_process") { _this.post_process(json); }
 	    else if (json.name == "post_error") { _this.post_error(json); }
 	    else if (json.name == "post_complete") { _this.post_complete(json); }
+	    else if (json.name == "post_stoped") { _this.post_stoped(json); }
 	    else if (json.name == "md5_process") { _this.md5_process(json); }
 	    else if (json.name == "md5_complete") { _this.md5_complete(json); }
 	    else if (json.name == "md5_error") { _this.md5_error(json); }
@@ -589,6 +595,16 @@ function FileUploader(fileLoc, mgr)
         this.ui.msg.text("服务器存在相同文件，快速上传成功。");
         this.State = HttpUploaderState.Complete;
         this.event.fileComplete(this);//触发事件
+    };
+    this.post_stoped = function (json) {
+        this.ui.btn.post.show();
+        this.ui.btn.del.show();
+        this.ui.btn.cancel.hide();
+        this.ui.btn.stop.hide();
+        this.ui.msg.text("传输已停止....");
+
+        if (HttpUploaderState.Ready == this.State) return;
+        this.State = HttpUploaderState.Stop;
     };
     this.post_error = function (json)
     {
