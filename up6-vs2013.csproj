@@ -60,10 +60,6 @@
     <Content Include="db\fd_create_uuid.aspx" />
     <Content Include="db\f_process.aspx" />
     <Content Include="db\sql.aspx" />
-    <Content Include="debug\big_file.aspx" />
-    <Content Include="debug\check_config.aspx" />
-    <Content Include="debug\setup.html" />
-    <Content Include="debug\websocket.html" />
     <Content Include="down2\db\clear.aspx" />
     <Content Include="down2\db\f_list.aspx" />
     <Content Include="down2\db\fd_create.aspx" />
@@ -107,13 +103,6 @@
     <Content Include="db\f_del.aspx" />
     <Content Include="db\f_list.aspx" />
     <Content Include="db\f_post.aspx" />
-    <Content Include="debug\create.html" />
-    <Content Include="debug\complete.html" />
-    <Content Include="debug\del.html" />
-    <Content Include="debug\list.html" />
-    <Content Include="debug\post.html" />
-    <Content Include="debug\process.html" />
-    <Content Include="debug\test.gif" />
     <Content Include="js\up6.edge.js" />
     <Content Include="js\up6.file.js" />
     <Content Include="js\up6.folder.js" />
@@ -122,7 +111,6 @@
     <Content Include="index.htm" />
     <Content Include="js\up6.js" />
     <Content Include="js\setup.htm" />
-    <Content Include="debug\test.htm" />
     <Content Include="sql.down\fd_add_batch.sql" />
     <Content Include="sql\fd_files_check.sql" />
     <Content Include="sql\up6_folders.sql" />
@@ -227,20 +215,6 @@
     </Compile>
     <Compile Include="db\model\FileInf.cs" />
     <Compile Include="db\XDebug.cs" />
-    <Compile Include="debug\big_file.aspx.cs">
-      <DependentUpon>big_file.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="debug\big_file.aspx.designer.cs">
-      <DependentUpon>big_file.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="debug\check_config.aspx.cs">
-      <DependentUpon>check_config.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="debug\check_config.aspx.designer.cs">
-      <DependentUpon>check_config.aspx</DependentUpon>
-    </Compile>
     <Compile Include="down2\biz\cmp_file.cs" />
     <Compile Include="down2\biz\un_builder.cs" />
     <Compile Include="down2\biz\folder_appender.cs" />
