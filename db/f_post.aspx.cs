@@ -52,6 +52,12 @@ namespace up6.db
             {
                 //临时文件大小
                 HttpPostedFile file = Request.Files.Get(0);
+                //完整性验证
+                if(int.Parse(blockSize) != file.InputStream.Length)
+                {
+                    Response.Write("block size error");
+                    return;
+                }
 
                 //2.0保存文件块数据
                 FileBlockWriter res = new FileBlockWriter();
