@@ -28,6 +28,7 @@ namespace up6.db.biz.folder
                 f.pathSvr = Path.Combine(this.m_root.pathSvr, f.pathRel);
                 f.nameSvr = f.nameLoc;
                 f.fdChild = true;
+                f.uid = this.m_root.uid;
 
                 //创建文件
                 if (!f.complete && f.lenSvr < 1)
@@ -43,6 +44,7 @@ namespace up6.db.biz.folder
             {
                 fd.pathSvr = Path.Combine(this.m_root.pathSvr, fd.pathRel);
                 if (!Directory.Exists(fd.pathSvr)) Directory.CreateDirectory(fd.pathSvr);
+                fd.uid = this.m_root.uid;
                 fd.nameSvr = fd.nameLoc;
                 this.save_folder(fd);
             }
