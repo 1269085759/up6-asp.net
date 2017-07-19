@@ -46,7 +46,7 @@ function DownloaderMgr()
 		, "License"		: ""//
 		, "Cookie"		: ""//
 		, "ThreadCount"	: 1//并发数
-		, "FilePart"	: 1048576//文件块大小，更新进度时使用，计算器：http://www.beesky.com/newsite/bit_byte.htm
+		, "FilePart"	: 5242880//文件块大小，更新进度时使用，计算器：http://www.beesky.com/newsite/bit_byte.htm
         //file
         , "UrlCreate"   : "http://localhost:87/demoSql2005/down2/db/f_create.aspx"
         , "UrlDel"      : "http://localhost:87/demoSql2005/down2/db/f_del.aspx"
