@@ -49,21 +49,14 @@ namespace up6.down2.biz
         /// 删除文件
         /// </summary>
         /// <param name="fid"></param>
-        public void Delete(int fid, int uid)
+        public void Delete(string fid, int uid)
         {
             string sql = "delete from down_files where f_id=@f_id and f_uid=@f_uid";
             DbHelper db = new DbHelper();
             DbCommand cmd = db.GetCommand(sql);
-            db.AddInt(ref cmd, "@f_id", fid);
+            db.AddString(ref cmd, "@f_id", fid,32);
             db.AddInt(ref cmd, "@f_uid", uid);
-            cmd.Connection.Open();
-            cmd.ExecuteNonQuery();
-
-            //清除子文件
-            cmd.CommandText = "delete from down_files where f_pidRoot=@f_id and f_uid=@f_uid;";
-            cmd.ExecuteNonQuery();
-            cmd.Connection.Close();
-            //db.ExecuteNonQuery(ref cmd);
+            db.ExecuteNonQuery(ref cmd);
         }
 
         public void process(string fid, int uid, string lenLoc, string perLoc)

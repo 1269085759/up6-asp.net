@@ -7,7 +7,7 @@ namespace up6.down2.db
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            string fid = Request.QueryString["idSvr"];
+            string fid = Request.QueryString["id"];
             string uid = Request.QueryString["uid"];
             string cbk = Request.QueryString["callback"];
 
@@ -19,7 +19,7 @@ namespace up6.down2.db
             }
 
             DnFile db = new DnFile();
-            db.Delete(int.Parse(fid), int.Parse(uid));
+            db.Delete(fid, int.Parse(uid));
 
             Response.Write(cbk + "({\"value\":1})");
         }
