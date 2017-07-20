@@ -32,7 +32,7 @@ function FileDownloader(fileLoc, mgr)
     this.event = mgr.event;
     this.fileSvr = {
           id:""//
-        , uid: 0
+        , uid: this.fields["uid"]
         , nameLoc: ""//自定义文件名称
         , folderLoc: this.Config["Folder"]
         , pathLoc: ""
@@ -88,11 +88,11 @@ function FileDownloader(fileLoc, mgr)
 
     this.remove = function ()
     {
-        this.app.stopFile(this.fileSvr);
+        this.app.delFile({id:this.fileSvr.id});
         //从上传列表中删除
         this.ui.split.remove();
         this.ui.div.remove();
-        this.Manager.remove_url(this.fileSvr.fileUrl);
+        //this.Manager.remove_url(this.fileSvr.fileUrl);
         this.svr_delete();
     };
 
