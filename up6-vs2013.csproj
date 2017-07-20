@@ -215,9 +215,7 @@
     </Compile>
     <Compile Include="db\model\FileInf.cs" />
     <Compile Include="db\XDebug.cs" />
-    <Compile Include="down2\biz\un_builder.cs" />
     <Compile Include="down2\biz\folder_appender.cs" />
-    <Compile Include="down2\biz\un_file.cs" />
     <Compile Include="down2\db\clear.aspx.cs">
       <DependentUpon>clear.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -225,9 +223,9 @@
     <Compile Include="down2\db\clear.aspx.designer.cs">
       <DependentUpon>clear.aspx</DependentUpon>
     </Compile>
-    <Compile Include="down2\db\DnFile.cs" />
+    <Compile Include="down2\biz\DnFile.cs" />
     <Compile Include="down2\model\DnFileInf.cs" />
-    <Compile Include="down2\db\DnFolder.cs" />
+    <Compile Include="down2\biz\DnFolder.cs" />
     <Compile Include="down2\model\DnFolderInf.cs" />
     <Compile Include="down2\db\f_list.aspx.cs">
       <DependentUpon>f_list.aspx</DependentUpon>

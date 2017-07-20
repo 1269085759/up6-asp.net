@@ -1,4 +1,5 @@
 ﻿using System;
+using up6.down2.biz;
 
 namespace up6.down2.db
 {

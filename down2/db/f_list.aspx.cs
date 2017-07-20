@@ -24,9 +24,8 @@ namespace up6.down2.db
                 return;
             }
 
-            //string json = DnFile.GetAll(int.Parse(uid));
-            un_builder fd = new un_builder();
-            string json = fd.read(uid);
+            DnFile db = new DnFile();
+            string json = db.all_uncmp(int.Parse(uid));
             if (!string.IsNullOrEmpty(json))
             {
                 json = HttpUtility.UrlEncode(json);

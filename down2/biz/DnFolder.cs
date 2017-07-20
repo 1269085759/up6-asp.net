@@ -2,7 +2,7 @@
 using up6.db;
 using up6.db.database;
 
-namespace up6.down2.db
+namespace up6.down2.biz
 {
     public class DnFolder
     {

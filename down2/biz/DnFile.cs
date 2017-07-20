@@ -1,10 +1,13 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 using System.Data.Common;
 using System.Text;
 using up6.db;
 using up6.db.database;
+using up6.db.model;
 
-namespace up6.down2.db
+namespace up6.down2.biz
 {
     public class DnFile
     {
@@ -86,6 +89,52 @@ namespace up6.down2.db
             DbHelper db = new DbHelper();
             DbCommand cmd = db.GetCommand("delete from down_files;");
             db.ExecuteNonQuery(ref cmd);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="uid"></param>
+        /// <returns></returns>
+        public string all_uncmp(int uid)
+        {
+            List<FileInf> files = new List<FileInf>();
+            StringBuilder sb = new StringBuilder();
+            sb.Append("select ");
+            sb.Append(" f_id");//0
+            sb.Append(",f_nameLoc");//1
+            sb.Append(",f_pathLoc");//2
+            sb.Append(",f_perLoc");//3
+            sb.Append(",f_sizeSvr");//7
+            sb.Append(",f_fdTask");//10
+            //
+            sb.Append(" from down_files");
+            //
+            sb.Append(" where f_uid=@f_uid and f_complete=0");
+
+            DbHelper db = new DbHelper();
+            DbCommand cmd = db.GetCommand(sb.ToString());
+            db.AddInt(ref cmd, "@f_uid", uid);
+            DbDataReader r = db.ExecuteReader(cmd);
+
+            while (r.Read())
+            {
+                FileInf f = new FileInf();
+                f.id = r.GetString(0);
+                f.nameLoc = r.GetString(1);
+                f.pathLoc = r.GetString(2);
+                f.perSvr = r.GetString(3);
+                f.sizeLoc = r.GetString(4);
+                f.fdTask = r.GetBoolean(5);
+                files.Add(f);
+            }
+            r.Close();
+
+            if (files.Count > 0)
+            {
+                return JsonConvert.SerializeObject(files);
+            }
+            return string.Empty;
         }
     }
 }
