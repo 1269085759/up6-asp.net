@@ -173,7 +173,6 @@ function DownloaderMgr()
 	{
 	    //存在相同项
 	    if (this.exist_url(f.id)) return null;
-	    this.filesUrl.push(url);
 
 	    var _this = this;
 
@@ -197,17 +196,17 @@ function DownloaderMgr()
 	    var btnDel = ui.find("a[name='del']");
 	    var ui_eles = { ico:{file:uiIcoF,fd:uiIcoFD},msg: uiMsg, name: uiName, size: uiSize, process: uiProcess, percent: uiPercent, btn: { cancel: btnCancel, stop: btnStop, down: btnDown, del: btnDel }, div: ui, split: sp };
 
-	    var downer;
-	    if (fd) { downer = new FdDownloader(f, this); }
+        var downer;
+        if (f.fdTask) { downer = new FdDownloader(f, this); }
 	    else { downer = new FileDownloader(f,this);}
 	    //var downer = new FileDownloader(fileLoc, this);
 	    this.filesMap[f.id] = downer;//
 	    jQuery.extend(downer.ui, ui_eles);
 
-	    uiName.text(fileName);
-	    uiName.attr("title", url);
+	    uiName.text(f.nameLoc);
+	    uiName.attr("title", f.nameLoc);
 	    uiMsg.text("");
-	    uiSize.text("0字节");
+	    uiSize.text(f.sizeLoc);
 	    uiPercent.text("(0%)");
 	    btnDel.click(function () { downer.remove(); });
 	    btnStop.click(function () { downer.stop(); });
