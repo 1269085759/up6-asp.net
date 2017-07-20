@@ -169,24 +169,13 @@ function DownloaderMgr()
 	    });
 	    this.filesCmp.length = 0;
 	};
-	this.add_ui = function (fd/*是否是文件夹*/,url, f_name)
+	this.add_ui = function (f)
 	{
 	    //存在相同项
-	    if (this.exist_url(url)) return null;
+	    if (this.exist_url(f.id)) return null;
 	    this.filesUrl.push(url);
 
 	    var _this = this;
-	    var fileNameArray = url.split("/");
-	    var fileName = fileNameArray[fileNameArray.length - 1];
-	    var fid = this.idCount++;
-	    //自定义文件名称
-	    var fileLoc = { fileUrl: url, id: fid };
-	    //自定义名称
-	    if (typeof (f_name) == "string")
-	    {
-	        jQuery.extend(fileLoc, { nameCustom: f_name });
-	        fileName = f_name;
-	    }
 
 	    var ui = this.tmpFile.clone();
 	    var sp = this.spliter.clone();
@@ -209,10 +198,10 @@ function DownloaderMgr()
 	    var ui_eles = { ico:{file:uiIcoF,fd:uiIcoFD},msg: uiMsg, name: uiName, size: uiSize, process: uiProcess, percent: uiPercent, btn: { cancel: btnCancel, stop: btnStop, down: btnDown, del: btnDel }, div: ui, split: sp };
 
 	    var downer;
-	    if (fd) { downer = new FdDownloader(fileLoc, this); }
-	    else { downer = new FileDownloader(fileLoc,this);}
+	    if (fd) { downer = new FdDownloader(f, this); }
+	    else { downer = new FileDownloader(f,this);}
 	    //var downer = new FileDownloader(fileLoc, this);
-	    this.filesMap[fid] = downer;//
+	    this.filesMap[f.id] = downer;//
 	    jQuery.extend(downer.ui, ui_eles);
 
 	    uiName.text(fileName);
@@ -253,15 +242,15 @@ function DownloaderMgr()
 	    obj.addQueue();
 	    return obj;
 	};
-	this.add_file = function (url,f_name)
+	this.add_file = function (f)
 	{
-	    var obj = this.add_ui(false,url, f_name);
+	    var obj = this.add_ui(f);
 	    if (obj != null) obj.addQueue();
 	    return obj;
 	};
-	this.add_folder = function (url,fdLoc,f_name)
+	this.add_folder = function (f)
 	{
-	    var obj = this.add_ui(true, url, f_name);
+	    var obj = this.add_ui(f);
 	    if (null == obj) return;
 
 	    obj.ui.name.text(fdLoc.nameLoc);
