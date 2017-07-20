@@ -206,7 +206,7 @@ function DownloaderMgr()
 	    uiName.text(f.nameLoc);
 	    uiName.attr("title", f.nameLoc);
 	    uiMsg.text("");
-	    uiSize.text(f.sizeLoc);
+	    uiSize.text(f.sizeSvr);
 	    uiPercent.text("("+f.percent+")");
 	    btnDel.click(function () { downer.remove(); });
 	    btnStop.click(function () { downer.stop(); });
