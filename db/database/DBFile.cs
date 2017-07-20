@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 using System.Data.Common;
 using System.Text;
 using up6.db.model;
@@ -282,6 +284,39 @@ namespace up6.db.database
             db.AddInt(ref cmd, "@f_uid", f_uid);
             db.AddString(ref cmd, "@f_id", f_id,32);
             db.ExecuteNonQuery(cmd);
+        }
+
+        public string all_complete(int uid)
+        {
+            List<FileInf> fs = new List<FileInf>();
+            StringBuilder sb = new StringBuilder();
+            sb.Append("select ");
+            sb.Append(" f_id");//0
+            sb.Append(",f_fdTask");//1
+            sb.Append(",f_nameLoc");//2
+            sb.Append(",f_sizeLoc");//3
+            sb.Append(",f_pathSvr");//4
+            sb.Append(" from up6_files ");
+            //
+            sb.Append(" where f_uid=@f_uid and f_deleted=0 and f_complete=1 and f_fdChild=0");
+
+            DbHelper db = new DbHelper();
+            DbCommand cmd = db.GetCommand(sb.ToString());
+            db.AddInt(ref cmd, "@f_uid", uid);
+            DbDataReader r = db.ExecuteReader(cmd);
+
+            while (r.Read())
+            {
+                FileInf f = new FileInf();
+                f.id = r.GetString(0);
+                f.fdTask = r.GetBoolean(1);
+                f.nameLoc = r.GetString(2);
+                f.sizeLoc = r.GetString(3);
+                f.pathSvr = r.GetString(4);
+            }
+            r.Close();
+            if (fs.Count < 1) return string.Empty;
+            return JsonConvert.SerializeObject(fs);
         }
     }
 }

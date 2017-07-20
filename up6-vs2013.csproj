@@ -215,7 +215,6 @@
     </Compile>
     <Compile Include="db\model\FileInf.cs" />
     <Compile Include="db\XDebug.cs" />
-    <Compile Include="down2\biz\cmp_file.cs" />
     <Compile Include="down2\biz\un_builder.cs" />
     <Compile Include="down2\biz\folder_appender.cs" />
     <Compile Include="down2\biz\un_file.cs" />
@@ -230,7 +229,6 @@
     <Compile Include="down2\model\DnFileInf.cs" />
     <Compile Include="down2\db\DnFolder.cs" />
     <Compile Include="down2\model\DnFolderInf.cs" />
-    <Compile Include="down2\biz\cmp_builder.cs" />
     <Compile Include="down2\db\f_list.aspx.cs">
       <DependentUpon>f_list.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

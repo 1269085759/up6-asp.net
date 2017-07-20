@@ -44,7 +44,6 @@ namespace up6.down2.biz
             db.AddInt(ref cmd, "@f_uid", int.Parse(uid));
             DbDataReader r = db.ExecuteReader(cmd);
 
-            biz.cmp_builder ub = new biz.cmp_builder();
             while (r.Read())
             {
                 var pidRoot = r.GetInt32(9);

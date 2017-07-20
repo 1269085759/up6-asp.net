@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Web;
-using up6.down2.biz;
+using up6.db.database;
 
 namespace up6.down2.db
 {
@@ -23,8 +23,10 @@ namespace up6.down2.db
 
             if (!string.IsNullOrEmpty(uid))
             {
-                cmp_builder cb = new cmp_builder();
-                string json = cb.read(int.Parse(uid));
+                DBFile db = new DBFile();
+                
+                
+                string json = db.all_complete(int.Parse(uid));
                 if (!string.IsNullOrEmpty(json))
                 {
                     System.Diagnostics.Debug.WriteLine(json);
