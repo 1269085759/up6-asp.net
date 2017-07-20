@@ -65,11 +65,6 @@ function FileDownloader(fileLoc, mgr)
         this.State = HttpDownloaderState.Ready;
     };
 
-    this.addQueue = function ()
-    {
-        this.app.addFile(this.fileSvr);
-    };
-
     //方法-开始下载
     this.down = function ()
     {

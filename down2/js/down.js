@@ -250,7 +250,6 @@ function DownloaderMgr()
     };
     this.add_file_cmp = function (f) {
         var obj = this.add_ui(f);
-        if (obj != null) obj.addQueue();
         return obj;
     };
 	this.add_folder = function (f)
