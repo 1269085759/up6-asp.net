@@ -43,24 +43,29 @@ namespace up6.down2.db
                 Response.ContentType = "application/octet-stream";
                 Response.AddHeader("Content-Length", blockSize );
 
-                byte[] buffer = new Byte[ int.Parse( blockSize)];
+                int buf_size = Math.Min(1048576, int.Parse(blockSize));
+                byte[] buffer = new Byte[ buf_size];
                 int length;
-                // Verify that the client is connected.
-                if (Response.IsClientConnected)
+                while (dataToRead > 0)
                 {
-                    // Read the data in buffer.
-                    length = iStream.Read(buffer, 0, int.Parse(blockSize));
+                    // Verify that the client is connected.
+                    if (Response.IsClientConnected)
+                    {
+                        // Read the data in buffer.
+                        length = iStream.Read(buffer, 0, buf_size);
+                        dataToRead -= length;
 
-                    // Write the data to the current output stream.
-                    Response.OutputStream.Write(buffer, 0, length);
+                        // Write the data to the current output stream.
+                        Response.OutputStream.Write(buffer, 0, length);
 
-                    // Flush the data to the HTML output.
-                    Response.Flush();
-                }
-                else
-                {
-                    //prevent infinite loop if user disconnects
-                    dataToRead = -1;
+                        // Flush the data to the HTML output.
+                        Response.Flush();
+                    }
+                    else
+                    {
+                        //prevent infinite loop if user disconnects
+                        dataToRead = -1;
+                    }
                 }
             }
             catch (Exception ex)
