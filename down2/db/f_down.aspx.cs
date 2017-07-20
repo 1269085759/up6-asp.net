@@ -20,11 +20,11 @@ namespace up6.down2.db
             string id           = Request.Headers["id"];//文件id
             string blockIndex   = Request.Headers["blockIndex"];//基于1
             string blockOffset  = Request.Headers["blockOffset"];//块偏移，相对于整个文件
-            string blockSize    = Request.Headers["blockSizze"];//块大小（当前需要下载的）
+            string blockSize    = Request.Headers["blockSize"];//块大小（当前需要下载的）
             string pathSvr      = Request.Headers["pathSvr"];//文件在服务器的位置
             pathSvr             = HttpUtility.UrlDecode(pathSvr);
 
-            if (this.check_params(id,blockIndex,blockOffset,pathSvr))
+            if ( !this.check_params(id,blockIndex,blockOffset,pathSvr))
             {
                 Response.StatusCode = 500;
                 return;
