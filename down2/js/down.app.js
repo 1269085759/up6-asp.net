@@ -75,10 +75,15 @@ var up6_app = {
         var param = { name: "open_file" };
         this.postMessage(param);
     }
+    , initFile: function (f) {
+        this.queueCount++;
+        var param = { name: "init_file" };
+        jQuery.extend(param, f);
+        this.postMessage(param);
+    }
     , addFile: function (f) {
         this.queueCount++;
-        var param = { name: "add_file" };
-        jQuery.extend(param, f);
+        var param = jQuery.extend({}, f, { name: "add_file" });
         this.postMessage(param);
     }
     , addFolder: function (f) {

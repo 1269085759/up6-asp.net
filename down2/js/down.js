@@ -241,11 +241,11 @@ function DownloaderMgr()
 	    obj.addQueue();
 	    return obj;
 	};
-	this.add_file = function (f)
+	this.init_file = function (f)
     {
-        this.app.addFile(f);
+        this.app.initFile(f);
     };
-    this.add_file_cmp = function (f) {
+    this.init_file_cmp = function (f) {
         var obj = this.add_ui(f);
         return obj;
     };
@@ -355,7 +355,7 @@ function DownloaderMgr()
 	this.recvMessage = function (str)
 	{
 	    var json = JSON.parse(str);
-	         if (json.name == "add_file_cmp") { _this.add_file_cmp(json); }
+	         if (json.name == "init_file_cmp") { _this.init_file_cmp(json); }
 	    else if (json.name == "open_folder") { _this.down_open_folder(json); }
 	    else if (json.name == "down_recv_size") { _this.down_recv_size(json); }
 	    else if (json.name == "down_recv_name") { _this.down_recv_name(json); }
