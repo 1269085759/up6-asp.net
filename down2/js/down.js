@@ -200,7 +200,6 @@ function DownloaderMgr()
         var downer;
         if (f.fdTask) { downer = new FdDownloader(f, this); }
 	    else { downer = new FileDownloader(f,this);}
-	    //var downer = new FileDownloader(fileLoc, this);
 	    this.filesMap[f.id] = downer;//
 	    jQuery.extend(downer.ui, ui_eles);
 
@@ -208,7 +207,7 @@ function DownloaderMgr()
 	    uiName.attr("title", f.nameLoc);
 	    uiMsg.text("");
 	    uiSize.text(f.sizeLoc);
-	    uiPercent.text("(0%)");
+	    uiPercent.text("("+f.percent+")");
 	    btnDel.click(function () { downer.remove(); });
 	    btnStop.click(function () { downer.stop(); });
 	    btnDown.click(function () { downer.down(); });
