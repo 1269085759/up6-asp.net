@@ -286,11 +286,6 @@ function DownloaderMgr()
 	    var p = this.filesMap[json.id];
 	    p.down_process(json);
 	};
-	this.down_part = function (json)
-	{
-	    var p = this.filesMap[json.id];
-	    p.down_part(json);
-	};
 	this.down_error = function (json)
 	{
 	    var p = this.filesMap[json.id];
@@ -353,7 +348,6 @@ function DownloaderMgr()
 	    else if (json.name == "init_end") { _this.init_end(json); }
 	    else if (json.name == "down_begin") { _this.down_begin(json); }
 	    else if (json.name == "down_process") { _this.down_process(json); }
-	    else if (json.name == "down_part") { _this.down_part(json); }
 	    else if (json.name == "down_error") { _this.down_error(json); }
 	    else if (json.name == "down_complete") { _this.down_complete(json); }
 	    else if (json.name == "down_stoped") { _this.down_stoped(json); }

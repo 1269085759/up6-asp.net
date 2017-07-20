@@ -210,12 +210,6 @@ function FileDownloader(fileLoc, mgr)
         this.ui.msg.text(msg.join(""));
     };
 
-    //更新服务器进度
-    this.down_part = function (json)
-    {
-        this.svr_update();
-    };
-
     this.down_begin = function (json)
     {
         var lenSvr = this.fileSvr.lenSvr;
