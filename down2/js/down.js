@@ -207,7 +207,7 @@ function DownloaderMgr()
 	    uiName.attr("title", f.nameLoc);
 	    uiMsg.text("");
 	    uiSize.text(f.sizeSvr);
-	    uiPercent.text("("+f.percent+")");
+	    uiPercent.text("("+f.perLoc+")");
 	    btnDel.click(function () { downer.remove(); });
 	    btnStop.click(function () { downer.stop(); });
 	    btnDown.click(function () { downer.down(); });
@@ -229,7 +229,6 @@ function DownloaderMgr()
 	    obj.ui.percent.text("(" + fdSvr.perLoc + ")");
 	    jQuery.extend(true, obj.fileSvr, fdSvr);//
 	    
-	    obj.addQueue();
 	    return obj;
 	};
 	this.init_file = function (f)
@@ -238,7 +237,7 @@ function DownloaderMgr()
     };
     this.init_file_cmp = function (f) {
         var obj = this.add_ui(f);
-        obj.svr_create();//
+        if (obj.fileSvr.lenLoc == 0) obj.svr_create();
         return obj;
     };
 	this.add_folder = function (f)
@@ -253,7 +252,6 @@ function DownloaderMgr()
 	    jQuery.extend(obj.fileSvr, fdLoc);//
 	    jQuery.extend(obj.fileSvr, { fileUrl: url });
 	    obj.initFiles();//
-	    obj.addQueue();
 	    return obj;
 	};
 	this.exist_url = function (url)
