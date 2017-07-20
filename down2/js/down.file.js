@@ -25,6 +25,7 @@ function FileDownloader(fileLoc, mgr)
     var _this = this;
     this.ui = { msg: null, process: null, percent: null, btn: {del:null,cancel:null,down:null,stop:null},div:null,split:null};
     this.app = mgr.app;
+    this.svr_inited = false;
     this.Manager = mgr;
     this.Config = mgr.Config;
     this.fields = jQuery.extend({},mgr.Config.Fields);//每一个对象自带一个fields幅本
@@ -126,6 +127,7 @@ function FileDownloader(fileLoc, mgr)
     //在服务端创建一个数据，用于记录下载信息，一般在HttpDownloader_BeginDown中调用
     this.svr_create = function ()
     {
+        if (this.svr_inited) return;
         //已记录将不再记录
         var param = jQuery.extend({}, this.fields, this.fileSvr, { time: new Date().getTime() });
         jQuery.extend(param, {pathLoc:encodeURIComponent(this.fileSvr.pathLoc),nameLoc:encodeURIComponent(this.fileSvr.nameCustom)});
@@ -140,9 +142,7 @@ function FileDownloader(fileLoc, mgr)
             {
                 if (msg.value == null) return;
                 var json = JSON.parse(decodeURIComponent(msg.value));
-                _this.fileSvr.idSvr = json.idSvr;
-                //文件已经下载完
-                //if (_this.isComplete()) { _this.svr_delete(); }
+                _this.svr_inited = true;
             }
             , error: function (req, txt, err) { alert("创建信息失败！" + req.responseText); }
             , complete: function (req, sta) { req = null; }

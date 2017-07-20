@@ -11,11 +11,12 @@ namespace up6.down2.biz
 {
     public class DnFile
     {
-        public int Add(ref model.DnFileInf inf)
+        public void Add(ref model.DnFileInf inf)
         {
             StringBuilder sql = new StringBuilder();
             sql.Append("insert into down_files(");
-            sql.Append(" f_uid");
+            sql.Append(" f_id");
+            sql.Append(",f_uid");
             sql.Append(",f_nameLoc");
             sql.Append(",f_pathLoc");
             sql.Append(",f_fileUrl");
@@ -23,26 +24,25 @@ namespace up6.down2.biz
             sql.Append(",f_sizeSvr");
 
             sql.Append(") values(");
-            sql.Append(" @f_uid");
+            sql.Append(" @f_id");
+            sql.Append(",@f_uid");
             sql.Append(",@f_nameLoc");
             sql.Append(",@f_pathLoc");
             sql.Append(",@f_fileUrl");
             sql.Append(",@f_lenSvr");
             sql.Append(",@f_sizeSvr");
             sql.Append(");");
-            sql.Append("select @@IDENTITY");
 
             DbHelper db = new DbHelper();
             DbCommand cmd = db.GetCommand(sql.ToString());
+            db.AddString(ref cmd, "@f_id", inf.id, 32);
             db.AddInt(ref cmd, "@f_uid", inf.uid);
             db.AddString(ref cmd, "@f_nameLoc", inf.nameLoc, 255);
             db.AddString(ref cmd, "@f_pathLoc", inf.pathLoc, 255);
             db.AddString(ref cmd, "@f_fileUrl", inf.fileUrl, 255);
             db.AddInt64(ref cmd, "@f_lenSvr", inf.lenSvr);
             db.AddString(ref cmd, "@f_sizeSvr", inf.sizeSvr,10);
-            object id = db.ExecuteScalar(ref cmd);
-            inf.idSvr = Convert.ToInt32(id);
-            return inf.idSvr;
+            db.ExecuteNonQuery(ref cmd);
         }
 
         /// <summary>

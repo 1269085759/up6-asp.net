@@ -215,16 +215,7 @@ function DownloaderMgr()
 
 	    downer.ready(); //准备
 	    return downer;
-	};
-	this.resume_file = function (fileSvr)
-	{
-	    var f = this.add_ui(false,fileSvr.fileUrl, fileSvr.nameLoc);
-	    f.ui.size.text(fileSvr.sizeSvr);
-	    f.ui.process.css("width", fileSvr.perLoc);
-	    f.ui.percent.text("(" + fileSvr.perLoc + ")");
-	    jQuery.extend(f.fileSvr, fileSvr);
-	    f.addQueue();//添加到队列
-	};
+    };
 	this.resume_folder = function (fdSvr)
 	{	    
 	    var obj = this.add_ui(true, fdSvr.fileUrl, fdSvr.nameLoc);
@@ -247,6 +238,7 @@ function DownloaderMgr()
     };
     this.init_file_cmp = function (f) {
         var obj = this.add_ui(f);
+        obj.svr_create();//
         return obj;
     };
 	this.add_folder = function (f)
@@ -520,7 +512,7 @@ function DownloaderMgr()
                 {
                     if (files[i].fdTask)
                     { _this.resume_folder(files[i]); }
-                    else { _this.resume_file(files[i]); }
+                    else { _this.init_file(files[i]); }
                 }
             }
             , error: function (req, txt, err) { alert("加载文件列表失败！" +req.responseText); }

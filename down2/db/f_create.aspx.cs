@@ -9,8 +9,9 @@ namespace up6.down2.db
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            string id       = Request.QueryString["id"];
             string uid      = Request.QueryString["uid"];
-            string nameLoc  = Request.QueryString["nameCustom"];//客户端使用的是encodeURIComponent编码，
+            string nameLoc  = Request.QueryString["nameLoc"];//客户端使用的是encodeURIComponent编码，
             string pathLoc  = Request.QueryString["pathLoc"];//客户端使用的是encodeURIComponent编码，
             string fileUrl  = Request.QueryString["fileUrl"];
             pathLoc         = HttpUtility.UrlDecode(pathLoc);//utf-8解码
@@ -18,12 +19,6 @@ namespace up6.down2.db
             string lenSvr   = Request.QueryString["lenSvr"];
             string sizeSvr  = Request.QueryString["sizeSvr"];
             string cbk      = Request.QueryString["callback"];//应用于jsonp数据
-
-            System.Diagnostics.Debug.WriteLine("uid:" + uid);
-            System.Diagnostics.Debug.WriteLine("pathLoc:" + pathLoc);
-            System.Diagnostics.Debug.WriteLine("fileUrl:" + fileUrl);
-            System.Diagnostics.Debug.WriteLine("lenSvr:" + lenSvr);
-            System.Diagnostics.Debug.WriteLine("callback:" + cbk);
 
             if (string.IsNullOrEmpty(uid)
                 || string.IsNullOrEmpty(pathLoc)
@@ -36,6 +31,7 @@ namespace up6.down2.db
             }
 
             model.DnFileInf inf = new model.DnFileInf();
+            inf.id = id;
             inf.uid = int.Parse(uid);
             inf.nameLoc = nameLoc;
             inf.pathLoc = pathLoc;//记录本地存储位置
@@ -43,7 +39,7 @@ namespace up6.down2.db
             inf.lenSvr = long.Parse(lenSvr);
             inf.sizeSvr = sizeSvr;
             DnFile db = new DnFile();
-            inf.idSvr = db.Add(ref inf);
+            db.Add(ref inf);
 
             string json = JsonConvert.SerializeObject(inf);
             json = HttpUtility.UrlEncode(json);
