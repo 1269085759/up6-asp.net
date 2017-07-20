@@ -115,8 +115,6 @@ function FileDownloader(fileLoc, mgr)
     //在出错，停止中调用
     this.svr_update = function ()
     {
-        if (this.fileSvr.idSvr == 0) return;
-
         var param = jQuery.extend({}, this.fields, this.fileSvr, { time: new Date().getTime() });
         $.ajax({
             type: "GET"
@@ -134,7 +132,6 @@ function FileDownloader(fileLoc, mgr)
     this.svr_create = function ()
     {
         //已记录将不再记录
-        if (this.fileSvr.idSvr) return;
         var param = jQuery.extend({}, this.fields, this.fileSvr, { time: new Date().getTime() });
         jQuery.extend(param, {pathLoc:encodeURIComponent(this.fileSvr.pathLoc),nameLoc:encodeURIComponent(this.fileSvr.nameCustom)});
 

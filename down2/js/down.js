@@ -46,7 +46,8 @@ function DownloaderMgr()
 		, "License"		: ""//
 		, "Cookie"		: ""//
 		, "ThreadCount"	: 1//并发数
-		, "FilePart"	: 5242880//文件块大小，更新进度时使用，计算器：http://www.beesky.com/newsite/bit_byte.htm
+        , "ThreadBlock"	: 3//线程数，每个文件使用多少线程下载数据。3~10
+		, "FilePart"	: 5242880//文件块大小，计算器：http://www.beesky.com/newsite/bit_byte.htm
         //file
         , "UrlCreate"   : "http://localhost:8888/down2/db/f_create.aspx"
         , "UrlDel"      : "http://localhost:8888/down2/db/f_del.aspx"
