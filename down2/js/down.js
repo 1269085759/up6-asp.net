@@ -208,6 +208,7 @@ function DownloaderMgr()
 	    uiMsg.text("");
 	    uiSize.text(f.sizeSvr);
 	    uiPercent.text("("+f.perLoc+")");
+        uiProcess.width(f.perLoc);
 	    btnDel.click(function () { downer.remove(); });
 	    btnStop.click(function () { downer.stop(); });
 	    btnDown.click(function () { downer.down(); });
