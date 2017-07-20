@@ -63,7 +63,7 @@ namespace up6.down2.db
             //db.ExecuteNonQuery(ref cmd);
         }
 
-        public void updateProcess(int fid, int uid, string lenLoc, string perLoc)
+        public void process(string fid, int uid, string lenLoc, string perLoc)
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("update down_files set ");
@@ -76,7 +76,7 @@ namespace up6.down2.db
             DbCommand cmd = db.GetCommand(sb.ToString());
             db.AddString(ref cmd, "@lenLoc", lenLoc, 19);
             db.AddString(ref cmd, "@f_perLoc", perLoc, 6);
-            db.AddInt(ref cmd, "@f_id", fid);
+            db.AddString(ref cmd, "@f_id", fid,32);
             db.AddInt(ref cmd, "@f_uid", uid);
             db.ExecuteNonQuery(ref cmd);
         }

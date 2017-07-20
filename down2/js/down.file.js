@@ -81,7 +81,7 @@ function FileDownloader(fileLoc, mgr)
     {
         this.hideBtns();
         this.ui.btn.down.show();
-        //this.SvrUpdate();
+        this.svr_update();
         this.State = HttpDownloaderState.Stop;
         this.ui.msg.text("下载已停止");
         this.app.stopFile(this.fileSvr);
