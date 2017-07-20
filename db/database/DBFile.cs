@@ -295,7 +295,8 @@ namespace up6.db.database
             sb.Append(",f_fdTask");//1
             sb.Append(",f_nameLoc");//2
             sb.Append(",f_sizeLoc");//3
-            sb.Append(",f_pathSvr");//4
+            sb.Append(",f_lenSvr");//4
+            sb.Append(",f_pathSvr");//5
             sb.Append(" from up6_files ");
             //
             sb.Append(" where f_uid=@f_uid and f_deleted=0 and f_complete=1 and f_fdChild=0");
@@ -312,7 +313,8 @@ namespace up6.db.database
                 f.fdTask = r.GetBoolean(1);
                 f.nameLoc = r.GetString(2);
                 f.sizeLoc = r.GetString(3);
-                f.pathSvr = r.GetString(4);
+                f.lenSvr  = r.GetInt64(4);
+                f.pathSvr = r.GetString(5);
                 fs.Add(f);
             }
             r.Close();
