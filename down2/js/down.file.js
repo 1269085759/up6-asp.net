@@ -181,12 +181,7 @@ function FileDownloader(fileLoc, mgr)
         this.State = HttpDownloaderState.Complete;
         //this.SvrDelete();
         this.Manager.filesCmp.push(this);
-
-        if (this.fileSvr.idSvr > 0)
-        {
-            this.svr_delete();
-        }
-
+        this.svr_delete();
     };
 
     this.down_recv_size = function (json)
