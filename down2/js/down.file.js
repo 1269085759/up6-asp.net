@@ -31,8 +31,7 @@ function FileDownloader(fileLoc, mgr)
     this.State = HttpDownloaderState.None;
     this.event = mgr.event;
     this.fileSvr = {
-          id:0//累加，唯一标识
-        , idSvr: 0
+          id:""//
         , uid: 0
         , nameLoc: ""//自定义文件名称
         , folderLoc: this.Config["Folder"]
