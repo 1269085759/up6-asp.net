@@ -6,6 +6,7 @@ using System.Text;
 using up6.db;
 using up6.db.database;
 using up6.db.model;
+using up6.down2.model;
 
 namespace up6.down2.biz
 {
@@ -91,7 +92,7 @@ namespace up6.down2.biz
         /// <returns></returns>
         public string all_uncmp(int uid)
         {
-            List<FileInf> files = new List<FileInf>();
+            List<DnFileInf> files = new List<DnFileInf>();
             StringBuilder sb = new StringBuilder();
             sb.Append("select ");
             sb.Append(" f_id");//0
@@ -112,12 +113,12 @@ namespace up6.down2.biz
 
             while (r.Read())
             {
-                FileInf f = new FileInf();
+                DnFileInf f = new DnFileInf();
                 f.id = r.GetString(0);
                 f.nameLoc = r.GetString(1);
                 f.pathLoc = r.GetString(2);
-                f.perSvr = r.GetString(3);
-                f.sizeLoc = r.GetString(4);
+                f.perLoc = r.GetString(3);
+                f.sizeSvr = r.GetString(4);
                 f.fdTask = r.GetBoolean(5);
                 files.Add(f);
             }
