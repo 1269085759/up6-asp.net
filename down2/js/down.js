@@ -48,14 +48,14 @@ function DownloaderMgr()
 		, "ThreadCount"	: 1//并发数
 		, "FilePart"	: 5242880//文件块大小，更新进度时使用，计算器：http://www.beesky.com/newsite/bit_byte.htm
         //file
-        , "UrlCreate"   : "http://localhost:87/demoSql2005/down2/db/f_create.aspx"
-        , "UrlDel"      : "http://localhost:87/demoSql2005/down2/db/f_del.aspx"
-        , "UrlList"     : "http://localhost:87/demoSql2005/down2/db/f_list.aspx"
-        , "UrlListCmp"  : "http://localhost:87/demoSql2005/down2/db/f_list_cmp.aspx"
-        , "UrlUpdate"   : "http://localhost:87/demoSql2005/down2/db/f_update.aspx"
-        , "UrlDown"     : "http://localhost:87/demoSql2005/down2/db/f_down.aspx"
+        , "UrlCreate"   : "http://localhost:8888/down2/db/f_create.aspx"
+        , "UrlDel"      : "http://localhost:8888/down2/db/f_del.aspx"
+        , "UrlList"     : "http://localhost:8888/down2/db/f_list.aspx"
+        , "UrlListCmp"  : "http://localhost:8888/down2/db/f_list_cmp.aspx"
+        , "UrlUpdate"   : "http://localhost:8888/down2/db/f_update.aspx"
+        , "UrlDown"     : "http://localhost:8888/down2/db/f_down.aspx"
 	    //folder
-        , "UrlFdCreate" : "http://localhost:87/demoSql2005/down2/db/fd_create.aspx"
+        , "UrlFdCreate" : "http://localhost:8888/down2/db/fd_create.aspx"
         //x86
         , ie: {
               part: { clsid: "6528602B-7DF7-445A-8BA0-F6F996472569", name: "Xproer.DownloaderPartition" }

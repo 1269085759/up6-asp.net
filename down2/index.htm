@@ -46,8 +46,8 @@
 
                         if (f.fdTask) { tdType.text("文件夹"); }
                         else { tdType.text("文件"); }
-                        tdName.text(name);
-                        tdSize.text(size);
+                        tdName.text(f.nameLoc);
+                        tdSize.text(f.sizeLoc);
                         tdOp.text("下载").css("cursor", "pointer").click(function ()
                         {
                             //文件夹

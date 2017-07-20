@@ -24,8 +24,6 @@ namespace up6.down2.db
             if (!string.IsNullOrEmpty(uid))
             {
                 DBFile db = new DBFile();
-                
-                
                 string json = db.all_complete(int.Parse(uid));
                 if (!string.IsNullOrEmpty(json))
                 {

@@ -313,6 +313,7 @@ namespace up6.db.database
                 f.nameLoc = r.GetString(2);
                 f.sizeLoc = r.GetString(3);
                 f.pathSvr = r.GetString(4);
+                fs.Add(f);
             }
             r.Close();
             if (fs.Count < 1) return string.Empty;
