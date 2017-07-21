@@ -130,5 +130,47 @@ namespace up6.down2.biz
             }
             return string.Empty;
         }
+
+        /// <summary>
+        /// 从up6_files表中加载所有已经上传完毕的文件
+        /// </summary>
+        /// <param name="uid"></param>
+        /// <returns></returns>
+        public string all_complete(int uid)
+        {
+            List<DnFileInf> fs = new List<DnFileInf>();
+            StringBuilder sb = new StringBuilder();
+            sb.Append("select ");
+            sb.Append(" f_id");//0
+            sb.Append(",f_fdTask");//1
+            sb.Append(",f_nameLoc");//2
+            sb.Append(",f_sizeLoc");//3
+            sb.Append(",f_lenSvr");//4
+            sb.Append(",f_pathSvr");//5
+            sb.Append(" from up6_files ");
+            //
+            sb.Append(" where f_uid=@f_uid and f_deleted=0 and f_complete=1 and f_fdChild=0");
+
+            DbHelper db = new DbHelper();
+            DbCommand cmd = db.GetCommand(sb.ToString());
+            db.AddInt(ref cmd, "@f_uid", uid);
+            DbDataReader r = db.ExecuteReader(cmd);
+
+            while (r.Read())
+            {
+                DnFileInf f = new DnFileInf();
+                f.id = Guid.NewGuid().ToString("N");
+                f.f_id = r.GetString(0);
+                f.fdTask = r.GetBoolean(1);
+                f.nameLoc = r.GetString(2);
+                f.sizeLoc = r.GetString(3);
+                f.lenSvr = r.GetInt64(4);
+                f.pathSvr = r.GetString(5);
+                fs.Add(f);
+            }
+            r.Close();
+            if (fs.Count < 1) return string.Empty;
+            return JsonConvert.SerializeObject(fs);
+        }
     }
 }
