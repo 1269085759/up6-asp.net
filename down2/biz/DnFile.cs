@@ -163,6 +163,7 @@ namespace up6.down2.biz
                 f.f_id = r.GetString(0);
                 f.fdTask = r.GetBoolean(1);
                 f.nameLoc = r.GetString(2);
+                f.sizeLoc = r.GetString(3);
                 f.sizeSvr = r.GetString(3);
                 f.lenSvr = r.GetInt64(4);
                 f.pathSvr = r.GetString(5);
