@@ -215,7 +215,7 @@
         //this.ui.btn.del.text("打开");
         this.ui.process.css("width", "100%");
         this.ui.percent.text("(100%)");
-        this.ui.msg.text("文件数："+this.fileSvr.files.length+" 成功："+this.fileSvr.success);
+        this.ui.msg.text("文件数：" + json.fileCount + " 成功：" + json.cmpCount);
         this.State = HttpDownloaderState.Complete;
         //this.SvrDelete();
         this.Manager.filesCmp.push(this);
