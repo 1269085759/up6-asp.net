@@ -114,7 +114,7 @@ namespace up6.down2.biz
             while (r.Read())
             {
                 DnFileInf f = new DnFileInf();
-                f.id = r.GetString(0);
+                f.f_id = r.GetString(0);
                 f.nameLoc = r.GetString(1);
                 f.pathLoc = r.GetString(2);
                 f.perLoc = r.GetString(3);

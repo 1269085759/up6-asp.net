@@ -9,7 +9,8 @@ namespace up6.down2.model
         {
             this.fdTask = false;
         }
-
+        //与up6_files..f_id关联
+        public string f_id= string.Empty;
         /// <summary>
         /// MAC地址
         /// </summary>
