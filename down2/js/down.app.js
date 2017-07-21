@@ -77,8 +77,12 @@ var up6_app = {
     }
     , initFile: function (f) {
         this.queueCount++;
-        var param = { name: "init_file" };
-        jQuery.extend(param, f);
+        var param = jQuery.extend({}, f, { name: "init_file" });
+        this.postMessage(param);
+    }
+    , initFolder: function (f) {
+        this.queueCount++;
+        var param = jQuery.extend({}, f, { name: "init_folder" });
         this.postMessage(param);
     }
     , addFile: function (f) {

@@ -237,6 +237,10 @@ function DownloaderMgr()
     {
         this.app.initFile(f);
     };
+    this.init_folder = function (f)
+    {
+        this.app.initFolder(f);
+    };
     this.init_file_cmp = function (f) {
         var obj = this.add_ui(f);
         if (obj.fileSvr.lenLoc == 0) obj.svr_create();
