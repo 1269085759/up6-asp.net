@@ -19,7 +19,13 @@ namespace up6.down2.biz
             DBFile dbf = new DBFile();
             dbf.read(id, ref fd);
 
+            //初始化操作
             DnFolderInf dfi = (DnFolderInf)(fd);
+            dfi.lenLoc = 0;
+            dfi.sizeLoc = "0byte";
+            dfi.perLoc = "0%";
+            dfi.f_id = dfi.id;
+            dfi.id = "";
 
             List<DnFileInf> files = new List<DnFileInf>();
             string sql = @"select 
