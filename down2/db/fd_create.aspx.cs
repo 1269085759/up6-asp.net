@@ -70,8 +70,8 @@ namespace up6.down2.db
             }
 
             DnFolderInf fd = JsonConvert.DeserializeObject<DnFolderInf>(fdStr);
-            folder_appender fa = new folder_appender();
-            fa.add(ref fd);
+            folder_builder fa = new folder_builder();
+            //fa.add(ref fd);
 
             string json = JsonConvert.SerializeObject(fd);
             json = HttpUtility.UrlEncode(json);

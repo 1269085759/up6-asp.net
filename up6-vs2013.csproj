@@ -216,7 +216,7 @@
     </Compile>
     <Compile Include="db\model\FileInf.cs" />
     <Compile Include="db\XDebug.cs" />
-    <Compile Include="down2\biz\folder_appender.cs" />
+    <Compile Include="down2\biz\folder_builder.cs" />
     <Compile Include="down2\db\clear.aspx.cs">
       <DependentUpon>clear.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

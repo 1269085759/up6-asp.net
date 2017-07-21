@@ -20,7 +20,7 @@ namespace up6.db.database
         /// </summary>
         /// <param name="f_id"></param>
         /// <returns></returns>
-        public bool GetFileInfByFid(string f_id, ref FileInf inf)
+        public bool read(string f_id, ref FileInf inf)
         {
             bool ret = false;
             StringBuilder sb = new StringBuilder();

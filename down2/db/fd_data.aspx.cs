@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
+using up6.down2.biz;
 
 namespace up6.down2.db
 {
@@ -17,13 +13,14 @@ namespace up6.down2.db
             string id  = Request.QueryString["id"];
             string cbk = Request.QueryString["callback"];
             string json = "({\"value\":null})";
-            if (string.IsNullOrEmpty(id))
-            {
-                Response.Write(cbk + json);
-                return;
-            }
 
-            //
+            if (!string.IsNullOrEmpty(id))
+            {
+                folder_builder fb = new folder_builder();
+                
+                json = "({\"value\":\""+ fb.to_json(id) + "\"})" ;
+            }
+            Response.Write(cbk + json);
         }
     }
 }

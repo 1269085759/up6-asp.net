@@ -23,6 +23,5 @@ namespace up6.down2.model
         /// 传输进度
         /// </summary>
         public string perLoc = "0%";
-        public List<DnFileInf> files;
     }
 }

@@ -4,6 +4,7 @@ namespace up6.down2.model
 {
     public class DnFolderInf : DnFileInf
     {
+        public List<DnFileInf> files;
         public DnFolderInf()
         {
             this.fdTask = true;
