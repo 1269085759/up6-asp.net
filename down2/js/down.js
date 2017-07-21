@@ -57,7 +57,6 @@ function DownloaderMgr()
         , "UrlUpdate"   : "http://localhost:8888/down2/db/f_update.aspx"
         , "UrlDown"     : "http://localhost:8888/down2/db/f_down.aspx"
 	    //folder
-        , "UrlFdCreate" : "http://localhost:8888/down2/db/fd_create.aspx"
         , "UrlFdData"   : "http://localhost:8888/down2/db/fd_data.aspx"
         //x86
         , ie: {

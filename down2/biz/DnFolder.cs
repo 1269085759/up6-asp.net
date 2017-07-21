@@ -33,6 +33,7 @@ namespace up6.down2.biz
                             ";
             DbHelper db = new DbHelper();
             DbCommand cmd = db.GetCommand(sql);
+            db.AddString(ref cmd, "@pidRoot", id, 32);
             var reader = db.ExecuteReader(ref cmd);
             while (reader.Read())
             {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Web;
 using up6.down2.biz;
 
 namespace up6.down2.db
@@ -16,8 +17,9 @@ namespace up6.down2.db
 
             if (!string.IsNullOrEmpty(id))
             {
-                string data = DnFolder.all_file(id);
-                
+                string data = HttpUtility.UrlEncode(DnFolder.all_file(id));
+                data = data.Replace("+", "%20");
+
                 json = "({\"value\":\""+ data + "\"})" ;
             }
             Response.Write(cbk + json);
