@@ -88,7 +88,7 @@ namespace up6.db.biz.folder
             }
             cmd_add_f.Parameters["@f_id"].Value = f.id;
             cmd_add_f.Parameters["@f_pid"].Value = f.pid;
-            cmd_add_f.Parameters["@f_pidRoot"].Value = this.m_root.id;
+            cmd_add_f.Parameters["@f_pidRoot"].Value = f.pidRoot;
             cmd_add_f.Parameters["@f_fdTask"].Value = f.fdTask;
             cmd_add_f.Parameters["@f_fdChild"].Value = f.fdChild;
             cmd_add_f.Parameters["@f_sizeLoc"].Value = f.sizeLoc;

@@ -57,7 +57,7 @@ function DownloaderMgr()
         , "UrlUpdate"   : "http://localhost:8888/down2/db/f_update.aspx"
         , "UrlDown"     : "http://localhost:8888/down2/db/f_down.aspx"
 	    //folder
-        , "UrlFdCreate" : "http://localhost:8888/down2/db/fd_create.aspx"
+        , "UrlFdData"   : "http://localhost:8888/down2/db/fd_data.aspx"
         //x86
         , ie: {
               part: { clsid: "6528602B-7DF7-445A-8BA0-F6F996472569", name: "Xproer.DownloaderPartition" }
@@ -74,7 +74,7 @@ function DownloaderMgr()
         , chrome45: { name: "com.xproer.down2", path: "http://www.ncmem.com/download/down2/down2.nat.crx" }
         , exe: { path: "http://www.ncmem.com/download/down2/down2.exe" }
         , edge: {protocol:"down2",port:9700,visible:false}
-        , "Fields": {"uname": "test","upass": "test","uid":"0","fid":"0"}
+        , "Fields": {"uname": "test","upass": "test","uid":"0"}
 	};
 
     this.event = {
@@ -251,13 +251,9 @@ function DownloaderMgr()
 	    var obj = this.add_ui(f);
 	    if (null == obj) return;
 
-	    obj.ui.name.text(fdLoc.nameLoc);
-	    obj.ui.size.text(fdLoc.sizeSvr);
 	    obj.ui.ico.file.hide();
 	    obj.ui.ico.fd.show();
-	    jQuery.extend(obj.fileSvr, fdLoc);//
-	    jQuery.extend(obj.fileSvr, { fileUrl: url });
-	    obj.initFiles();//
+        obj.load_files();//
 	    return obj;
 	};
 	this.exist_url = function (url)
