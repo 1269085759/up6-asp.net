@@ -17,5 +17,41 @@ namespace up6.down2.biz
             DbCommand cmd = db.GetCommand("delete from down_folders;");
             db.ExecuteNonQuery(ref cmd);
         }
+
+        public static string all_file(string id)
+        {
+            List<DnFileInf> files = new List<DnFileInf>();
+            string sql = @"select 
+                             f_id
+                            ,f_nameLoc
+                            ,f_pathSvr
+                            ,f_pathRel
+                            ,f_lenSvr
+                            ,f_sizeLoc
+                             from up6_files
+                             where f_pidRoot=@pidRoot
+                            ";
+            DbHelper db = new DbHelper();
+            DbCommand cmd = db.GetCommand(sql);
+            var reader = db.ExecuteReader(ref cmd);
+            while (reader.Read())
+            {
+                DnFileInf f = new DnFileInf();
+                f.f_id = reader.GetString(0);
+                f.nameLoc = reader.GetString(1);
+                f.pathSvr = reader.GetString(2);
+                f.pathRel = reader.GetString(3);
+                f.lenSvr = reader.GetInt64(4);
+                f.sizeSvr = reader.GetString(5);
+                files.Add(f);
+            }
+            reader.Close();
+
+            if(files.Count>0)
+            {
+                return JsonConvert.SerializeObject(files);
+            }
+            return string.Empty;
+        }
     }
 }

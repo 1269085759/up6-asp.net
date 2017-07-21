@@ -16,6 +16,8 @@
         , folderLoc: this.Config["Folder"]
         , pathLoc: ""
         , fileUrl:""
+        , cmpCount: 0
+        , fileCount: 0
         , lenLoc: 0
         , perLoc: "0%"
         , lenSvr: 0
@@ -42,6 +44,33 @@
         this.ui.btn.cancel.show();
         this.ui.msg.text("正在下载队列中等待...");
         this.State = HttpDownloaderState.Ready;
+    };
+
+    //加载文件列表
+    this.load_files = function ()
+    {
+        //已记录将不再记录
+        if (this.svr_inited) return;
+        this.ui.btn.down.hide();
+        this.ui.msg.text("正在初始化...");
+        var param = jQuery.extend({}, this.fields, { time: new Date().getTime() });
+        jQuery.extend(param, { id: this.fileSvr.f_id});
+        var ptr = this;
+        $.ajax({
+            type: "GET"
+            , dataType: 'jsonp'
+            , jsonp: "callback" //自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名
+            , url: _this.Config["UrlFdData"]
+            , data: param
+            , success: function (msg) {
+                var json = JSON.parse(decodeURIComponent(msg));
+                jQuery.extend(true, _this.fileSvr.files, json.value);
+                ptr.ui.btn.down.show();
+                ptr.ui.msg.text("初始化完毕...");
+            }
+            , error: function (req, txt, err) { alert("创建信息失败！" + req.responseText); }
+            , complete: function (req, sta) { req = null; }
+        });
     };
 
     //方法-开始下载
@@ -191,12 +220,6 @@
         this.ui.process.css("width", json.percent);
         var msg = [json.file.id + 1, "/", this.fileSvr.files.length, " ", json.sizeLoc, " ", json.speed, " ", json.time];
         this.ui.msg.text(msg.join(""));
-    };
-
-    this.init_end = function (json)
-    {
-        jQuery.extend(true,this.fileSvr, json);
-        this.svr_create();//添加记录
     };
 
     this.down_begin = function (json)

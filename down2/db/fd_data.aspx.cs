@@ -16,9 +16,9 @@ namespace up6.down2.db
 
             if (!string.IsNullOrEmpty(id))
             {
-                folder_builder fb = new folder_builder();
+                string data = DnFolder.all_file(id);
                 
-                json = "({\"value\":\""+ fb.to_json(id) + "\"})" ;
+                json = "({\"value\":\""+ data + "\"})" ;
             }
             Response.Write(cbk + json);
         }
