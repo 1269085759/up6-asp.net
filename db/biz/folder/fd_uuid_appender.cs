@@ -18,6 +18,7 @@ namespace up6.db.biz.folder
         {
             this.db.connection.Open();
             this.m_root.pathSvr = this.pb.genFolder(this.m_root.uid, this.m_root.nameLoc);
+            this.m_root.pidRoot = string.Empty;
             if (!Directory.Exists(this.m_root.pathSvr)) Directory.CreateDirectory(this.m_root.pathSvr);
 
             this.save_file(this.m_root);
@@ -26,6 +27,7 @@ namespace up6.db.biz.folder
             foreach (FileInf f in this.m_root.files)
             {
                 f.pathSvr = Path.Combine(this.m_root.pathSvr, f.pathRel);
+                f.pathSvr = f.pathSvr.Replace("\\", "/");
                 f.nameSvr = f.nameLoc;
                 f.fdChild = true;
                 f.uid = this.m_root.uid;

@@ -34,19 +34,19 @@ namespace up6.down2.biz
             DbHelper db = new DbHelper();
             DbCommand cmd = db.GetCommand(sql);
             db.AddString(ref cmd, "@pidRoot", id, 32);
-            var reader = db.ExecuteReader(ref cmd);
-            while (reader.Read())
+            var r = db.ExecuteReader(ref cmd);
+            while (r.Read())
             {
                 DnFileInf f = new DnFileInf();
-                f.f_id = reader.GetString(0);
-                f.nameLoc = reader.GetString(1);
-                f.pathSvr = reader.GetString(2);
-                f.pathRel = reader.GetString(3);
-                f.lenSvr = reader.GetInt64(4);
-                f.sizeSvr = reader.GetString(5);
+                f.f_id = r.GetString(0);
+                f.nameLoc = r.GetString(1);
+                f.pathSvr = r.GetString(2);
+                f.pathRel = r.GetString(3);
+                f.lenSvr = r.GetInt64(4);
+                f.sizeSvr = r.GetString(5);
                 files.Add(f);
             }
-            reader.Close();
+            r.Close();
 
             if(files.Count>0)
             {
