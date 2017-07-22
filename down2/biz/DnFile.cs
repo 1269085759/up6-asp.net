@@ -23,6 +23,7 @@ namespace up6.down2.biz
             sql.Append(",f_fileUrl");
             sql.Append(",f_lenSvr");
             sql.Append(",f_sizeSvr");
+            sql.Append(",f_fdTask");
 
             sql.Append(") values(");
             sql.Append(" @f_id");
@@ -32,6 +33,7 @@ namespace up6.down2.biz
             sql.Append(",@f_fileUrl");
             sql.Append(",@f_lenSvr");
             sql.Append(",@f_sizeSvr");
+            sql.Append(",@f_fdTask");
             sql.Append(");");
 
             DbHelper db = new DbHelper();
@@ -43,6 +45,7 @@ namespace up6.down2.biz
             db.AddString(ref cmd, "@f_fileUrl", inf.fileUrl, 255);
             db.AddInt64(ref cmd, "@f_lenSvr", inf.lenSvr);
             db.AddString(ref cmd, "@f_sizeSvr", inf.sizeSvr,10);
+            db.AddBool(ref cmd, "@f_fdTask", inf.fdTask);
             db.ExecuteNonQuery(ref cmd);
         }
 

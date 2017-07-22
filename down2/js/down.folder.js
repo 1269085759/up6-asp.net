@@ -65,7 +65,10 @@
                 var json = JSON.parse(decodeURIComponent(msg.value));
                 jQuery.extend(true, _this.fileSvr, { files: json });
                 _this.ui.msg.text("初始文件夹...");
-                _this.app.initFolder(_this.fileSvr);
+                setTimeout(function () {
+                    _this.app.initFolder(_this.fileSvr);
+                }, 300);
+                
             }
             , error: function (req, txt, err) { alert("创建信息失败！" + req.responseText); }
             , complete: function (req, sta) { req = null; }
@@ -117,7 +120,10 @@
     this.init_complete = function (json)
     {
         jQuery.extend(this.fileSvr, json, {files:null});
-        if (!this.svr_inited) this.svr_create();//
+        if (!this.svr_inited)
+        {
+            setTimeout(function () {_this.svr_create(); }, 200);
+        }   
     };
 
     //在出错，停止中调用
@@ -153,6 +159,7 @@
             , pathLoc: encodeURIComponent(this.fileSvr.pathLoc)
             , lenSvr: this.fileSvr.lenSvr
             , sizeSvr: this.fileSvr.sizeSvr
+            , fdTask: 1
         });
         $.ajax({
             type: "GET"

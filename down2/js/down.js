@@ -490,7 +490,6 @@ function DownloaderMgr()
 		ui.find('a[name="btnStart"]').click(function () { _this.start_queue(); });
 		ui.find('a[name="btnStop"]').click(function () { _this.stop_queue(); });
 
-	    //this.LoadData();
         this.safeCheck();//
 
         $(function () {

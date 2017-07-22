@@ -11,6 +11,7 @@ namespace up6.down2.db
         {
             string id       = Request.QueryString["id"];
             string uid      = Request.QueryString["uid"];
+            string fdTask   = Request.QueryString["fdTask"];
             string nameLoc  = Request.QueryString["nameLoc"];//客户端使用的是encodeURIComponent编码，
             string pathLoc  = Request.QueryString["pathLoc"];//客户端使用的是encodeURIComponent编码，
             string lenSvr   = Request.QueryString["lenSvr"];
@@ -36,6 +37,7 @@ namespace up6.down2.db
             inf.pathLoc = pathLoc;//记录本地存储位置
             inf.lenSvr = long.Parse(lenSvr);
             inf.sizeSvr = sizeSvr;
+            inf.fdTask = fdTask == "1";
             DnFile db = new DnFile();
             db.Add(ref inf);
 
