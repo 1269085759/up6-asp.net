@@ -109,7 +109,7 @@ function FileDownloader(fileLoc, mgr)
     this.init_complete = function (json)
     {
         jQuery.extend(this.fileSvr, json);
-        this.svr_create();//
+        if (!this.svr_inited) this.svr_create();//
     };
     //在出错，停止中调用
     this.svr_update = function ()

@@ -67,7 +67,7 @@
                 jQuery.extend(true, _this.fileSvr, { files: json });
                 ptr.ui.btn.down.show();
                 ptr.ui.msg.text("开始创建信息...");
-                _this.svr_create();
+                _this.Manager.init_folder(_this.fileSvr);
             }
             , error: function (req, txt, err) { alert("创建信息失败！" + req.responseText); }
             , complete: function (req, sta) { req = null; }
@@ -114,6 +114,11 @@
     this.openPath = function ()
     {
         this.app.openPath(this.fileSvr);
+    };
+    this.init_complete = function (json)
+    {
+        jQuery.extend(this.fileSvr, json);
+        if (!this.svr_inited) this.svr_create();//
     };
 
     //在出错，停止中调用
