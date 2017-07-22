@@ -95,7 +95,8 @@ namespace up6.down2.biz
             List<DnFileInf> files = new List<DnFileInf>();
             StringBuilder sb = new StringBuilder();
             sb.Append("select ");
-            sb.Append(" f_id");//0
+            sb.Append(" id");//0
+            sb.Append(",f_id");//0
             sb.Append(",f_nameLoc");//1
             sb.Append(",f_pathLoc");//2
             sb.Append(",f_perLoc");//3
@@ -114,12 +115,13 @@ namespace up6.down2.biz
             while (r.Read())
             {
                 DnFileInf f = new DnFileInf();
-                f.f_id = r.GetString(0);
-                f.nameLoc = r.GetString(1);
-                f.pathLoc = r.GetString(2);
-                f.perLoc = r.GetString(3);
-                f.sizeSvr = r.GetString(4);
-                f.fdTask = r.GetBoolean(5);
+                f.id = r.GetString(0);
+                f.f_id = r.GetString(1);
+                f.nameLoc = r.GetString(2);
+                f.pathLoc = r.GetString(3);
+                f.perLoc = r.GetString(4);
+                f.sizeSvr = r.GetString(5);
+                f.fdTask = r.GetBoolean(6);
                 files.Add(f);
             }
             r.Close();
