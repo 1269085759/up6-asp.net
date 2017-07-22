@@ -14,11 +14,13 @@
 文档下载：http://www.ncmem.com/download/down2/down2-doc.rar
 联系邮箱：1085617561@qq.com
 联系QQ：1085617561
+版本：2.3
 更新记录：
     2009-11-05 创建
 	2014-02-27 优化版本号。
     2015-08-13 优化
     2017-06-08 增加对edge的支持，完善逻辑。
+    2017-07-22 优化文件夹下载，优化文件下载。
 */
 function debug_msg(v) { $(document.body).append("<div>"+v+"</div>");}
 //删除元素值
