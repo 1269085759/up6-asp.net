@@ -139,6 +139,7 @@ function FileDownloader(fileLoc, mgr)
             , nameLoc: encodeURIComponent(this.fileSvr.nameLoc)
             , lenSvr: this.fileSvr.lenSvr
             , sizeSvr: encodeURIComponent(this.fileSvr.sizeSvr)
+            , fdTask: 0
         });
 
         $.ajax({
