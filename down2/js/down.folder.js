@@ -55,7 +55,6 @@
         this.ui.msg.text("开始加载文件列表...");
         var param = jQuery.extend({}, this.fields, { time: new Date().getTime() });
         jQuery.extend(param, { id: this.fileSvr.f_id});
-        var ptr = this;
         $.ajax({
             type: "GET"
             , dataType: 'jsonp'
@@ -65,7 +64,7 @@
             , success: function (msg) {
                 var json = JSON.parse(decodeURIComponent(msg.value));
                 jQuery.extend(true, _this.fileSvr, { files: json });
-                ptr.ui.msg.text("初始文件夹...");
+                _this.ui.msg.text("初始文件夹...");
                 _this.app.initFolder(_this.fileSvr);
             }
             , error: function (req, txt, err) { alert("创建信息失败！" + req.responseText); }
@@ -155,7 +154,6 @@
             , lenSvr: this.fileSvr.lenSvr
             , sizeSvr: this.fileSvr.sizeSvr
         });
-        var ptr = this;
         $.ajax({
             type: "GET"
             , dataType: 'jsonp'
@@ -164,10 +162,8 @@
             , data: param
             , success: function (msg)
             {
-                //var json = JSON.parse(decodeURIComponent(msg));
-                //jQuery.extend(true,_this.fileSvr, json);
-                ptr.ui.btn.down.show();
-                ptr.ui.msg.text("初始化完毕...");
+                _this.ui.btn.down.show();
+                _this.ui.msg.text("初始化完毕...");
                 _this.svr_inited = true;
             }
             , error: function (req, txt, err) { alert("创建信息失败！" + req.responseText); }
