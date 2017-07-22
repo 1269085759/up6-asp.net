@@ -206,7 +206,7 @@ function FileDownloader(fileLoc, mgr)
         this.fileSvr.perLoc = json.percent;
         this.ui.percent.text("("+json.percent+")");
         this.ui.process.css("width", json.percent);
-        var msg = [json.sizeLoc , " ", json.speed, " ", json.time];
+        var msg = [json.lenRecv , " ", json.speed, " ", json.time];
         this.ui.msg.text(msg.join(""));
     };
 
