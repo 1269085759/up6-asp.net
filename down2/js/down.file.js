@@ -162,7 +162,6 @@ function FileDownloader(fileLoc, mgr)
     this.isComplete = function () { return this.State == HttpDownloaderState.Complete; };
     this.svr_delete = function ()
     {
-        if (this.fileSvr.idSvr == 0) return;
         var param = jQuery.extend({}, this.fields, { id: this.fileSvr.id }, {time:new Date().getTime()});
         $.ajax({
             type: "GET"
@@ -185,7 +184,6 @@ function FileDownloader(fileLoc, mgr)
         this.ui.percent.text("(100%)");
         this.ui.msg.text("下载完成");
         this.State = HttpDownloaderState.Complete;
-        //this.SvrDelete();
         this.Manager.filesCmp.push(this);
         this.svr_delete();
     };

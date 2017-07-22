@@ -104,7 +104,6 @@
         //从上传列表中删除
         this.ui.split.remove();
         this.ui.div.remove();
-        this.Manager.remove_url(this.fileSvr.id);
         this.svr_delete();
     };
 
@@ -181,7 +180,6 @@
     this.isComplete = function () { return this.State == HttpDownloaderState.Complete; };
     this.svr_delete = function ()
     {
-        if (this.svr_inited) return;
         var param = jQuery.extend({}, this.fields,{id:this.fileSvr.id,time:new Date().getTime()});
         $.ajax({
             type: "GET"
