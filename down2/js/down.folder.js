@@ -65,9 +65,8 @@
             , success: function (msg) {
                 var json = JSON.parse(decodeURIComponent(msg.value));
                 jQuery.extend(true, _this.fileSvr, { files: json });
-                ptr.ui.btn.down.show();
-                ptr.ui.msg.text("开始创建信息...");
-                _this.Manager.init_folder(_this.fileSvr);
+                ptr.ui.msg.text("初始文件夹...");
+                _this.app.initFolder(_this.fileSvr);
             }
             , error: function (req, txt, err) { alert("创建信息失败！" + req.responseText); }
             , complete: function (req, sta) { req = null; }
@@ -88,6 +87,7 @@
     //方法-停止传输
     this.stop = function ()
     {
+        this.svr_update();
         this.hideBtns();
         this.ui.btn.down.show();
         this.ui.btn.del.show();
@@ -117,20 +117,15 @@
     };
     this.init_complete = function (json)
     {
-        jQuery.extend(this.fileSvr, json);
+        jQuery.extend(this.fileSvr, json, {files:null});
         if (!this.svr_inited) this.svr_create();//
     };
 
     //在出错，停止中调用
     this.svr_update = function (json)
     {
-        if (this.svr_inited) return;
-
         var param = jQuery.extend({}, this.fields, { time: new Date().getTime() });
-        jQuery.extend(param, { idSvr: this.fileSvr.idSvr, lenLoc: this.fileSvr.lenLoc, perLoc: this.fileSvr.perLoc });
-        //子文件
-        var f = this.fileSvr.files[json.file.id];        
-        jQuery.extend(param, { file_id: f.idSvr, file_lenLoc: f.lenLoc, file_per: f.perLoc });
+        jQuery.extend(param, { id: this.fileSvr.id, lenLoc: this.fileSvr.lenLoc, perLoc: this.fileSvr.perLoc });
 
         $.ajax({
             type: "GET"
@@ -150,7 +145,7 @@
         //已记录将不再记录
         if (this.svr_inited) return;
         this.ui.btn.down.hide();
-        this.ui.msg.text("正在初始化...");
+        this.ui.msg.text("正在创建任务...");
         var param = jQuery.extend({}, this.fields, {time: new Date().getTime() });
         jQuery.extend(param, {
               id: this.fileSvr.id
@@ -257,6 +252,5 @@
         this.hideBtns();
         this.ui.btn.down.show();
         this.ui.btn.del.show();
-        //this.svr_update();
     };
 }
