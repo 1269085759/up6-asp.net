@@ -220,8 +220,9 @@ function DownloaderMgr()
     };
 	this.resume_folder = function (fdSvr)
 	{	    
-	    var obj = this.add_ui(true, fdSvr.fileUrl, fdSvr.nameLoc);
+	    var obj = this.add_ui(fdSvr);
 	    if (null == obj) return;
+        obj.svr_inited = true;
 
 	    obj.ui.ico.file.hide();
 	    obj.ui.ico.fd.show();
@@ -229,10 +230,23 @@ function DownloaderMgr()
 	    obj.ui.size.text(fdSvr.sizeSvr);
 	    obj.ui.process.css("width", fdSvr.perLoc);
 	    obj.ui.percent.text("(" + fdSvr.perLoc + ")");
-	    jQuery.extend(true, obj.fileSvr, fdSvr);//
 	    
 	    return obj;
-	};
+    };
+    this.resume_file = function (f) {
+        var obj = this.add_ui(f);
+        if (null == obj) return;
+        obj.svr_inited = true;
+
+        obj.ui.ico.file.hide();
+        obj.ui.ico.fd.show();
+        obj.ui.name.text(f.nameLoc);
+        obj.ui.size.text(f.sizeSvr);
+        obj.ui.process.css("width", f.perLoc);
+        obj.ui.percent.text("(" + f.perLoc + ")");
+
+        return obj;
+    };
 	this.init_file = function (f)
     {
         this.app.initFile(f);
@@ -241,9 +255,18 @@ function DownloaderMgr()
     {
         this.app.initFolder(f);
     };
-    this.init_file_cmp = function (f) {
+    this.init_file_cmp = function (json)
+    {
+        var p = this.filesMap[json.id];
+        p.init_complete(json);
+    };
+    this.add_file = function (f) {
         var obj = this.add_ui(f);
-        if (obj.fileSvr.lenLoc == 0) obj.svr_create();
+        if (null == obj) return;
+
+        obj.ui.ico.file.hide();
+        obj.ui.ico.fd.show();
+        this.init_file(obj.fileSvr);//
         return obj;
     };
 	this.add_folder = function (f)
@@ -506,7 +529,7 @@ function DownloaderMgr()
                 {
                     if (files[i].fdTask)
                     { _this.resume_folder(files[i]); }
-                    else { _this.init_file(files[i]); }
+                    else { _this.resume_file(files[i]); }
                 }
             }
             , error: function (req, txt, err) { alert("加载文件列表失败！" +req.responseText); }
