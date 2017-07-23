@@ -63,18 +63,18 @@ function DownloaderMgr()
         //x86
         , ie: {
               part: { clsid: "6528602B-7DF7-445A-8BA0-F6F996472569", name: "Xproer.DownloaderPartition" }
-            , path: "http://www.ncmem.com/download/down2/down2.cab"
+            , path: "http://www.ncmem.com/download/down2/v2.3-guid/down2.cab"
         }
         //x64
         , ie64: {
             part: { clsid: "19799DD1-7357-49de-AE5D-E7A010A3172C", name: "Xproer.DownloaderPartition64" }
-            , path: "http://www.ncmem.com/download/down2/down64.cab"
+            , path: "http://www.ncmem.com/download/down2/v2.3-guid/down64.cab"
         }
-        , firefox: { name: "", type: "application/npHttpDown", path: "http://www.ncmem.com/download/down2/down2.xpi" }
-        , chrome: { name: "npHttpDown", type: "application/npHttpDown", path: "http://www.ncmem.com/download/down2/down2.crx" }
+        , firefox: { name: "", type: "application/npHttpDown", path: "http://www.ncmem.com/download/down2/v2.3-guid/down2.xpi" }
+        , chrome: { name: "npHttpDown", type: "application/npHttpDown", path: "http://www.ncmem.com/download/down2/v2.3-guid/down2.crx" }
 	    //Chrome 45
-        , chrome45: { name: "com.xproer.down2", path: "http://www.ncmem.com/download/down2/down2.nat.crx" }
-        , exe: { path: "http://www.ncmem.com/download/down2/down2.exe" }
+        , chrome45: { name: "com.xproer.down2", path: "http://www.ncmem.com/download/down2/v2.3-guid/down2.nat.crx" }
+        , exe: { path: "http://www.ncmem.com/download/down2/v2.3-guid/down2.exe" }
         , edge: {protocol:"down2",port:9700,visible:false}
         , "Fields": {"uname": "test","upass": "test","uid":"0"}
 	};
