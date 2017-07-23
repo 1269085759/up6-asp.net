@@ -3,9 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Text;
-using up6.db;
 using up6.db.database;
-using up6.db.model;
 using up6.down2.model;
 
 namespace up6.down2.biz
