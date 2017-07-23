@@ -63,7 +63,6 @@
     <Content Include="down2\db\clear.aspx" />
     <Content Include="down2\db\fd_data.aspx" />
     <Content Include="down2\db\f_list.aspx" />
-    <Content Include="down2\db\f_complete.aspx" />
     <Content Include="down2\db\f_create.aspx" />
     <Content Include="down2\db\f_del.aspx" />
     <Content Include="down2\db\f_down.aspx" />
@@ -237,13 +236,6 @@
     </Compile>
     <Compile Include="down2\db\f_list.aspx.designer.cs">
       <DependentUpon>f_list.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="down2\db\f_complete.aspx.cs">
-      <DependentUpon>f_complete.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="down2\db\f_complete.aspx.designer.cs">
-      <DependentUpon>f_complete.aspx</DependentUpon>
     </Compile>
     <Compile Include="down2\db\f_create.aspx.cs">
       <DependentUpon>f_create.aspx</DependentUpon>
