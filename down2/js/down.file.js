@@ -99,12 +99,7 @@ function FileDownloader(fileLoc, mgr)
 
     this.open = function ()
     {
-        this.app.openFile(this.fileSvr);
-    };
-
-    this.openPath = function ()
-    {
-        this.app.openPath(this.fileSvr);
+        this.app.openPath({ id: this.fileSvr.id, path: this.fileSvr.pathLoc });
     };
     this.init_complete = function (json)
     {
@@ -153,12 +148,18 @@ function FileDownloader(fileLoc, mgr)
                 if (msg.value == null) return;
                 var json = JSON.parse(decodeURIComponent(msg.value));
                 _this.svr_inited = true;
+                _this.svr_create_cmp();
             }
             , error: function (req, txt, err) { alert("创建信息失败！" + req.responseText); }
             , complete: function (req, sta) { req = null; }
         });
     };
 
+    this.svr_create_cmp = function () {
+        setTimeout(function () {
+            _this.down();
+        }, 200);
+    };
     this.isComplete = function () { return this.State == HttpDownloaderState.Complete; };
     this.svr_delete = function ()
     {
@@ -179,7 +180,7 @@ function FileDownloader(fileLoc, mgr)
     {
         this.hideBtns();
         this.event.downComplete(this);//biz event
-        //this.ui.btn.del.text("打开");
+        this.ui.btn.open.show();
         this.ui.process.css("width", "100%");
         this.ui.percent.text("(100%)");
         this.ui.msg.text("下载完成");
