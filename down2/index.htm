@@ -54,14 +54,10 @@
                             if (f.fdTask)
                             {
                                 var d = downer.add_folder(f);
-                                if (d == null) return;//
                             }
                             else
                             {
-                                var d = downer.add_file(f, { a: 100, b: 100 });
-                                if (d == null) return;//
-                                d.ui.size.text(f.sizeSvr);
-                                d.ui.name.text(f.nameLoc);
+                                var d = downer.add_file(f);
                             }                            
                         });
                         tb.append(tmp);
