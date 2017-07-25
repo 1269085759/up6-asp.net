@@ -37,7 +37,7 @@ function FileDownloader(fileLoc, mgr)
         , nameLoc: ""//自定义文件名称
         , folderLoc: this.Config["Folder"]
         , pathLoc: ""
-        , fileUrl: ""
+        , fileUrl: this.Config["UrlDown"] + "?" + this.Manager.to_params(this.fields)
         , lenLoc: 0
         , perLoc: "0%"
         , lenSvr: 0
@@ -45,8 +45,7 @@ function FileDownloader(fileLoc, mgr)
         , complete: false
         , fdTask: false
     };
-    var url = this.Config["UrlDown"] + "?" + this.Manager.to_params(this.fields)
-    jQuery.extend(this.fileSvr, fileLoc, { fileUrl: url });//覆盖配置
+    jQuery.extend(this.fileSvr, fileLoc);//覆盖配置
 
     this.hideBtns = function ()
     {
