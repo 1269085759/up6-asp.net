@@ -229,7 +229,6 @@
     </Compile>
     <Compile Include="down2\model\DnFileInf.cs" />
     <Compile Include="down2\biz\DnFolder.cs" />
-    <Compile Include="down2\model\DnFolderInf.cs" />
     <Compile Include="down2\db\f_list.aspx.cs">
       <DependentUpon>f_list.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
