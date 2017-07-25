@@ -43,6 +43,8 @@
         this.hideBtns();
         this.ui.btn.down.show();
         this.ui.btn.cancel.show();
+        this.ui.ico.file.hide();
+        this.ui.ico.fd.show();
         this.ui.msg.text("正在下载队列中等待...");
         this.State = HttpDownloaderState.Ready;
     };
