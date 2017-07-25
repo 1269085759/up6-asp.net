@@ -15,7 +15,7 @@
         , nameLoc: ""//自定义文件名称
         , folderLoc: this.Config["Folder"]
         , pathLoc: ""
-        , fileUrl: this.Config["UrlDown"] + "?" + this.Manager.to_params(this.fields)
+        , fileUrl: ""
         , cmpCount: 0
         , fileCount: 0
         , lenLoc: 0
@@ -26,7 +26,8 @@
         , fdTask: true
         , files:null
     };
-    jQuery.extend(this.fileSvr, fileLoc);//覆盖配置
+    var url = this.Config["UrlDown"] + "?" + this.Manager.to_params(this.fields)
+    jQuery.extend(this.fileSvr, fileLoc, {fileUrl:url});//覆盖配置
 
     this.hideBtns = function ()
     {
