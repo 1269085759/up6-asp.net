@@ -263,17 +263,19 @@ function DownloaderMgr()
         var p = this.filesMap[json.id];
         p.init_complete(json);
     };
-    this.add_file = function (f) {
+    this.add_file = function (f,fields) {
         var obj = this.add_ui(f);
         if (null == obj) return;
+        obj.reset_fields(fields);
 
         this.init_file(obj.fileSvr);//
         return obj;
     };
-	this.add_folder = function (f)
+    this.add_folder = function (f, fields)
 	{
 	    var obj = this.add_ui(f);
-	    if (null == obj) return;
+        if (null == obj) return;
+        obj.reset_fields(fields);
 
         obj.load_files();//
 	    return obj;
