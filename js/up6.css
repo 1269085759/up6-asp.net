@@ -48,6 +48,8 @@ div.UploaderItemRight{width:54px; float:left;margin:3px 0 0 0;}
 .files-panel .toolbar input{margin:0 0 0 7px; }
 .files-panel .toolbar a.btn{padding:0 10px; height:43px; line-height:43px;cursor:pointer;text-decoration:none;display:inline-block;}
 .files-panel .toolbar a.btn:hover{background-color:#DADADA;padding:0 10px; height:43px; line-height:43px;cursor:pointer;text-decoration:none;display:inline-block;}
+.files-panel .toolbar .btn{padding:0 10px; height:43px; line-height:43px;cursor:pointer;text-decoration:none;display:inline-block;}
+.files-panel .toolbar .btn-hover{background-color:#DADADA;padding:0 10px; height:43px; line-height:43px;cursor:pointer;text-decoration:none;display:inline-block;}
 .files-panel .content{ background:#ECF9FF;}
 .files-panel .footer{height:35px; line-height:25px; color:#7A8F99; background:#EEE;}
 /*单文件上传面板*/

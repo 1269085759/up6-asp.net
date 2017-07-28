@@ -451,10 +451,10 @@ function HttpUploaderMgr()
 		//上传列表
 		acx += '<div class="files-panel" name="post_panel">\
 					<div name="post_head" class="toolbar">\
-						<a href="javascript:void(0)" class="btn" name="btnAddFiles">选择多个文件</a>\
-						<a href="javascript:void(0)" class="btn" name="btnAddFolder">选择文件夹</a>\
-						<a href="javascript:void(0)" class="btn" name="btnPasteFile">粘贴文件</a>\
-						<a href="javascript:void(0)" class="btn hide" name="btnSetup">安装控件</a>\
+						<span class="btn" name="btnAddFiles">选择多个文件</span>\
+						<span class="btn" name="btnAddFolder">选择文件夹</span>\
+						<span class="btn" name="btnPasteFile">粘贴文件</span>\
+						<span class="btn" name="btnSetup">安装控件</span>\
 					</div>\
 					<div class="content" name="post_content">\
 						<div name="post_body" class="file-post-view"></div>\
@@ -699,12 +699,20 @@ function HttpUploaderMgr()
         this.btnSetup       = panel.find('a[name="btnSetup"]').attr("href",this.Config.exe.path);
 	    //drag files
 
+        panel.find('span[class="btn"]').each(function ()
+        {
+            $(this).hover(function () {
+                $(this).removeClass("btn").addClass("btn-hover");
+            }, function () {
+                $(this).removeClass("btn-hover").addClass("btn");
+            });
+        });
 	    //添加多个文件
-	    panel.find('a[name="btnAddFiles"]').click(function () { _this.openFile(); });
+	    panel.find('span[name="btnAddFiles"]').click(function () { _this.openFile(); });
 	    //添加文件夹
-	    panel.find('a[name="btnAddFolder"]').click(function () { _this.openFolder(); });
+        panel.find('span[name="btnAddFolder"]').click(function () { _this.openFolder(); });
 	    //粘贴文件
-	    panel.find('a[name="btnPasteFile"]').click(function () { _this.pasteFiles(); });
+        panel.find('span[name="btnPasteFile"]').click(function () { _this.pasteFiles(); });
 	    //清空已完成文件
 	    panel.find('a[name="btnClear"]').click(function () { _this.ClearComplete(); });
 
