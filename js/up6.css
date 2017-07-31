@@ -36,8 +36,8 @@ div.UploaderItemRight{width:54px; float:left;margin:3px 0 0 0;}
 .file-item .img-box { width:32px;height:65px;float:left;margin:0 5px 0 0;}
 .file-item .img-box img{ width:32px;height:32px;margin:17px 0 0 0;}
 .file-item .file-head{width:280px; height:20px;overflow:hidden; vertical-align:middle;}
-.file-item .btn-box { width:45px;height:65px;float:left; overflow:hidden; text-align:center; text-decoration:none;}
-.file-item .btn-box:hover{width:45px;height:65px;background-color:#DADADA;cursor:pointer;text-align:center;text-decoration:none;}
+.file-item .btn-box { width:45px;height:65px;float:left; overflow:hidden; text-align:center; text-decoration:none;cursor:pointer;}
+.file-item .btn-box-hover{background-color:#DADADA;}
 .file-item .btn-box img{ width:32px;height:32px;margin:10px 0 0 0;}
 .hide{display:none;}
 .BtnInfo{height:12px;}

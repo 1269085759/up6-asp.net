@@ -421,10 +421,10 @@ function HttpUploaderMgr()
 						<div name="msg" class="msg top-space">15.3MB 20KB/S 10:02:00</div>\
 					</div>\
 					<div class="area-r">\
-                        <a class="btn-box" name="cancel" title="取消"><img src="js/stop.png"/><div>取消</div></a>\
-                        <a class="btn-box hide" name="post" title="继续"><img src="js/post.png"/><div>继续</div></a>\
-						<a class="btn-box hide" name="stop" title="停止"><img src="js/stop.png"/><div>停止</div></a>\
-						<a class="btn-box hide" name="del" title="删除"><img src="js/del.png"/><div>删除</div></a>\
+                        <span class="btn-box" name="cancel" title="取消"><img src="js/stop.png"/><div>取消</div></span>\
+                        <span class="btn-box hide" name="post" title="继续"><img src="js/post.png"/><div>继续</div></span>\
+						<span class="btn-box hide" name="stop" title="停止"><img src="js/stop.png"/><div>停止</div></span>\
+						<span class="btn-box hide" name="del" title="删除"><img src="js/del.png"/><div>删除</div></span>\
 					</div>';
 		acx += '</div>';
 		//文件夹模板
@@ -440,10 +440,10 @@ function HttpUploaderMgr()
 						<div name="msg" class="msg top-space">15.3MB 20KB/S 10:02:00</div>\
 					</div>\
 					<div class="area-r">\
-                        <a class="btn-box" name="cancel" title="取消"><img src="js/stop.png"/><div>取消</div></a>\
-                        <a class="btn-box hide" name="post" title="继续"><img src="js/post.png"/><div>继续</div></a>\
-						<a class="btn-box hide" name="stop" title="停止"><img src="js/stop.png"/><div>停止</div></a>\
-						<a class="btn-box hide" name="del" title="删除"><img src="js/del.png"/><div>删除</div></a>\
+                        <span class="btn-box" name="cancel" title="取消"><img src="js/stop.png"/><div>取消</div></span>\
+                        <span class="btn-box hide" name="post" title="继续"><img src="js/post.png"/><div>继续</div></span>\
+						<span class="btn-box hide" name="stop" title="停止"><img src="js/stop.png"/><div>停止</div></span>\
+						<span class="btn-box hide" name="del" title="删除"><img src="js/del.png"/><div>删除</div></span>\
 					</div>';
 		acx += '</div>';
 		//分隔线
@@ -994,11 +994,17 @@ function HttpUploaderMgr()
 		var uiSize      = ui.find("div[name='fileSize']")
 		var uiProcess 	= ui.find("div[name='process']");
 		var uiMsg 		= ui.find("div[name='msg']");
-		var btnCancel 	= ui.find("a[name='cancel']");
-		var btnPost 	= ui.find("a[name='post']");
-		var btnStop 	= ui.find("a[name='stop']");
-		var btnDel 		= ui.find("a[name='del']");
+		var btnCancel 	= ui.find("span[name='cancel']");
+		var btnPost 	= ui.find("span[name='post']");
+		var btnStop 	= ui.find("span[name='stop']");
+		var btnDel 		= ui.find("span[name='del']");
 		var uiPercent	= ui.find("div[name='percent']");
+        ui.find('span[name="cancel"],span[name="post"],span[name="stop"],span[name="del"]').hover(function ()
+        {
+            $(this).addClass("btn-box-hover");
+        }, function () {
+            $(this).removeClass("btn-box-hover");
+        });
 		
 		var upFile = new FileUploader(fileLoc, _this);
 		this.filesMap[fileLoc.id] = upFile;//添加到映射表
