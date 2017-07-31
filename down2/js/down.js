@@ -137,11 +137,11 @@ function DownloaderMgr()
 						<div name="msg" class="msg top-space">15.3MB 20KB/S 10:02:00</div>\
 					</div>\
 					<div class="area-r">\
-                        <a class="btn-box hide" name="down" title="继续"><div>继续</div></a>\
-						<a class="btn-box hide" name="stop" title="停止"><div>停止</div></a>\
-                        <a class="btn-box" name="cancel" title="取消">取消</a>\
-						<a class="btn-box hide" name="del" title="删除"><div>删除</div></a>\
-						<a class="btn-box hide" name="open" title="打开"><div>打开</div></a>\
+                        <span tp="btn-item" class="btn-box hide" name="down" title="继续"><div>继续</div></span>\
+						<span tp="btn-item" class="btn-box hide" name="stop" title="停止"><div>停止</div></span>\
+                        <span tp="btn-item" class="btn-box" name="cancel" title="取消">取消</span>\
+						<span tp="btn-item" class="btn-box hide" name="del" title="删除"><div>删除</div></span>\
+						<span tp="btn-item" class="btn-box hide" name="open" title="打开"><div>打开</div></span>\
 					</div>\
 				</div>';
 		//分隔线
@@ -150,16 +150,16 @@ function DownloaderMgr()
 	    html += '<div class="files-panel" name="down_panel">\
                     <div class="header" name="down_header">下载文件</div>\
 					<div name="down_toolbar" class="toolbar">\
-						<a class="btn" name="btnSetFolder"><div>设置下载目录</div></a>\
-						<a href="javascript:void(0)" class="btn" name="btnStart">全部下载</a>\
-						<a href="javascript:void(0)" class="btn" name="btnStop">全部停止</a>\
-						<a href="javascript:void(0)" class="btn hide" name="btnSetup">安装控件</a>\
+						<span class="btn" name="btnSetFolder"><div>设置下载目录</div></span>\
+						<span class="btn" name="btnStart">全部下载</span>\
+						<span class="btn" name="btnStop">全部停止</span>\
+						<span class="btn hide" name="btnSetup">安装控件</span>\
 					</div>\
 					<div class="content" name="down_content">\
 						<div name="down_body" class="file-post-view"></div>\
 					</div>\
 					<div class="footer" name="down_footer">\
-						<a href="javascript:void(0)" class="btn-footer" name="btnClear">清除已完成文件</a>\
+						<span class="btn-footer" name="btnClear">清除已完成文件</span>\
 					</div>\
 				</div>';
 	    return html;
@@ -207,11 +207,16 @@ function DownloaderMgr()
 	    var uiProcess = ui.find("div[name='process']");
 	    var uiPercent = ui.find("div[name='percent']");
 	    var uiMsg = ui.find("div[name='msg']");
-	    var btnCancel = ui.find("a[name='cancel']");
-	    var btnStop = ui.find("a[name='stop']");
-	    var btnDown = ui.find("a[name='down']");
-	    var btnDel = ui.find("a[name='del']");
-        var btnOpen = ui.find("a[name='open']");
+	    var btnCancel = ui.find("span[name='cancel']");
+        var btnStop = ui.find("span[name='stop']");
+        var btnDown = ui.find("span[name='down']");
+        var btnDel = ui.find("span[name='del']");
+        var btnOpen = ui.find("span[name='open']");
+        ui.find('span[tp="btn-item"]').hover(function () {
+            $(this).addClass("btn-box-hover");
+        }, function () {
+            $(this).removeClass("btn-box-hover");
+            });
         var ui_eles = { ico: { file: uiIcoF, fd: uiIcoFD }, msg: uiMsg, name: uiName, size: uiSize, process: uiProcess, percent: uiPercent, btn: { cancel: btnCancel, stop: btnStop, down: btnDown, del: btnDel, open: btnOpen }, div: ui, split: sp };
 
         var downer;
@@ -467,7 +472,7 @@ function DownloaderMgr()
 	this.initUI = function (ui/*jquery obj*/)
 	{
 	    this.down_panel = ui.find('div[name="down_panel"]');
-	    this.btnSetup = ui.find('a[name="btnSetup"]');
+	    this.btnSetup = ui.find('span[name="btnSetup"]');
         this.tmpFile = ui.find('div[name="fileItem"]');
         this.parter = ui.find('embed[name="ffParter"]').get(0);
         this.ieParter = ui.find('object[name="parter"]').get(0);
@@ -478,16 +483,23 @@ function DownloaderMgr()
 	    var post_foot = ui.find('div[name="down_footer"]');
 	    down_body.height(this.down_panel.height() - post_bar.height() - down_head.height() - post_foot.outerHeight() - 1);
 
-	    var btnSetFolder = ui.find('a[name="btnSetFolder"]');
+	    var btnSetFolder = ui.find('span[name="btnSetFolder"]');
 	    this.spliter = ui.find('div[name="spliter"]');
 	    this.pnlFiles = down_body;
 
 	    //设置下载文件夹
-	    btnSetFolder.click(function () { _this.open_folder(); });
+        btnSetFolder.click(function () { _this.open_folder(); });
 		//清除已完成
-		ui.find('a[name="btnClear"]').click(function(){_this.clearComplete();});
-		ui.find('a[name="btnStart"]').click(function () { _this.start_queue(); });
-		ui.find('a[name="btnStop"]').click(function () { _this.stop_queue(); });
+        ui.find('span[name="btnClear"]').click(function () { _this.clearComplete(); }).hover(function () {
+            $(this).addClass("btn-footer-hover");
+        }, function () {
+            $(this).removeClass("btn-footer-hover");
+        });
+		ui.find('span[name="btnStart"]').click(function () { _this.start_queue(); });
+        ui.find('span[name="btnStop"]').click(function () { _this.stop_queue(); });
+        ui.find('span[class="btn"]').hover(function () {
+            $(this).addClass("btn-hover");
+        }, function () { $(this).removeClass("btn-hover"); });
 
         this.safeCheck();//
 
