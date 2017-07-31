@@ -460,7 +460,7 @@ function HttpUploaderMgr()
 						<div name="post_body" class="file-post-view"></div>\
 					</div>\
 					<div class="footer" name="post_footer">\
-						<a href="javascript:void(0)" class="btn-footer" name="btnClear">清除已完成文件</a>\
+						<span class="btn-footer" name="btnClear">清除已完成文件</a>\
 					</div>\
 				</div>';
 		return acx;
@@ -696,15 +696,17 @@ function HttpUploaderMgr()
 	    this.tmpFolder      = panel.find('div[name="folderItem"]');
 	    this.tmpSpliter     = panel.find('div[name="lineSplite"]');
 	    this.pnlHeader      = panel.find('div[name="pnlHeader"]');
-        this.btnSetup       = panel.find('a[name="btnSetup"]').attr("href",this.Config.exe.path);
+        this.btnSetup       = panel.find('span[name="btnSetup"]').click(function () {
+            window.open(this.Config.exe.path);
+        });//("href",this.Config.exe.path);
 	    //drag files
 
         panel.find('span[class="btn"]').each(function ()
         {
             $(this).hover(function () {
-                $(this).removeClass("btn").addClass("btn-hover");
+                $(this).addClass("btn-hover");
             }, function () {
-                $(this).removeClass("btn-hover").addClass("btn");
+                $(this).removeClass("btn-hover");
             });
         });
 	    //添加多个文件
@@ -714,7 +716,12 @@ function HttpUploaderMgr()
 	    //粘贴文件
         panel.find('span[name="btnPasteFile"]').click(function () { _this.pasteFiles(); });
 	    //清空已完成文件
-	    panel.find('a[name="btnClear"]').click(function () { _this.ClearComplete(); });
+        panel.find('span[name="btnClear"]').click(function () { _this.ClearComplete(); })
+            .hover(function () {
+                $(this).addClass("btn-footer-hover");
+            }, function () {
+                $(this).removeClass("btn-footer-hover");
+            });;
 
 	    this.SafeCheck();
 	    this.FileListMgr.LoadTo(filesSvr);
