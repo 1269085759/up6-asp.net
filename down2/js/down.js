@@ -189,7 +189,8 @@ function DownloaderMgr()
 	this.add_ui = function (f)
 	{
 	    //存在相同项
-	    if (this.exist_url(f.id)) return null;
+        if (this.exist_url(f.f_id)) { alert("已存在相同项"); return null; }
+        this.filesUrl.push(f.f_id);
 
 	    var _this = this;
 
@@ -214,9 +215,7 @@ function DownloaderMgr()
         var btnOpen = ui.find("span[name='open']");
         ui.find('span[tp="btn-item"]').hover(function () {
             $(this).addClass("btn-box-hover");
-        }, function () {
-            $(this).removeClass("btn-box-hover");
-            });
+        }, function () {$(this).removeClass("btn-box-hover");});
         var ui_eles = { ico: { file: uiIcoF, fd: uiIcoFD }, msg: uiMsg, name: uiName, size: uiSize, process: uiProcess, percent: uiPercent, btn: { cancel: btnCancel, stop: btnStop, down: btnDown, del: btnDel, open: btnOpen }, div: ui, split: sp };
 
         var downer;

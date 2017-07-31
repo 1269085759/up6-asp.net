@@ -11,6 +11,7 @@
     this.event = mgr.event;
     this.fileSvr = {
           id:""//
+        , f_id:""
         , uid: this.fields["uid"]
         , nameLoc: ""//自定义文件名称
         , folderLoc: this.Config["Folder"]
@@ -115,6 +116,7 @@
         //从上传列表中删除
         this.ui.split.remove();
         this.ui.div.remove();
+        this.Manager.remove_url(this.fileSvr.f_id);
         this.svr_delete();
     };
 
