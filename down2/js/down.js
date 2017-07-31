@@ -449,7 +449,7 @@ function DownloaderMgr()
             }
         };
         
-        window.onunload = function () { if (_this.working) { _this.stop_queue(); alert("停止");}};
+        window.onunload = function () { if (_this.working) { _this.stop_queue();}};
 	};
 	
 	this.loadAuto = function()
