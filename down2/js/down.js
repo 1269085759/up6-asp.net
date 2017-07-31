@@ -434,22 +434,22 @@ function DownloaderMgr()
 
 	//安全检查，在用户关闭网页时自动停止所有上传任务。
 	this.safeCheck = function()
-	{
-	    $(window).bind("beforeunload", function (event)
-	    {
-	        if (_this.working)
-	        {
-	            event.returnValue = "您还有程序正在运行，确定关闭？";
-	        }
-	    });
+    {
+        window.onbeforeunload = function (e) {
+            e = e || window.event;
 
-		$(window).bind("unload", function()
-		{ 
-			if (_this.working)
-			{
-			    _this.stop_queue();
-			}
-		});
+            if (_this.working)
+            {
+                // 兼容IE8和Firefox 4之前的版本
+                if (e) {
+                    e.returnValue = '您还有程序正在运行，确定关闭？';
+                }
+                // Chrome, Safari, Firefox 4+, Opera 12+ , IE 9+
+                return '您还有程序正在运行，确定关闭？';
+            }
+        };
+        
+        window.onunload = function () { if (_this.working) { _this.stop_queue(); alert("停止");}};
 	};
 	
 	this.loadAuto = function()
