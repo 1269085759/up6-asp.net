@@ -78,7 +78,7 @@
                 jQuery.extend(true, _this.fileSvr, { files: json });
                 _this.ui.msg.text("初始文件夹...");
                 setTimeout(function () {
-                    _this.app.initFolder(_this.fileSvr);
+                    _this.app.initFolder(jQuery.extend({},_this.Config,_this.fileSvr));
                 }, 300);
                 
             }

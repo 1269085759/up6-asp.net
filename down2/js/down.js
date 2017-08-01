@@ -44,7 +44,7 @@ function DownloaderMgr()
 		, "Debug"		: false//调试模式
 		, "LogFile"		: "f:\\log.txt"//日志文件路径。
 		, "Company"		: "荆门泽优软件有限公司"
-		, "Version"		: "1,2,62,51174"
+		, "Version"		: "1,2,64,51179"
 		, "License"		: ""//
 		, "Cookie"		: ""//
 		, "ThreadCount"	: 1//并发数
@@ -260,7 +260,7 @@ function DownloaderMgr()
         this.app.initFile(f);
     };
     this.init_folder = function (f) {
-        this.app.initFolder(jQuery.extend(this.Config,f));
+        this.app.initFolder(jQuery.extend({},this.Config,f));
     };
     this.init_file_cmp = function (json)
     {
