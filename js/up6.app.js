@@ -137,7 +137,7 @@ var up6_app = {
     }
     , stopFile: function (f)
     {
-        var param = { name: "stop_file", id: f.id};
+        var param = jQuery.extend({},f,{ name: "stop_file"});
         this.postMessage(param);
     }
     , delFile: function (f) {
