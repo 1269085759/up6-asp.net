@@ -1071,10 +1071,10 @@ function HttpUploaderMgr()
 		var uiSize      = ui.find("div[name='fileSize']")
 		var divProcess 	= ui.find("div[name='process']");
 		var divMsg      = ui.find("div[name='msg']");
-		var btnCancel   = ui.find("a[name='cancel']");
-		var btnPost     = ui.find("a[name='post']");
-		var btnStop     = ui.find("a[name='stop']");
-		var btnDel      = ui.find("a[name='del']");
+		var btnCancel   = ui.find("span[name='cancel']");
+		var btnPost     = ui.find("span[name='post']");
+		var btnStop     = ui.find("span[name='stop']");
+		var btnDel      = ui.find("span[name='del']");
 		var divPercent	= ui.find("div[name='percent']");
 		var ui_eles = { msg: divMsg,size:uiSize, process: divProcess, percent: divPercent, btn: { del: btnDel, cancel: btnCancel, post: btnPost, stop: btnStop }, split: sp, div: ui };
 

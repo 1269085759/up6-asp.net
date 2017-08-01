@@ -8,7 +8,7 @@ namespace up6.db.database
         static public void Remove(string id, int uid)
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("update up6_files set f_deleted=1 where f_id=@idand f_uid=@uid;");
+            sb.Append("update up6_files set f_deleted=1 where f_id=@id and f_uid=@uid;");
             sb.Append("update up6_files set f_deleted=1 where f_pidRoot=@id and f_uid=@uid;");
             sb.Append("update up6_folders set fd_delete=1 where fd_id=@id and fd_uid=@uid;");
 
