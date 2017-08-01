@@ -657,7 +657,8 @@ function HttpUploaderMgr()
 		{
             if(this.edge) _this.edgeApp.close();
 			if (_this.QueuePost.length > 0)
-			{
+            {
+                _this.app.stopQueue();
 				_this.StopAll();
 			}
 		});

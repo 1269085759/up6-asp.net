@@ -144,6 +144,10 @@ var up6_app = {
         var param = { name: "del_file", id: f.id};
         this.postMessage(param);
     }
+    , stopQueue: function () {
+        var param = jQuery.extend({},{ name: "stop_queue",tip:false});
+        this.postMessage(param);
+    }
     , postMessage:function(json)
     {
         try {
