@@ -52,6 +52,7 @@ namespace up6.db
             //所有单个文件均以md5方式存储
             PathBuilderMd5 pb = new PathBuilderMd5();
             fileSvr.pathSvr = pb.genFile(fileSvr.uid, ref fileSvr);
+            fileSvr.pathSvr = fileSvr.pathSvr.Replace("\\","/");
 
             //数据库存在相同文件
             DBFile db = new DBFile();
