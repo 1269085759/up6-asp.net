@@ -705,7 +705,7 @@ function HttpUploaderMgr()
 	    this.tmpSpliter     = panel.find('div[name="lineSplite"]');
 	    this.pnlHeader      = panel.find('div[name="pnlHeader"]');
         this.btnSetup       = panel.find('span[name="btnSetup"]').click(function () {
-            window.open(this.Config.exe.path);
+            window.open(_this.Config.exe.path);
         });//("href",this.Config.exe.path);
 	    //drag files
 
