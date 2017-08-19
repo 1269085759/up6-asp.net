@@ -729,7 +729,7 @@ function HttpUploaderMgr()
                 $(this).addClass("btn-footer-hover");
             }, function () {
                 $(this).removeClass("btn-footer-hover");
-            });;
+            });
 
 	    this.SafeCheck();
 	    this.FileListMgr.LoadTo(filesSvr);
