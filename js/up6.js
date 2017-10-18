@@ -926,7 +926,7 @@ function HttpUploaderMgr()
 	*/
 	this.Delete = function(fid)
 	{
-		_this.RemoveQueue(fid); //从队列中删除
+		//_this.RemoveQueue(fid); //从队列中删除
 		_this.RemoveQueueWait(fid);//从未上传列表中删除
 	};
 
