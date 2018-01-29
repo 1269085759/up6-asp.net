@@ -304,7 +304,10 @@ function DownloaderMgr()
     //队列控制
     this.work_full = function () { return (this.queueWork.length + 1) > this.Config.ThreadCount; };
     this.add_work = function (id) { this.queueWork.push(id); };
-    this.del_work = function (id) { this.queueWork.remove(id); };
+    this.del_work = function (id) {
+        if (_this.queueWork.length < 1) return;
+        this.queueWork.remove(id);
+    };
     this.down_next = function () {
         if (_this.work_full()) return;
         if (_this.queueWait.length < 1) return;

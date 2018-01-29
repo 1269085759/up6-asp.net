@@ -250,6 +250,7 @@ function FileDownloader(fileLoc, mgr)
         this.event.downError(this, json.code);//biz event
         this.ui.msg.text(DownloadErrorCode[json.code+""]);
         this.State = HttpDownloaderState.Error;
+        this.Manager.del_work(this.fileSvr.id);//从工作队列中删除
         //this.SvrUpdate();
     };
 
@@ -258,5 +259,6 @@ function FileDownloader(fileLoc, mgr)
         this.hideBtns();
         this.ui.btn.down.show();
         this.ui.btn.del.show();
+        this.Manager.del_work(this.fileSvr.id);//从工作队列中删除
     };
 }
