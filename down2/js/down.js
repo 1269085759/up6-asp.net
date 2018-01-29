@@ -1,5 +1,5 @@
 ﻿/*
-版权所有(C) 2009-2017 荆门泽优软件有限公司
+版权所有(C) 2009-2018 荆门泽优软件有限公司
 保留所有权利
 官方网站：http://www.ncmem.com
 产品论坛：http://bbs.ncmem.com/forum-41-1.html
@@ -14,7 +14,7 @@
 文档下载：http://www.ncmem.com/download/down2/down2-doc.rar
 联系邮箱：1085617561@qq.com
 联系QQ：1085617561
-版本：2.3
+版本：2.4
 更新记录：
     2009-11-05 创建
 	2014-02-27 优化版本号。
@@ -44,7 +44,7 @@ function DownloaderMgr()
 		, "Debug"		: false//调试模式
 		, "LogFile"		: "f:\\log.txt"//日志文件路径。
 		, "Company"		: "荆门泽优软件有限公司"
-		, "Version"		: "1,2,66,51250"
+		, "Version"		: "1,2,71,51661"
 		, "License"		: ""//
 		, "Cookie"		: ""//
 		, "ThreadCount"	: 1//并发数
@@ -64,12 +64,12 @@ function DownloaderMgr()
         //x86
         , ie: {
               part: { clsid: "6528602B-7DF7-445A-8BA0-F6F996472569", name: "Xproer.DownloaderPartition" }
-            , path: "http://www.ncmem.com/download/down2/v2.3-guid/down2.cab"
+            , path: "http://www.ncmem.com/download/down2/2.4/down2.cab"
         }
         //x64
         , ie64: {
             part: { clsid: "19799DD1-7357-49de-AE5D-E7A010A3172C", name: "Xproer.DownloaderPartition64" }
-            , path: "http://www.ncmem.com/download/down2/v2.3-guid/down64.cab"
+            , path: "http://www.ncmem.com/download/down2/2.4/down64.cab"
         }
         , firefox: { name: "", type: "application/npHttpDown", path: "http://www.ncmem.com/download/down2/v2.3-guid/down2.xpi" }
         , chrome: { name: "npHttpDown", type: "application/npHttpDown", path: "http://www.ncmem.com/download/down2/v2.3-guid/down2.crx" }
@@ -107,6 +107,8 @@ function DownloaderMgr()
 	this.filesMap = new Object(); //本地文件列表映射表
 	this.filesCmp = new Array();//已完成列表
 	this.filesUrl = new Array();
+    this.queueWait = new Array(); //等待队列，数据:id1,id2,id3
+    this.queueWork = new Array(); //正在上传的队列，数据:id1,id2,id3
 	this.spliter = null;
 	this.pnlFiles = null;//文件上传列表面板
 	this.parter = null;
@@ -125,7 +127,7 @@ function DownloaderMgr()
 			<object id="objPartition" classid="clsid:6528602B-7DF7-445A-8BA0-F6F996472569" codebase="http://www.qq.com/HttpDownloader.cab#version=1,2,22,65068" width="1" height="1" ></object>
 		*/
         html += '<object name="parter" classid="clsid:' + this.Config.ie.part.clsid + '"';
-        html += ' codebase="' + this.Config.ie.part.path + '#version=' + _this.Config["Version"] + '" width="1" height="1" ></object>';
+        html += ' codebase="' + this.Config.ie.path + '#version=' + _this.Config["Version"] + '" width="1" height="1" ></object>';
         if (this.edge) html = '';
 	    //上传列表项模板
 	    html += '<div class="file-item file-item-single" name="fileItem">\
@@ -190,7 +192,7 @@ function DownloaderMgr()
 	this.add_ui = function (f)
 	{
 	    //存在相同项
-        if (this.exist_url(f.f_id)) { alert("已存在相同项"); return null; }
+        if (this.exist_url(f.f_id)) return null;
         this.filesUrl.push(f.f_id);
 
 	    var _this = this;
@@ -237,8 +239,8 @@ function DownloaderMgr()
         btnCancel.click(function () { downer.remove(); });
         btnOpen.click(function () { downer.open(); });
 
-	    downer.ready(); //准备
-	    return downer;
+        downer.ready(); //准备
+        setTimeout(function () { _this.down_next(); },500);
     };
 	this.resume_folder = function (fdSvr)
 	{	    
@@ -269,11 +271,6 @@ function DownloaderMgr()
     };
     this.add_file = function (f,fields) {
         var obj = this.add_ui(f);
-        if (null == obj) return;
-        obj.reset_fields(fields);
-
-        this.init_file(obj.fileSvr);//
-        return obj;
     };
     this.add_folder = function (f, fields)
 	{
@@ -295,11 +292,28 @@ function DownloaderMgr()
 	    return v;
 	};
 	this.remove_url = function (url) { this.filesUrl.remove(url); };
+    this.remove_wait = function (id) {
+        if (this.queueWait.length == 0) return;
+        this.queueWait.remove(id);
+    };
 	this.open_folder = function (json)
 	{
 	    this.app.openFolder();
 	};
-	this.down_file = function (json) { };
+    this.down_file = function (json) { };
+    //队列控制
+    this.work_full = function () { return (this.queueWork.length + 1) > this.Config.ThreadCount; };
+    this.add_work = function (id) { this.queueWork.push(id); };
+    this.del_work = function (id) { this.queueWork.remove(id); };
+    this.down_next = function () {
+        if (_this.work_full()) return;
+        if (_this.queueWait.length < 1) return;
+        var f_id = _this.queueWait.shift();
+        var f = _this.filesMap[f_id];
+        _this.add_work(f_id);
+        f.down();
+    };
+
 	this.init_end = function (json)
 	{
 	    var p = this.filesMap[json.id];
@@ -375,6 +389,8 @@ function DownloaderMgr()
 	    else if (json.name == "down_recv_size") { _this.down_recv_size(json); }
 	    else if (json.name == "down_recv_name") { _this.down_recv_name(json); }
 	    else if (json.name == "init_end") { _this.init_end(json); }
+	    else if (json.name == "add_file") { _this.add_file(json); }
+	    else if (json.name == "add_folder") { _this.add_folder(json); }
 	    else if (json.name == "down_begin") { _this.down_begin(json); }
 	    else if (json.name == "down_process") { _this.down_process(json); }
 	    else if (json.name == "down_error") { _this.down_error(json); }

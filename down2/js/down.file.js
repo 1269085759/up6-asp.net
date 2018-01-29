@@ -69,6 +69,7 @@ function FileDownloader(fileLoc, mgr)
         this.ui.ico.fd.hide();
         this.ui.msg.text("正在下载队列中等待...");
         this.State = HttpDownloaderState.Ready;
+        this.Manager.queueWait.push(this.fileSvr.id);//添加到等待队列
     };
     //自定义配置,
     this.reset_fields = function (v)
@@ -88,7 +89,7 @@ function FileDownloader(fileLoc, mgr)
         this.ui.msg.text("开始连接服务器...");
         this.State = HttpDownloaderState.Posting;
         this.app.addFile(this.fileSvr);
-        this.Manager.start_queue();//下载队列
+        this.app.downFile(this.fileSvr);//下载队列
     };
 
     //方法-停止传输
@@ -201,6 +202,7 @@ function FileDownloader(fileLoc, mgr)
         this.State = HttpDownloaderState.Complete;
         this.Manager.filesCmp.push(this);
         this.svr_delete();
+        setTimeout(function () { _this.Manager.down_next(); }, 500);
     };
 
     this.down_recv_size = function (json)

@@ -53,7 +53,7 @@
                             }
                             else
                             {
-                                downer.add_file(f);
+                                downer.app.addFile(f);
                             }
                         });
                         tb.append(tmp);
@@ -64,7 +64,7 @@
             });
         }
 
-    	$(document).ready(function ()
+    	$(function ()
     	{
     	    downer.loadTo("downDiv");
 
