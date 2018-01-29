@@ -201,6 +201,7 @@ function FileDownloader(fileLoc, mgr)
         this.ui.msg.text("下载完成");
         this.State = HttpDownloaderState.Complete;
         this.Manager.filesCmp.push(this);
+        this.Manager.del_work(this.fileSvr.id);//从工作队列中删除
         this.svr_delete();
         setTimeout(function () { _this.Manager.down_next(); }, 500);
     };

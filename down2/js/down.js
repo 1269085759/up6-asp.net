@@ -47,7 +47,7 @@ function DownloaderMgr()
 		, "Version"		: "1,2,71,51661"
 		, "License"		: ""//
 		, "Cookie"		: ""//
-		, "ThreadCount"	: 1//并发数
+		, "ThreadCount"	: 3//并发数
         , "ThreadBlock"	: 3//文件块线程数，每个文件使用多少线程下载数据。3~10
         , "ThreadChild" : 3//子文件线程数，提供给文件夹使用。3~10
 		, "FilePart"	: 5242880//文件块大小，计算器：http://www.beesky.com/newsite/bit_byte.htm
