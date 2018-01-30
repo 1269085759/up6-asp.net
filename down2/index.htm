@@ -13,6 +13,7 @@
     <script type="text/javascript" src="js/down.js" charset="utf-8"></script>
     <script language="javascript" type="text/javascript">
         var downer = new DownloaderMgr();
+        downer.Config["Folder"] = "";
 
         function loadAllComplete()
         {
@@ -47,6 +48,8 @@
                         tdSize.text(f.sizeSvr);
                         tdOp.text("下载").css("cursor", "pointer").click(function ()
                         {
+
+                            if (downer.Config["Folder"] == "") { downer.app.openFolder();return; }
                             //文件夹
                             if ( f.fdTask )
                             {
