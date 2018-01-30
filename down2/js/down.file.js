@@ -270,5 +270,7 @@ function FileDownloader(fileLoc, mgr)
         this.hideBtns();
         this.ui.btn.down.show();
         this.ui.btn.del.show();
+        this.Manager.del_work(this.fileSvr.id);//从工作队列中删除
+        this.Manager.add_wait(this.fileSvr.id);
     };
 }

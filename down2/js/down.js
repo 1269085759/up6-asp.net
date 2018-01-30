@@ -301,6 +301,7 @@ function DownloaderMgr()
     this.down_file = function (json) { };
     //队列控制
     this.work_full = function () { return (this.queueWork.length + 1) > this.Config.ThreadCount; };
+    this.add_wait = function (id) { this.queueWait.push(id); };
     this.add_work = function (id) { this.queueWork.push(id); };
     this.del_work = function (id) {
         if (_this.queueWork.length < 1) return;
