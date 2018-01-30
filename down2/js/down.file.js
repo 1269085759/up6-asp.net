@@ -111,9 +111,12 @@ function FileDownloader(fileLoc, mgr)
         this.svr_delete();
     };
 
-    this.open = function ()
-    {
-        this.app.openPath({ id: this.fileSvr.id, path: this.fileSvr.pathLoc });
+    this.openFile = function () {
+        this.app.openFile(this.fileSvr);
+    };
+
+    this.openPath = function () {
+        this.app.openPath(this.fileSvr);
     };
     this.init_complete = function (json)
     {
@@ -195,6 +198,7 @@ function FileDownloader(fileLoc, mgr)
         this.hideBtns();
         this.event.downComplete(this);//biz event
         this.ui.btn.open.show();
+        this.ui.btn.openFd.show();
         this.ui.process.css("width", "100%");
         this.ui.percent.text("(100%)");
         this.ui.msg.text("下载完成");

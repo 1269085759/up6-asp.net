@@ -145,6 +145,7 @@ function DownloaderMgr()
                         <span tp="btn-item" class="btn-box" name="cancel" title="取消">取消</span>\
 						<span tp="btn-item" class="btn-box hide" name="del" title="删除"><div>删除</div></span>\
 						<span tp="btn-item" class="btn-box hide" name="open" title="打开"><div>打开</div></span>\
+						<span tp="btn-item" class="btn-box hide" name="open-fd" title="文件夹"><div>文件夹</div></span>\
 					</div>\
 				</div>';
 		//分隔线
@@ -204,22 +205,23 @@ function DownloaderMgr()
 	    this.pnlFiles.append(ui);
 	    this.pnlFiles.append(sp);
 
-	    var uiIcoF = ui.find("img[name='fileImg']")
-	    var uiIcoFD = ui.find("img[name='fdImg']")
-	    var uiName = ui.find("div[name='fileName']")
-	    var uiSize = ui.find("div[name='fileSize']");
+	    var uiIcoF    = ui.find("img[name='fileImg']")
+	    var uiIcoFD   = ui.find("img[name='fdImg']")
+	    var uiName    = ui.find("div[name='fileName']")
+	    var uiSize    = ui.find("div[name='fileSize']");
 	    var uiProcess = ui.find("div[name='process']");
 	    var uiPercent = ui.find("div[name='percent']");
-	    var uiMsg = ui.find("div[name='msg']");
+	    var uiMsg     = ui.find("div[name='msg']");
 	    var btnCancel = ui.find("span[name='cancel']");
-        var btnStop = ui.find("span[name='stop']");
-        var btnDown = ui.find("span[name='down']");
-        var btnDel = ui.find("span[name='del']");
-        var btnOpen = ui.find("span[name='open']");
+        var btnStop   = ui.find("span[name='stop']");
+        var btnDown   = ui.find("span[name='down']");
+        var btnDel    = ui.find("span[name='del']");
+        var btnOpen   = ui.find("span[name='open']");
+        var btnOpenFd = ui.find("span[name='open-fd']");
         ui.find('span[tp="btn-item"]').hover(function () {
             $(this).addClass("btn-box-hover");
         }, function () {$(this).removeClass("btn-box-hover");});
-        var ui_eles = { ico: { file: uiIcoF, fd: uiIcoFD }, msg: uiMsg, name: uiName, size: uiSize, process: uiProcess, percent: uiPercent, btn: { cancel: btnCancel, stop: btnStop, down: btnDown, del: btnDel, open: btnOpen }, div: ui, split: sp };
+        var ui_eles = { ico: { file: uiIcoF, fd: uiIcoFD }, msg: uiMsg, name: uiName, size: uiSize, process: uiProcess, percent: uiPercent, btn: { cancel: btnCancel, stop: btnStop, down: btnDown, del: btnDel, open: btnOpen, openFd: btnOpenFd }, div: ui, split: sp };
 
         var downer;
         if (f.fdTask) { downer = new FdDownloader(f, this); }
@@ -237,7 +239,8 @@ function DownloaderMgr()
 	    btnStop.click(function () { downer.stop(); });
 	    btnDown.click(function () { downer.down(); });
         btnCancel.click(function () { downer.remove(); });
-        btnOpen.click(function () { downer.open(); });
+        btnOpen.click(function () { downer.openFile(); });
+        btnOpenFd.click(function () { downer.openPath(); });
 
         downer.ready(); //准备
         setTimeout(function () { _this.down_next(); },500);
