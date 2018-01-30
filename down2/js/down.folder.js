@@ -117,6 +117,7 @@
         this.State = HttpDownloaderState.Stop;
         this.ui.msg.text("下载已停止");
         this.app.stopFile(this.fileSvr);
+        this.Manager.del_work(this.fileSvr.id);//从工作队列中删除
     };
 
     this.remove = function ()
@@ -231,6 +232,8 @@
 
     this.down_complete = function (json)
     {
+        this.Manager.filesCmp.push(this);
+        this.Manager.del_work(this.fileSvr.id);//从工作队列中删除
         this.hideBtns();
         this.event.downComplete(this);//biz event
         this.ui.btn.open.show();
@@ -238,8 +241,8 @@
         this.ui.percent.text("(100%)");
         this.ui.msg.text("文件数：" + json.fileCount + " 成功：" + json.cmpCount);
         this.State = HttpDownloaderState.Complete;
-        this.Manager.filesCmp.push(this);
         this.svr_delete();
+        setTimeout(function () { _this.Manager.down_next(); }, 500);
     };
 
     this.down_process = function (json)
