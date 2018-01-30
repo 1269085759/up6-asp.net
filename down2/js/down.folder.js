@@ -99,7 +99,7 @@
             this.load_files();
         }
         else {
-            this.app.downFile(this.fileSvr);//下载队列
+            this.app.downFolder(this.fileSvr);//下载队列
         }
     };
 
@@ -125,7 +125,7 @@
 
     this.open = function ()
     {
-        this.app.openPath({ id: this.fileSvr.id, path: this.fileSvr.pathLoc });
+        this.app.openPath({ id: this.fileSvr.id, pathLoc: this.fileSvr.pathLoc });
     };
 
     this.init_complete = function (json)
