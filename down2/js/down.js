@@ -463,7 +463,7 @@ function DownloaderMgr()
         window.onbeforeunload = function (e) {
             e = e || window.event;
 
-            if (_this.working)
+            if (_this.queueWork.length > 0)
             {
                 // 兼容IE8和Firefox 4之前的版本
                 if (e) {
@@ -474,7 +474,7 @@ function DownloaderMgr()
             }
         };
         
-        window.onunload = function () { if (_this.working) { _this.stop_queue();}};
+        window.onunload = function () { if (_this.queueWork.length > 0) { _this.stop_queue();}};
 	};
 	
 	this.loadAuto = function()

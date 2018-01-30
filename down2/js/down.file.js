@@ -76,7 +76,7 @@ function FileDownloader(fileLoc, mgr)
         this.ui.ico.fd.hide();
         this.ui.msg.text("正在下载队列中等待...");
         this.State = HttpDownloaderState.Ready;
-        this.Manager.queueWait.push(this.fileSvr.id);//添加到等待队列
+        this.Manager.add_wait(this.fileSvr.id);//添加到等待队列
     };
     //自定义配置,
     this.reset_fields = function (v)
