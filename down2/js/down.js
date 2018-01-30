@@ -235,12 +235,6 @@ function DownloaderMgr()
 	    uiSize.text(f.sizeSvr);
 	    uiPercent.text("("+f.perLoc+")");
         uiProcess.width(f.perLoc);
-	    btnDel.click(function () { downer.remove(); });
-	    btnStop.click(function () { downer.stop(); });
-	    btnDown.click(function () { downer.down(); });
-        btnCancel.click(function () { downer.remove(); });
-        btnOpen.click(function () { downer.openFile(); });
-        btnOpenFd.click(function () { downer.openPath(); });
 
         downer.ready(); //准备
         setTimeout(function () { _this.down_next(); },500);

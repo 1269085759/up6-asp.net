@@ -63,6 +63,13 @@ function FileDownloader(fileLoc, mgr)
     this.ready = function ()
     {
         this.hideBtns();
+        this.ui.btn.del.click(function () { _this.remove(); });
+        this.ui.btn.stop.click(function () { _this.stop(); });
+        this.ui.btn.down.click(function () { _this.down(); });
+        this.ui.btn.cancel.click(function () { _this.remove(); });
+        this.ui.btn.open.click(function () { _this.openFile(); });
+        this.ui.btn.openFd.click(function () { _this.openPath(); });
+
         this.ui.btn.down.show();
         this.ui.btn.cancel.show();
         this.ui.ico.file.show();
