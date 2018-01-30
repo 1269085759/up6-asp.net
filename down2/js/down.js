@@ -248,14 +248,14 @@ function DownloaderMgr()
 	    if (null == obj) return;
         obj.svr_inited = true;
 
-	    return obj;
+	    //return obj;
     };
     this.resume_file = function (f) {
         var obj = this.add_ui(f);
         if (null == obj) return;
         obj.svr_inited = true;
 
-        return obj;
+        //return obj;
     };
 	this.init_file = function (f)
     {
@@ -275,11 +275,11 @@ function DownloaderMgr()
     this.add_folder = function (f, fields)
 	{
 	    var obj = this.add_ui(f);
-        if (null == obj) return;
-        obj.reset_fields(fields);
+        //if (null == obj) return;
+        //obj.reset_fields(fields);
 
-        obj.load_files();//
-	    return obj;
+        //obj.load_files();//
+	    //return obj;
 	};
 	this.exist_url = function (url)
 	{

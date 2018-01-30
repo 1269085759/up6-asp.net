@@ -8,7 +8,6 @@ namespace up6.down2.db
         protected void Page_Load(object sender, EventArgs e)
         {
             DnFile.Clear();
-            DnFolder.Clear();
         }
     }
 }

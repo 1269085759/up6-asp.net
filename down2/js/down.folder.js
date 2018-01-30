@@ -48,6 +48,7 @@
         this.ui.ico.fd.show();
         this.ui.msg.text("正在下载队列中等待...");
         this.State = HttpDownloaderState.Ready;
+        this.Manager.queueWait.push(this.fileSvr.id);//添加到等待队列
     };
     //自定义配置,
     this.reset_fields = function (v) {
@@ -76,7 +77,7 @@
             , success: function (msg) {
                 var json = JSON.parse(decodeURIComponent(msg.value));
                 jQuery.extend(true, _this.fileSvr, { files: json });
-                _this.ui.msg.text("初始文件夹...");
+                _this.ui.msg.text("正在初始文件夹...");
                 setTimeout(function () {
                     _this.app.initFolder(jQuery.extend({},_this.Config,_this.fileSvr));
                 }, 300);
@@ -93,9 +94,13 @@
         this.hideBtns();
         this.ui.btn.stop.show();
         this.ui.msg.text("开始连接服务器...");
-        this.State = HttpDownloaderState.Posting;        
-        this.app.addFolder(this.fileSvr);
-        this.Manager.start_queue();//下载队列
+        this.State = HttpDownloaderState.Posting;
+        if (!this.svr_inited) {
+            this.load_files();
+        }
+        else {
+            this.app.downFile(this.fileSvr);//下载队列
+        }
     };
 
     //方法-停止传输
@@ -125,11 +130,8 @@
 
     this.init_complete = function (json)
     {
-        jQuery.extend(this.fileSvr, json, {files:null});
-        if (!this.svr_inited)
-        {
-            setTimeout(function () {_this.svr_create(); }, 200);
-        }   
+        jQuery.extend(this.fileSvr, json, { files: null });
+        setTimeout(function () { _this.svr_create(); }, 200);
     };
 
     //在出错，停止中调用

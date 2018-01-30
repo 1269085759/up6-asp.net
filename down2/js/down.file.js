@@ -88,7 +88,6 @@ function FileDownloader(fileLoc, mgr)
         this.ui.btn.stop.show();
         this.ui.msg.text("开始连接服务器...");
         this.State = HttpDownloaderState.Posting;
-        this.app.addFile(this.fileSvr);
         this.app.downFile(this.fileSvr);//下载队列
     };
 
