@@ -113,7 +113,8 @@ function DownloaderMgr()
 	this.pnlFiles = null;//文件上传列表面板
 	this.parter = null;
 	this.btnSetup = null;//安装控件的按钮
-	this.working = false;
+    this.working = false;
+    this.allStoped = false;//
 
 	this.getHtml = function()
 	{ 
@@ -306,6 +307,7 @@ function DownloaderMgr()
         this.queueWork.remove(id);
     };
     this.down_next = function () {
+        if (_this.allStoped) return;
         if (_this.work_full()) return;
         if (_this.queueWait.length < 1) return;
         var f_id = _this.queueWait.shift();
@@ -337,6 +339,7 @@ function DownloaderMgr()
     this.down_open_folder = function (json) {
         //用户选择的路径
         //json.path
+        this.Config["Folder"] = json.path;
     };
 	this.down_recv_size = function (json)
 	{
@@ -358,9 +361,14 @@ function DownloaderMgr()
 	    var p = this.filesMap[json.id];
 	    p.down_stoped(json);
 	};
-	this.start_queue = function () { this.app.startQueue();};
+    this.start_queue = function ()
+    {
+        this.allStoped = false;
+        this.down_next();
+    };
 	this.stop_queue = function (json)
-	{
+    {
+        this.allStoped = true;
 	    this.app.stopQueue();
 	};
 	this.queue_begin = function (json) { this.working = true;};
