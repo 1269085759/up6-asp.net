@@ -239,19 +239,22 @@ function DownloaderMgr()
 
         downer.ready(); //准备
         setTimeout(function () { _this.down_next(); },500);
+        //return downer;
     };
 	this.resume_folder = function (fdSvr)
-	{	    
-	    var obj = this.add_ui(fdSvr);
-	    if (null == obj) return;
-        obj.svr_inited = true;
+    {
+        var fd = jQuery.extend({}, fdSvr, { svrInit: true });
+	    this.add_ui(fd);
+	    //if (null == obj) return;
+        //obj.svr_inited = true;
 
 	    //return obj;
     };
-    this.resume_file = function (f) {
-        var obj = this.add_ui(f);
-        if (null == obj) return;
-        obj.svr_inited = true;
+    this.resume_file = function (fSvr) {
+        var f = jQuery.extend({}, fSvr, { svrInit: true });
+        this.add_ui(f);
+        //if (null == obj) return;
+        //obj.svr_inited = true;
 
         //return obj;
     };
