@@ -56,13 +56,27 @@
     <Compile Include="bigfile.aspx.designer.cs">
       <DependentUpon>bigfile.aspx</DependentUpon>
     </Compile>
-    <Compile Include="db\biz\folder\fd_appender.cs" />
-    <Compile Include="db\biz\folder\fd_root.cs" />
-    <Compile Include="db\biz\folder\fd_uuid_appender.cs" />
-    <Compile Include="db\biz\PathBuilder.cs" />
-    <Compile Include="db\biz\PathBuilderMd5.cs" />
-    <Compile Include="db\biz\PathBuilderUuid.cs" />
-    <Compile Include="db\biz\un_builder.cs" />
+    <Compile Include="db\biz\folder\fd_appender.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="db\biz\folder\fd_root.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="db\biz\folder\fd_uuid_appender.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="db\biz\PathBuilder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="db\biz\PathBuilderMd5.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="db\biz\PathBuilderUuid.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="db\biz\un_builder.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="db\clear.aspx.cs">
       <DependentUpon>clear.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -70,9 +84,15 @@
     <Compile Include="db\clear.aspx.designer.cs">
       <DependentUpon>clear.aspx</DependentUpon>
     </Compile>
-    <Compile Include="db\database\DBFile.cs" />
-    <Compile Include="db\database\DBFolder.cs" />
-    <Compile Include="db\database\DbHelper.cs" />
+    <Compile Include="db\database\DBFile.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="db\database\DBFolder.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="db\database\DbHelper.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="db\fd_complete.aspx.cs">
       <DependentUpon>fd_complete.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -138,27 +158,32 @@
     </Compile>
     <Compile Include="db\f_process.aspx.cs">
       <DependentUpon>f_process.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="db\f_process.aspx.designer.cs">
       <DependentUpon>f_process.aspx</DependentUpon>
     </Compile>
-    <Compile Include="db\model\FileInf.cs" />
+    <Compile Include="db\model\FileInf.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="db\sql.aspx.cs">
       <DependentUpon>sql.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="db\sql.aspx.designer.cs">
       <DependentUpon>sql.aspx</DependentUpon>
     </Compile>
-    <Compile Include="db\utils\FileBlockWriter.cs" />
-    <Compile Include="db\utils\MapBlockWriter.cs" />
+    <Compile Include="db\utils\FileBlockWriter.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="db\utils\MapBlockWriter.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="db\XDebug.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="down2\biz\cmp_builder.cs" />
-    <Compile Include="down2\biz\cmp_file.cs" />
-    <Compile Include="down2\biz\folder_appender.cs" />
-    <Compile Include="down2\biz\un_builder.cs" />
-    <Compile Include="down2\biz\un_file.cs" />
+    <Compile Include="down2\biz\DnFile.cs" />
+    <Compile Include="down2\biz\DnFolder.cs" />
     <Compile Include="down2\db\clear.aspx.cs">
       <DependentUpon>clear.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -166,21 +191,12 @@
     <Compile Include="down2\db\clear.aspx.designer.cs">
       <DependentUpon>clear.aspx</DependentUpon>
     </Compile>
-    <Compile Include="down2\db\DnFile.cs" />
-    <Compile Include="down2\db\DnFolder.cs" />
-    <Compile Include="down2\db\fd_create.aspx.cs">
-      <DependentUpon>fd_create.aspx</DependentUpon>
+    <Compile Include="down2\db\fd_data.aspx.cs">
+      <DependentUpon>fd_data.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="down2\db\fd_create.aspx.designer.cs">
-      <DependentUpon>fd_create.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="down2\db\f_complete.aspx.cs">
-      <DependentUpon>f_complete.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="down2\db\f_complete.aspx.designer.cs">
-      <DependentUpon>f_complete.aspx</DependentUpon>
+    <Compile Include="down2\db\fd_data.aspx.designer.cs">
+      <DependentUpon>fd_data.aspx</DependentUpon>
     </Compile>
     <Compile Include="down2\db\f_create.aspx.cs">
       <DependentUpon>f_create.aspx</DependentUpon>
@@ -224,8 +240,9 @@
     <Compile Include="down2\db\f_update.aspx.designer.cs">
       <DependentUpon>f_update.aspx</DependentUpon>
     </Compile>
-    <Compile Include="down2\model\DnFileInf.cs" />
-    <Compile Include="down2\model\DnFolderInf.cs" />
+    <Compile Include="down2\model\DnFileInf.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="index.aspx.cs">
       <DependentUpon>index.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -255,8 +272,7 @@
     <Content Include="db\f_process.aspx" />
     <Content Include="db\sql.aspx" />
     <Content Include="down2\db\clear.aspx" />
-    <Content Include="down2\db\fd_create.aspx" />
-    <Content Include="down2\db\f_complete.aspx" />
+    <Content Include="down2\db\fd_data.aspx" />
     <Content Include="down2\db\f_create.aspx" />
     <Content Include="down2\db\f_del.aspx" />
     <Content Include="down2\db\f_down.aspx" />
