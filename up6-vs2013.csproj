@@ -82,6 +82,7 @@
     <Content Include="down2\js\json2.min.js" />
     <Content Include="index-single.htm" />
     <Content Include="index.aspx" />
+    <Content Include="js\cab.html" />
     <Content Include="js\del.png" />
     <Content Include="js\file.png" />
     <Content Include="js\folder.png" />

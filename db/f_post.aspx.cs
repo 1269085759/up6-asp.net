@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Web;
 using up6.db.utils;
 
@@ -41,6 +43,7 @@ namespace up6.db
             string blockOffset  = Request.Headers["blockOffset"];
             string blockSize    = Request.Headers["blockSize"];//当前块大小
             string blockIndex   = Request.Headers["blockIndex"];//当前块索引，基于1
+            string blockMd5     = Request.Headers["blockMd5"];//块MD5
             string complete     = Request.Headers["complete"];//true/false
             string pathSvr      = Request.Headers["pathSvr"];//add(2015-03-19):
             pathSvr             = HttpUtility.UrlDecode(pathSvr);
@@ -50,20 +53,41 @@ namespace up6.db
             //有文件块数据
             if (Request.Files.Count > 0)
             {
+                bool verify = false;
+                string msg = string.Empty;
+
                 //临时文件大小
                 HttpPostedFile file = Request.Files.Get(0);
-                //完整性验证
-                if(int.Parse(blockSize) != file.InputStream.Length)
+                //块大小验证
+                if (int.Parse(blockSize) != file.InputStream.Length)
                 {
-                    Response.Write("block size error");
-                    return;
+                    msg = "block size error";
+                }
+                else {
+                    msg = "ok";
+                    verify = true;
                 }
 
-                //2.0保存文件块数据
-                FileBlockWriter res = new FileBlockWriter();
-                res.write(pathSvr, Convert.ToInt64(blockOffset), ref file);
+                //块MD5验证
+                if ( !string.IsNullOrEmpty(blockMd5) )
+                {
+                    string md5 = Md5Tool.calc(file.InputStream);
+                    verify = md5 == blockMd5;
+
+                    JObject o = new JObject();
+                    o["msg"] = "ok";
+                    o["md5"] = md5;
+                    msg = JsonConvert.SerializeObject(o);
+                }
+
+                if(verify)
+                {
+                    //2.0保存文件块数据
+                    FileBlockWriter res = new FileBlockWriter();
+                    res.write(pathSvr, Convert.ToInt64(blockOffset), ref file);
+                }
                 
-                Response.Write("ok");
+                Response.Write(msg);
             }
         }
     }

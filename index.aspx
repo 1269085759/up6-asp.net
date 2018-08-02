@@ -17,7 +17,7 @@
     <script language="javascript" type="text/javascript">
         var cbMgr = new HttpUploaderMgr();
         cbMgr.event.md5Complete = function (obj, md5) { /*alert(md5);*/ };
-        cbMgr.event.fileComplete = function (obj) { /*alert(obj.pathSvr);*/ };
+        cbMgr.event.fileComplete = function (obj) { /*alert(obj.fileSvr.pathSvr);*/ };
         cbMgr.event.queueComplete = function () { console.log("队列完成"); }
         cbMgr.Config["Cookie"] = 'ASP.NET_SessionId=<%=Session.SessionID%>';
         //使用不同项目配置
