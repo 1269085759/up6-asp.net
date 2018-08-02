@@ -212,6 +212,7 @@
       <DependentUpon>f_post.aspx</DependentUpon>
     </Compile>
     <Compile Include="db\model\FileInf.cs" />
+    <Compile Include="db\utils\Md5Tool.cs" />
     <Compile Include="db\XDebug.cs" />
     <Compile Include="down2\db\clear.aspx.cs">
       <DependentUpon>clear.aspx</DependentUpon>
