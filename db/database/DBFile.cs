@@ -227,6 +227,29 @@ namespace up6.db.database
             db.ExecuteNonQuery(cmd);
         }
 
+        public bool query(string id, ref FileInf inf)
+        {
+            bool ret = false;
+            string sql = "select fd_pathSvr,fd_pidRoot from up6_folders where fd_id=@fd_id";
+
+            DbHelper db = new DbHelper();
+            DbCommand cmd = db.GetCommand(sql);
+
+            db.AddString(ref cmd, "@fd_id", id, 32);
+            db.ExecuteNonQuery(cmd);
+            DbDataReader r = db.ExecuteReader(cmd);
+
+            if (r.Read())
+            {
+                inf.id = id;
+                inf.pathSvr = r.GetString(0);
+                inf.pidRoot = r.GetString(1);
+                ret = true;
+            }
+            r.Close();
+            return ret;
+        }
+
         /// <summary>
         /// 更新上传进度
         /// </summary>

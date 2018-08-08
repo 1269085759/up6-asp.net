@@ -84,6 +84,7 @@ namespace up6.db
                 {
                     //2.0保存文件块数据
                     FileBlockWriter res = new FileBlockWriter();
+                    res.make(pathSvr, Convert.ToInt64(lenLoc));
                     res.write(pathSvr, Convert.ToInt64(blockOffset), ref file);
                 }
                 

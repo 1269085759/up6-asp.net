@@ -1,5 +1,7 @@
 ﻿using System;
+using up6.db.biz.folder;
 using up6.db.database;
+using up6.db.model;
 
 namespace up6.db
 {
@@ -18,6 +20,14 @@ namespace up6.db
             }
             else
             {
+                FileInf inf = new FileInf();
+                DBFile db = new DBFile();
+                db.query(id,ref inf);
+                string root = inf.pathSvr;
+
+                fd_scan sa = new fd_scan();
+                sa.scan(inf,root);
+
                 DBFile.fd_complete(id,uid);
                 ret = 1;
             }
