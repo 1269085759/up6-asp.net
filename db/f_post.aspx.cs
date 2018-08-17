@@ -58,23 +58,24 @@ namespace up6.db
                 bool verify = false;
                 string msg = string.Empty;
                 string md5Svr = string.Empty;
+                HttpPostedFile file = Request.Files.Get(0);//文件块
 
-                //临时文件大小
-                HttpPostedFile file = Request.Files.Get(0);
-                //块大小验证
-                if (int.Parse(blockSize) != file.InputStream.Length)
+                //计算文件块MD5
+                if (!string.IsNullOrEmpty(blockMd5))
+                {
+                    md5Svr = Md5Tool.calc(file.InputStream);
+                }
+
+                //文件块大小验证
+                verify = int.Parse(blockSize) == file.InputStream.Length;
+                if (!verify)
                 {
                     msg = "block size error sizeSvr:"+file.InputStream.Length + " sizeLoc:"+blockSize;
                 }
-                else
-                {
-                    verify = true;
-                }
 
                 //块MD5验证
-                if ( !string.IsNullOrEmpty(blockMd5) )
+                if ( verify && !string.IsNullOrEmpty(blockMd5) )
                 {
-                    md5Svr = Md5Tool.calc(file.InputStream);
                     verify = md5Svr == blockMd5;
                 }
 
@@ -84,14 +85,14 @@ namespace up6.db
                     FileBlockWriter res = new FileBlockWriter();
                     res.make(pathSvr, Convert.ToInt64(lenLoc));
                     res.write(pathSvr, Convert.ToInt64(blockOffset), ref file);
+
+                    //生成信息
+                    JObject o = new JObject();
+                    o["msg"] = "ok";
+                    o["md5"] = md5Svr;//文件块MD5
+                    o["offset"] = blockOffset;//偏移
+                    msg = JsonConvert.SerializeObject(o);
                 }
-
-                JObject o = new JObject();
-                o["msg"] = "ok";
-                o["md5"] = md5Svr;//文件块MD5
-                o["offset"] = blockOffset;//偏移
-                msg = JsonConvert.SerializeObject(o);
-
                 Response.Write(msg);
             }
         }
