@@ -12,12 +12,14 @@ namespace up6.db
         {
             foreach (var v in ps)
             {
+                System.Diagnostics.Debug.Write("参数值：");
+                System.Diagnostics.Debug.WriteLine(v);
                 if (string.IsNullOrEmpty(v)) return false;
             }
             foreach (string key in Request.Headers.Keys)
             {
                 var vs = Request.Headers.GetValues(key);
-                XDebug.Output("key:" + key + String.Join(",", vs));
+                //XDebug.Output(key + " "+String.Join(",", vs));
             }
             return true;
         }
@@ -61,7 +63,7 @@ namespace up6.db
                 //块大小验证
                 if (int.Parse(blockSize) != file.InputStream.Length)
                 {
-                    msg = "block size error";
+                    msg = "block size error sizeSvr:"+file.InputStream.Length + " sizeLoc:"+blockSize;
                 }
                 else {
                     msg = "ok";
