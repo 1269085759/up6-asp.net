@@ -25,34 +25,6 @@ namespace up6.db.biz.folder
             this.save_file(this.m_root);
             this.save_folder(this.m_root);
 
-            foreach (FileInf f in this.m_root.files)
-            {
-                f.pathSvr = Path.Combine(this.m_root.pathSvr, f.pathRel);
-                f.pathSvr = f.pathSvr.Replace("\\", "/");
-                f.nameSvr = f.nameLoc;
-                f.fdChild = true;
-                f.uid = this.m_root.uid;
-
-                //创建文件
-                if (!f.complete && f.lenSvr < 1)
-                {
-                    FileBlockWriter fr = new FileBlockWriter();
-                    fr.make(f.pathSvr, f.lenLoc);
-                }
-
-                this.save_file(f);
-            }
-
-            foreach (FileInf fd in this.m_root.folders)
-            {
-                fd.pathSvr = Path.Combine(this.m_root.pathSvr, fd.pathRel);
-                fd.pathSvr = fd.pathSvr.Replace("\\", "/");
-                if (!Directory.Exists(fd.pathSvr)) Directory.CreateDirectory(fd.pathSvr);
-                fd.uid = this.m_root.uid;
-                fd.nameSvr = fd.nameLoc;
-                this.save_folder(fd);
-            }
-
             this.db.connection.Close();
 
         }

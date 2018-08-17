@@ -117,6 +117,7 @@
   <ItemGroup>
     <Compile Include="db\biz\folder\fd_appender.cs" />
     <Compile Include="db\biz\folder\fd_root.cs" />
+    <Compile Include="db\biz\folder\fd_scan.cs" />
     <Compile Include="db\biz\folder\fd_uuid_appender.cs" />
     <Compile Include="db\biz\PathBuilder.cs" />
     <Compile Include="db\biz\PathBuilderMd5.cs" />
