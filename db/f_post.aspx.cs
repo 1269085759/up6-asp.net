@@ -57,6 +57,7 @@ namespace up6.db
             {
                 bool verify = false;
                 string msg = string.Empty;
+                string md5Svr = string.Empty;
 
                 //临时文件大小
                 HttpPostedFile file = Request.Files.Get(0);
@@ -65,30 +66,31 @@ namespace up6.db
                 {
                     msg = "block size error sizeSvr:"+file.InputStream.Length + " sizeLoc:"+blockSize;
                 }
-                else {
-                    msg = "ok";
+                else
+                {
                     verify = true;
                 }
 
                 //块MD5验证
                 if ( !string.IsNullOrEmpty(blockMd5) )
                 {
-                    string md5 = Md5Tool.calc(file.InputStream);
-                    verify = md5 == blockMd5;
-
-                    JObject o = new JObject();
-                    o["msg"] = "ok";
-                    o["md5"] = md5;
-                    msg = JsonConvert.SerializeObject(o);
+                    md5Svr = Md5Tool.calc(file.InputStream);
+                    verify = md5Svr == blockMd5;
                 }
 
-                if(verify)
+                if (verify)
                 {
                     //2.0保存文件块数据
                     FileBlockWriter res = new FileBlockWriter();
                     res.write(pathSvr, Convert.ToInt64(blockOffset), ref file);
                 }
-                
+
+                JObject o = new JObject();
+                o["msg"] = "ok";
+                o["md5"] = md5Svr;//文件块MD5
+                o["offset"] = blockOffset;//偏移
+                msg = JsonConvert.SerializeObject(o);
+
                 Response.Write(msg);
             }
         }
