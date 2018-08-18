@@ -24,11 +24,17 @@ namespace up6.db
                 DBFile db = new DBFile();
                 db.query(id,ref inf);
                 string root = inf.pathSvr;
+                
+                //上传完毕
+                DBFile.fd_complete(id, uid);
 
+                //扫描文件夹结构，
                 fd_scan sa = new fd_scan();
                 sa.scan(inf,root);
 
-                DBFile.fd_complete(id,uid);
+                //更新扫描状态
+                DBFile.fd_scan(id, uid);
+
                 ret = 1;
             }
             Response.Write(cak + "(" + ret + ")");
