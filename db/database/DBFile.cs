@@ -234,7 +234,7 @@ namespace up6.db.database
         /// <param name="uid"></param>
         static public void fd_scan(string id,string uid)
         {
-            string sql = "update up6_files set f_scan=1 where f_id=@f_id and f_uid=@uid;";
+            string sql = "update up6_files set f_scan=1 where f_id=@f_id and f_uid=@uid";
 
             DbHelper db = new DbHelper();
             DbCommand cmd = db.GetCommand(sql);
