@@ -81,5 +81,10 @@ namespace up6.db.model
         public bool complete = false;
         public DateTime time = DateTime.Now;
         public bool deleted = false;
+        /// <summary>
+        /// 是否已经扫描完毕，提供给大型文件夹使用
+        /// 大型文件夹上传完毕后开始扫描
+        /// </summary>
+        public bool scaned = false;
     }
 }

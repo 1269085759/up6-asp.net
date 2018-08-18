@@ -150,7 +150,7 @@ namespace up6.down2.biz
             sb.Append(",f_pathSvr");//5
             sb.Append(" from up6_files ");
             //
-            sb.Append(" where f_uid=@f_uid and f_deleted=0 and f_complete=1 and f_fdChild=0");
+            sb.Append(" where f_uid=@f_uid and f_deleted=0 and f_complete=1 and f_fdChild=0 and f_scan=1");
 
             DbHelper db = new DbHelper();
             DbCommand cmd = db.GetCommand(sb.ToString());

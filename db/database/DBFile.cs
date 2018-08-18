@@ -73,7 +73,7 @@ namespace up6.db.database
 
         /// <summary>
         /// 根据文件MD5获取文件信息
-        /// 最进度最大的文件信息
+        /// 取已上传完的文件
         /// </summary>
         /// <param name="md5"></param>
         /// <param name="inf"></param>
@@ -99,7 +99,7 @@ namespace up6.db.database
             sb.Append(",f_complete");
             sb.Append(",f_time");
             sb.Append(",f_deleted");
-            sb.Append(" from up6_files where f_md5=@f_md5 order by f_perSvr desc");
+            sb.Append(" from up6_files where f_md5=@f_md5 and f_complete=1 order by f_perSvr desc");
 
             DbHelper db = new DbHelper();
             DbCommand cmd = db.GetCommand(sb.ToString());
@@ -227,6 +227,22 @@ namespace up6.db.database
             db.ExecuteNonQuery(cmd);
         }
 
+        /// <summary>
+        /// 文件夹扫描完毕
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="uid"></param>
+        static public void fd_scan(string id,string uid)
+        {
+            string sql = "update up6_files set f_scan=1 where f_id=@f_id and f_uid=@uid;";
+
+            DbHelper db = new DbHelper();
+            DbCommand cmd = db.GetCommand(sql);
+            db.AddString(ref cmd, "@f_id", id, 32);
+            db.AddInt(ref cmd, "@uid", int.Parse(uid));
+            db.ExecuteNonQuery(cmd);
+        }
+
         public bool query(string id, ref FileInf inf)
         {
             bool ret = false;
@@ -290,6 +306,16 @@ namespace up6.db.database
             DbCommand cmd = db.GetCommand(sql);
 
             db.AddString(ref cmd, "@f_md5", md5, 40);
+            db.ExecuteNonQuery(cmd);
+        }
+
+        public void complete(string id)
+        {
+            string sql = "update up6_files set f_lenSvr=f_lenLoc,f_perSvr='100%',f_complete=1,f_scan=1 where f_id=@f_id";
+            DbHelper db = new DbHelper();
+            DbCommand cmd = db.GetCommand(sql);
+
+            db.AddString(ref cmd, "@f_id", id, 32);
             db.ExecuteNonQuery(cmd);
         }
 
