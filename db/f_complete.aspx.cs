@@ -18,15 +18,14 @@ namespace up6.db
             //返回值。1表示成功
             int ret = 0;
 
-            if (string.IsNullOrEmpty(md5)
-                || string.IsNullOrEmpty(uid)
+            if (   string.IsNullOrEmpty(uid)
                 || string.IsNullOrEmpty(id))
             {
             }//参数不为空
             else
             {
                 DBFile db = new DBFile();
-                db.UploadComplete(md5);
+                db.complete(id);
                 ret = 1;
             }
             Response.Write(cbk + "(" + ret + ")");//必须返回jsonp格式数据
