@@ -47,10 +47,10 @@ namespace up6.db
             fileSvr.sizeLoc = sizeLoc;
             fileSvr.deleted = false;
             fileSvr.md5 = md5;
-            fileSvr.nameSvr = md5 + Path.GetExtension(pathLoc).ToLower();
+            fileSvr.nameSvr = fileSvr.nameLoc;
             
-            //所有单个文件均以md5方式存储
-            PathBuilderMd5 pb = new PathBuilderMd5();
+            //所有单个文件均以uuid/file方式存储
+            PathBuilderUuid pb = new PathBuilderUuid();
             fileSvr.pathSvr = pb.genFile(fileSvr.uid, ref fileSvr);
             fileSvr.pathSvr = fileSvr.pathSvr.Replace("\\","/");
 
@@ -59,6 +59,7 @@ namespace up6.db
             FileInf fileExist = new FileInf();
             if (db.exist_file(md5, ref fileExist))
             {
+                fileSvr.nameSvr = fileExist.nameSvr;
                 fileSvr.pathSvr = fileExist.pathSvr;
                 fileSvr.perSvr = fileExist.perSvr;
                 fileSvr.lenSvr = fileExist.lenSvr;
