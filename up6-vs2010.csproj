@@ -9,8 +9,8 @@
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>HttpUploader6</RootNamespace>
-    <AssemblyName>HttpUploader6</AssemblyName>
+    <RootNamespace>up6</RootNamespace>
+    <AssemblyName>up6</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -49,15 +49,9 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="bigfile.aspx.cs">
-      <DependentUpon>bigfile.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="bigfile.aspx.designer.cs">
-      <DependentUpon>bigfile.aspx</DependentUpon>
-    </Compile>
     <Compile Include="db\biz\folder\fd_appender.cs" />
     <Compile Include="db\biz\folder\fd_root.cs" />
+    <Compile Include="db\biz\folder\fd_scan.cs" />
     <Compile Include="db\biz\folder\fd_uuid_appender.cs" />
     <Compile Include="db\biz\PathBuilder.cs" />
     <Compile Include="db\biz\PathBuilderMd5.cs" />
@@ -153,6 +147,7 @@
     </Compile>
     <Compile Include="db\utils\FileBlockWriter.cs" />
     <Compile Include="db\utils\MapBlockWriter.cs" />
+    <Compile Include="db\utils\Md5Tool.cs" />
     <Compile Include="db\XDebug.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -167,6 +162,7 @@
     </Compile>
     <Compile Include="down2\db\fd_data.aspx.cs">
       <DependentUpon>fd_data.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="down2\db\fd_data.aspx.designer.cs">
       <DependentUpon>fd_data.aspx</DependentUpon>
@@ -227,9 +223,6 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="3rd\ICSharpCode.SharpZipLib.dll" />
-    <Content Include="3rd\Newtonsoft.Json.dll" />
-    <Content Include="bigfile.aspx" />
     <Content Include="db\clear.aspx" />
     <Content Include="db\fd_complete.aspx" />
     <Content Include="db\fd_create.aspx" />
@@ -281,10 +274,7 @@
     <Content Include="js\up6.file.js" />
     <Content Include="js\up6.folder.js" />
     <Content Include="js\up6.js" />
-    <Content Include="readme.txt" />
     <Content Include="sql.down\down_files.sql" />
-    <Content Include="sql.down\down_folders.sql" />
-    <Content Include="sql.down\fd_add_batch.sql" />
     <Content Include="sql\fd_files_check.sql" />
     <Content Include="sql\up6_files.sql" />
     <Content Include="sql\up6_folders.sql" />
