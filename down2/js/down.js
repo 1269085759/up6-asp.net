@@ -372,7 +372,7 @@ function DownloaderMgr()
 	this.stop_queue = function (json)
     {
         this.allStoped = true;
-	    this.app.stopQueue();
+        this.app.stopQueue({tip:false});
 	};
 	this.queue_begin = function (json) { this.working = true;};
 	this.queue_end = function (json) { this.working = false;};
