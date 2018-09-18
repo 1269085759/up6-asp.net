@@ -371,6 +371,10 @@ function DownloaderMgr()
     };
 	this.stop_queue = function (json)
     {
+        //更新进度
+        $.each(this.queueWork, function (i, n) {
+            _this.filesMap[n].svr_update();
+        });        
         this.allStoped = true;
         this.app.stopQueue({tip:false});
 	};
