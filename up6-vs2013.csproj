@@ -78,7 +78,7 @@
     <Content Include="down2\js\down.js" />
     <Content Include="down2\js\file.png" />
     <Content Include="down2\js\folder.png" />
-    <Content Include="down2\js\jquery-1.3.2.min.js" />
+    <Content Include="down2\js\jquery-1.4.min.js" />
     <Content Include="down2\js\json2.min.js" />
     <Content Include="index-single.htm" />
     <Content Include="index.aspx" />
