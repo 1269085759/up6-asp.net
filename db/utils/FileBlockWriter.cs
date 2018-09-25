@@ -62,7 +62,8 @@ namespace up6.db.utils
 				FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Write, FileShare.Write);
 				fs.Seek(offset, SeekOrigin.Begin);                
 				byte[] ByteArray = new byte[fileRange.InputStream.Length];
-				fileRange.InputStream.Read(ByteArray, 0, (int)fileRange.InputStream.Length);
+                fileRange.InputStream.Seek(0, SeekOrigin.Begin);
+                fileRange.InputStream.Read(ByteArray, 0, (int)fileRange.InputStream.Length);
 				fs.Write(ByteArray, 0, (int)fileRange.InputStream.Length);
 				fs.Flush();
 				fs.Close();
