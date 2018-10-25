@@ -123,6 +123,7 @@
     <Compile Include="db\biz\PathBuilderMd5.cs" />
     <Compile Include="db\biz\PathBuilderUuid.cs" />
     <Compile Include="db\biz\un_builder.cs" />
+    <Compile Include="db\biz\up6_biz_event.cs" />
     <Compile Include="db\clear.aspx.cs">
       <DependentUpon>clear.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

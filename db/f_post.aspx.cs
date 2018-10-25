@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Web;
+using up6.db.biz;
 using up6.db.utils;
 
 namespace up6.db
@@ -86,6 +87,7 @@ namespace up6.db
                     FileBlockWriter res = new FileBlockWriter();
                     res.make(pathSvr, Convert.ToInt64(lenLoc));
                     res.write(pathSvr, Convert.ToInt64(blockOffset), ref file);
+                    up6_biz_event.file_post_block(f_id,Convert.ToInt32(blockIndex));
 
                     //生成信息
                     JObject o = new JObject();

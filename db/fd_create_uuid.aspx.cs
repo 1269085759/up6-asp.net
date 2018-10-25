@@ -2,6 +2,7 @@
 using System.Web;
 using Newtonsoft.Json;
 using up6.db.biz.folder;
+using up6.db.biz;
 
 namespace up6.db
 {
@@ -20,6 +21,8 @@ namespace up6.db
             fd_appender adder = new fd_uuid_appender();
             adder.m_root = JsonConvert.DeserializeObject<fd_root>(folderStr);
             adder.save();//保存到数据库
+            //触发事件
+            up6_biz_event.folder_create(adder.m_root);
 
             string json = JsonConvert.SerializeObject(adder.m_root);
             json = HttpUtility.UrlEncode(json);

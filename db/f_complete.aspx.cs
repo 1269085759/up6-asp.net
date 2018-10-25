@@ -1,4 +1,5 @@
 ﻿using System;
+using up6.db.biz;
 using up6.db.database;
 
 namespace up6.db
@@ -26,6 +27,7 @@ namespace up6.db
             {
                 DBFile db = new DBFile();
                 db.complete(id);
+                up6_biz_event.file_post_complete(id);
                 ret = 1;
             }
             Response.Write(cbk + "(" + ret + ")");//必须返回jsonp格式数据

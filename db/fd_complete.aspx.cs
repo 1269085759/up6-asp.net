@@ -1,4 +1,5 @@
 ﻿using System;
+using up6.db.biz;
 using up6.db.biz.folder;
 using up6.db.database;
 using up6.db.model;
@@ -34,6 +35,8 @@ namespace up6.db
 
                 //更新扫描状态
                 DBFile.fd_scan(id, uid);
+
+                up6_biz_event.folder_post_complete(id);
 
                 ret = 1;
             }

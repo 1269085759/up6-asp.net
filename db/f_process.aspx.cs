@@ -1,4 +1,5 @@
 ﻿using System;
+using up6.db.biz;
 using up6.db.database;
 
 namespace up6.db
@@ -24,6 +25,7 @@ namespace up6.db
             {
                 DBFile db = new DBFile();
                 db.f_process(int.Parse(uid), id, long.Parse(offset), long.Parse(lenSvr), perSvr);
+                up6_biz_event.file_post_process(id);
                 json = callback + "({\"state\":1})";//返回jsonp格式数据。
             }
             Response.Write(json);
