@@ -65,10 +65,15 @@ namespace up6.db
                 fileSvr.lenSvr = fileExist.lenSvr;
                 fileSvr.complete = fileExist.complete;
                 db.Add(ref fileSvr);
+
+                //触发事件
+                up6_biz_event.file_create_same(fileSvr);
             }//数据库不存在相同文件
             else
             {
                 db.Add(ref fileSvr);
+                //触发事件
+                up6_biz_event.file_create(fileSvr);
 
                 //2.0创建器。仅创建一个空白文件
                 FileBlockWriter fr = new FileBlockWriter();

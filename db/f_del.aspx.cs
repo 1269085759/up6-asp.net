@@ -1,4 +1,5 @@
 ﻿using System;
+using up6.db.biz;
 using up6.db.database;
 
 namespace up6.db
@@ -20,6 +21,7 @@ namespace up6.db
             {
                 DBFile db = new DBFile();
                 db.Delete(Convert.ToInt32(uid), fid);
+                up6_biz_event.file_del(fid,Convert.ToInt32(uid));
                 ret = 1;
             }
             Response.Write(callback + "(" + ret + ")");//返回jsonp格式数据
