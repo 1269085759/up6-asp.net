@@ -738,7 +738,7 @@ function HttpUploaderMgr()
             }
 
             if (_this.edge) {
-                _this.edgeApp.run();
+                _this.edgeApp.connect();
             }
             else {
                 _this.app.init();
