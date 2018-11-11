@@ -555,10 +555,10 @@ function HttpUploaderMgr()
         this.event.addFdError(json);
     };
     this.socket_close = function () {
-        for (var i in this.QueuePost)
-        {
-            this.filesMap[i].post_stoped(null);
+        for (var i = 0, l = _this.QueuePost.length; i < l; ++i) {
+            _this.filesMap[_this.QueuePost[i]].post_stoped(null);
         }
+		_this.QueuePost.length = 0;
     };
 	this.recvMessage = function (str)
 	{
