@@ -4,7 +4,6 @@ function WebServer(mgr)
     // 创建一个Socket实例
     this.socket = null;
     this.tryConnect = true;
-    this.runExe = true;
     this.exit = false;
     this.ent = { "on_close": function () { }};
 
@@ -16,10 +15,7 @@ function WebServer(mgr)
             //up6://9006
             navigator.msLaunchUri(mgr.Config.edge.protocol+"://"+mgr.Config.edge.port, function ()
             {
-                _this.runExe = false;
                 console.log('应用打开成功');
-                //_this.connect();//
-                //alert("success");
             }, function ()
             {
                 console.log('启动失败');
@@ -28,7 +24,6 @@ function WebServer(mgr)
         }
     };
     this.runChr = function () {
-        if ($("#uri-fra").length > 0) return;
         var protocol = mgr.Config.edge.protocol + "://" + mgr.Config.edge.port;
         var html = "<iframe id='uri-fra' width=1 height=1 src='" + protocol + "'></iframe>";
         $(document.body).append(html);
