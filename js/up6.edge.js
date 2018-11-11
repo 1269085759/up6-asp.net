@@ -5,6 +5,7 @@ function WebServer(mgr)
     this.socket = null;
     this.tryConnect = true;
     this.runExe = true;
+    this.exit = false;
     this.ent = { "on_close": function () { }};
 
     this.run = function ()
@@ -55,9 +56,13 @@ function WebServer(mgr)
             // 监听Socket的关闭,自动断开的处理
             con.onclose = function (event)
             {
-                _this.ent.on_close();//
-                _this.run();
-                setTimeout(function () { _this.connect() }, 1000);//启动定时器
+                //手动退出
+                if ( !this.exit)
+                {
+                    _this.ent.on_close();//
+                    _this.run();
+                    setTimeout(function () { _this.connect() }, 1000);//启动定时器
+                }
             };
 
         };
@@ -70,6 +75,7 @@ function WebServer(mgr)
     };
     this.close = function ()
     {
+        this.exit = true;
         if (this.socket) { this.socket.close(1000,"close");}
     };
     this.send = function (p)
