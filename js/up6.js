@@ -659,11 +659,11 @@ function HttpUploaderMgr()
 
 		$(window).bind("unload", function()
 		{
+            if(this.edge) _this.edgeApp.close();
 			if (_this.QueuePost.length > 0)
             {
 				_this.StopAll();
             }
-            _this.app.exit();//
 		});
 	};
 
