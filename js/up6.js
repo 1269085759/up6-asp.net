@@ -555,8 +555,9 @@ function HttpUploaderMgr()
         this.event.addFdError(json);
     };
     this.socket_close = function () {
-        for (var i = 0, l = _this.QueuePost.length; i < l; ++i) {
-            _this.filesMap[_this.QueuePost[i]].post_stoped(null);
+        while (_this.QueuePost.length > 0)
+        {
+            _this.filesMap[_this.QueuePost[0]].post_stoped(null);
         }
 		_this.QueuePost.length = 0;
     };
@@ -662,7 +663,8 @@ function HttpUploaderMgr()
 			if (_this.QueuePost.length > 0)
             {
 				_this.StopAll();
-			}
+            }
+            _this.app.exit();//
 		});
 	};
 

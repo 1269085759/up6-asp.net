@@ -45,7 +45,7 @@ function WebServer(mgr)
         {
             _this.socket = con;
             _this.tryConnect = false;
-            console.log("服务连接成功");            
+            console.log("服务连接成功");
 
             // 监听消息
             con.onmessage = function (event)
@@ -56,9 +56,11 @@ function WebServer(mgr)
             // 监听Socket的关闭,自动断开的处理
             con.onclose = function (event)
             {
+                console.log("连接断开");
                 //手动退出
                 if ( !this.exit)
                 {
+                    _this.tryConnect = true;
                     _this.ent.on_close();//
                     _this.run();
                     setTimeout(function () { _this.connect() }, 1000);//启动定时器
