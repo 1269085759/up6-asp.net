@@ -168,6 +168,7 @@ function HttpUploaderMgr()
 	this.ffVer = navigator.userAgent.match(/Firefox\/(\d+)/);
 	this.edge = navigator.userAgent.indexOf("Edge") > 0;
     this.edgeApp = new WebServer(this);
+    this.edgeApp.ent.on_close = function () { _this.socket_close(); };
     this.app = up6_app;
     this.app.edgeApp = this.edgeApp;
     this.app.Config = this.Config;
@@ -552,6 +553,12 @@ function HttpUploaderMgr()
     };
     this.add_folder_error = function (json) {
         this.event.addFdError(json);
+    };
+    this.socket_close = function () {
+        for (var i in this.QueuePost)
+        {
+            this.filesMap[i].post_stoped(null);
+        }
     };
 	this.recvMessage = function (str)
 	{

@@ -5,6 +5,7 @@ function WebServer(mgr)
     this.socket = null;
     this.tryConnect = true;
     this.runExe = true;
+    this.ent = { "on_close": function () { }};
 
     this.run = function ()
     {
@@ -43,25 +44,22 @@ function WebServer(mgr)
         {
             _this.socket = con;
             _this.tryConnect = false;
-            console.log("服务连接成功");
-            // 发送一个初始化消息
-            //socket.send('I am the client and I\'m listening!');
+            console.log("服务连接成功");            
 
             // 监听消息
             con.onmessage = function (event)
             {
                 mgr.recvMessage(event.data);
-                //console.log('Client received a message', event);
             };
 
-            // 监听Socket的关闭
+            // 监听Socket的关闭,自动断开的处理
             con.onclose = function (event)
             {
-                //console.log('Client notified socket has closed', event);
+                _this.ent.on_close();//
+                _this.run();
+                setTimeout(function () { _this.connect() }, 1000);//启动定时器
             };
 
-            // 关闭Socket.... 
-            //socket.close() 
         };
         con.onerror = function (event)
         {
