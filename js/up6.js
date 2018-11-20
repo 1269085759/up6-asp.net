@@ -95,6 +95,7 @@ function HttpUploaderMgr()
         , "FolderThread"    : 3//最大为10
         , "FdSizeLimit"     : 0//文件夹大小限制。0表示不限制
         , "FdChildLimit"    : 0//文件夹子元素数量限制（子文件+子文件夹）。0表示不限制
+        , "ProcSaveTm"      : 60//定时保存进度。单位：秒，默认：1分钟
 		//文件夹操作相关
 		, "UrlFdCreate"		: "http://localhost:8888/db/fd_create_uuid.aspx"
 		, "UrlFdComplete"	: "http://localhost:8888/db/fd_complete.aspx"
