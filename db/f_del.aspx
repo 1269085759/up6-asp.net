@@ -1,0 +1,1 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="f_del.aspx.cs" Inherits="up6.db.f_del" %>

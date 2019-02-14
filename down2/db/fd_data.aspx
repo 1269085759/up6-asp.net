@@ -1,0 +1,1 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="fd_data.aspx.cs" Inherits="up6.down2.db.fd_data" %>
