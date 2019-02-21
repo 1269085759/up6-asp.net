@@ -33,7 +33,7 @@ namespace up6.db.utils
                 if(!Directory.Exists(filePath)) Directory.CreateDirectory(Path.GetDirectoryName(filePath));
 
                 FileStream fs = new FileStream(filePath, FileMode.Create);
-                fs.SetLength(0);
+                fs.SetLength(len);
                 fs.Close();
 			}
 		}

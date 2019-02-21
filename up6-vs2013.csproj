@@ -25,6 +25,7 @@
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
     <TargetFrameworkProfile />
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -176,7 +177,6 @@
     <Compile Include="db\sql.aspx.designer.cs">
       <DependentUpon>sql.aspx</DependentUpon>
     </Compile>
-    <Compile Include="db\utils\MapBlockWriter.cs" />
     <Compile Include="db\utils\FileBlockWriter.cs" />
     <Compile Include="db\f_complete.aspx.cs">
       <DependentUpon>f_complete.aspx</DependentUpon>
