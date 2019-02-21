@@ -306,7 +306,6 @@ function FileUploader(fileLoc, mgr)
     this.remove = function ()
     {
         this.app.delFile(this.fileSvr);
-        //this.Manager.Delete(this.fileSvr.id);
         this.ui.div.remove();
         this.ui.split.remove();
     };
