@@ -18,6 +18,7 @@
         cbMgr.event.fileComplete = function (obj) { /*alert(obj.pathSvr);*/ };
         cbMgr.event.queueComplete = function () { /*队列上传完毕*/ };
         cbMgr.event.addFdError = function (jv) { alert("本地路径不存在：" + jv.path); };
+        cbMgr.event.scanComplete = function (obj) { /*alert(obj.folderSvr.pathLoc);*/ };
         //使用不同项目配置
         //cbMgr.set_config(up6_config.qq);
         //cbMgr.set_config(up6_config.qq_mail);
