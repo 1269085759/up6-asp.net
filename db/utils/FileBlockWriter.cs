@@ -45,30 +45,15 @@ namespace up6.db.utils
 		/// <param name="path">远程文件完整路径。d:\www\web\upload\201204\10\md5.exe</param>
 		public void write(string path, long offset, ref HttpPostedFile fileRange)
 		{
-			//存在多个用户同时创建相同文件的问题。
-			//m_writeLock.AcquireWriterLock(1000);
-			//this.make(path);
-			//m_writeLock.ReleaseWriterLock();
-
-            FileInfo fi = new FileInfo(path);
-            bool needWrite = fi.Length == 0;
-            if (!needWrite) needWrite = offset  == 0;
-            if(!needWrite) needWrite = fi.Length <= offset;//
-
-			//上传的文件大小不为空
-			if (fileRange.InputStream.Length > 0 && needWrite )
-			{
-				//文件已存在，写入数据
-				FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Write, FileShare.Write);
-				fs.Seek(offset, SeekOrigin.Begin);                
-				byte[] ByteArray = new byte[fileRange.InputStream.Length];
-                fileRange.InputStream.Seek(0, SeekOrigin.Begin);
-                fileRange.InputStream.Read(ByteArray, 0, (int)fileRange.InputStream.Length);
-				fs.Write(ByteArray, 0, (int)fileRange.InputStream.Length);
-				fs.Flush();
-				fs.Close();
-			}
-
+			//文件已存在，写入数据
+			FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Write, FileShare.Write);
+			fs.Seek(offset, SeekOrigin.Begin);                
+			byte[] ByteArray = new byte[fileRange.InputStream.Length];
+            fileRange.InputStream.Seek(0, SeekOrigin.Begin);
+            fileRange.InputStream.Read(ByteArray, 0, (int)fileRange.InputStream.Length);
+			fs.Write(ByteArray, 0, (int)fileRange.InputStream.Length);
+			fs.Flush();
+			fs.Close();
 		}
 	}
 }
