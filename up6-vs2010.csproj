@@ -57,6 +57,7 @@
     <Compile Include="db\biz\PathBuilderMd5.cs" />
     <Compile Include="db\biz\PathBuilderUuid.cs" />
     <Compile Include="db\biz\un_builder.cs" />
+    <Compile Include="db\biz\up6_biz_event.cs" />
     <Compile Include="db\clear.aspx.cs">
       <DependentUpon>clear.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -146,7 +147,6 @@
       <DependentUpon>sql.aspx</DependentUpon>
     </Compile>
     <Compile Include="db\utils\FileBlockWriter.cs" />
-    <Compile Include="db\utils\MapBlockWriter.cs" />
     <Compile Include="db\utils\Md5Tool.cs" />
     <Compile Include="db\XDebug.cs">
       <SubType>Code</SubType>
@@ -253,7 +253,7 @@
     <Content Include="down2\js\down.js" />
     <Content Include="down2\js\file.png" />
     <Content Include="down2\js\folder.png" />
-    <Content Include="down2\js\jquery-1.3.2.min.js" />
+    <Content Include="down2\js\jquery-1.4.min.js" />
     <Content Include="down2\js\json2.min.js" />
     <Content Include="index-single.htm" />
     <Content Include="index.aspx" />
