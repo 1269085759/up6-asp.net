@@ -271,19 +271,25 @@ function FolderUploader(fdLoc, mgr)
         }
         //在此处增加服务器验证代码。
         this.ui.msg.text("初始化...");
-		var f_data = jQuery.extend({},this.fields,{folder: encodeURIComponent(JSON.stringify(this.folderSvr)), time: new Date().getTime()});
+        var param = jQuery.extend({}, this.fields, {
+            id: this.folderSvr.id,
+            lenLoc: this.folderSvr.lenLoc,
+            sizeLoc: this.folderSvr.sizeLoc,
+            pathLoc: encodeURIComponent(this.folderSvr.pathLoc),
+            time: new Date().getTime()
+        });
 
         $.ajax({
-            type: "POST"
-            //, dataType: 'jsonp'
-            //, jsonp: "callback" //自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名
+            type: "GET"
+            , dataType: 'jsonp'
+            , jsonp: "callback" //自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名
 			, url: this.Config["UrlFdCreate"]
-			, data: f_data
+            , data: param
 			, success: function (msg)
 			{
 				try
 				{
-					var json = JSON.parse(decodeURIComponent(msg));
+					var json = JSON.parse(decodeURIComponent(msg.value));
 					_this.svr_create(json);
 				}
 				catch(e)
