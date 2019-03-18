@@ -1,7 +1,12 @@
 ﻿using System;
+using System.IO;
 using System.Web;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using up6.db.biz;
 using up6.db.biz.folder;
+using up6.db.database;
+using up6.db.model;
 
 namespace up6.db
 {
@@ -77,17 +82,50 @@ namespace up6.db
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            string folderStr = Request.Form["folder"];
-            folderStr = folderStr.Replace("+", "%20");
-            folderStr = HttpUtility.UrlDecode(folderStr);
+            string id = Request.QueryString["id"];
+            string uid = Request.QueryString["uid"];
+            string lenLoc = Request.QueryString["lenLoc"];
+            string sizeLoc = Request.QueryString["sizeLoc"];
+            string pathLoc = HttpUtility.UrlDecode(Request.QueryString["pathLoc"]);
+            string callback = Request.QueryString["callback"];//jsonp参数
 
-            fd_appender adder = new fd_appender();
-            adder.m_root = JsonConvert.DeserializeObject<fd_root>(folderStr);
-            adder.save();//保存到数据库
+            if (string.IsNullOrEmpty(id)
+                || string.IsNullOrEmpty(uid)
+                || string.IsNullOrEmpty(pathLoc)
+                )
+            {
+                Response.Write(callback + "({\"value\":null})");
+                return;
+            }
 
-            string json = JsonConvert.SerializeObject(adder.m_root);
+            FileInf fileSvr = new FileInf();
+            fileSvr.id = id;
+            fileSvr.fdChild = false;
+            fileSvr.fdTask = true;
+            fileSvr.uid = int.Parse(uid);//将当前文件UID设置为当前用户UID
+            fileSvr.nameLoc = Path.GetFileName(pathLoc);
+            fileSvr.pathLoc = pathLoc;
+            fileSvr.lenLoc = Convert.ToInt64(lenLoc);
+            fileSvr.sizeLoc = sizeLoc;
+            fileSvr.deleted = false;
+            fileSvr.nameSvr = fileSvr.nameLoc;
+
+            //生成存储路径
+            PathBuilderUuid pb = new PathBuilderUuid();
+            fileSvr.pathSvr = pb.genFolder(fileSvr.uid, fileSvr.nameLoc);
+            fileSvr.pathSvr = fileSvr.pathSvr.Replace("\\", "/");
+            if (!Directory.Exists(fileSvr.pathSvr)) Directory.CreateDirectory(fileSvr.pathSvr);
+
+            //添加到数据表
+            DBFile db = new DBFile();
+            db.Add(ref fileSvr);
+            up6_biz_event.folder_create(fileSvr);
+
+            string json = JsonConvert.SerializeObject(fileSvr);
             json = HttpUtility.UrlEncode(json);
             json = json.Replace("+", "%20");
+            var jo = new JObject { { "value",json} };
+            json = callback + string.Format("({0})",JsonConvert.SerializeObject(jo));
             Response.Write(json);
         }
     }

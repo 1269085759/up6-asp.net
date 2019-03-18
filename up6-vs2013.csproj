@@ -58,7 +58,6 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="db\fd_create_uuid.aspx" />
     <Content Include="db\f_process.aspx" />
     <Content Include="db\sql.aspx" />
     <Content Include="down2\db\clear.aspx" />
@@ -148,13 +147,6 @@
     </Compile>
     <Compile Include="db\fd_create.aspx.designer.cs">
       <DependentUpon>fd_create.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="db\fd_create_uuid.aspx.cs">
-      <DependentUpon>fd_create_uuid.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="db\fd_create_uuid.aspx.designer.cs">
-      <DependentUpon>fd_create_uuid.aspx</DependentUpon>
     </Compile>
     <Compile Include="db\fd_del.aspx.cs">
       <DependentUpon>fd_del.aspx</DependentUpon>
