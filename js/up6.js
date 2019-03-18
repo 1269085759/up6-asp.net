@@ -483,8 +483,10 @@ function HttpUploaderMgr()
 	    setTimeout(function () { _this.PostFirst(); },500);
 	};
 	this.open_folders = function (json)
-	{
-	    this.addFolderLoc(json);
+    {
+        for (var i = 0, l = json.folders.length; i < l; ++i) {
+            this.addFolderLoc(json.folders[i]);
+        }
 	    setTimeout(function () { _this.PostFirst(); }, 500);
 	};
 	this.paste_files = function (json)
