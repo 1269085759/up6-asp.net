@@ -97,7 +97,7 @@ function HttpUploaderMgr()
         , "FdChildLimit"    : 0//文件夹子元素数量限制（子文件+子文件夹）。0表示不限制
         , "ProcSaveTm"      : 60//定时保存进度。单位：秒，默认：1分钟
 		//文件夹操作相关
-		, "UrlFdCreate"		: "http://localhost:8888/db/fd_create_uuid.aspx"
+		, "UrlFdCreate"		: "http://localhost:8888/db/fd_create.aspx"
 		, "UrlFdComplete"	: "http://localhost:8888/db/fd_complete.aspx"
 		, "UrlFdDel"	    : "http://localhost:8888/db/fd_del.aspx"
 		//文件操作相关
@@ -224,14 +224,15 @@ function HttpUploaderMgr()
 		    this.LoadData();
 		}
 		, "LoadData": function ()//从服务器加载数据
-		{
+        {
+            var param = jQuery.extend({}, this.Fields, { time: new Date().getTime() });
 			var ref = this;
 			$.ajax({
 				type: "GET"
 				, dataType: 'jsonp'
 				, jsonp: "callback" //自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名
 				, url: this.Config["UrlList"]
-				, data: { uid: this.Fields["uid"], time: new Date().getTime() }
+                , data: param
 			    , success:function (msg)
 			    {
 			        if (msg.value != null)
