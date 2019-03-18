@@ -1,5 +1,5 @@
 /*
-	版权所有 2009-2018 荆门泽优软件有限公司
+	版权所有 2009-2019 荆门泽优软件有限公司
 	保留所有权利
 	官方网站：http://www.ncmem.com/
 	产品首页：http://www.ncmem.com/webapp/up6.2/index.asp
@@ -13,10 +13,11 @@
 	VC运行库：http://www.microsoft.com/en-us/download/details.aspx?id=29
 	联系信箱：1085617561@qq.com
 	联系QQ：1085617561
-    版本：2.3.5
+    版本：2.3.6
 	更新记录：
 		2009-11-05 创建。
 		2015-07-31 优化更新进度逻辑
+        2019-03-18 完善文件夹粘帖功能，完善文件夹初始化逻辑。
 */
 var HttpUploaderErrorCode = {
 	  "0": "发送数据错误"
@@ -449,7 +450,7 @@ function HttpUploaderMgr()
 					<div name="post_head" class="toolbar">\
 						<span class="btn" name="btnAddFiles">选择多个文件</span>\
 						<span class="btn" name="btnAddFolder">选择文件夹</span>\
-						<span class="btn" name="btnPasteFile">粘贴文件</span>\
+						<span class="btn" name="btnPasteFile">粘贴文件和目录</span>\
 						<span class="btn" name="btnSetup">安装控件</span>\
 					</div>\
 					<div class="content" name="post_content">\
