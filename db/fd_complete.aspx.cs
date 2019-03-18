@@ -23,7 +23,7 @@ namespace up6.db
             {
                 FileInf inf = new FileInf();
                 DBFile db = new DBFile();
-                db.query(id,ref inf);
+                db.read(id,ref inf);
                 string root = inf.pathSvr;
                 
                 //上传完毕
@@ -31,6 +31,7 @@ namespace up6.db
 
                 //扫描文件夹结构，
                 fd_scan sa = new fd_scan();
+                sa.root = inf;//
                 sa.scan(inf,root);
 
                 //更新扫描状态

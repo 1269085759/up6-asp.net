@@ -13,7 +13,7 @@ namespace up6.db.biz
         public static void file_post_complete(string id) { }
         public static void file_post_block(string id,int blockIndex) { }
         public static void file_post_process(string id) { }
-        public static void folder_create(fd_root fd) { }
+        public static void folder_create(FileInf fd) { }
         public static void folder_post_complete(string id) { }
         /// <summary>
         /// 文件和文件夹都触发

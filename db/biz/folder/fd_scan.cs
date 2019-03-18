@@ -9,11 +9,15 @@ using up6.db.model;
 
 namespace up6.db.biz.folder
 {
+    /// <summary>
+    /// 修复pidRoot为空的问题
+    /// </summary>
     public class fd_scan
     {
         protected DbHelper db;
         protected DbCommand cmd_add_f = null;
         protected DbCommand cmd_add_fd = null;
+        public FileInf root = null;//根节点
 
         public fd_scan()
         {
@@ -139,7 +143,7 @@ namespace up6.db.biz.folder
 
                 fl.id = Guid.NewGuid().ToString("N");
                 fl.pid = inf.id;
-                fl.pidRoot = inf.pidRoot;
+                fl.pidRoot = this.root.id;
                 fl.nameSvr = fi.Name;
                 fl.pathSvr = fi.FullName;
                 fl.pathSvr = fl.pathSvr.Replace("\\", "/");
@@ -156,7 +160,7 @@ namespace up6.db.biz.folder
                 FileInf fd = new FileInf();
                 fd.id = Guid.NewGuid().ToString("N");
                 fd.pid = inf.id;
-                fd.pidRoot = inf.pidRoot;
+                fd.pidRoot = this.root.id;
                 fd.nameSvr = d.Name;
                 fd.pathSvr = d.FullName;
                 fd.pathSvr = fd.pathSvr.Replace("\\", "/");
