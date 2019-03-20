@@ -146,6 +146,7 @@ namespace up6.db.database
                             ,f_complete
                             ,f_time
                             ,f_deleted
+                            ,f_fdTask
                             ,f_fdChild
                             ,f_uid
                             ,f_nameLoc
@@ -165,6 +166,7 @@ namespace up6.db.database
                             ,@f_complete
                             ,@f_time
                             ,@f_deleted
+                            ,@f_fdTask
                             ,@f_fdChild
                             ,@f_uid
                             ,@f_nameLoc
@@ -187,6 +189,7 @@ namespace up6.db.database
             db.AddInBool(cmd, "@f_complete",model.complete);
             db.AddDate(ref cmd, "@f_time", model.time);
             db.AddInBool(cmd, "@f_deleted", false);
+            db.AddInBool(cmd, "@f_fdTask", model.fdTask);
             db.AddInBool(cmd, "@f_fdChild", model.fdChild);
             db.AddInt(ref cmd, "@f_uid", model.uid);
             db.AddString(ref cmd, "@f_nameLoc", model.nameLoc, 255);
