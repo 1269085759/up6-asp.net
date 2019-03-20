@@ -82,11 +82,11 @@ namespace up6.db
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            string id = Request.QueryString["id"];
-            string uid = Request.QueryString["uid"];
-            string lenLoc = Request.QueryString["lenLoc"];
-            string sizeLoc = Request.QueryString["sizeLoc"];
-            string pathLoc = HttpUtility.UrlDecode(Request.QueryString["pathLoc"]);
+            string id       = Request.QueryString["id"];
+            string uid      = Request.QueryString["uid"];
+            string lenLoc   = Request.QueryString["lenLoc"];
+            string sizeLoc  = Request.QueryString["sizeLoc"];
+            string pathLoc  = HttpUtility.UrlDecode(Request.QueryString["pathLoc"]);
             string callback = Request.QueryString["callback"];//jsonp参数
 
             if (string.IsNullOrEmpty(id)
@@ -99,21 +99,21 @@ namespace up6.db
             }
 
             FileInf fileSvr = new FileInf();
-            fileSvr.id = id;
+            fileSvr.id      = id;
             fileSvr.fdChild = false;
-            fileSvr.fdTask = true;
-            fileSvr.uid = int.Parse(uid);//将当前文件UID设置为当前用户UID
+            fileSvr.fdTask  = true;
+            fileSvr.uid     = int.Parse(uid);//将当前文件UID设置为当前用户UID
             fileSvr.nameLoc = Path.GetFileName(pathLoc);
             fileSvr.pathLoc = pathLoc;
-            fileSvr.lenLoc = Convert.ToInt64(lenLoc);
+            fileSvr.lenLoc  = Convert.ToInt64(lenLoc);
             fileSvr.sizeLoc = sizeLoc;
             fileSvr.deleted = false;
             fileSvr.nameSvr = fileSvr.nameLoc;
 
             //生成存储路径
             PathBuilderUuid pb = new PathBuilderUuid();
-            fileSvr.pathSvr = pb.genFolder(fileSvr.uid, fileSvr.nameLoc);
-            fileSvr.pathSvr = fileSvr.pathSvr.Replace("\\", "/");
+            fileSvr.pathSvr    = pb.genFolder(ref fileSvr);
+            fileSvr.pathSvr    = fileSvr.pathSvr.Replace("\\", "/");
             if (!Directory.Exists(fileSvr.pathSvr)) Directory.CreateDirectory(fileSvr.pathSvr);
 
             //添加到数据表
