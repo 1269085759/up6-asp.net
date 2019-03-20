@@ -12,15 +12,15 @@ namespace up6.db.biz
     /// </summary>
     public class PathBuilderUuid : PathBuilder
     {
-        public override string genFolder(int uid,string nameLoc)
+        public override string genFolder(ref FileInf fd)
         {
-            var uuid = Guid.NewGuid().ToString("N"); // e0a953c3ee6040eaa9fae2b667060e09   
+            var uuid = fd.id; //取消生成新ID,使用原始文件夹ID
             DateTime timeCur = DateTime.Now;
             string path = Path.Combine(this.getRoot(), timeCur.ToString("yyyy"));
             path = Path.Combine(path, timeCur.ToString("MM"));
             path = Path.Combine(path, timeCur.ToString("dd"));
             path = Path.Combine(path, uuid);
-            path = Path.Combine(path, nameLoc);
+            path = Path.Combine(path, fd.nameLoc);
 
             return path;
         }
@@ -36,7 +36,7 @@ namespace up6.db.biz
         /// <returns></returns>
         public override string genFile(int uid, ref FileInf f)
         {
-            var uuid = Guid.NewGuid().ToString("N"); // e0a953c3ee6040eaa9fae2b667060e09   
+            var uuid = f.id;//取消生成ID，使用自已的ID
             DateTime timeCur = DateTime.Now;
             string path = Path.Combine(this.getRoot(), timeCur.ToString("yyyy"));
             path = Path.Combine(path, timeCur.ToString("MM"));

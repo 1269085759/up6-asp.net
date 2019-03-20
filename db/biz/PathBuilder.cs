@@ -18,7 +18,7 @@ namespace up6.db.biz
             return HttpContext.Current.Server.MapPath("/upload");
         }
 
-        public virtual string genFolder(int uid,string nameLoc)
+        public virtual string genFolder(ref FileInf fd)
         {
             return string.Empty;
         }
