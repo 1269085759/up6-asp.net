@@ -988,7 +988,7 @@ function HttpUploaderMgr()
 	this.addFileLoc = function(fileLoc)
 	{
 		//本地文件名称存在
-		if (_this.Exist(fileLoc.pathLoc)) return;
+		//if (_this.Exist(fileLoc.pathLoc)) return;
 		//此类型为过滤类型
 		if (_this.NeedFilter(fileLoc.ext)) return;
 
@@ -1066,7 +1066,7 @@ function HttpUploaderMgr()
 	{
 	    var fdLoc = json;
 		//本地文件夹存在
-	    if (this.Exist(fdLoc.pathLoc)) return;
+	    //if (this.Exist(fdLoc.pathLoc)) return;
         //针对空文件夹的处理
 	    if (json.files == null) jQuery.extend(fdLoc,{files:[]});
 	    //if (json.lenLoc == 0) return;
