@@ -73,7 +73,7 @@ function HttpUploaderMgr()
 	this.Config = {
 		  "EncodeType"		: "utf-8"
 		, "Company"			: "荆门泽优软件有限公司"
-		, "Version"			: "2,7,117,60757"
+		, "Version"			: "2,7,118,5233"
 		, "License"			: ""//
 		, "Authenticate"	: ""//域验证方式：basic,ntlm
 		, "AuthName"		: ""//域帐号
