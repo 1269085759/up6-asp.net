@@ -232,12 +232,14 @@ function FolderUploader(fdLoc, mgr)
         if(json.errors > 0 ) str += " 失败：" + json.errors
         this.ui.msg.text(str);
 
+        var param = jQuery.extend({}, this.fields, { id: this.folderSvr.id, time: new Date().getTime() });
+
         $.ajax({
             type: "GET"
 			, dataType: 'jsonp'
 			, jsonp: "callback" //自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名
-			, url: this.Config["UrlFdComplete"]
-			, data: { uid: this.fields["uid"], id: this.id,time: new Date().getTime() }
+            , url: this.Config["UrlFdComplete"]
+            , data: param
 			, success: function (msg)
 			{
 			    _this.event.fdComplete(_this);//触发事件

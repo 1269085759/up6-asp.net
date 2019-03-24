@@ -145,6 +145,7 @@ namespace up6.db.biz.folder
                 fl.pid = inf.id;
                 fl.pidRoot = this.root.id;
                 fl.nameSvr = fi.Name;
+                fl.nameLoc = fi.Name;
                 fl.pathSvr = fi.FullName;
                 fl.pathSvr = fl.pathSvr.Replace("\\", "/");
                 fl.pathRel = fl.pathSvr.Remove(0, root.Length + 1);
@@ -162,6 +163,7 @@ namespace up6.db.biz.folder
                 fd.pid = inf.id;
                 fd.pidRoot = this.root.id;
                 fd.nameSvr = d.Name;
+                fd.nameLoc = d.Name;
                 fd.pathSvr = d.FullName;
                 fd.pathSvr = fd.pathSvr.Replace("\\", "/");
                 fd.pathRel = fd.pathSvr.Remove(0, root.Length + 1);
