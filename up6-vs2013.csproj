@@ -107,7 +107,6 @@
     <Content Include="js\up6.file.js" />
     <Content Include="js\up6.folder.js" />
     <Content Include="sql.down\down_files.sql" />
-    <Content Include="index.htm" />
     <Content Include="js\up6.js" />
     <Content Include="js\setup.htm" />
     <Content Include="sql\fd_files_check.sql" />
