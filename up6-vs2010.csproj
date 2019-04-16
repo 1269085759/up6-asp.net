@@ -49,10 +49,7 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="db\biz\folder\fd_appender.cs" />
-    <Compile Include="db\biz\folder\fd_root.cs" />
-    <Compile Include="db\biz\folder\fd_scan.cs" />
-    <Compile Include="db\biz\folder\fd_uuid_appender.cs" />
+    <Compile Include="db\biz\fd_scan.cs" />
     <Compile Include="db\biz\PathBuilder.cs" />
     <Compile Include="db\biz\PathBuilderMd5.cs" />
     <Compile Include="db\biz\PathBuilderUuid.cs" />
@@ -249,7 +246,6 @@
     <Content Include="down2\js\json2.min.js" />
     <Content Include="index-single.htm" />
     <Content Include="index.aspx" />
-    <Content Include="index.htm" />
     <Content Include="js\del.png" />
     <Content Include="js\file.png" />
     <Content Include="js\folder.png" />
