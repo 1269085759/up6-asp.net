@@ -1,0 +1,22 @@
+﻿{
+    "root": "http://localhost:8888/",
+    "html": "/data/html/",
+    "jquery": [
+        "/filemgr/res/jquery/jquery-1.9.1.min.js",
+        "/filemgr/res/jquery/jquery.serializejson.min.js"
+    ],
+    "bootstrap": [
+        "/filemgr/res/bootstrap/js/bootstrap.min.js",
+        "/filemgr/res/bootstrap/js/bootstrap.min.css"
+    ],
+    "jstree": [
+        "https://cdn.bootcss.com/jstree/3.3.5/themes/default/style.min.css",
+        "https://cdn.bootcss.com/jstree/3.3.5/jstree.min.js"
+    ],
+    "layerui": [
+        "/filemgr/res/layui/css/layui.css",
+        "/filemgr/res/layui/layui.js"
+    ],
+    "moment": "https://cdn.bootcss.com/moment.js/2.22.1/",
+    "My97DatePicker": "/filemgr/res/My97DatePicker/WdatePicker.js"
+}
