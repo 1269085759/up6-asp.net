@@ -52,7 +52,7 @@ return '<a>'+d.id+'</a>';
             });
 
             //监听工具条,列模板中的<a>事件也在此监听
-            table.on('tool(docs)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+            table.on('tool(files)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
                 var data = obj.data; //获得当前行数据
                 var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
                 var tr = obj.tr; //获得当前行 tr 的DOM对象
