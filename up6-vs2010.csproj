@@ -11,12 +11,13 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>up6</RootNamespace>
     <AssemblyName>up6</AssemblyName>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation />
     <UseIISExpress>false</UseIISExpress>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -42,11 +43,17 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.XML" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="db\biz\fd_scan.cs" />
@@ -200,6 +207,31 @@
       <DependentUpon>f_update.aspx</DependentUpon>
     </Compile>
     <Compile Include="down2\model\DnFileInf.cs" />
+    <Compile Include="filemgr\app\ConfigReader.cs" />
+    <Compile Include="filemgr\app\DbBase.cs" />
+    <Compile Include="filemgr\app\PageTool.cs" />
+    <Compile Include="filemgr\app\SqlCmdReader.cs" />
+    <Compile Include="filemgr\app\SqlExec.cs" />
+    <Compile Include="filemgr\app\SqlParam.cs" />
+    <Compile Include="filemgr\app\SqlParamSetter.cs" />
+    <Compile Include="filemgr\app\SqlParValSetter.cs" />
+    <Compile Include="filemgr\app\SqlSearchComb.cs" />
+    <Compile Include="filemgr\app\SqlSearchCombParam.cs" />
+    <Compile Include="filemgr\app\SqlWhereCondition.cs" />
+    <Compile Include="filemgr\app\SqlWhereMerge.cs" />
+    <Compile Include="filemgr\app\WebBase.cs" />
+    <Compile Include="filemgr\index.aspx.cs">
+      <DependentUpon>index.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="filemgr\index.aspx.designer.cs">
+      <DependentUpon>index.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="filemgr\up.aspx.cs">
+      <DependentUpon>up.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="filemgr\up.aspx.designer.cs">
+      <DependentUpon>up.aspx</DependentUpon>
+    </Compile>
     <Compile Include="index.aspx.cs">
       <DependentUpon>index.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -208,9 +240,18 @@
       <DependentUpon>index.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="vue\index.aspx.cs">
+      <DependentUpon>index.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="vue\index.aspx.designer.cs">
+      <DependentUpon>index.aspx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="filemgr\res\bootstrap\css\_notes\" />
+    <Folder Include="filemgr\res\bootstrap\fonts\_notes\" />
+    <Folder Include="filemgr\res\bootstrap\js\_notes\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="db\clear.aspx" />
@@ -244,6 +285,128 @@
     <Content Include="down2\js\folder.png" />
     <Content Include="down2\js\jquery-1.4.min.js" />
     <Content Include="down2\js\json2.min.js" />
+    <Content Include="filemgr\data\index.js" />
+    <Content Include="filemgr\index.aspx" />
+    <Content Include="filemgr\res\bootstrap\css\bootstrap-theme.css" />
+    <Content Include="filemgr\res\bootstrap\css\bootstrap-theme.min.css" />
+    <Content Include="filemgr\res\bootstrap\css\bootstrap.min.css" />
+    <Content Include="filemgr\res\bootstrap\Font-Awesome-3.2.1\css\font-awesome-ie7.css" />
+    <Content Include="filemgr\res\bootstrap\Font-Awesome-3.2.1\css\font-awesome-ie7.min.css" />
+    <Content Include="filemgr\res\bootstrap\Font-Awesome-3.2.1\css\font-awesome.css" />
+    <Content Include="filemgr\res\bootstrap\Font-Awesome-3.2.1\css\font-awesome.min.css" />
+    <Content Include="filemgr\res\bootstrap\Font-Awesome-3.2.1\font\fontawesome-webfont.svg" />
+    <Content Include="filemgr\res\bootstrap\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="filemgr\res\bootstrap\js\bootstrap.min.js" />
+    <Content Include="filemgr\res\jquery\jquery-1.9.1.min.js" />
+    <Content Include="filemgr\res\jquery\jquery.serializejson.min.js" />
+    <Content Include="filemgr\res\layui\css\layui.css" />
+    <Content Include="filemgr\res\layui\css\layui.mobile.css" />
+    <Content Include="filemgr\res\layui\css\modules\code.css" />
+    <Content Include="filemgr\res\layui\css\modules\laydate\default\laydate.css" />
+    <Content Include="filemgr\res\layui\css\modules\layer\default\icon-ext.png" />
+    <Content Include="filemgr\res\layui\css\modules\layer\default\icon.png" />
+    <Content Include="filemgr\res\layui\css\modules\layer\default\layer.css" />
+    <Content Include="filemgr\res\layui\css\modules\layer\default\loading-0.gif" />
+    <Content Include="filemgr\res\layui\css\modules\layer\default\loading-1.gif" />
+    <Content Include="filemgr\res\layui\css\modules\layer\default\loading-2.gif" />
+    <Content Include="filemgr\res\layui\font\iconfont.svg" />
+    <Content Include="filemgr\res\layui\images\face\0.gif" />
+    <Content Include="filemgr\res\layui\images\face\1.gif" />
+    <Content Include="filemgr\res\layui\images\face\10.gif" />
+    <Content Include="filemgr\res\layui\images\face\11.gif" />
+    <Content Include="filemgr\res\layui\images\face\12.gif" />
+    <Content Include="filemgr\res\layui\images\face\13.gif" />
+    <Content Include="filemgr\res\layui\images\face\14.gif" />
+    <Content Include="filemgr\res\layui\images\face\15.gif" />
+    <Content Include="filemgr\res\layui\images\face\16.gif" />
+    <Content Include="filemgr\res\layui\images\face\17.gif" />
+    <Content Include="filemgr\res\layui\images\face\18.gif" />
+    <Content Include="filemgr\res\layui\images\face\19.gif" />
+    <Content Include="filemgr\res\layui\images\face\2.gif" />
+    <Content Include="filemgr\res\layui\images\face\20.gif" />
+    <Content Include="filemgr\res\layui\images\face\21.gif" />
+    <Content Include="filemgr\res\layui\images\face\22.gif" />
+    <Content Include="filemgr\res\layui\images\face\23.gif" />
+    <Content Include="filemgr\res\layui\images\face\24.gif" />
+    <Content Include="filemgr\res\layui\images\face\25.gif" />
+    <Content Include="filemgr\res\layui\images\face\26.gif" />
+    <Content Include="filemgr\res\layui\images\face\27.gif" />
+    <Content Include="filemgr\res\layui\images\face\28.gif" />
+    <Content Include="filemgr\res\layui\images\face\29.gif" />
+    <Content Include="filemgr\res\layui\images\face\3.gif" />
+    <Content Include="filemgr\res\layui\images\face\30.gif" />
+    <Content Include="filemgr\res\layui\images\face\31.gif" />
+    <Content Include="filemgr\res\layui\images\face\32.gif" />
+    <Content Include="filemgr\res\layui\images\face\33.gif" />
+    <Content Include="filemgr\res\layui\images\face\34.gif" />
+    <Content Include="filemgr\res\layui\images\face\35.gif" />
+    <Content Include="filemgr\res\layui\images\face\36.gif" />
+    <Content Include="filemgr\res\layui\images\face\37.gif" />
+    <Content Include="filemgr\res\layui\images\face\38.gif" />
+    <Content Include="filemgr\res\layui\images\face\39.gif" />
+    <Content Include="filemgr\res\layui\images\face\4.gif" />
+    <Content Include="filemgr\res\layui\images\face\40.gif" />
+    <Content Include="filemgr\res\layui\images\face\41.gif" />
+    <Content Include="filemgr\res\layui\images\face\42.gif" />
+    <Content Include="filemgr\res\layui\images\face\43.gif" />
+    <Content Include="filemgr\res\layui\images\face\44.gif" />
+    <Content Include="filemgr\res\layui\images\face\45.gif" />
+    <Content Include="filemgr\res\layui\images\face\46.gif" />
+    <Content Include="filemgr\res\layui\images\face\47.gif" />
+    <Content Include="filemgr\res\layui\images\face\48.gif" />
+    <Content Include="filemgr\res\layui\images\face\49.gif" />
+    <Content Include="filemgr\res\layui\images\face\5.gif" />
+    <Content Include="filemgr\res\layui\images\face\50.gif" />
+    <Content Include="filemgr\res\layui\images\face\51.gif" />
+    <Content Include="filemgr\res\layui\images\face\52.gif" />
+    <Content Include="filemgr\res\layui\images\face\53.gif" />
+    <Content Include="filemgr\res\layui\images\face\54.gif" />
+    <Content Include="filemgr\res\layui\images\face\55.gif" />
+    <Content Include="filemgr\res\layui\images\face\56.gif" />
+    <Content Include="filemgr\res\layui\images\face\57.gif" />
+    <Content Include="filemgr\res\layui\images\face\58.gif" />
+    <Content Include="filemgr\res\layui\images\face\59.gif" />
+    <Content Include="filemgr\res\layui\images\face\6.gif" />
+    <Content Include="filemgr\res\layui\images\face\60.gif" />
+    <Content Include="filemgr\res\layui\images\face\61.gif" />
+    <Content Include="filemgr\res\layui\images\face\62.gif" />
+    <Content Include="filemgr\res\layui\images\face\63.gif" />
+    <Content Include="filemgr\res\layui\images\face\64.gif" />
+    <Content Include="filemgr\res\layui\images\face\65.gif" />
+    <Content Include="filemgr\res\layui\images\face\66.gif" />
+    <Content Include="filemgr\res\layui\images\face\67.gif" />
+    <Content Include="filemgr\res\layui\images\face\68.gif" />
+    <Content Include="filemgr\res\layui\images\face\69.gif" />
+    <Content Include="filemgr\res\layui\images\face\7.gif" />
+    <Content Include="filemgr\res\layui\images\face\70.gif" />
+    <Content Include="filemgr\res\layui\images\face\71.gif" />
+    <Content Include="filemgr\res\layui\images\face\8.gif" />
+    <Content Include="filemgr\res\layui\images\face\9.gif" />
+    <Content Include="filemgr\res\layui\layui.all.js" />
+    <Content Include="filemgr\res\layui\layui.js" />
+    <Content Include="filemgr\res\layui\lay\modules\carousel.js" />
+    <Content Include="filemgr\res\layui\lay\modules\code.js" />
+    <Content Include="filemgr\res\layui\lay\modules\colorpicker.js" />
+    <Content Include="filemgr\res\layui\lay\modules\element.js" />
+    <Content Include="filemgr\res\layui\lay\modules\flow.js" />
+    <Content Include="filemgr\res\layui\lay\modules\form.js" />
+    <Content Include="filemgr\res\layui\lay\modules\jquery.js" />
+    <Content Include="filemgr\res\layui\lay\modules\laydate.js" />
+    <Content Include="filemgr\res\layui\lay\modules\layedit.js" />
+    <Content Include="filemgr\res\layui\lay\modules\layer.js" />
+    <Content Include="filemgr\res\layui\lay\modules\laypage.js" />
+    <Content Include="filemgr\res\layui\lay\modules\laytpl.js" />
+    <Content Include="filemgr\res\layui\lay\modules\mobile.js" />
+    <Content Include="filemgr\res\layui\lay\modules\rate.js" />
+    <Content Include="filemgr\res\layui\lay\modules\slider.js" />
+    <Content Include="filemgr\res\layui\lay\modules\table.js" />
+    <Content Include="filemgr\res\layui\lay\modules\tree.js" />
+    <Content Include="filemgr\res\layui\lay\modules\upload.js" />
+    <Content Include="filemgr\res\layui\lay\modules\util.js" />
+    <Content Include="filemgr\res\moment\locales.min.js" />
+    <Content Include="filemgr\res\moment\moment-with-locales.min.js" />
+    <Content Include="filemgr\res\moment\moment.min.js" />
+    <Content Include="filemgr\up.aspx" />
     <Content Include="index-single.htm" />
     <Content Include="index.aspx" />
     <Content Include="js\del.png" />
@@ -266,7 +429,24 @@
     <Content Include="sql\fd_files_check.sql" />
     <Content Include="sql\up6_files.sql" />
     <Content Include="sql\up6_folders.sql" />
+    <Content Include="vue\index.aspx" />
     <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="filemgr\data\config.json" />
+    <None Include="filemgr\data\database.json" />
+    <None Include="filemgr\data\path.json" />
+    <None Include="filemgr\res\bootstrap\Font-Awesome-3.2.1\font\fontawesome-webfont.eot" />
+    <None Include="filemgr\res\bootstrap\Font-Awesome-3.2.1\font\fontawesome-webfont.ttf" />
+    <None Include="filemgr\res\bootstrap\Font-Awesome-3.2.1\font\fontawesome-webfont.woff" />
+    <None Include="filemgr\res\bootstrap\Font-Awesome-3.2.1\font\FontAwesome.otf" />
+    <None Include="filemgr\res\bootstrap\fonts\glyphicons-halflings-regular.eot" />
+    <None Include="filemgr\res\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
+    <None Include="filemgr\res\bootstrap\fonts\glyphicons-halflings-regular.woff" />
+    <None Include="filemgr\res\bootstrap\fonts\glyphicons-halflings-regular.woff2" />
+    <None Include="filemgr\res\layui\font\iconfont.eot" />
+    <None Include="filemgr\res\layui\font\iconfont.ttf" />
+    <None Include="filemgr\res\layui\font\iconfont.woff" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
