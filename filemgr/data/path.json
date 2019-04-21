@@ -1,24 +1,34 @@
 ﻿{
     "root": "http://localhost:8888/",
     "html": "/data/html/",
+    "up6": [
+        "http://localhost:8888/js/up6.config.js",
+        "http://localhost:8888/js/up6.app.js",
+        "http://localhost:8888/js/up6.edge.js",
+        "http://localhost:8888/js/up6.file.js",
+        "http://localhost:8888/js/up6.folder.js",
+        "http://localhost:8888/js/up6.css",
+        "http://localhost:8888/js/up6.js"
+    ],
     "jquery": [
-        "/filemgr/res/jquery/jquery-1.9.1.min.js",
-        "/filemgr/res/jquery/jquery.serializejson.min.js"
+        "http://localhost:8888/js/json2.min.js",
+        "http://localhost:8888/filemgr/res/jquery/jquery-1.9.1.min.js",
+        "http://localhost:8888/filemgr/res/jquery/jquery.serializejson.min.js"
     ],
     "bootstrap": [
-        "/filemgr/res/bootstrap/js/bootstrap.min.js",
-        "/filemgr/res/bootstrap/css/bootstrap.min.css"
+        "http://localhost:8888/filemgr/res/bootstrap/js/bootstrap.min.js",
+        "http://localhost:8888/filemgr/res/bootstrap/css/bootstrap.min.css"
     ],
     "jstree": [
         "https://cdn.bootcss.com/jstree/3.3.5/themes/default/style.min.css",
         "https://cdn.bootcss.com/jstree/3.3.5/jstree.min.js"
     ],
     "layerui": [
-        "/filemgr/res/layui/css/layui.css",
-        "/filemgr/res/layui/layui.js"
+        "http://localhost:8888/filemgr/res/layui/css/layui.css",
+        "http://localhost:8888/filemgr/res/layui/layui.js"
     ],
     "moment": [
-        "/filemgr/res/moment/moment-with-locales.min.js",
+        "http://localhost:8888/filemgr/res/moment/moment-with-locales.min.js"
     ],
-    "My97DatePicker": "/filemgr/res/My97DatePicker/WdatePicker.js"
+    "My97DatePicker": "http://localhost:8888/filemgr/res/My97DatePicker/WdatePicker.js"
 }

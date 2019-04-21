@@ -19,7 +19,9 @@ namespace up6.filemgr
 
         void load_data() {
             SqlExec se = new SqlExec();
-            var data = DbBase.page_to_layer_table("up6_files", "f_id","*"
+            var data = DbBase.page_to_layer_table("up6_files"
+                , "f_id"
+                ,"f_id,f_nameLoc,f_sizeLoc,f_time"
                 ,"f_fdChild=0 and f_complete=1"
                 ,"f_time desc");
 

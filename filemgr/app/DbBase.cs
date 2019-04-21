@@ -5,6 +5,7 @@ using System.Data.Common;
 using System.Linq;
 using System.Text;
 using System.Web;
+using up6.db.database;
 
 namespace up6.filemgr.app
 {
@@ -97,8 +98,6 @@ namespace up6.filemgr.app
             var table_structure = database.SelectToken(table);
             var table_fields = table_structure.SelectToken("fields");
             var fields_arr = fields.Split(',').ToList();
-
-
             var field_sels = (from f in fields_arr
                       join tf in table_fields
                       on f equals tf["name"].ToString()
@@ -108,6 +107,9 @@ namespace up6.filemgr.app
             if (fields.Trim() == "*")
             {
                 field_sels = table_fields.ToArray();
+                fields_arr = (from f in field_sels
+                          select f["name"].ToString()).ToList();
+                fields = string.Join(",", fields_arr.ToArray());
             }
 
             DbHelper db = new DbHelper();
