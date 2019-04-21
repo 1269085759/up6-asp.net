@@ -98,10 +98,17 @@ namespace up6.filemgr.app
             var table_fields = table_structure.SelectToken("fields");
             var fields_arr = fields.Split(',').ToList();
 
-            var fns = (from f in fields_arr
+
+            var field_sels = (from f in fields_arr
                       join tf in table_fields
                       on f equals tf["name"].ToString()
                       select tf).ToArray();
+
+            //选择所有字段
+            if (fields.Trim() == "*")
+            {
+                field_sels = table_fields.ToArray();
+            }
 
             DbHelper db = new DbHelper();
             var cmd = db.GetCommandStored("spPager");
@@ -122,7 +129,7 @@ namespace up6.filemgr.app
                 var o = new JObject();
                 foreach (var field in fields_arr)
                 {
-                    var fd = fns[index-1];
+                    var fd = field_sels[index-1];
                     var fd_type = fd["type"].ToString().ToLower();
 
                     o[field] = scr[fd_type](r, index++);

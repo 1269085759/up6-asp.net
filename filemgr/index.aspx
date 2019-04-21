@@ -8,11 +8,14 @@
               this.m_path["jquery"]
               , this.m_path["bootstrap"]
               , this.m_path["layerui"]
+              , this.m_path["moment"]
               , this.m_path["root"]+"/filemgr/data/index.js"
               ) %>
 </head>
 <body>
     <div class="container-fluid">
+        <a class="btn btn-default" href="#" role="button">上传文件</a>
+<button class="btn btn-default" type="submit">上传文件夹</button>
         <table class="layui-table" lay-size="sm" id="files" lay-filter="files'"></table>
             <script type="text/javascript">
         //JavaScript代码区域
@@ -31,12 +34,10 @@
                 , page: true //开启分页
                 , cols: [[ //表头
                     { width: 50, sort: false, fixed: 'left', type: 'numbers' }
-                    ,{ field: 'id', title: '', width: 50, sort: false, fixed: 'left' ,type:'checkbox'}
-                    , { field: 'title', title: '文件名称', width: 500, sort: false, templet: '#tpl-title' }
-                    , { title: '编辑', width: 80, sort: false, templet: function(d){
-return '<a>'+d.id+'</a>';
-}}
-                    , { field: 'time_create_fmt', title: '创建时间' }
+                    ,{ field: 'f_id', title: '', width: 50, sort: false, fixed: 'left' ,type:'checkbox'}
+                    , { field: 'f_nameLoc', title: '文件名称', width: 500, sort: false,  }
+                    , { field: 'f_sizeLoc', title: '大小', width: 500, sort: false,  }
+                    , { field: 'f_time', title: '上传时间', templet: function (d) {moment(d.f_time).format('YYYY-MM-DD HH:mm:ss') }}
                 ]],
   done: function(res, curr, count){
     //如果是异步请求数据方式，res即为你接口返回的信息。

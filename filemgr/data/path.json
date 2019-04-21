@@ -7,7 +7,7 @@
     ],
     "bootstrap": [
         "/filemgr/res/bootstrap/js/bootstrap.min.js",
-        "/filemgr/res/bootstrap/js/bootstrap.min.css"
+        "/filemgr/res/bootstrap/css/bootstrap.min.css"
     ],
     "jstree": [
         "https://cdn.bootcss.com/jstree/3.3.5/themes/default/style.min.css",
@@ -17,6 +17,8 @@
         "/filemgr/res/layui/css/layui.css",
         "/filemgr/res/layui/layui.js"
     ],
-    "moment": "https://cdn.bootcss.com/moment.js/2.22.1/",
+    "moment": [
+        "/filemgr/res/moment/moment-with-locales.min.js",
+    ],
     "My97DatePicker": "/filemgr/res/My97DatePicker/WdatePicker.js"
 }
