@@ -66,13 +66,13 @@ namespace up6.db.database
         /// <returns></returns>
         public static string GetConStr()
         {
-            var str = System.Configuration.ConfigurationManager.ConnectionStrings["sql2005"];
+            var str = System.Configuration.ConfigurationManager.ConnectionStrings["sql"];
             return str.ConnectionString;
         }
 
         public static string GetProvider()
         {
-            var str = System.Configuration.ConfigurationManager.ConnectionStrings["sql2005"];
+            var str = System.Configuration.ConfigurationManager.ConnectionStrings["sql"];
             return str.ProviderName;
         }
 
