@@ -4,7 +4,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
     <title>up6.2-SQL2005演示页面</title>
-    <link href="js/up6.css" type="text/css" rel="Stylesheet" charset="gb2312"/>
+    <link href="js/up6.css" type="text/css" rel="Stylesheet" charset="utf-8"/>
     <script type="text/javascript" src="js/jquery-1.4.min.js"></script>
     <script type="text/javascript" src="js/json2.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/up6.config.js" charset="utf-8"></script>
