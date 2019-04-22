@@ -94,15 +94,15 @@ namespace up6.db.biz.folder
 
             StringBuilder sb = new StringBuilder();
             sb.Append("insert into up6_folders(");
-            sb.Append(" fd_id");
-            sb.Append(",fd_pid");
-            sb.Append(",fd_pidRoot");
+            sb.Append(" f_id");
+            sb.Append(",f_pid");
+            sb.Append(",f_pidRoot");
             sb.Append(",fd_uid");
-            sb.Append(",fd_name");
+            sb.Append(",f_nameLoc");
             sb.Append(",fd_pathLoc");
             sb.Append(",fd_pathSvr");
             sb.Append(",fd_pathRel");
-            sb.Append(",fd_complete");
+            sb.Append(",f_complete");
 
             sb.Append(") values (");
 
