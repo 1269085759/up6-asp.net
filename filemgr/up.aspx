@@ -21,6 +21,7 @@
     var app = new HttpUploaderMgr();
     app.event.md5Complete = function (obj, md5) { /*alert(md5);*/ };
     app.event.fileComplete = function (obj) { ent_post_complete() };
+    app.event.fdComplete = function (obj) { ent_post_complete() };
     app.event.queueComplete = function () { }
     app.event.addFdError = function (jv) { alert("本地路径不存在：" + jv.path); };
     app.event.scanComplete = function (obj) { /*alert(obj.folderSvr.pathLoc);*/ };
