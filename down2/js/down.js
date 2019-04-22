@@ -77,7 +77,13 @@ function DownloaderMgr()
         , chrome45: { name: "com.xproer.down2", path: "http://www.ncmem.com/download/down2/2.4/down2.nat.crx" }
         , exe: { path: "http://www.ncmem.com/download/down2/2.4/down2.exe" }
         , edge: {protocol:"down2",port:9700,visible:false}
-        , "Fields": {"uname": "test","upass": "test","uid":"0"}
+        , "Fields": { "uname": "test", "upass": "test", "uid": "0" }
+        , ui: {
+            icon: {
+                file: "http://localhost:8888/down2/js/file.png"
+                , folder: "http://localhost:8888/down2/js/folder.png"
+            }
+        }
 	};
 
     this.event = {
@@ -133,7 +139,7 @@ function DownloaderMgr()
         if (this.edge) html = '';
 	    //上传列表项模板
 	    html += '<div class="file-item file-item-single" name="fileItem">\
-                    <div class="img-box"><img name="fileImg" src="js/file.png"/><img class="hide" name="fdImg" src="js/folder.png"/></div>\
+                    <div class="img-box"><img name="file" src="js/file.png"/><img class="hide" name="folder" src="js/folder.png"/></div>\
 					<div class="area-l">\
 						<div name="fileName" class="name">HttpUploader程序开发.pdf</div>\
 						<div name="percent" class="percent">(35%)</div>\
@@ -207,8 +213,8 @@ function DownloaderMgr()
 	    this.pnlFiles.append(ui);
 	    this.pnlFiles.append(sp);
 
-	    var uiIcoF    = ui.find("img[name='fileImg']")
-	    var uiIcoFD   = ui.find("img[name='fdImg']")
+	    var uiIcoF    = ui.find("img[name='file']")
+	    var uiIcoFD   = ui.find("img[name='folder']")
 	    var uiName    = ui.find("div[name='fileName']")
 	    var uiSize    = ui.find("div[name='fileSize']");
 	    var uiProcess = ui.find("div[name='process']");
@@ -507,7 +513,11 @@ function DownloaderMgr()
 	};
 	this.initUI = function (ui/*jquery obj*/)
 	{
-	    this.down_panel = ui.find('div[name="down_panel"]');
+        this.down_panel = ui.find('div[name="down_panel"]');
+        //更新图标
+        $.each(this.Config.ui.icon, function (i, n) {
+            ui.find("img[name=\"" + i + "\"]").attr("src", n);
+        });
 	    this.btnSetup = ui.find('span[name="btnSetup"]');
         this.tmpFile = ui.find('div[name="fileItem"]');
         this.parter = ui.find('embed[name="ffParter"]').get(0);
