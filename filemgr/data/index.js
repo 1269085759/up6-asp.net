@@ -9,7 +9,9 @@
                 id: "#btn-up", e: "click", n: function () {
                     _this.attr.event.btn_up_click();
                 }
-                ,id: "#btn-search", e: "click", n: function () {
+            },
+            {
+                id: "#btn-search", e: "click", n: function () {
                     _this.attr.event.btn_search_click();
                 }
             }
@@ -55,7 +57,7 @@
                         , page: { curr: 1 }//第一页
                     });
 
-                    _this.attr.event.path_changed(data);
+                    //_this.attr.event.path_changed(data);
                 });  
             }
             , table_tool_click: function (obj, table) {
