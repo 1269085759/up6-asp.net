@@ -108,6 +108,7 @@ namespace up6.filemgr
             SqlWhereMerge swm = new SqlWhereMerge();
             swm.req_equal("f_pid", "pid",false);
             swm.equal("f_complete", 1);
+            swm.req_like("f_nameLoc", "key");
             string where = swm.to_sql();
 
             //文件表

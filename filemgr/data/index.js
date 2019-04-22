@@ -2,12 +2,15 @@
     var _this = this;
 
     this.attr = {
-        ui: { btnUp: "#btn-up" }
+        ui: { btnUp: "#btn-up", key:"#search-key"}
         ,nav_path:null
         , ui_ents: [
             {
                 id: "#btn-up", e: "click", n: function () {
                     _this.attr.event.btn_up_click();
+                }
+                ,id: "#btn-search", e: "click", n: function () {
+                    _this.attr.event.btn_search_click();
                 }
             }
         ]
@@ -42,6 +45,18 @@
                     }
                     , btn2: function (index, layero) { }
                 });
+            }
+            , btn_search_click: function () {
+                layui.use(['table'], function () {
+                    var key = $(_this.attr.ui.key).val();
+                    var table = layui.table;
+                    table.reload('files', {
+                        url: 'index.aspx?op=data&key=' + key //
+                        , page: { curr: 1 }//第一页
+                    });
+
+                    _this.attr.event.path_changed(data);
+                });  
             }
             , table_tool_click: function (obj, table) {
                 _this.attr.table_events[obj.event](obj, table);
@@ -91,7 +106,7 @@
             layui.use(['table'], function () {
                 var table = layui.table;
                 table.reload('files', {
-                    url: 'index.aspx?op=data&pid=' + data.f_id //数据接口
+                    url: 'index.aspx?op=data&pid=' + data.f_id //
                     , page: { curr: 1 }//第一页
                 });
 

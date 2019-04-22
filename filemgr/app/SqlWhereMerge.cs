@@ -72,6 +72,17 @@ namespace up6.filemgr.app
             this.m_cds.Add(string.Format("{0} = '{1}'", n, v));
         }
 
+        public void req_like(string n, string requestName, bool ignore = true)
+        {
+            string v = HttpContext.Current.Request.QueryString[requestName];
+            if (string.IsNullOrEmpty(v))
+            {
+                if (ignore) return;
+                v = string.Empty;
+            }
+            this.m_cds.Add(string.Format("{0} like '%{1}%'", n, v));
+        }
+
         public void like(string n, string v)
         {
             this.m_cds.Add(string.Format("{0} like '%{1}%'", n, v));

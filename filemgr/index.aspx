@@ -17,14 +17,18 @@
 </head>
 <body>
     <div class="container-fluid">
-        <div class="m-t-md"></div>
-        <button class="btn btn-default btn-sm" role="button" id="btn-up"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 上传文件</button>
+        <div class="m-t-md clearfix">
+            <button class="btn btn-default btn-sm pull-left" role="button" id="btn-up"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 上传文件</button>
+            <span class="pull-right form-inline">
+                <input type="text" class="form-control input-sm pull-left m-r-xs" id="search-key" placeholder="" />
+                <button class="btn btn-default btn-sm pull-left" role="button" id="btn-search"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 搜索</button>
+            </span>
+        </div>
         <span id="up6-panel"></span>
         <!--路径导航-->
         <ol class="breadcrumb  m-t-xs" style="margin-bottom:-10px;" id="path">
             <li v-for="p in folders">
-                <a class="link" v-if="p.f_id != folderCur" v-on:click="open_folder(p.f_id)">{{p.f_nameLoc}}</a>
-                <span v-else class="active">{{p.f_nameLoc}}</span>
+                <a class="link" v-on:click="open_folder(p.f_id)">{{p.f_nameLoc}}</a>
             </li>
         </ol>
         <table class="layui-hide" lay-size="sm" id="files" lay-filter="files" lay-skin="nob"></table>
