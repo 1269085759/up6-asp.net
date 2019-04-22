@@ -89,6 +89,20 @@
                     , btn: ['确定', '取消']
                     , yes: function (index) {
                         layer.close(index);
+
+                        var param = { data: encodeURIComponent(JSON.stringify(obj.data) ) };
+                        $.ajax({
+                            type: "GET"
+                            , dataType: "json"
+                            , url: "index.aspx?op=del"
+                            , data: param
+                            , success: function (res) {
+                                obj.del();
+                            }
+                            , error: function (req, txt, err) { }
+                            , complete: function (req, sta) { req = null; }
+                        });
+
                     }
                 });
 
@@ -110,6 +124,7 @@
                     , complete: function (req, sta) { req = null; }
                 });
             }
+            , item_del_complete: function (obj) { }
         }
         , table_events: {
             "up": function (obj, table) {

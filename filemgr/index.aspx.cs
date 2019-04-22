@@ -16,7 +16,8 @@ namespace up6.filemgr
             string op = Request.QueryString["op"];
 
             if (op == "data") this.load_data();
-            if (op == "rename") this.f_rename();
+            if (op == "rename") this.file_rename();
+            if (op == "del") this._file_del();
             if (op == "path") this.build_path();
         }
 
@@ -92,7 +93,7 @@ namespace up6.filemgr
             return JToken.FromObject(psort);
         }
 
-        void f_rename() {
+        void file_rename() {
             var data = Request.QueryString["data"];
             var obj = JObject.Parse(data);
 
@@ -100,6 +101,32 @@ namespace up6.filemgr
             se.update("up6_files", "f_nameLoc", "f_id", obj);
 
             PageTool.to_content(obj);
+        }
+
+        void _file_del() {
+            var data = Request.QueryString["data"];
+            data = Server.UrlDecode(data);
+            var f = JObject.Parse(data);
+
+            SqlExec se = new SqlExec();
+            se.delete("up6_folders"
+                , new SqlParam[] {
+                    new SqlParam("f_id",f["f_id"].ToString())
+                    ,new SqlParam("f_pid",f["f_id"].ToString())
+                    ,new SqlParam("f_pidRoot",f["f_id"].ToString())
+                }
+                ,"or"
+                );
+            se.delete("up6_files"
+                , new SqlParam[] {
+                    new SqlParam("f_id",f["f_id"].ToString())
+                    ,new SqlParam("f_pid",f["f_id"].ToString())
+                    ,new SqlParam("f_pidRoot",f["f_id"].ToString())
+                }
+                ,"or"
+                );
+
+            PageTool.to_content(f);
         }
 
         void load_data() {

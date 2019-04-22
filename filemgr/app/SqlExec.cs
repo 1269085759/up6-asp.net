@@ -210,7 +210,7 @@ namespace up6.filemgr.app
             string sql = string.Format("update [{0}] set {1} where {2}"
                 ,table
                 ,this.to_condition(fields)
-                ,this.to_condition(where));
+                ,this.to_condition(where,"and"));
 
             DbHelper db = new DbHelper();
             var cmd = db.GetCommand(sql);
@@ -249,7 +249,13 @@ namespace up6.filemgr.app
             return string.Join(",", arr.ToArray());
         }
 
-        public void delete(string table,SqlParam[] where)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="table"></param>
+        /// <param name="where"></param>
+        /// <param name="predicate">连接词：and,or</param>
+        public void delete(string table,SqlParam[] where,string predicate="and")
         {
             //加载结构
             this.m_table = this.m_database.SelectToken(table);
@@ -257,7 +263,7 @@ namespace up6.filemgr.app
             JObject o = new JObject();
             string sql = string.Format("delete from [{0}] where {1}"
                 , table
-                , this.to_condition(where));
+                , this.to_condition(where,predicate));
 
             DbHelper db = new DbHelper();
             var cmd = db.GetCommand(sql);
@@ -273,7 +279,7 @@ namespace up6.filemgr.app
             JObject o = new JObject();
             string sql = string.Format("select count(*) from [{0}] where {1}"
                 , table
-                , this.to_condition(where));
+                , this.to_condition(where,"and"));
 
             DbHelper db = new DbHelper();
             var cmd = db.GetCommand(sql);
@@ -465,13 +471,13 @@ namespace up6.filemgr.app
             string sql = string.Format("select {0} from {1} where {2}"
                 , fields
                 , table
-                , this.to_condition(where));
+                , this.to_condition(where,"and"));
             //有排序
             if (!string.IsNullOrEmpty(sort)) {
                 sql = string.Format("select {0} from {1} where {2} order by {3}"
                 , fields
                 , table
-                , this.to_condition(where)
+                , this.to_condition(where,"and")
                 ,sort);
             }
 
