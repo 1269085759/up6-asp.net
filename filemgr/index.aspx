@@ -12,6 +12,7 @@
               , this.m_path["layerui"]
               , this.m_path["moment"]
               , this.m_path["vue"]
+              , this.m_path["res"]+"/sql.search.js"
               , this.m_path["root"]+"/filemgr/data/index.js"
               ) %>
 </head>

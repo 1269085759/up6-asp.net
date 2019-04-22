@@ -208,6 +208,7 @@
     <Content Include="filemgr\res\moment\locales.min.js" />
     <Content Include="filemgr\res\moment\moment-with-locales.min.js" />
     <Content Include="filemgr\res\moment\moment.min.js" />
+    <Content Include="filemgr\res\sql.search.js" />
     <Content Include="filemgr\res\vue.min.js" />
     <Content Include="filemgr\up.aspx" />
     <Content Include="index-single.htm" />

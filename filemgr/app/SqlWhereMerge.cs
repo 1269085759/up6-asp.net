@@ -23,26 +23,20 @@ namespace up6.filemgr.app
     /// </summary>
     public class SqlWhereMerge
     {
-        List<string> m_cds;
+        /// <summary>
+        /// 字段名称，表达式
+        /// </summary>
+        Dictionary<string,string> m_cds;
 
         public SqlWhereMerge() {
-            this.m_cds = new List<string>();
-        }
-
-        /// <summary>
-        /// 添加条件语句
-        /// </summary>
-        /// <param name="c">a=b</param>
-        public void add(string c) { this.m_cds.Add(c); }
-        public void add(string n, int v) {
-            this.m_cds.Add(string.Format("{0}={1}", n, v));
+            this.m_cds = new Dictionary<string, string>();
         }
 
         /// <summary>
         /// 相等条件，a=b
         /// </summary>
         public void equal(string n,string v) {
-            this.m_cds.Add(string.Format("{0}='{1}'", n, v));
+            this.m_cds.Add(n,string.Format("{0}='{1}'", n, v));
         }
 
         /// <summary>
@@ -52,7 +46,7 @@ namespace up6.filemgr.app
         /// <param name="v"></param>
         public void equal(string n, int v)
         {
-            this.m_cds.Add(string.Format("{0}='{1}'", n, v));
+            this.m_cds.Add(n,string.Format("{0}='{1}'", n, v));
         }
 
         /// <summary>
@@ -69,7 +63,7 @@ namespace up6.filemgr.app
                 if (ignore) return;
                 v = string.Empty;
             }
-            this.m_cds.Add(string.Format("{0} = '{1}'", n, v));
+            this.m_cds.Add(n,string.Format("{0} = '{1}'", n, v));
         }
 
         public void req_like(string n, string requestName, bool ignore = true)
@@ -80,27 +74,27 @@ namespace up6.filemgr.app
                 if (ignore) return;
                 v = string.Empty;
             }
-            this.m_cds.Add(string.Format("{0} like '%{1}%'", n, v));
+            this.m_cds.Add(n,string.Format("{0} like '%{1}%'", n, v));
         }
 
         public void like(string n, string v)
         {
-            this.m_cds.Add(string.Format("{0} like '%{1}%'", n, v));
+            this.m_cds.Add(n,string.Format("{0} like '%{1}%'", n, v));
         }
 
         public void add(SqlWhereCondition c)
         {
-            this.add(c.toSql());
+            this.m_cds.Add(c.name, c.toSql());
         }
         public void add(string[] c)
         {
             if (c[1].Equals("like"))
             {
-                this.add(string.Format("{0} like '%{1}%'", c[0], c[2].Trim()));
+                this.m_cds.Add(c[0],string.Format("{0} like '%{1}%'", c[0], c[2].Trim()));
             }
             else if (c[1].Equals("="))
             {
-                this.add(string.Format("{0} = '{1}'", c[0], c[2].Trim()));
+                this.m_cds.Add(c[0],string.Format("{0} = '{1}'", c[0], c[2].Trim()));
             }
         }
 
@@ -135,7 +129,11 @@ namespace up6.filemgr.app
         }
 
         public void clear() { this.m_cds.Clear(); }
-        public string to_sql() { return string.Join(" and ", this.m_cds.ToArray()); }
+        public void del(string n) { this.m_cds.Remove(n); }
+        public string to_sql() {
+            //return string.Join(" and ", this.m_cds.ToArray());
+            return string.Join(" and  ", this.m_cds.Select((n) => n.Value).ToArray());
+        }
 
         /// <summary>
         /// 拼接搜索条件，自动删除空白
@@ -169,10 +167,6 @@ namespace up6.filemgr.app
             }
             if (arr.Count > 0) return string.Join(",", arr.ToArray());
             return string.Empty;
-        }
-
-        public static string merge(string[] cds) {
-            return string.Join(",", cds);
         }
     }
 }
