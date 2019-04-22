@@ -148,9 +148,12 @@ namespace up6.filemgr
                 , where
                 ,"f_fdTask desc,f_time desc");
 
-            //目录表
-            swm.del("f_pid");
-            where = swm.to_sql();
+            //搜索时过滤f_pid
+            if (!string.IsNullOrEmpty(Request.QueryString["key"]))
+            {
+                swm.del("f_pid");
+                where = swm.to_sql();
+            }
             var folders = (JArray)DbBase.page2("up6_folders"
                 , "f_id"
                 , "f_id,f_nameLoc,f_pid,f_pidRoot,f_time"
