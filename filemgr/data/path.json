@@ -11,6 +11,14 @@
         "http://localhost:8888/js/up6.css",
         "http://localhost:8888/js/up6.js"
     ],
+    "down2": [
+        "http://localhost:8888/down2/js/down.app.js",
+        "http://localhost:8888/down2/js/down.edge.js",
+        "http://localhost:8888/down2/js/down.file.js",
+        "http://localhost:8888/down2/js/down.folder.js",
+        "http://localhost:8888/down2/js/down.js",
+        "http://localhost:8888/down2/js/down.css"
+    ],
     "jquery": [
         "http://localhost:8888/js/json2.min.js",
         "http://localhost:8888/filemgr/res/jquery/jquery-1.9.1.min.js",

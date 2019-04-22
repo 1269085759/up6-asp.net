@@ -1,13 +1,20 @@
 ﻿function PageLogic() {
     var _this = this;
+    this.downer = null;
+    this.down_files = [];
 
     this.attr = {
-        ui: { btnUp: "#btn-up", key:"#search-key"}
-        ,nav_path:null
+        ui: { btnUp: "#btn-up",btnDown:"#btn-down", key:"#search-key"}
+        , nav_path: null
         , ui_ents: [
             {
                 id: "#btn-up", e: "click", n: function () {
                     _this.attr.event.btn_up_click();
+                }
+            },
+            {
+                id: "#btn-down", e: "click", n: function () {
+                    _this.attr.event.btn_down_click();
                 }
             },
             {
@@ -48,6 +55,41 @@
                     , btn2: function (index, layero) { }
                 });
             }
+            , btn_down_click: function () {
+                var pnl = $("#down2-panel");
+                pnl.removeClass("hide");
+                layer.open({
+                    type: 1
+                    , title: "下载"
+                    , btn: ['确定', '取消']
+                    , content: $("#down2-panel")
+                    , closeBtn: 0
+                    , area: ['439px', '528px']
+                    , success: function (layero, index) {
+
+                        if (_this.downer.Config["Folder"] == "") { _this.downer.app.openFolder(); return; }
+                        $.each(_this.down_files, function (i, f) {
+                            //文件夹
+                            if (f.f_fdTask) {
+                                _this.downer.app.addFolder(f);
+                            }
+                            else {
+                                //下载数据转换：lenSvr,pathSvr,nameLoc,fileUrl
+                                var dt = { f_id:f.f_id,lenSvr: f.f_lenLoc, pathSvr: f.f_pathSvr, nameLoc: f.f_nameLoc, fileUrl: _this.downer.Config["UrlDown"] };
+                                _this.downer.app.addFile(dt);
+                            }
+                        });
+                    }
+                    , btn1: function (index, layero) {
+                        layer.close(index);//
+                        pnl.addClass("hide");
+                    }
+                    , btn2: function (index, layero) {
+                        pnl.addClass("hide");
+                    }
+                });
+
+            }
             , btn_search_click: function () {
                 layui.use(['table'], function () {
                     var key = $(_this.attr.ui.key).val();
@@ -62,6 +104,17 @@
             }
             , table_tool_click: function (obj, table) {
                 _this.attr.table_events[obj.event](obj, table);
+            }
+            , table_check_change: function (obj, table) {
+                var cs = table.checkStatus('files');
+                //未选中
+                if (cs.data.length < 1) {
+                    $(_this.attr.ui.btnDown).addClass("hide");
+                }
+                else {
+                    $(_this.attr.ui.btnDown).removeClass("hide");
+                    _this.down_files = cs.data;
+                }
             }
             , table_edit: function (obj,table) {
 
@@ -152,7 +205,6 @@
                     url: 'index.aspx?op=search&where=' + encodeURIComponent(sql)
                     , page: { curr: 1 }//
                 });
-
             });
         }
     };
@@ -183,4 +235,7 @@
 var pl = new PageLogic();
 $(function () {
     pl.init();
+    pl.downer = new DownloaderMgr();
+    pl.downer.Config["Folder"] = "";
+    pl.downer.loadTo("down2-panel");
 });

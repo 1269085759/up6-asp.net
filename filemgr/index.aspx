@@ -12,19 +12,22 @@
               , this.m_path["layerui"]
               , this.m_path["moment"]
               , this.m_path["vue"]
+              , this.m_path["down2"]
               , this.m_path["root"]+"/filemgr/data/index.js"
               ) %>
 </head>
 <body>
     <div class="container-fluid">
         <div class="m-t-md clearfix">
-            <button class="btn btn-default btn-sm pull-left" role="button" id="btn-up"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 上传文件</button>
+            <button class="btn btn-default btn-sm pull-left m-r-xs" role="button" id="btn-up"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 上传文件</button>
+            <button class="btn btn-default btn-sm pull-left hide" role="button" id="btn-down"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 下载</button>
             <span class="pull-right form-inline">
                 <input type="text" class="form-control input-sm pull-left m-r-xs" id="search-key" placeholder="" />
                 <button class="btn btn-default btn-sm pull-left" role="button" id="btn-search"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 搜索</button>
             </span>
         </div>
         <span id="up6-panel"></span>
+        <span id="down2-panel" class="hide"></span>
 
         <!--路径导航-->
         <ol class="breadcrumb  m-t-xs" style="margin-bottom:-10px;" id="path">
@@ -73,7 +76,7 @@
                 table.on('toolbar(files)', function (obj) { pl.attr.event.table_tool_click(obj, table); });
 
                 //复选框
-                table.on('checkbox(files)', function (obj) { alert("test"); });
+                table.on('checkbox(files)', function (obj) { pl.attr.event.table_check_change(obj, table); });
                 table.on('edit(files)', function (obj) { pl.attr.event.table_edit(obj); });
 
             });
