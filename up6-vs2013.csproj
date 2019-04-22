@@ -205,6 +205,10 @@
     <Content Include="filemgr\res\layui\lay\modules\tree.js" />
     <Content Include="filemgr\res\layui\lay\modules\upload.js" />
     <Content Include="filemgr\res\layui\lay\modules\util.js" />
+    <Content Include="filemgr\res\moment\locales.min.js" />
+    <Content Include="filemgr\res\moment\moment-with-locales.min.js" />
+    <Content Include="filemgr\res\moment\moment.min.js" />
+    <Content Include="filemgr\res\vue.min.js" />
     <Content Include="filemgr\up.aspx" />
     <Content Include="index-single.htm" />
     <Content Include="index.aspx" />
@@ -458,6 +462,7 @@
     <Folder Include="filemgr\res\bootstrap\css\_notes\" />
     <Folder Include="filemgr\res\bootstrap\fonts\_notes\" />
     <Folder Include="filemgr\res\bootstrap\js\_notes\" />
+    <Folder Include="filemgr\res\imgs\16\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
