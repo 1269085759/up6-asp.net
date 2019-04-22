@@ -10,7 +10,7 @@ namespace up6.db.database
             StringBuilder sb = new StringBuilder();
             sb.Append("update up6_files set f_deleted=1 where f_id=@id and f_uid=@uid;");
             sb.Append("update up6_files set f_deleted=1 where f_pidRoot=@id and f_uid=@uid;");
-            sb.Append("update up6_folders set fd_delete=1 where f_id=@id and fd_uid=@uid;");
+            sb.Append("update up6_folders set f_deleted=1 where f_id=@id and fd_uid=@uid;");
 
             DbHelper db = new DbHelper();
             DbCommand cmd = db.GetCommand(sb.ToString());
