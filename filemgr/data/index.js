@@ -63,7 +63,7 @@
             , table_tool_click: function (obj, table) {
                 _this.attr.table_events[obj.event](obj, table);
             }
-            , table_edit: function (obj) {
+            , table_edit: function (obj,table) {
 
                 var param = jQuery.extend({}, obj.data,{ f_nameLoc: obj.value });
                 $.ajax({
@@ -77,6 +77,21 @@
                     , error: function (req, txt, err) { }
                     , complete: function (req, sta) { req = null; }
                 });
+            }
+            , table_rename: function (obj, table) { }
+            , table_del: function (obj, table) {
+                var msg = "确定要删除文件：" + obj.data.f_nameLoc + " ？";
+                if (obj.data.f_fdTask) msg = "确定要删除文件夹：" + obj.data.f_nameLoc + " ？";
+
+                layer.msg(msg, {
+                    time: 0 //不自动关闭
+                    ,icon:3
+                    , btn: ['确定', '取消']
+                    , yes: function (index) {
+                        layer.close(index);
+                    }
+                });
+
             }
             , table_file_click: function (obj, table) {
                 if (obj.data.f_fdTask) _this.attr.open_folder(obj.data, table);
@@ -99,8 +114,9 @@
         , table_events: {
             "up": function (obj, table) {
             }
-            , "mkFolder": function (obj, table) { }
-            , "delete": function (obj, table) { }
+            , "mkFolder": function (obj, table) { _this.attr.event.table_file_click(obj, table);}
+            , "delete": function (obj, table) { _this.attr.event.table_del(obj, table);}
+            , "rename": function (obj, table) { _this.attr.event.table_rename(obj, table);}
             , "file": function (obj, table) { _this.attr.event.table_file_click(obj, table); }
         }
         , data: {}
