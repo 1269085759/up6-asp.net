@@ -124,7 +124,6 @@
                     , complete: function (req, sta) { req = null; }
                 });
             }
-            , item_del_complete: function (obj) { }
         }
         , table_events: {
             "up": function (obj, table) {
@@ -145,6 +144,16 @@
 
                 _this.attr.event.path_changed(data);
             });            
+        }
+        , search: function (sql) {
+            layui.use(['table'], function () {
+                var table = layui.table;
+                table.reload('files', {
+                    url: 'index.aspx?op=search&where=' + encodeURIComponent(sql)
+                    , page: { curr: 1 }//
+                });
+
+            });
         }
     };
 
@@ -174,4 +183,10 @@
 var pl = new PageLogic();
 $(function () {
     pl.init();
+    var ss = new SqlSearch({
+        ui: { panel: "#sql-panel", record: "#sql-record" }
+        , event: {
+            change: function (sql) { pl.attr.search(sql); }
+        }
+    });
 });

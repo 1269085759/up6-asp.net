@@ -16,8 +16,9 @@ namespace up6.filemgr
             string op = Request.QueryString["op"];
 
             if (op == "data") this.load_data();
+            if (op == "search") this.search();
             if (op == "rename") this.file_rename();
-            if (op == "del") this._file_del();
+            if (op == "del") this.file_del();
             if (op == "path") this.build_path();
         }
 
@@ -103,7 +104,7 @@ namespace up6.filemgr
             PageTool.to_content(obj);
         }
 
-        void _file_del() {
+        void file_del() {
             var data = Request.QueryString["data"];
             data = Server.UrlDecode(data);
             var f = JObject.Parse(data);
@@ -164,6 +165,63 @@ namespace up6.filemgr
             foreach (var fd in folders)
             {
                 files.Insert(0,new JObject {
+                    { "f_id",fd["f_id"]}
+                    ,{ "f_pid",fd["f_pid"]}
+                    ,{ "f_nameLoc",fd["f_nameLoc"]}
+                    ,{ "f_sizeLoc",""}
+                    ,{ "f_time",fd["f_time"]}
+                    ,{ "f_pidRoot",fd["f_pidRoot"]}
+                    ,{ "f_fdTask",true}
+                });
+            }
+
+            int count = DbBase.count("up6_files", "f_id", where);
+
+            JObject o = new JObject();
+            o["count"] = count;
+            o["code"] = 0;
+            o["msg"] = string.Empty;
+            o["data"] = files;
+
+            PageTool.to_content(o);
+        }
+
+        void search()
+        {
+            SqlSearchComb ssc = new SqlSearchComb();
+            ssc.parse();
+
+            SqlWhereMerge swm = new SqlWhereMerge();
+            swm.req_equal("f_pid", "pid", false);
+            swm.equal("f_complete", 1);
+            //swm.equal("f_deleted", 0);
+            //swm.req_like("f_nameLoc", "key");
+
+            string where = ssc.union(swm);
+
+            //文件表
+            var files = (JArray)DbBase.page2("up6_files"
+                , "f_id"
+                , "f_id,f_pid,f_nameLoc,f_sizeLoc,f_time,f_pidRoot,f_fdTask"
+                , where
+                , "f_fdTask desc,f_time desc");
+
+            //搜索时过滤f_pid
+            if (!string.IsNullOrEmpty(Request.QueryString["key"]))
+            {
+                swm.del("f_pid");
+                where = swm.to_sql();
+            }
+            var folders = (JArray)DbBase.page2("up6_folders"
+                , "f_id"
+                , "f_id,f_nameLoc,f_pid,f_pidRoot,f_time"
+                , where
+                , "f_time desc");
+
+            //合并表
+            foreach (var fd in folders)
+            {
+                files.Insert(0, new JObject {
                     { "f_id",fd["f_id"]}
                     ,{ "f_pid",fd["f_pid"]}
                     ,{ "f_nameLoc",fd["f_nameLoc"]}

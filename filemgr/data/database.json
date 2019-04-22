@@ -223,10 +223,10 @@
                 "identity": false
             },
             {
-                "name": "fd_filesComplete",
-                "type": "int",
+                "name": "f_fdTask",
+                "type": "bool",
                 "primary": false,
-                "length": 4,
+                "length": 1,
                 "identity": false
             },
             {

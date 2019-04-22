@@ -20,7 +20,7 @@ function SqlSearch(obj)
             panel: ""//搜索操作面板
             , record: ""//搜索记录
         }
-        , link_css: "btn btn-link p-0 m-r-md border-0 text-size-xs"
+        , link_css: "layui-table-link link m-r-sm"
         , record: []//搜索记录(数组)
         , event: {
             change: function (sql) { }

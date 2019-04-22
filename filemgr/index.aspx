@@ -26,6 +26,28 @@
             </span>
         </div>
         <span id="up6-panel"></span>
+        <!--条件搜索-->
+        <div class="panel-metro text-size-sm" id="sql-panel">
+            <div class="panel-metro-head" style="">
+                <a class="" data-toggle="collapse" href="" aria-expanded="false" aria-controls="pnl-seach">高级搜索</a>
+            </div>
+            <div class="panel-metro-body">
+                <div>
+                    分类：
+                    <a sql-field="f_fdTask" sql-expression="" >全部</a>
+                    <a sql-field="f_fdTask" sql-expression="f_fdTask=0" >文件</a>
+                    <a sql-field="f_fdTask" sql-expression="f_fdTask=1">文件夹</a>
+                </div>
+                <div class="m-t-sm">
+                    状态：
+                    <a sql-field="f_deleted" sql-expression="f_deleted=0" >全部</a>
+                    <a sql-field="f_deleted" sql-expression="f_deleted=1">回收站</a>
+                </div>
+                <div class="m-t-sm">
+                    搜索记录：<span id="sql-record"></span>
+                </div>
+            </div>
+        </div>
         <!--路径导航-->
         <ol class="breadcrumb  m-t-xs" style="margin-bottom:-10px;" id="path">
             <li v-for="p in folders">

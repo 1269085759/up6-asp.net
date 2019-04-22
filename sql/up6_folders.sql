@@ -9,7 +9,7 @@
 	[fd_pathSvr] [varchar](255) COLLATE Chinese_PRC_CI_AS NULL CONSTRAINT [DF_up6_folders_fd_pathSvr]  DEFAULT (''),
 	[fd_folders] [int] NULL CONSTRAINT [DF_up6_folders_fd_folders]  DEFAULT ((0)),
 	[fd_files] [int] NULL CONSTRAINT [DF_up6_folders_fd_files]  DEFAULT ((0)),
-	[fd_filesComplete] [int] NULL CONSTRAINT [DF_up6_folders_fd_filesComplete]  DEFAULT ((0)),
+	[f_fdTask] [int] NULL CONSTRAINT [DF_up6_folders_f_fdTask]  DEFAULT ((0)),
 	[f_complete] [bit] NULL CONSTRAINT [DF_up6_folders_f_complete]  DEFAULT ((0)),
 	[f_deleted] [bit] NULL CONSTRAINT [DF_up6_folders_f_deleted]  DEFAULT ((0)),
 	[f_time] [datetime] NULL CONSTRAINT [DF_up6_folders_f_time]  DEFAULT (getdate()),
@@ -37,7 +37,7 @@ EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'文件夹数' 
 
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'文件数' ,@level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'up6_folders', @level2type=N'COLUMN', @level2name=N'fd_files'
 
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'已上传完的文件数' ,@level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'up6_folders', @level2type=N'COLUMN', @level2name=N'fd_filesComplete'
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'已上传完的文件数' ,@level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'up6_folders', @level2type=N'COLUMN', @level2name=N'f_fdTask'
 
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'是否已上传完毕' ,@level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'up6_folders', @level2type=N'COLUMN', @level2name=N'f_complete'
 

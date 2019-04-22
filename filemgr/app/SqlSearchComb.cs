@@ -53,6 +53,19 @@ namespace up6.filemgr.app
         }
 
         /// <summary>
+        /// 与查询条件合并成一个where
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        public string union(SqlWhereMerge s)
+        {
+            var sql = this.to_sql();
+            if (string.IsNullOrEmpty(sql)) return s.to_sql();
+
+            return sql + " and " + s.to_sql();
+        }
+
+        /// <summary>
         /// 获取JSON值，提供给sql.search.js使用。注册成变量(page.where)
         /// </summary>
         public JToken Value { get {
