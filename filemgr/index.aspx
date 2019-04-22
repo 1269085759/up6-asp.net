@@ -16,7 +16,7 @@
 <body>
     <div class="container-fluid">
         <div class="m-t-md"></div>
-        <a class="btn btn-default btn-sm" href="#" role="button" id="btn-up">上传文件</a>
+        <a class="btn btn-default btn-sm" href="#" role="button" id="btn-up"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 上传文件</a>
         <span id="up6-panel"></span>
         <table class="layui-hide" lay-size="sm" id="files" lay-filter="files" lay-skin="nob"></table>
         <script type="text/javascript">

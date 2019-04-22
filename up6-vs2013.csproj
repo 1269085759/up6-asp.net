@@ -98,6 +98,7 @@
     <Content Include="filemgr\res\bootstrap\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="filemgr\res\bootstrap\js\bootstrap.min.js" />
     <Content Include="filemgr\index.aspx" />
+    <Content Include="filemgr\res\filemgr.css" />
     <Content Include="filemgr\res\jquery\jquery-1.9.1.min.js" />
     <Content Include="filemgr\res\jquery\jquery.serializejson.min.js" />
     <Content Include="filemgr\res\layui\css\layui.css" />
