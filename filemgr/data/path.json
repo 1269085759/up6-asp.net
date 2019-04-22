@@ -1,5 +1,6 @@
 ﻿{
     "root": "http://localhost:8888/",
+    "res": "http://localhost:8888/filemgr/res/",
     "html": "/data/html/",
     "up6": [
         "http://localhost:8888/js/up6.config.js",

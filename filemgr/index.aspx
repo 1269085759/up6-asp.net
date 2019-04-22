@@ -6,6 +6,7 @@
     <title>文件管理器</title>
     <%= this.require(
               this.m_path["jquery"]
+              , this.m_path["res"]+"filemgr.css"
               , this.m_path["bootstrap"]
               , this.m_path["layerui"]
               , this.m_path["moment"]
@@ -14,10 +15,10 @@
 </head>
 <body>
     <div class="container-fluid">
-        <a class="btn btn-default" href="#" role="button" id="btn-up">上传文件</a>
-        <button class="btn btn-default" type="submit">上传文件夹</button>
+        <div class="m-t-md"></div>
+        <a class="btn btn-default btn-sm" href="#" role="button" id="btn-up">上传文件</a>
         <span id="up6-panel"></span>
-        <table class="layui-table" lay-size="sm" id="files" lay-filter="files'" lay-skin="nob"></table>
+        <table class="layui-hide" lay-size="sm" id="files" lay-filter="files" lay-skin="nob"></table>
         <script type="text/javascript">
             //JavaScript代码区域
             layui.use(['element', 'table'], function () {
@@ -36,7 +37,7 @@
                     , cols: [[ //表头
                         { width: 50, sort: false, type: 'numbers' }
                         , { field: 'f_id', title: '', width: 50, sort: false, type: 'checkbox' }
-                        , { field: 'f_nameLoc', title: '文件名称', width: 500, sort: false, }
+                        , { field: 'f_nameLoc', title: '名称', width: 500, sort: false, edit:"text"}
                         , { field: 'f_sizeLoc', title: '大小', width: 80, sort: false, }
                         , { field: 'f_time', title: '上传时间', templet: function (d) { return moment(d.f_time).format('YYYY-MM-DD HH:mm:ss') } }
                     ]],
@@ -73,10 +74,12 @@
                 });
 
                 //工具栏
-                table.on('toolbar(docs)', function (obj) { docs_toolbar(obj, table); });
+                table.on('toolbar(files)', function (obj) { pl.attr.event.table_tool_click(obj, table); });
 
                 //复选框
-                table.on('checkbox(docs)', function (obj) { docs_toolbar_check(obj); });
+                table.on('checkbox(files)', function (obj) { alert("test"); });
+                table.on('edit(files)', function (obj) { pl.attr.event.table_edit(obj); });
+
             });
         </script>
     </div>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 
 using System.Web;
@@ -15,6 +16,17 @@ namespace up6.filemgr
             string op = Request.QueryString["op"];
 
             if (op == "data") this.load_data();
+            if (op == "rename") this.f_rename();
+        }
+
+        void f_rename() {
+            var data = Request.QueryString["data"];
+            var obj = JObject.Parse(data);
+
+            SqlExec se = new SqlExec();
+            se.update("up6_files", "f_nameLoc", "f_id", obj);
+
+            PageTool.to_content(obj);
         }
 
         void load_data() {
