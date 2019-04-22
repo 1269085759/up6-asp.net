@@ -183,10 +183,4 @@
 var pl = new PageLogic();
 $(function () {
     pl.init();
-    var ss = new SqlSearch({
-        ui: { panel: "#sql-panel", record: "#sql-record" }
-        , event: {
-            change: function (sql) { pl.attr.search(sql); }
-        }
-    });
 });
