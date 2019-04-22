@@ -17,6 +17,72 @@ namespace up6.filemgr
 
             if (op == "data") this.load_data();
             if (op == "rename") this.f_rename();
+            if (op == "path") this.build_path();
+        }
+
+        /// <summary>
+        /// 生成导航路径
+        /// </summary>
+        void build_path() {
+
+            var data = Request.QueryString["data"];
+            data = Server.UrlDecode(data);
+            var fd = JObject.Parse(data);
+
+            if (string.IsNullOrEmpty(fd["f_pid"].ToString().Trim()))
+            {
+                List<JToken> arr = new List<JToken>();
+                arr.Add(new JObject { { "f_id", "" }, { "f_nameLoc", "根目录" } });
+                arr.Add(fd);
+                PageTool.to_content(JToken.FromObject(arr));
+                return;
+            }
+
+            SqlExec se = new SqlExec();
+
+            var folders = (JArray)se.select("up6_folders"
+                , "f_id,f_nameLoc,f_pid,f_pidRoot"
+                , new SqlParam[] {
+                    new SqlParam("f_pidRoot",fd["f_pidRoot"].ToString())
+                });
+            //根目录
+            var folderRoot = se.read("up6_files", "f_id,f_nameLoc,f_pid,f_pidRoot"
+                , new SqlParam[] {
+                    new SqlParam("f_id",fd["f_pidRoot"].ToString())
+            });
+            folders.Add(folderRoot);            
+
+            //key表
+            PageTool.to_content(this.build_path2(folders, fd));
+        }
+
+        JToken build_path2(JToken data,JToken fodCur)
+        {
+            List<JToken> psort = new List<JToken>();
+            //id,folder
+            Dictionary<string, JToken> dt = new Dictionary<string, JToken>();
+            foreach (var fd in data)
+            {
+                dt[fd["f_id"].ToString()] = fd;
+            }
+
+            string cur = fodCur["f_id"].ToString();
+            while(true)
+            {
+                //key不存在
+                if (!dt.ContainsKey(cur)) break;
+
+                var d = dt[cur];//查父ID
+                psort.Insert(0, d);
+                cur = d["f_pid"].ToString();//取父级ID
+
+                if (cur.Trim() == "0") break;
+                if (string.IsNullOrEmpty(cur.Trim())) break;
+            }
+
+            psort.Insert(0,(new JObject { { "f_id", "" }, { "f_nameLoc", "根目录" } }) );
+
+            return JToken.FromObject(psort);
         }
 
         void f_rename() {
@@ -40,25 +106,27 @@ namespace up6.filemgr
             //文件表
             var files = (JArray)DbBase.page2("up6_files"
                 , "f_id"
-                , "f_id,f_nameLoc,f_sizeLoc,f_time,f_fdTask"
-                ,where
+                , "f_id,f_pid,f_nameLoc,f_sizeLoc,f_time,f_pidRoot,f_fdTask"
+                , where
                 ,"f_fdTask desc,f_time desc");
 
             //目录表
             var folders = (JArray)DbBase.page2("up6_folders"
-                , "fd_id"
-                , "fd_id,fd_name,timeUpload"
+                , "f_id"
+                , "f_id,f_nameLoc,f_pid,f_pidRoot,f_time"
                 , where
-                , "timeUpload desc");
+                , "f_time desc");
 
             //合并表
             foreach (var fd in folders)
             {
                 files.Add(new JObject {
-                    { "f_id",fd["fd_id"]}
-                    ,{ "f_nameLoc",fd["fd_name"]}
+                    { "f_id",fd["f_id"]}
+                    ,{ "f_pid",fd["f_pid"]}
+                    ,{ "f_nameLoc",fd["f_nameLoc"]}
                     ,{ "f_sizeLoc",""}
                     ,{ "f_time",fd["timeUpload"]}
+                    ,{ "f_pidRoot",fd["f_pidRoot"]}
                     ,{ "f_fdTask",true}
                 });
             }

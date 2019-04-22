@@ -31,5 +31,6 @@
     "moment": [
         "http://localhost:8888/filemgr/res/moment/moment-with-locales.min.js"
     ],
+    "vue": "http://localhost:8888/filemgr/res/vue.min.js",
     "My97DatePicker": "http://localhost:8888/filemgr/res/My97DatePicker/WdatePicker.js"
 }

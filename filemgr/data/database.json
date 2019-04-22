@@ -153,21 +153,21 @@
     "up6_folders": {
         "fields": [
             {
-                "name": "fd_id",
+                "name": "f_id",
                 "type": "string",
                 "primary": false,
                 "length": 32,
                 "identity": false
             },
             {
-                "name": "fd_name",
+                "name": "f_nameLoc",
                 "type": "string",
                 "primary": false,
                 "length": 50,
                 "identity": false
             },
             {
-                "name": "fd_pid",
+                "name": "f_pid",
                 "type": "string",
                 "primary": false,
                 "length": 32,
@@ -230,7 +230,7 @@
                 "identity": false
             },
             {
-                "name": "fd_complete",
+                "name": "f_complete",
                 "type": "bool",
                 "primary": false,
                 "length": 1,
@@ -244,21 +244,14 @@
                 "identity": false
             },
             {
-                "name": "fd_json",
-                "type": "string",
-                "primary": false,
-                "length": -1,
-                "identity": false
-            },
-            {
-                "name": "timeUpload",
+                "name": "f_time",
                 "type": "DateTime",
                 "primary": false,
                 "length": 8,
                 "identity": false
             },
             {
-                "name": "fd_pidRoot",
+                "name": "f_pidRoot",
                 "type": "string",
                 "primary": false,
                 "length": 32,

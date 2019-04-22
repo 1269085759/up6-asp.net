@@ -11,6 +11,7 @@
               , this.m_path["bootstrap"]
               , this.m_path["layerui"]
               , this.m_path["moment"]
+              , this.m_path["vue"]
               , this.m_path["root"]+"/filemgr/data/index.js"
               ) %>
 </head>
@@ -20,10 +21,8 @@
         <button class="btn btn-default btn-sm" role="button" id="btn-up"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 上传文件</button>
         <span id="up6-panel"></span>
         <!--路径导航-->
-        <ol class="breadcrumb  m-t-xs" style="margin-bottom:-10px;">
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Library</a></li>
-            <li class="active">Data</li>
+        <ol class="breadcrumb  m-t-xs" style="margin-bottom:-10px;" id="path">
+            <li v-for="p in folders"><a class="link">{{p.f_nameLoc}}</a></li>
         </ol>
         <table class="layui-hide" lay-size="sm" id="files" lay-filter="files" lay-skin="nob"></table>
         <script type="text/javascript">

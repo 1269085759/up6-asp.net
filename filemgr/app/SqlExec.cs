@@ -439,26 +439,26 @@ namespace up6.filemgr.app
         {
             //加载结构
             this.m_table = this.m_database.SelectToken(table);
-            var fields_json = this.m_table.SelectToken("fields");
+            var fields_all = this.m_table.SelectToken("fields");
 
-            string[] arr = fields.Split(',');
+            string[] field_names = fields.Split(',');
 
             if (string.Equals(fields, "*"))
             {
-                var fns = from f in fields_json select f["name"].ToString();
-                arr = fns.ToArray();
+                var fns = from f in fields_all select f["name"].ToString();
+                field_names = fns.ToArray();
             }//指定了字段
             else
             {
-                List<string> fdArr = new List<string>(arr);
-                var fns = from f in fields_json
-                          where fdArr.Contains(f["name"].ToString())
-                          select f;
-                fields_json = JToken.FromObject(fns);
+                var field_sels = from fn in field_names.ToList()
+                                 join item in fields_all
+                                 on fn.Trim() equals item["name"].ToString().Trim()
+                                 select item;
+                fields_all = JToken.FromObject(field_sels.ToArray());
             }
 
             //防止字段名称冲突
-            var fns_sql = from f in fields_json
+            var fns_sql = from f in fields_all
                           select "[" + f["name"].ToString() + "]";
             fields = string.Join(",", fns_sql.ToArray());
 
@@ -486,9 +486,9 @@ namespace up6.filemgr.app
             {
                 int index = 0;
                 var o = new JObject();
-                foreach (var field in arr)
+                foreach (var field in field_names)
                 {
-                    var fd = fields_json[index];
+                    var fd = fields_all[index];
                     var fd_type = fd["type"].ToString().ToLower();
                     o[field] = this.m_cmdRd[fd_type](r, index++);
                 }
