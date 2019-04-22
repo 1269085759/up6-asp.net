@@ -15,11 +15,13 @@
         <div id="up6-panel">
         </div>
     <script>
+
+        function ent_post_complete() { }
         
     var app = new HttpUploaderMgr();
     app.event.md5Complete = function (obj, md5) { /*alert(md5);*/ };
-    app.event.fileComplete = function (obj) { /*alert(obj.fileSvr.pathSvr);*/ };
-    app.event.queueComplete = function () { console.log("队列完成"); }
+    app.event.fileComplete = function (obj) { ent_post_complete() };
+    app.event.queueComplete = function () { }
     app.event.addFdError = function (jv) { alert("本地路径不存在：" + jv.path); };
     app.event.scanComplete = function (obj) { /*alert(obj.folderSvr.pathLoc);*/ };
     app.Config["Cookie"] = 'ASP.NET_SessionId=<%=Session.SessionID%>';

@@ -16,7 +16,7 @@
 <body>
     <div class="container-fluid">
         <div class="m-t-md"></div>
-        <a class="btn btn-default btn-sm" href="#" role="button" id="btn-up"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 上传文件</a>
+        <button class="btn btn-default btn-sm" role="button" id="btn-up"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 上传文件</button>
         <span id="up6-panel"></span>
         <table class="layui-hide" lay-size="sm" id="files" lay-filter="files" lay-skin="nob"></table>
         <script type="text/javascript">
@@ -37,21 +37,11 @@
                     , cols: [[ //表头
                         { width: 50, sort: false, type: 'numbers' }
                         , { field: 'f_id', title: '', width: 50, sort: false, type: 'checkbox' }
-                        , { field: 'f_nameLoc', title: '名称', width: 500, sort: false, edit:"text"}
+                        , { field: 'f_nameLoc', title: '名称', width: 500, sort: false}
                         , { field: 'f_sizeLoc', title: '大小', width: 80, sort: false, }
                         , { field: 'f_time', title: '上传时间', templet: function (d) { return moment(d.f_time).format('YYYY-MM-DD HH:mm:ss') } }
                     ]],
-                    done: function (res, curr, count) {
-                        //如果是异步请求数据方式，res即为你接口返回的信息。
-                        //如果是直接赋值的方式，res即为：{data: [], count: 99} data为当前页数据、count为数据总长度
-                        console.log(res);
-
-                        //得到当前页码
-                        console.log(curr);
-
-                        //得到数据总量
-                        console.log(count);
-                    }
+                    done: function (res, curr, count) {}
                 });
 
                 //监听工具条,列模板中的<a>事件也在此监听

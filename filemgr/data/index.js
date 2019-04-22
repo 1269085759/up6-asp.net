@@ -3,11 +3,24 @@
     this.attr = {
         ui: { btnUp: "#btn-up" }
         , ui_ents: [
-            { id: "#btn-up", e: "click", n: function () { _this.attr.event.btn_up_click(); } }
+            {
+                id: "#btn-up", e: "click", n: function () {
+                    _this.attr.event.btn_up_click();
+                }
+            }
         ]
         , app: null
         , event: {
-            btn_up_click: function () {
+            file_post_complete: function () {
+                layui.use(['table'], function () {
+                    var table = layui.table;
+                    table.reload('files', {
+                        url: 'index.aspx?op=data' //数据接口
+                        , page: { curr: 1 }//第一页
+                    });
+                });
+            }
+            ,btn_up_click: function () {
                 layer.open({
                     type: 2
                     , title: '上传文件'
@@ -18,6 +31,7 @@
                         var body = layer.getChildFrame('body', index);
                         var ifm = window[layero.find('iframe')[0]['name']]; //得到iframe页的窗口对象，执行iframe页的方法：iframeWin.method();
                         //ifm.method();//调用子页面方法
+                        ifm.ent_post_complete = _this.attr.event.file_post_complete;
                     }
                     , btn1: function (index, layero) {
                         var ifm = window[layero.find('iframe')[0]['name']];
@@ -53,17 +67,17 @@
             , "delete": function (obj, table) { }
         }
         , data: {}
-        , init: function () {
-            $.each(_this.attr.ui_ents, function (i, n) {
-                $(n.id).bind(n.e, n.n);
-            });
-        }
+    };
+
+    this.init = function () {
+        $.each(_this.attr.ui_ents, function (i, n) {
+            $(n.id).bind(n.e, n.n);
+        });
     };
     //
-    _this.attr.init();
 }
 
 var pl = new PageLogic();
 $(function () {
-    //layout.init();
+    pl.init();
 });
