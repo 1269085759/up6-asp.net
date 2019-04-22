@@ -90,6 +90,15 @@ namespace up6.filemgr.app
             return db.ExecuteReader(cmd);
         }
 
+        public static JToken page2(string table, string primaryKey, string fields, string where = "", string sort = "")
+        {
+            var pageSize = HttpContext.Current.Request.QueryString["limit"];
+            var pageIndex = HttpContext.Current.Request.QueryString["page"];
+            if (string.IsNullOrEmpty(pageSize)) pageSize = "20";
+            if (string.IsNullOrEmpty(pageIndex)) pageIndex = "1";
+            return page2(table, primaryKey, fields, int.Parse(pageSize), int.Parse(pageIndex), where, sort);
+        }
+
         public static JToken page2(string table, string primaryKey, string fields, int pageSize, int pageIndex, string where = "", string sort = "")
         {
             ConfigReader cr = new ConfigReader();

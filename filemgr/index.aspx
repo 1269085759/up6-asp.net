@@ -4,6 +4,7 @@
 <head runat="server">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>文件管理器</title>
+    <%=this.paramPage() %>
     <%= this.require(
               this.m_path["jquery"]
               , this.m_path["res"]+"filemgr.css"
@@ -18,11 +19,17 @@
         <div class="m-t-md"></div>
         <button class="btn btn-default btn-sm" role="button" id="btn-up"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 上传文件</button>
         <span id="up6-panel"></span>
+        <!--路径导航-->
+        <ol class="breadcrumb  m-t-xs" style="margin-bottom:-10px;">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Library</a></li>
+            <li class="active">Data</li>
+        </ol>
         <table class="layui-hide" lay-size="sm" id="files" lay-filter="files" lay-skin="nob"></table>
         <script type="text/javascript">
             //JavaScript代码区域
-            layui.use(['element', 'table'], function () {
-                var element = layui.element, table = layui.table;
+            layui.use(['element', 'table','laytpl'], function () {
+                var element = layui.element, table = layui.table,laytpl = layui.laytpl;
 
                 //js-module
                 table.render({
@@ -37,31 +44,22 @@
                     , cols: [[ //表头
                         { width: 50, sort: false, type: 'numbers' }
                         , { field: 'f_id', title: '', width: 50, sort: false, type: 'checkbox' }
-                        , { field: 'f_nameLoc', title: '名称', width: 500, sort: false}
+                        , {
+                            field: 'f_nameLoc', title: '名称', width: 500, sort: false, templet: function (d) {
+                                var tmp = '<img src="{{d.img}}"/> <a class="link" lay-event="file">{{d.f_nameLoc}}</a>';
+                                var par = $.extend(d, { img: page.path.res + "imgs/16/file.png" });
+                                if (d.f_fdTask) par.img = page.path.res + "imgs/16/folder.png";
+                                var str = laytpl(tmp).render(par);
+                                return str;
+                            }
+                        }
                         , { field: 'f_sizeLoc', title: '大小', width: 80, sort: false, }
                         , { field: 'f_time', title: '上传时间', templet: function (d) { return moment(d.f_time).format('YYYY-MM-DD HH:mm:ss') } }
                     ]],
                     done: function (res, curr, count) {}
                 });
 
-                //监听工具条,列模板中的<a>事件也在此监听
-                table.on('tool(files)', function (obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
-                    var data = obj.data; //获得当前行数据
-                    var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
-                    var tr = obj.tr; //获得当前行 tr 的DOM对象
-
-                    if (layEvent === 'detail') { //查看
-                        //do somehing
-                    } else if (layEvent === 'del') { //删除
-                        layer.confirm('确定删除文章：' + data.title + "？", function (index) {
-                            obj.del();
-                            layer.close(index);
-                            //向服务端发送删除指令
-                        });
-                    } else if (layEvent === 'edit') { //编辑
-                        //do something
-                    }
-                });
+                table.on('tool(files)', function (obj) { pl.attr.event.table_tool_click(obj, table);});
 
                 //工具栏
                 table.on('toolbar(files)', function (obj) { pl.attr.event.table_tool_click(obj, table); });

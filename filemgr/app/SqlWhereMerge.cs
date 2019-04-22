@@ -34,6 +34,49 @@ namespace up6.filemgr.app
         /// </summary>
         /// <param name="c">a=b</param>
         public void add(string c) { this.m_cds.Add(c); }
+        public void add(string n, int v) {
+            this.m_cds.Add(string.Format("{0}={1}", n, v));
+        }
+
+        /// <summary>
+        /// 相等条件，a=b
+        /// </summary>
+        public void equal(string n,string v) {
+            this.m_cds.Add(string.Format("{0}='{1}'", n, v));
+        }
+
+        /// <summary>
+        /// 相等条件，a=b
+        /// </summary>
+        /// <param name="n"></param>
+        /// <param name="v"></param>
+        public void equal(string n, int v)
+        {
+            this.m_cds.Add(string.Format("{0}='{1}'", n, v));
+        }
+
+        /// <summary>
+        /// 相等条件，a=b，从查询字符串中获取变量（Request.QueryString)
+        /// </summary>
+        /// <param name="n"></param>
+        /// <param name="v"></param>
+        /// <param name="ignore">是否自动忽略空值</param>
+        public void req_equal(string n, string requestName,bool ignore=true)
+        {
+            string v = HttpContext.Current.Request.QueryString[requestName];
+            if (string.IsNullOrEmpty(v))
+            {
+                if (ignore) return;
+                v = string.Empty;
+            }
+            this.m_cds.Add(string.Format("{0} = '{1}'", n, v));
+        }
+
+        public void like(string n, string v)
+        {
+            this.m_cds.Add(string.Format("{0} like '%{1}%'", n, v));
+        }
+
         public void add(SqlWhereCondition c)
         {
             this.add(c.toSql());
@@ -65,6 +108,9 @@ namespace up6.filemgr.app
         /// <summary>
         /// 自动添加请求变量
         /// </summary>
+        /// <param name="n">字段名称</param>
+        /// <param name="p">谓词，=,</param>
+        /// <param name="v">Request 参数名称</param>
         public void addReq(string n,string p,string v) {
             v = HttpContext.Current.Request.QueryString[v];
             if (string.IsNullOrEmpty(v)) return;
@@ -77,7 +123,8 @@ namespace up6.filemgr.app
             this.add(new string[] { n, "int", v });
         }
 
-        public string merge() { return string.Join(" and ", this.m_cds.ToArray()); }
+        public void clear() { this.m_cds.Clear(); }
+        public string to_sql() { return string.Join(" and ", this.m_cds.ToArray()); }
 
         /// <summary>
         /// 拼接搜索条件，自动删除空白

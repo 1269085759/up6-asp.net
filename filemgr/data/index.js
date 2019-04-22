@@ -59,14 +59,24 @@
                     , complete: function (req, sta) { req = null; }
                 });
             }
+            , table_file_click: function (obj, table) {
+                if (obj.data.f_fdTask) _this.attr.open_folder(obj.data, table);
+            }
         }
         , table_events: {
             "up": function (obj, table) {
             }
             , "mkFolder": function (obj, table) { }
             , "delete": function (obj, table) { }
+            , "file": function (obj, table) { _this.attr.event.table_file_click(obj, table); }
         }
         , data: {}
+        , open_folder: function (data, table) {
+            table.reload('files', {
+                url: 'index.aspx?op=data&pid='+data.f_id //数据接口
+                , page: { curr: 1 }//第一页
+            });
+        }
     };
 
     this.init = function () {
