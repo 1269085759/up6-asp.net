@@ -72,6 +72,7 @@
                     , data: { data: encodeURIComponent(JSON.stringify(data) ) }
                     , success: function (res) {
                         _this.attr.nav_path.folders = res;
+                        _this.attr.nav_path.folderCur = data.f_id;
                     }
                     , error: function (req, txt, err) { }
                     , complete: function (req, sta) { req = null; }
@@ -87,12 +88,15 @@
         }
         , data: {}
         , open_folder: function (data, table) {
-            table.reload('files', {
-                url: 'index.aspx?op=data&pid='+data.f_id //数据接口
-                , page: { curr: 1 }//第一页
-            });
+            layui.use(['table'], function () {
+                var table = layui.table;
+                table.reload('files', {
+                    url: 'index.aspx?op=data&pid=' + data.f_id //数据接口
+                    , page: { curr: 1 }//第一页
+                });
 
-            _this.attr.event.path_changed(data);
+                _this.attr.event.path_changed(data);
+            });            
         }
     };
 
@@ -104,7 +108,15 @@
         this.attr.nav_path = new Vue({
             el: '#path',
             data: {
-                folders: [{ f_id: "", f_nameLoc:"根目录",f_pid:""}]
+                folders: [{ f_id: "", f_nameLoc: "根目录", f_pid: "",f_pidRoot:"" }]
+                ,folderCur:""
+            }, methods: {
+                open_folder: function (id) {
+                    var fd = $.grep(this.folders, function (n, i) {
+                        return n.f_id == id;
+                    });
+                    _this.attr.open_folder(fd[0]);
+                }
             }
         });
     };

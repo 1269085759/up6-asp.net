@@ -32,8 +32,15 @@ namespace up6.filemgr
             if (string.IsNullOrEmpty(fd["f_pid"].ToString().Trim()))
             {
                 List<JToken> arr = new List<JToken>();
-                arr.Add(new JObject { { "f_id", "" }, { "f_nameLoc", "根目录" } });
-                arr.Add(fd);
+                if (string.IsNullOrEmpty(fd["f_id"].ToString().Trim()))
+                {
+                    arr.Add(fd);
+                }//其它目录
+                else
+                {
+                    arr.Add(new JObject { { "f_id", "" }, { "f_nameLoc", "根目录" }, { "f_pid", "" }, { "f_pidRoot", "" } });
+                    arr.Add(fd);
+                }
                 PageTool.to_content(JToken.FromObject(arr));
                 return;
             }
@@ -80,7 +87,7 @@ namespace up6.filemgr
                 if (string.IsNullOrEmpty(cur.Trim())) break;
             }
 
-            psort.Insert(0,(new JObject { { "f_id", "" }, { "f_nameLoc", "根目录" } }) );
+            psort.Insert(0,(new JObject { { "f_id", "" }, { "f_nameLoc", "根目录" }, { "f_pid", "" }, { "f_pidRoot", "" } }) );
 
             return JToken.FromObject(psort);
         }

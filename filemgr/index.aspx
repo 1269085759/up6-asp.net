@@ -22,7 +22,10 @@
         <span id="up6-panel"></span>
         <!--路径导航-->
         <ol class="breadcrumb  m-t-xs" style="margin-bottom:-10px;" id="path">
-            <li v-for="p in folders"><a class="link">{{p.f_nameLoc}}</a></li>
+            <li v-for="p in folders">
+                <a class="link" v-if="p.f_id != folderCur" v-on:click="open_folder(p.f_id)">{{p.f_nameLoc}}</a>
+                <span v-else class="active">{{p.f_nameLoc}}</span>
+            </li>
         </ol>
         <table class="layui-hide" lay-size="sm" id="files" lay-filter="files" lay-skin="nob"></table>
         <script type="text/javascript">
