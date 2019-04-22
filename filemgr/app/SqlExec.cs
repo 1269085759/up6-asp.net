@@ -201,7 +201,7 @@ namespace up6.filemgr.app
             return o;
         }
 
-        public void update(string table, SqlParam[] fields, SqlParam[] where)
+        public void update(string table, SqlParam[] fields, SqlParam[] where, string predicate = "and")
         {
             //加载结构
             this.m_table = this.m_database.SelectToken(table);
@@ -210,7 +210,7 @@ namespace up6.filemgr.app
             string sql = string.Format("update [{0}] set {1} where {2}"
                 ,table
                 ,this.to_condition(fields)
-                ,this.to_condition(where,"and"));
+                ,this.to_condition(where,predicate));
 
             DbHelper db = new DbHelper();
             var cmd = db.GetCommand(sql);

@@ -237,7 +237,7 @@
                 "identity": false
             },
             {
-                "name": "fd_delete",
+                "name": "f_deleted",
                 "type": "bool",
                 "primary": false,
                 "length": 1,

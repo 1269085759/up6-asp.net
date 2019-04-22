@@ -109,7 +109,8 @@ namespace up6.filemgr
             var f = JObject.Parse(data);
 
             SqlExec se = new SqlExec();
-            se.delete("up6_folders"
+            se.update("up6_folders"
+                ,new SqlParam[] { new SqlParam("f_deleted", true)}
                 , new SqlParam[] {
                     new SqlParam("f_id",f["f_id"].ToString())
                     ,new SqlParam("f_pid",f["f_id"].ToString())
@@ -117,7 +118,8 @@ namespace up6.filemgr
                 }
                 ,"or"
                 );
-            se.delete("up6_files"
+            se.update("up6_files"
+                ,new SqlParam[] { new SqlParam("f_deleted", true)}
                 , new SqlParam[] {
                     new SqlParam("f_id",f["f_id"].ToString())
                     ,new SqlParam("f_pid",f["f_id"].ToString())
@@ -135,6 +137,7 @@ namespace up6.filemgr
             SqlWhereMerge swm = new SqlWhereMerge();
             swm.req_equal("f_pid", "pid",false);
             swm.equal("f_complete", 1);
+            swm.equal("f_deleted", 0);
             swm.req_like("f_nameLoc", "key");
             string where = swm.to_sql();
 
