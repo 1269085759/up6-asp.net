@@ -127,12 +127,12 @@ namespace up6.filemgr
             //合并表
             foreach (var fd in folders)
             {
-                files.Add(new JObject {
+                files.Insert(0,new JObject {
                     { "f_id",fd["f_id"]}
                     ,{ "f_pid",fd["f_pid"]}
                     ,{ "f_nameLoc",fd["f_nameLoc"]}
                     ,{ "f_sizeLoc",""}
-                    ,{ "f_time",fd["timeUpload"]}
+                    ,{ "f_time",fd["f_time"]}
                     ,{ "f_pidRoot",fd["f_pidRoot"]}
                     ,{ "f_fdTask",true}
                 });
