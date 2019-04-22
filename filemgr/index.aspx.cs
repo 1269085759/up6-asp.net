@@ -145,7 +145,7 @@ namespace up6.filemgr
             //文件表
             var files = (JArray)DbBase.page2("up6_files"
                 , "f_id"
-                , "f_id,f_pid,f_nameLoc,f_sizeLoc,f_time,f_pidRoot,f_fdTask"
+                , "f_id,f_pid,f_nameLoc,f_sizeLoc,f_lenLoc,f_time,f_pidRoot,f_fdTask,f_pathSvr"
                 , where
                 ,"f_fdTask desc,f_time desc");
 
@@ -169,6 +169,8 @@ namespace up6.filemgr
                     ,{ "f_pid",fd["f_pid"]}
                     ,{ "f_nameLoc",fd["f_nameLoc"]}
                     ,{ "f_sizeLoc",""}
+                    ,{ "f_lenLoc",0}
+                    ,{ "f_pathSvr",""}
                     ,{ "f_time",fd["f_time"]}
                     ,{ "f_pidRoot",fd["f_pidRoot"]}
                     ,{ "f_fdTask",true}
