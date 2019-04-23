@@ -1,15 +1,17 @@
-﻿function PageLogic() {
+﻿
+function PageLogic() {
     var _this = this;
     this.downer = null;
     this.down_files = [];
+    this.up6 = null;
 
     this.attr = {
-        ui: { table:null,btnUp: "#btn-up",btnDown:"#btn-down", key:"#search-key"}
+        ui: { table:null,btnUp: "#btn-up",btnDown:"#btn-down", key:"#search-key",up6:null}
         , nav_path: null
         , ui_ents: [
             {
                 id: "#btn-up", e: "click", n: function () {
-                    _this.attr.event.btn_up_click();
+                _this.up6.openFile();
                 }
             },
             {
@@ -53,6 +55,25 @@
                         layer.close(index);//关闭窗口
                     }
                     , btn2: function (index, layero) { }
+                });
+            }
+            , up6_sel_file: function () {
+                layer.open({
+                    type: 1
+                    , title: '上传文件'
+                    , btn: ['确定', '取消']
+                    , content: _this.attr.ui.up6
+                    , area: ['635px', '454px']
+                    , success: function (layero, index) {
+                        _this.attr.ui.up6.show();
+                    }
+                    , btn1: function (index, layero) {
+                        layer.close(index);//关闭窗口
+                        _this.attr.ui.up6.hide();
+                    }
+                    , btn2: function (index, layero) {
+                        _this.attr.ui.up6.hide();
+                    }
                 });
             }
             , btn_down_click: function () {
@@ -246,6 +267,8 @@
             $(n.id).bind(n.e, n.n);
         });
 
+        this.attr.ui.up6 = $("#up-panel");
+
         this.attr.nav_path = new Vue({
             el: '#path',
             data: {
@@ -265,9 +288,16 @@
 }
 
 var pl = new PageLogic();
+
 $(function () {
     pl.init();
+
+    pl.up6 = new HttpUploaderMgr();
+    pl.up6.event.after_sel_file = function () { pl.attr.event.up6_sel_file(); };
+    pl.up6.load_to("http-up6");
+
     pl.downer = new DownloaderMgr();
     pl.downer.Config["Folder"] = "";
     pl.downer.loadTo("down2-panel");
+
 });

@@ -103,7 +103,7 @@ function DownloaderMgr()
     this.edge = navigator.userAgent.indexOf("Edge") > 0;
     this.edgeApp = new WebServer(this);
     this.edgeApp.ent.on_close = function () { _this.socket_close(); };
-    this.app = up6_app;
+    this.app = down2_app;
     this.app.edgeApp = this.edgeApp;
     this.app.Config = this.Config;
     this.app.ins = this;

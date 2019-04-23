@@ -90,7 +90,7 @@ div.UploaderItemRight{width:54px; float:left;margin:3px 0 0 0;}
     position: relative;
     overflow: hidden;
     overflow-y: auto;
-    height: 349px;
+    height: 320px;
     margin-top: -1px;
 }
 .dialog-web-uploader .uploader-list .cont {
@@ -129,15 +129,16 @@ div.UploaderItemRight{width:54px; float:left;margin:3px 0 0 0;}
     border-bottom: 1px solid #f2f6fd;
     line-height: 49px;
 }
-.dialog-web-uploader .file-name {
-    position: relative;
-    float: left;
-    overflow: hidden;
-    width: 43%;
-    height: 49px;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-}
+    .dialog-web-uploader .file-name {
+        position: relative;
+        float: left;
+        overflow: hidden;
+        width: 43%;
+        height: 49px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        text-indent: 14px;
+    }
 .dialog-web-uploader .file-size{
     float: left;
     width: 13%;

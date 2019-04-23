@@ -28,44 +28,33 @@
                 <button class="btn btn-default btn-sm pull-left" role="button" id="btn-search"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 搜索</button>
             </span>
         </div>
-        <div class="dialog-web-uploader clearfix">
-            <div class="uploader-list-wrapper">
-                <div class="uploader-list-header">
-                    <div class="file-name ">文件(夹)名</div>
-                    <div class="file-size">大小</div>
-                    <div class="file-path">上传目录</div>
-                    <div class="file-status">状态</div>
-                    <div class="file-operate">操作</div>
-                </div>
-                <div class="uploader-list">
-                    <div class="cont">
-                        <div class="file-list">
-                            <div class="process" style="width: 100%;"></div>
-                            <div class="info ">
-                                <div class="file-name clearfix"><img src="res/imgs/24/file.png" /> test.xml</div>
-                                <div class="file-size">10MB</div>
-                                <div class="file-path">我的文档</div>
-                                <div class="file-status">状态</div>
-                                <div class="file-operate">
-                                    <i class="layui-icon layui-icon-play"></i>
-                                    <i class="layui-icon layui-icon-pause"></i>
-                                    <i class="layui-icon layui-icon-close"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="file-list file-inf">
-                            <div class="info">
-                                <div class="file-name clearfix">
-                                    <img src="res/imgs/24/folder.png" />
-                                    工作日志
-                                </div>
-                                <div class="file-size">10MB</div>
-                                <div class="file-path">我的文档</div>
-                                <div class="file-status">状态</div>
-                                <div class="file-operate">
-                                    <i class="layui-icon layui-icon-play"></i>   
-                                    <i class="layui-icon layui-icon-pause"></i>   
-                                    <i class="layui-icon layui-icon-close"></i>   
+        <div id="http-up6">
+            <div class="dialog-web-uploader clearfix" id="up-panel" style="display:none;">
+                <div class="uploader-list-wrapper">
+                    <div class="uploader-list-header">
+                        <div class="file-name ">文件(夹)名</div>
+                        <div class="file-size">大小</div>
+                        <div class="file-path">上传目录</div>
+                        <div class="file-status">状态</div>
+                        <div class="file-operate"></div>
+                    </div>
+                    <div class="uploader-list">
+                        <div class="cont" name="list">
+                            <div class="file-list" name="file" style="display:none;">
+                                <div class="process" style="width: 0%;" name="process"></div>
+                                <div class="info ">
+                                    <div class="file-name clearfix">
+                                        <img name="file" src="res/imgs/24/file.png" /><img name="folder" src="res/imgs/24/folder.png" class="hide"/><span name="name">文件</span>
+                                    </div>
+                                    <div class="file-size" name="size">10MB</div>
+                                    <div class="file-path" name="path">路径</div>
+                                    <div class="file-status" name="state"><img src="<%=this.m_path["res"]+"imgs/16/ok.png" %>" style="display:none;color:green;" name="ico-ok"/><span name="msg"></span></div>
+                                    <div class="file-operate">
+                                        <i class="layui-icon layui-icon-play link" style="display:none;" name="post"></i>
+                                        <i class="layui-icon layui-icon-pause link" style="display:none;" name="stop"></i>
+                                        <i class="layui-icon layui-icon-close link" style="display:none;" name="del"></i>
+                                        <i class="layui-icon layui-icon-close link" style="display:none;" name="cancel"></i>
+                                    </div>
                                 </div>
                             </div>
                         </div>

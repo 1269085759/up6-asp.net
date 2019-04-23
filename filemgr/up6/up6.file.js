@@ -39,7 +39,7 @@ function FileUploader(fileLoc, mgr)
     //准备
     this.Ready = function ()
     {
-        this.ui.msg.text("正在上传队列中等待...");
+        this.ui.msg.text("等待...");
         this.State = HttpUploaderState.Ready;
     };
 
@@ -90,7 +90,7 @@ function FileUploader(fileLoc, mgr)
         this.fileSvr.perSvr = json.percent;
         this.ui.percent.text("("+json.percent+")");
         this.ui.process.css("width", json.percent);
-        var str = json.lenPost + " " + json.speed + " " + json.time;
+        var str = json.percent + "(" + json.speed + ")";
         this.ui.msg.text(str);
     };
     this.post_complete = function (json)
@@ -101,8 +101,8 @@ function FileUploader(fileLoc, mgr)
         {
             n.hide();
         });
-        this.ui.process.css("width", "100%");
-        this.ui.percent.text("(100%)");
+        this.ui.process.css("width", "0%");
+        this.ui.ico_ok.show();
         this.ui.msg.text("上传完成");
         this.Manager.arrFilesComplete.push(this);
         this.State = HttpUploaderState.Complete;
@@ -122,7 +122,7 @@ function FileUploader(fileLoc, mgr)
 			, success: function (msg)
 			{
 			    _this.event.fileComplete(_this);//触发事件
-			    _this.FileListMgr.UploadComplete(_this.fileSvr);//添加到服务器文件列表
+			    //_this.FileListMgr.UploadComplete(_this.fileSvr);//添加到服务器文件列表
 			    _this.post_next();
 			}
 			, error: function (req, txt, err) { alert("文件-向服务器发送Complete信息错误！" + req.responseText); }
@@ -134,9 +134,9 @@ function FileUploader(fileLoc, mgr)
         this.fileSvr.perSvr = "100%";
         this.fileSvr.complete = true;
         this.ui.btn.stop.hide();
-        this.ui.process.css("width", "100%");
-        this.ui.percent.text("(100%)");
-        this.ui.msg.text("服务器存在相同文件，快速上传成功。");
+        this.ui.process.css("width", "0%");
+        this.ui.ico_ok.show();
+        this.ui.msg.text("极速秒传");
         this.Manager.arrFilesComplete.push(this);
         this.State = HttpUploaderState.Complete;
         //从上传列表中删除
@@ -144,7 +144,7 @@ function FileUploader(fileLoc, mgr)
         //从未上传列表中删除
         this.Manager.RemoveQueueWait(this.fileSvr.id);
         //添加到文件列表
-        this.FileListMgr.UploadComplete(this.fileSvr);
+        //this.FileListMgr.UploadComplete(this.fileSvr);
         this.post_next();
         this.event.fileComplete(this);//触发事件
     };
@@ -186,13 +186,13 @@ function FileUploader(fileLoc, mgr)
     };
     this.md5_process = function (json)
     {
-        var msg = "正在扫描本地文件，已完成：" + json.percent;
+        var msg = "扫描中：" + json.percent;
         this.ui.msg.text(msg);
     };
     this.md5_complete = function (json)
     {
         this.fileSvr.md5 = json.md5;
-        this.ui.msg.text("MD5计算完毕，开始连接服务器...");
+        this.ui.msg.text("初始化...");
         this.event.md5Complete(this, json.md5);//biz event
 
         var loc_path = encodeURIComponent(this.fileSvr.pathLoc);
@@ -214,7 +214,6 @@ function FileUploader(fileLoc, mgr)
             {
                 alert("向服务器发送MD5信息错误！" + req.responseText);
                 _this.ui.msg.text("向服务器发送MD5信息错误");
-                _this.ui.btn.del.text("续传");
             }
             , complete: function (req, sta) { req = null; }
         });
