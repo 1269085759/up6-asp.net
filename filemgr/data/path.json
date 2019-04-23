@@ -1,23 +1,24 @@
 ﻿{
     "root": "http://localhost:8888/",
+    "fe": "http://localhost:8888/filemgr/",
     "res": "http://localhost:8888/filemgr/res/",
     "html": "/data/html/",
     "up6": [
-        "http://localhost:8888/js/up6.config.js",
-        "http://localhost:8888/js/up6.app.js",
-        "http://localhost:8888/js/up6.edge.js",
-        "http://localhost:8888/js/up6.file.js",
-        "http://localhost:8888/js/up6.folder.js",
-        "http://localhost:8888/js/up6.css",
-        "http://localhost:8888/js/up6.js"
+        "http://localhost:8888/filemgr/up6/up6.config.js",
+        "http://localhost:8888/filemgr/up6/up6.app.js",
+        "http://localhost:8888/filemgr/up6/up6.edge.js",
+        "http://localhost:8888/filemgr/up6/up6.file.js",
+        "http://localhost:8888/filemgr/up6/up6.folder.js",
+        "http://localhost:8888/filemgr/up6/up6.css",
+        "http://localhost:8888/filemgr/up6/up6.js"
     ],
     "down2": [
-        "http://localhost:8888/down2/js/down.app.js",
-        "http://localhost:8888/down2/js/down.edge.js",
-        "http://localhost:8888/down2/js/down.file.js",
-        "http://localhost:8888/down2/js/down.folder.js",
-        "http://localhost:8888/down2/js/down.js",
-        "http://localhost:8888/down2/js/down.css"
+        "http://localhost:8888/filemgr/down2/down.app.js",
+        "http://localhost:8888/filemgr/down2/down.edge.js",
+        "http://localhost:8888/filemgr/down2/down.file.js",
+        "http://localhost:8888/filemgr/down2/down.folder.js",
+        "http://localhost:8888/filemgr/down2/down.js",
+        "http://localhost:8888/filemgr/down2/down.css"
     ],
     "jquery": [
         "http://localhost:8888/js/json2.min.js",

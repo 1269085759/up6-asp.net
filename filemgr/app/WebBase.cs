@@ -64,7 +64,7 @@ namespace up6.filemgr.app
             this.param.Add("url", HttpContext.Current.Request.Url.AbsoluteUri);
         }
 
-        public JObject request_to_json() {
+        public JObject req_to_json() {
             JObject query = new JObject();
             foreach (var key in HttpContext.Current.Request.QueryString.Keys)
             {
@@ -73,6 +73,48 @@ namespace up6.filemgr.app
                 query.Add(key.ToString(), kv);
             }
             return query;
+        }
+
+        /// <summary>
+        /// 检查head值
+        /// </summary>
+        /// <returns></returns>
+        public bool req_val_null_empty(string names)
+        {
+            var arr = names.Split(',');
+            foreach (var a in arr)
+            {
+                var kv = Request.QueryString[a.Trim()];
+                if (string.IsNullOrEmpty(kv.Trim())) return true;
+            }
+            return false;
+        }
+
+        public JObject head_to_json()
+        {
+            JObject query = new JObject();
+            foreach (var key in HttpContext.Current.Request.Headers)
+            {
+                var kv = HttpContext.Current.Request.Headers[key.ToString()];
+                JObject obj = new JObject { { key.ToString(), kv } };
+                query.Add(key.ToString(), kv);
+            }
+            return query;
+        }
+
+        /// <summary>
+        /// 检查head值
+        /// </summary>
+        /// <returns></returns>
+        public bool head_val_null_empty(string names)
+        {
+            var arr = names.Split(',');
+            foreach (var a in arr)
+            {
+                var kv = HttpContext.Current.Request.Headers[a.Trim()];
+                if (string.IsNullOrEmpty(kv.Trim())) return true;
+            }
+            return false;
         }
 
         /// <summary>

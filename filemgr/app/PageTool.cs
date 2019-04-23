@@ -29,6 +29,13 @@ namespace up6.filemgr.app
             HttpContext.Current.Response.End();
         }
 
+        public static void to_content(string v)
+        {
+            HttpContext.Current.Response.Clear();
+            HttpContext.Current.Response.Write(v);
+            HttpContext.Current.Response.End();
+        }
+
         public static string query_decode(string name)
         {
             return HttpContext.Current.Server.UrlDecode(

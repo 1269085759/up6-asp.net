@@ -64,7 +64,26 @@ namespace up6.filemgr.app
             this.m_pvSetter = new SqlParValSetter();
             this.m_parSetter = new SqlParamSetter();
             this.m_cmdRd = new SqlCmdReader();
+        }
 
+        /// <summary>
+        /// 执行SQL
+        /// </summary>
+        /// <param name="sql"></param>
+        /// <param name="fields"></param>
+        /// <param name="where"></param>
+        /// <param name="o"></param>
+        public void exec(string table,string sql,string fields,string where,JObject o)
+        {
+            //加载结构
+            this.m_table = this.m_database.SelectToken(table);
+            var field_all = this.m_table.SelectToken("fields");
+
+            DbHelper db = new DbHelper();
+            var cmd = db.GetCommand(sql);
+            this.to_param_db(cmd, fields, o, field_all);
+            this.to_param_db(cmd, where, o, field_all);
+            db.ExecuteNonQuery(cmd);
         }
 
         /// <summary>
@@ -78,6 +97,7 @@ namespace up6.filemgr.app
             //加载结构
             this.m_table = this.m_database.SelectToken(table);
             var identity = this.m_table.SelectToken("fields[?(@.identity==true && @.primary==true)]");
+            var field_all = this.m_table.SelectToken("fields");
 
             string sql = string.Format("insert into [{0}] ( {1} ) values( {2} );"
                 , table
@@ -91,7 +111,7 @@ namespace up6.filemgr.app
 
             DbHelper db = new DbHelper();
             var cmd = db.GetCommand(sql);
-            this.to_param_db(cmd, fields,o);
+            this.to_param_db(cmd, fields,o, field_all);
             var id = db.ExecuteScalar(cmd);
             return Convert.ToInt32(id);
         }
@@ -223,6 +243,7 @@ namespace up6.filemgr.app
         {
             //加载结构
             this.m_table = this.m_database.SelectToken(table);
+            var field_all = this.m_table.SelectToken("fields");
 
             string sql = string.Format("update [{0}] set {1} where {2}"
                 , table
@@ -231,8 +252,8 @@ namespace up6.filemgr.app
 
             DbHelper db = new DbHelper();
             var cmd = db.GetCommand(sql);
-            this.to_param_db(cmd, fields, obj);
-            this.to_param_db(cmd, where, obj);
+            this.to_param_db(cmd, fields, obj, field_all);
+            this.to_param_db(cmd, where, obj, field_all);
             db.ExecuteNonQuery(cmd);
         }
 
@@ -413,15 +434,16 @@ namespace up6.filemgr.app
         /// <summary>
         /// 为cmd添加字段,按照fields顺序
         /// </summary>
+        /// <param name="cmd"></param>
         /// <param name="fields"></param>
-        /// <param name="o"></param>
+        /// <param name="obj"></param>
+        /// <param name="field_all">所有字段结构信息</param>
         /// <returns></returns>
-        public void to_param_db(DbCommand cmd,string fields, JObject obj)
+        public void to_param_db(DbCommand cmd,string fields, JObject obj,JToken field_all)
         {
-            var field_object = this.m_table.SelectToken("fields");
             var field_names = fields.Split(',').ToList();
             var field_obj = from f in field_names
-                            join fo in field_object
+                            join fo in field_all
                             on f equals fo["name"].ToString()
                             select fo;
 

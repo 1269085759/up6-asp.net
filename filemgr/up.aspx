@@ -4,6 +4,7 @@
 <head runat="server">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title></title>
+    <%=this.paramPage() %>
     <%= this.require(
               this.m_path["jquery"]
               , this.m_path["layerui"]
