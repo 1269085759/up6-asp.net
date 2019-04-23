@@ -21,6 +21,7 @@ function LayerWindow(obj)
         , url: ""
         , load_complete: function (ifm) { }
         , btn_ok_click: function (ifm) { }
+        , btn_ok: "添加"
     };
 
     $.extend(this.sett, obj);
@@ -28,8 +29,8 @@ function LayerWindow(obj)
     layer.open({
         type: 2,
         title: _this.sett.title,
-        area: [_this.sett.w,_this.sett.h],
-        btn: ['添加', '关闭'],
+        area: [_this.sett.w, _this.sett.h],
+        btn: [_this.sett.btn_ok, '关闭'],
         content: _this.sett.url,
         success: function (layero, index) {
             var body = layer.getChildFrame('body', index);

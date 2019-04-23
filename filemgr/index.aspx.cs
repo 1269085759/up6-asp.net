@@ -101,6 +101,8 @@ namespace up6.filemgr
 
             SqlExec se = new SqlExec();
             se.update("up6_files", "f_nameLoc", "f_id", obj);
+            //子文件夹更名
+            se.update("up6_folders", "f_nameLoc", "f_id", obj);
 
             PageTool.to_content(obj);
         }

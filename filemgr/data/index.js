@@ -137,6 +137,7 @@
                     , w: "589px"
                     , h: "167px"
                     , url: "app/form.aspx"
+                    ,btn_ok:"确定"
                     , load_complete: function (ifm) {
                         ifm.initUI({
                             ui: [{ id: "f_nameLoc", txt: "文件名称" }]
