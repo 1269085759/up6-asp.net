@@ -1,0 +1,1 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="up6_svr.aspx.cs" Inherits="up6.filemgr.app.up6_svr" %>

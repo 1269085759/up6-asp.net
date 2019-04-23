@@ -53,12 +53,12 @@ function DownloaderMgr()
 		, "FilePart"	: 5242880//文件块大小，计算器：http://www.beesky.com/newsite/bit_byte.htm
         , "FolderClear"	: true//下载前是否清空目录
         //file
-        , "UrlCreate"   : "http://localhost:8888/down2/db/f_create.aspx"
-        , "UrlDel"      : "http://localhost:8888/down2/db/f_del.aspx"
+        , "UrlCreate"   : page.path.fe+"app/down2_svr.aspx?op=init"
+        , "UrlDel"      : page.path.fe+"app/down2_svr.aspx?op=del"
         , "UrlList"     : "http://localhost:8888/down2/db/f_list.aspx"
         , "UrlListCmp"  : "http://localhost:8888/down2/db/f_list_cmp.aspx"
-        , "UrlUpdate"   : "http://localhost:8888/down2/db/f_update.aspx"
-        , "UrlDown"     : "http://localhost:8888/down2/db/f_down.aspx"
+        , "UrlUpdate"   : page.path.fe+"app/down2_svr.aspx?op=proc"
+        , "UrlDown"     : page.path.fe+"app/down2_svr.aspx?op=down"
 	    //folder
         , "UrlFdData"   : "http://localhost:8888/down2/db/fd_data.aspx"
         //x86
@@ -80,8 +80,8 @@ function DownloaderMgr()
         , "Fields": { "uname": "test", "upass": "test", "uid": "0" }
         , ui: {
             icon: {
-                file: "http://localhost:8888/down2/js/file.png"
-                , folder: "http://localhost:8888/down2/js/folder.png"
+                file: page.path.fe + "down2/file.png"
+                , folder: page.path.fe + "down2/folder.png"
             }
         }
 	};
