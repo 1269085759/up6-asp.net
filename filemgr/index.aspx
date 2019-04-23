@@ -12,6 +12,7 @@
               , this.m_path["layerui"]
               , this.m_path["moment"]
               , this.m_path["vue"]
+              , this.m_path["up6"]
               , this.m_path["down2"]
               , this.m_path["root"]+"/filemgr/data/index.js"
               , this.m_path["res"]+"layer.window.js"
@@ -27,9 +28,53 @@
                 <button class="btn btn-default btn-sm pull-left" role="button" id="btn-search"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 搜索</button>
             </span>
         </div>
+        <div class="dialog-web-uploader clearfix">
+            <div class="uploader-list-wrapper">
+                <div class="uploader-list-header">
+                    <div class="file-name ">文件(夹)名</div>
+                    <div class="file-size">大小</div>
+                    <div class="file-path">上传目录</div>
+                    <div class="file-status">状态</div>
+                    <div class="file-operate">操作</div>
+                </div>
+                <div class="uploader-list">
+                    <div class="cont">
+                        <div class="file-list">
+                            <div class="process" style="width: 100%;"></div>
+                            <div class="info ">
+                                <div class="file-name clearfix"><img src="res/imgs/24/file.png" /> test.xml</div>
+                                <div class="file-size">10MB</div>
+                                <div class="file-path">我的文档</div>
+                                <div class="file-status">状态</div>
+                                <div class="file-operate">
+                                    <i class="layui-icon layui-icon-play"></i>
+                                    <i class="layui-icon layui-icon-pause"></i>
+                                    <i class="layui-icon layui-icon-close"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="file-list file-inf">
+                            <div class="info">
+                                <div class="file-name clearfix">
+                                    <img src="res/imgs/24/folder.png" />
+                                    工作日志
+                                </div>
+                                <div class="file-size">10MB</div>
+                                <div class="file-path">我的文档</div>
+                                <div class="file-status">状态</div>
+                                <div class="file-operate">
+                                    <i class="layui-icon layui-icon-play"></i>   
+                                    <i class="layui-icon layui-icon-pause"></i>   
+                                    <i class="layui-icon layui-icon-close"></i>   
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <span id="up6-panel"></span>
         <span id="down2-panel" class="hide"></span>
-
         <!--路径导航-->
         <ol class="breadcrumb  m-t-xs" style="margin-bottom:-10px;" id="path">
             <li v-for="p in folders">
