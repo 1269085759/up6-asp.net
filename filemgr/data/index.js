@@ -4,7 +4,7 @@
     this.down_files = [];
 
     this.attr = {
-        ui: { btnUp: "#btn-up",btnDown:"#btn-down", key:"#search-key"}
+        ui: { table:null,btnUp: "#btn-up",btnDown:"#btn-down", key:"#search-key"}
         , nav_path: null
         , ui_ents: [
             {
@@ -131,7 +131,38 @@
                     , complete: function (req, sta) { req = null; }
                 });
             }
-            , table_rename: function (obj, table) { }
+            , table_rename: function (obj, table) {
+                new LayerWindow({
+                    title: "重命名"
+                    , w: "589px"
+                    , h: "167px"
+                    , url: "app/form.aspx"
+                    , load_complete: function (ifm) {
+                        ifm.initUI({
+                            ui: [{ id: "f_nameLoc", txt: "文件名称" }]
+                            , data: obj.data
+                        });
+                    }
+                    , btn_ok_click: function (ifm) {
+                        var newData = ifm.toObj();
+                        var data = $.extend({}, obj.data, newData);
+
+                        var param = { data: encodeURIComponent(JSON.stringify(data)) };
+                        $.ajax({
+                            type: "GET"
+                            , dataType: "json"
+                            , url: "index.aspx?op=rename"
+                            , data: param
+                            , success: function (res) {
+                                obj.update({ "f_nameLoc": newData.f_nameLoc });
+                            }
+                            , error: function (req, txt, err) { }
+                            , complete: function (req, sta) { req = null; }
+                        });
+
+                    }
+                });
+            }
             , table_del: function (obj, table) {
                 var msg = "确定要删除文件：" + obj.data.f_nameLoc + " ？";
                 if (obj.data.f_fdTask) msg = "确定要删除文件夹：" + obj.data.f_nameLoc + " ？";

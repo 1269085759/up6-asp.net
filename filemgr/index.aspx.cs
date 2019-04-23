@@ -96,6 +96,7 @@ namespace up6.filemgr
 
         void file_rename() {
             var data = Request.QueryString["data"];
+            data = Server.UrlDecode(data);
             var obj = JObject.Parse(data);
 
             SqlExec se = new SqlExec();

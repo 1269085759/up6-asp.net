@@ -14,6 +14,7 @@
               , this.m_path["vue"]
               , this.m_path["down2"]
               , this.m_path["root"]+"/filemgr/data/index.js"
+              , this.m_path["res"]+"layer.window.js"
               ) %>
 </head>
 <body>
@@ -78,7 +79,7 @@
                 //复选框
                 table.on('checkbox(files)', function (obj) { pl.attr.event.table_check_change(obj, table); });
                 table.on('edit(files)', function (obj) { pl.attr.event.table_edit(obj); });
-
+                pl.attr.ui.table = table;
             });
         </script>
     </div>
