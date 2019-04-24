@@ -174,7 +174,7 @@
                 "identity": false
             },
             {
-                "name": "fd_uid",
+                "name": "f_uid",
                 "type": "int",
                 "primary": false,
                 "length": 4,
@@ -209,10 +209,10 @@
                 "identity": false
             },
             {
-                "name": "fd_folders",
-                "type": "int",
+                "name": "f_scan",
+                "type": "bool",
                 "primary": false,
-                "length": 4,
+                "length": 1,
                 "identity": false
             },
             {
@@ -258,7 +258,7 @@
                 "identity": false
             },
             {
-                "name": "fd_pathRel",
+                "name": "f_pathRel",
                 "type": "string",
                 "primary": false,
                 "length": 255,

@@ -243,9 +243,17 @@ namespace up6.filemgr.app
             fileSvr.pathSvr = fileSvr.pathSvr.Replace("\\", "/");
             if (!Directory.Exists(fileSvr.pathSvr)) Directory.CreateDirectory(fileSvr.pathSvr);
 
-            //添加到数据表
+            //添加到文件表
             DBFile db = new DBFile();
             db.Add(ref fileSvr);
+            //添加到目录表
+            SqlExec se = new SqlExec();
+            se.insert("up6_folders", new SqlParam[] {
+                new SqlParam("f_id",id)
+                ,new SqlParam("f_nameLoc",fileSvr.nameLoc)
+                ,new SqlParam("f_pid",pid)
+                ,new SqlParam("f_pidRoot",pidRoot)
+            });
             up6_biz_event.folder_create(fileSvr);
 
             string json = JsonConvert.SerializeObject(fileSvr);
@@ -281,8 +289,14 @@ namespace up6.filemgr.app
                 sa.root = inf;//
                 sa.scan(inf, root);
 
-                //更新扫描状态
-                DBFile.fd_scan(id, uid);
+                //更新扫描状态                
+                SqlExec se = new SqlExec();
+                se.update("up6_folders", new SqlParam[] {
+                    new SqlParam("f_scan",true)
+                },new SqlParam[] {
+                    new SqlParam("f_id",id)
+                    ,new SqlParam("f_uid",uid)
+                });
 
                 up6_biz_event.folder_post_complete(id);
 

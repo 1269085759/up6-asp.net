@@ -4,7 +4,7 @@ function PageLogic() {
     this.downer = null;
     this.files_checked = [];
     this.up6 = null;
-    this.pathCur = {f_id:"",f_pid:"",f_pidRoot:"",f_nameLoc:"根目录"};//
+    this.pathCur = {f_id:"",f_pid:"",f_pidRoot:"",f_nameLoc:"根目录",f_pathRel:"/"};//
 
     this.attr = {
         ui: {
@@ -98,7 +98,7 @@ function PageLogic() {
                     title: "新建文件夹"
                     , w: "589px"
                     , h: "167px"
-                    , url: "app/form.aspx"
+                    , url: "biz/form.aspx"
                     , btn_ok: "确定"
                     , load_complete: function (ifm) {
                         ifm.initUI({
@@ -109,7 +109,6 @@ function PageLogic() {
                         var newData = ifm.toObj();
                         var data = $.extend({}, newData, {
                             f_pid: _this.pathCur.f_id
-                            ,f_pidRoot: _this.pathCur.f_pidRoot
                         });
 
                         var param = { data: encodeURIComponent(JSON.stringify(data)) };

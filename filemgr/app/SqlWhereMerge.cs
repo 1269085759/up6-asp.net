@@ -36,7 +36,7 @@ namespace up6.filemgr.app
         /// 相等条件，a=b
         /// </summary>
         public void equal(string n,string v) {
-            this.m_cds.Add(n,string.Format("{0}='{1}'", n, v));
+            this.m_cds[n] = string.Format("{0}='{1}'", n, v);
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace up6.filemgr.app
         /// <param name="v"></param>
         public void equal(string n, int v)
         {
-            this.m_cds.Add(n,string.Format("{0}={1}", n, v));
+            this.m_cds[n] = string.Format("{0}={1}", n, v);
         }
 
         /// <summary>

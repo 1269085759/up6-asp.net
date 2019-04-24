@@ -748,7 +748,6 @@ function HttpUploaderMgr()
 	    //if (this.Exist(fdLoc.pathLoc)) return;
         //针对空文件夹的处理
         if (json.files == null) jQuery.extend(fdLoc, { files: [] });
-        debugger;
 
 		this.AppendQueue(json.id);//添加到队列
 
