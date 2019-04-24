@@ -243,8 +243,6 @@ function FolderUploader(fdLoc, mgr)
 			, success: function (msg)
 			{
 			    _this.event.fdComplete(_this);//触发事件
-			    //添加到文件列表
-			    _this.FileListMgr.UploadComplete(_this.folderSvr);
 			    _this.manager.PostNext();
 			}
 			, error: function (req, txt, err) { alert("向服务器发送文件夹Complete信息错误！" + req.responseText); }

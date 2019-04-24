@@ -84,16 +84,16 @@ function HttpUploaderMgr()
         , "FdChildLimit"    : 0//文件夹子元素数量限制（子文件+子文件夹）。0表示不限制
         , "ProcSaveTm"      : 60//定时保存进度。单位：秒，默认：1分钟
 		//文件夹操作相关
-		, "UrlFdCreate"		: page.path.fe + "app/up6_svr.aspx?op=fd-init"
-		, "UrlFdComplete"	: page.path.fe + "app/up6_svr.aspx?op=fd-comp"
-		, "UrlFdDel"	    : page.path.fe + "app/up6_svr.aspx?op="
+		, "UrlFdCreate"		: page.path.fe + "biz/up6_svr.aspx?op=fd-init"
+		, "UrlFdComplete"	: page.path.fe + "biz/up6_svr.aspx?op=fd-comp"
+		, "UrlFdDel"	    : page.path.fe + "biz/up6_svr.aspx?op="
 		//文件操作相关
-		, "UrlCreate"		: page.path.fe + "app/up6_svr.aspx?op=init"
-		, "UrlPost"			: page.path.fe + "app/up6_svr.aspx?op=post"
-        , "UrlProcess"		: page.path.fe + "app/up6_svr.aspx?op=proc"
-		, "UrlComplete"		: page.path.fe + "app/up6_svr.aspx?op=cmp"
-		, "UrlList"			: page.path.fe + "app/up6_svr.aspx?op="
-		, "UrlDel"			: page.path.fe + "app/up6_svr.aspx?op="
+		, "UrlCreate"		: page.path.fe + "biz/up6_svr.aspx?op=init"
+		, "UrlPost"			: page.path.fe + "biz/up6_svr.aspx?op=post"
+        , "UrlProcess"		: page.path.fe + "biz/up6_svr.aspx?op=proc"
+		, "UrlComplete"		: page.path.fe + "biz/up6_svr.aspx?op=cmp"
+		, "UrlList"			: page.path.fe + "biz/up6_svr.aspx?op="
+		, "UrlDel"			: page.path.fe + "biz/up6_svr.aspx?op="
 	    //x86
         , ie: {
               drop: { clsid: "0868BADD-C17E-4819-81DE-1D60E5E734A6", name: "Xproer.HttpDroper6" }
@@ -225,6 +225,7 @@ function HttpUploaderMgr()
         for (var i = 0, l = json.folders.length; i < l; ++i) {
             this.addFolderLoc(json.folders[i]);
         }
+        this.event.after_sel_file();
 	    setTimeout(function () { _this.PostFirst(); }, 500);
 	};
 	this.paste_files = function (json)
@@ -646,7 +647,7 @@ function HttpUploaderMgr()
 
 	//粘贴文件
 	this.pasteFiles = function()
-	{
+    {
         _this.app.pasteFiles();
 	};
 
@@ -697,17 +698,17 @@ function HttpUploaderMgr()
         this.filesMap[fileLoc.id] = upFile;//添加到映射表
         upFile.ui = this.find_ui(ui);
         
-		upFile.ui.name.text(nameLoc).attr("title", nameLoc);
-        upFile.ui.size.text(fileLoc.sizeLoc);
-        upFile.ui.percent.text("(0%)");
-        upFile.ui.btn.cancel.show();
-        upFile.ui.btn.cancel.click(function()
+		ui.name.text(nameLoc).attr("title", nameLoc);
+        ui.size.text(fileLoc.sizeLoc);
+        ui.percent.text("(0%)");
+        ui.btn.cancel.show();
+        ui.btn.cancel.click(function()
 		{
 			upFile.stop();
 			upFile.remove();
 			_this.PostFirst();//
 		});
-        upFile.ui.btn.post.click(function ()
+        ui.btn.post.click(function ()
 		{
 		    btnPost.hide();
 		    btnDel.hide();
@@ -724,11 +725,11 @@ function HttpUploaderMgr()
                 _this.AppendQueue(fileLoc.id);
 		    }
 		});
-        upFile.ui.btn.stop.click(function ()
+        ui.btn.stop.click(function ()
 		{
 		    upFile.stop();
 		});
-        upFile.ui.btn.del.click(function () { upFile.remove(); });
+        ui.btn.del.click(function () { upFile.remove(); });
 		
 		upFile.Ready(); //准备
 		return upFile;
@@ -741,24 +742,26 @@ function HttpUploaderMgr()
 		//本地文件夹存在
 	    //if (this.Exist(fdLoc.pathLoc)) return;
         //针对空文件夹的处理
-	    if (json.files == null) jQuery.extend(fdLoc,{files:[]});
-	    //if (json.lenLoc == 0) return;
+        if (json.files == null) jQuery.extend(fdLoc, { files: [] });
+        debugger;
 
 		this.AppendQueue(json.id);//添加到队列
 
 		var ui = this.ui.file.clone();//文件夹信息
-		this.filesUI.append(ui);//添加到上传列表面板
+		this.ui.list.append(ui);//添加到上传列表面板
 		ui.css("display", "block");
-        fdTask.ui = this.find_ui(ui);
+        ui = this.find_ui(ui);
+        ui.ico_folder.removeClass("hide");
+        ui.ico_file.addClass("hide");
 
-        fdTask.ui.msg.text("(0%)");
-        fdTask.ui.process.css("width",fdLoc.perSvr);
-		//if(fdLoc.fdName != null) fdLoc.name = fdLoc.fdName;
-        fdTask.ui.name.text(fdLoc.nameLoc);
-        fdTask.ui.name.attr("title", fdLoc.nameLoc + "\n文件：" + fdLoc.files.length + "\n文件夹：" + fdLoc.foldersCount + "\n大小：" + fdLoc.sizeLoc);
-        fdTask.ui.size.text("0字节");
+        ui.msg.text("(0%)");
+        ui.process.css("width",fdLoc.perSvr);
+        ui.name.text(fdLoc.nameLoc);
+        ui.name.attr("title", fdLoc.nameLoc + "\n文件：" + fdLoc.files.length + "\n文件夹：" + fdLoc.foldersCount + "\n大小：" + fdLoc.sizeLoc);
+        ui.size.text("0字节");
 
-		var fdTask = new FolderUploader( fdLoc, this);
+        var fdTask = new FolderUploader(fdLoc, this);
+        fdTask.ui = ui;
         this.filesMap[fdLoc.id] = fdTask;//添加到映射表
         fdTask.ui.btn.cancel.click(function ()
 		{

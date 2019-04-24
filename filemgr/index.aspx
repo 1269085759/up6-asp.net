@@ -22,6 +22,7 @@
     <div class="container-fluid">
         <div class="m-t-md clearfix">
             <button class="btn btn-default btn-sm pull-left m-r-xs" role="button" id="btn-up"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 上传文件</button>
+            <button class="btn btn-default btn-sm pull-left m-r-xs" role="button" id="btn-up-paste"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 粘贴上传</button>
             <button class="btn btn-default btn-sm pull-left m-r-xs" role="button" id="btn-mk-folder"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 创建文件夹</button>
             <button class="btn btn-default btn-sm pull-left hide m-r-xs" role="button" id="btn-down"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 下载</button>
             <button class="btn btn-default btn-sm pull-left hide" role="button" id="btn-del"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> 删除</button>
@@ -50,7 +51,7 @@
                                     </div>
                                     <div class="file-size" name="size">10MB</div>
                                     <div class="file-path" name="path">路径</div>
-                                    <div class="file-status" name="state"><img src="<%=this.m_path["res"]+"imgs/16/ok.png" %>" style="display:none;color:green;" name="ico-ok"/><span name="msg"></span></div>
+                                    <div class="file-status" name="state"><img src="res/imgs/16/ok.png"  style="display:none;color:green;" name="ico-ok"/><span name="msg"></span></div>
                                     <div class="file-operate">
                                         <i class="layui-icon layui-icon-play link" style="display:none;" name="post"></i>
                                         <i class="layui-icon layui-icon-pause link" style="display:none;" name="stop"></i>

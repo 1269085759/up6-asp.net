@@ -53,12 +53,12 @@ function DownloaderMgr()
 		, "FilePart"	: 5242880//文件块大小，计算器：http://www.beesky.com/newsite/bit_byte.htm
         , "FolderClear"	: true//下载前是否清空目录
         //file
-        , "UrlCreate"   : page.path.fe+"app/down2_svr.aspx?op=init"
-        , "UrlDel"      : page.path.fe+"app/down2_svr.aspx?op=del"
+        , "UrlCreate"   : page.path.fe+"biz/down2_svr.aspx?op=init"
+        , "UrlDel"      : page.path.fe+"biz/down2_svr.aspx?op=del"
         , "UrlList"     : "http://localhost:8888/down2/db/f_list.aspx"
         , "UrlListCmp"  : "http://localhost:8888/down2/db/f_list_cmp.aspx"
-        , "UrlUpdate"   : page.path.fe+"app/down2_svr.aspx?op=proc"
-        , "UrlDown"     : page.path.fe+"app/down2_svr.aspx?op=down"
+        , "UrlUpdate"   : page.path.fe+"biz/down2_svr.aspx?op=proc"
+        , "UrlDown"     : page.path.fe+"biz/down2_svr.aspx?op=down"
 	    //folder
         , "UrlFdData"   : "http://localhost:8888/down2/db/fd_data.aspx"
         //x86

@@ -8,7 +8,9 @@ function PageLogic() {
 
     this.attr = {
         ui: {
-            table: null, btnUp: "#btn-up", btnDown: "#btn-down", key: "#search-key", up6: null
+            table: null, btnDown: "#btn-down", key: "#search-key", up6: null
+            , btnUp: "#btn-up"
+            , btnUpPaste: "#btn-up-paste"
             , btnDel: "#btn-del"
             , btnMkFolder: "#btn-mk-folder"
         }
@@ -17,6 +19,11 @@ function PageLogic() {
             {
                 id: "#btn-up", e: "click", n: function () {
                 _this.up6.openFile();
+                }
+            },
+            {
+                id: "#btn-up-paste", e: "click", n: function () {
+                    _this.attr.event.btn_up_paste_click();
                 }
             },
             {
@@ -71,6 +78,10 @@ function PageLogic() {
                     }
                     , btn2: function (index, layero) { }
                 });
+            }
+            , btn_up_paste_click: function () {
+                debugger;
+                _this.up6.pasteFiles();
             }
             , btn_mk_folder_click: function () {
                 new LayerWindow({
