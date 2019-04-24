@@ -135,8 +135,11 @@ function PageLogic() {
                     , yes: function (index) {
                         layer.close(index);
 
-                        debugger;
-                        var str = JSON.stringify(_this.files_checked);
+                        var ids = [];
+                        $.each(_this.files_checked, function (i, n) {
+                            ids.push({f_id:n.f_id});
+                        });
+                        var str = JSON.stringify(ids);
                         str = encodeURIComponent(str);
                         var param = jQuery.extend({}, { data: str, time: new Date().getTime() });
                         $.ajax({
@@ -149,7 +152,7 @@ function PageLogic() {
                                     url: 'index.aspx?op=data&tm=' + new Date().getTime()
                                     , page: { curr: 1 }//第一页
                                 });
-
+                                $(_this.attr.ui.btnDel).addClass("hide");
                             }
                             , error: function (req, txt, err) { }
                             , complete: function (req, sta) { req = null; }
