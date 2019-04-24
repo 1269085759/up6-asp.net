@@ -22,6 +22,7 @@
     <div class="container-fluid">
         <div class="m-t-md clearfix">
             <button class="btn btn-default btn-sm pull-left m-r-xs" role="button" id="btn-up"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 上传文件</button>
+            <button class="btn btn-default btn-sm pull-left m-r-xs" role="button" id="btn-mk-folder"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 创建文件夹</button>
             <button class="btn btn-default btn-sm pull-left hide m-r-xs" role="button" id="btn-down"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 下载</button>
             <button class="btn btn-default btn-sm pull-left hide" role="button" id="btn-del"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> 删除</button>
             <span class="pull-right form-inline">
@@ -44,7 +45,7 @@
                             <div class="file-list" name="file" style="display:none;">
                                 <div class="process" style="width: 0%;" name="process"></div>
                                 <div class="info ">
-                                    <div class="file-name clearfix">
+                                    <div class="file-name clearfix p-l-sm">
                                         <img name="file" src="res/imgs/24/file.png" /><img name="folder" src="res/imgs/24/folder.png" class="hide"/><span name="name">文件</span>
                                     </div>
                                     <div class="file-size" name="size">10MB</div>

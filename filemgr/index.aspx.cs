@@ -21,6 +21,38 @@ namespace up6.filemgr
             else if (op == "del") this.file_del();
             else if (op == "del-batch") this.file_del_batch();
             else if (op == "path") this.build_path();
+            else if (op == "mk-folder") this.mk_folder();
+        }
+
+        void mk_folder() {
+            var data = Request.QueryString["data"];
+            data = Server.UrlDecode(data);
+            var obj = JObject.Parse(data);
+
+            SqlExec se = new SqlExec();
+            //根目录
+            if (string.IsNullOrEmpty(obj["f_pid"].ToString().Trim()))
+            {
+                se.insert("up6_files", new SqlParam[] {
+                    new SqlParam("f_id",Guid.NewGuid().ToString("N"))
+                    ,new SqlParam("f_nameLoc",obj["f_nameLoc"].ToString())
+                    ,new SqlParam("f_fdTask",true)
+                    ,new SqlParam("f_complete",true)
+                });
+            }
+            //子目录
+            else
+            {
+                se.insert("up6_folders", new SqlParam[] {
+                    new SqlParam("f_id",Guid.NewGuid().ToString("N"))
+                    ,new SqlParam("f_pid",obj["f_pid"].ToString())
+                    ,new SqlParam("f_pidRoot",obj["f_pidRoot"].ToString())
+                    ,new SqlParam("f_nameLoc",obj["f_nameLoc"].ToString())
+                    ,new SqlParam("f_complete",true)
+                });
+            }
+
+            PageTool.to_content(data);
         }
 
         /// <summary>

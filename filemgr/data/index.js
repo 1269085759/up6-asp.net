@@ -4,14 +4,24 @@ function PageLogic() {
     this.downer = null;
     this.files_checked = [];
     this.up6 = null;
+    this.pathCur = {f_id:"",f_pid:"",f_pidRoot:"",f_nameLoc:"根目录"};//
 
     this.attr = {
-        ui: { table: null, btnUp: "#btn-up", btnDown: "#btn-down", key: "#search-key", up6: null, btnDel:"#btn-del"}
+        ui: {
+            table: null, btnUp: "#btn-up", btnDown: "#btn-down", key: "#search-key", up6: null
+            , btnDel: "#btn-del"
+            , btnMkFolder: "#btn-mk-folder"
+        }
         , nav_path: null
         , ui_ents: [
             {
                 id: "#btn-up", e: "click", n: function () {
                 _this.up6.openFile();
+                }
+            },
+            {
+                id: "#btn-mk-folder", e: "click", n: function () {
+                    _this.attr.event.btn_mk_folder_click();
                 }
             },
             {
@@ -36,7 +46,7 @@ function PageLogic() {
                 layui.use(['table'], function () {
                     var table = layui.table;
                     table.reload('files', {
-                        url: 'index.aspx?op=data' //数据接口
+                        url: 'index.aspx?op=data&tm=' + new Date().getTime()
                         , page: { curr: 1 }//第一页
                     });
                 });
@@ -62,10 +72,48 @@ function PageLogic() {
                     , btn2: function (index, layero) { }
                 });
             }
+            , btn_mk_folder_click: function () {
+                new LayerWindow({
+                    title: "新建文件夹"
+                    , w: "589px"
+                    , h: "167px"
+                    , url: "app/form.aspx"
+                    , btn_ok: "确定"
+                    , load_complete: function (ifm) {
+                        ifm.initUI({
+                            ui: [{ id: "f_nameLoc", txt: "名称" }]
+                        });
+                    }
+                    , btn_ok_click: function (ifm) {
+                        var newData = ifm.toObj();
+                        var data = $.extend({}, newData, {
+                            f_pid: _this.pathCur.f_id
+                            ,f_pidRoot: _this.pathCur.f_pidRoot
+                        });
+
+                        var param = { data: encodeURIComponent(JSON.stringify(data)) };
+                        $.ajax({
+                            type: "GET"
+                            , dataType: "json"
+                            , url: "index.aspx?op=mk-folder"
+                            , data: param
+                            , success: function (res) {
+                                _this.attr.event.btn_refresh_click();
+                            }
+                            , error: function (req, txt, err) { }
+                            , complete: function (req, sta) { req = null; }
+                        });
+
+                    }
+                });
+            }
             , up6_sel_file: function () {
                 layer.open({
                     type: 1
+                    , maxmin :true
+                    , shade: 0//不显示遮罩
                     , title: '上传文件'
+                    , offset: 'rb'//右下角
                     , btn: ['确定', '取消']
                     , content: _this.attr.ui.up6
                     , area: ['635px', '454px']
@@ -158,6 +206,12 @@ function PageLogic() {
                             , complete: function (req, sta) { req = null; }
                         });
                     }
+                });
+            }
+            , btn_refresh_click: function () {
+                _this.attr.ui.table.reload('files', {
+                    url: 'index.aspx?op=data&pid=' + _this.pathCur.f_id + '&tm=' + new Date().getTime()
+                    , page: { curr: 1 }//第一页
                 });
             }
             , table_tool_click: function (obj, table) {
@@ -256,6 +310,7 @@ function PageLogic() {
                 if (obj.data.f_fdTask) _this.attr.open_folder(obj.data, table);
             }
             , path_changed: function (data) {
+                _this.pathCur = data;
                 $.ajax({
                     type: "GET"
                     , dataType: "json"
@@ -332,6 +387,7 @@ $(function () {
     pl.init();
 
     pl.up6 = new HttpUploaderMgr();
+    pl.up6.event.fileComplete = function () { pl.attr.event.file_post_complete(); };
     pl.up6.event.after_sel_file = function () { pl.attr.event.up6_sel_file(); };
     pl.up6.load_to("http-up6");
 

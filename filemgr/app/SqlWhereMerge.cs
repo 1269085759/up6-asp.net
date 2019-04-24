@@ -46,7 +46,7 @@ namespace up6.filemgr.app
         /// <param name="v"></param>
         public void equal(string n, int v)
         {
-            this.m_cds.Add(n,string.Format("{0}='{1}'", n, v));
+            this.m_cds.Add(n,string.Format("{0}={1}", n, v));
         }
 
         /// <summary>
