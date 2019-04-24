@@ -69,6 +69,11 @@ function PageLogic() {
                 f.folderSvr.pid = _this.pathCur.f_id;
                 f.folderSvr.pidRoot = _this.pathCur.f_pidRoot;
             }
+            , up6_load_complete: function () {
+                setTimeout(function () {
+                    _this.attr.load_uncomp();
+                }, 1000);
+            }
             , btn_up_click: function () {
                 layer.open({
                     type: 2
@@ -362,6 +367,25 @@ function PageLogic() {
                 _this.attr.event.path_changed(data);
             });            
         }
+        , load_uncomp: function () {
+            var param = jQuery.extend({}, { time: new Date().getTime() });
+            $.ajax({
+                type: "GET"
+                , dataType: "json"
+                , url: "index.aspx?op=uncomp"
+                , data: param
+                , success: function (res) {
+                    $.each(res, function (i, n) {
+                        debugger;
+                        _this.up6.addFileLoc(n);
+                    });
+                    _this.attr.event.up6_sel_file();
+                }
+                , error: function (req, txt, err) { }
+                , complete: function (req, sta) { req = null; }
+            });
+
+        }
         , search: function (sql) {
             layui.use(['table'], function () {
                 var table = layui.table;
@@ -411,6 +435,7 @@ $(function () {
     pl.up6.event.scanComplete = function (f) { pl.attr.event.scan_complete(f); };
     pl.up6.event.after_sel_file = function () { pl.attr.event.up6_sel_file(); };
     pl.up6.event.md5Complete = function (obj) { pl.attr.event.file_md5_complete(obj); };
+    pl.up6.event.loadComplete = function () { pl.attr.event.up6_load_complete(); };
     pl.up6.load_to("http-up6");
 
     pl.downer = new DownloaderMgr();

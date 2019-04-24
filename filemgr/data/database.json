@@ -181,28 +181,28 @@
                 "identity": false
             },
             {
-                "name": "fd_length",
+                "name": "f_length",
                 "type": "long",
                 "primary": false,
                 "length": 8,
                 "identity": false
             },
             {
-                "name": "fd_size",
+                "name": "f_size",
                 "type": "string",
                 "primary": false,
                 "length": 50,
                 "identity": false
             },
             {
-                "name": "fd_pathLoc",
+                "name": "f_pathLoc",
                 "type": "string",
                 "primary": false,
                 "length": 255,
                 "identity": false
             },
             {
-                "name": "fd_pathSvr",
+                "name": "f_pathSvr",
                 "type": "string",
                 "primary": false,
                 "length": 255,

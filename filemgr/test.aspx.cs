@@ -13,6 +13,22 @@ namespace up6.filemgr
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            this.exec_read_test();
+        }
+
+        void exec_read_test()
+        {
+            SqlExec se = new SqlExec();
+            var files = se.exec("up6_files"
+                , "select f_id,f_nameLoc,f_pathLoc,f_sizeLoc,f_lenSvr,f_perSvr,f_fdTask from up6_files where f_complete=0 and f_fdChild=0"
+                , "f_id,f_nameLoc,f_pathLoc,f_sizeLoc,f_lenSvr,f_perSvr,f_fdTask"
+                ,"id,nameLoc,pathLoc,sizeLoc,lenSvr,perSvr,fdTask");
+
+            PageTool.to_content(files);
+        }
+
+        void exec_batch_test()
+        {
             JArray ids = new JArray {
                 new JObject{ { "f_id", "38699a00ef9845aeb98687384ec3316c" } }
                 ,new JObject{ { "f_id", "b87716eaa7fb4df38c120e464cb398fb" } }
@@ -23,6 +39,18 @@ namespace up6.filemgr
                 , string.Empty
                 , "f_id"
                 , ids);
+        }
+
+        void un_cmp_test()
+        {
+
+            SqlExec se = new SqlExec();
+            var files = se.select("up6_files", "f_id,f_nameLoc,f_pathLoc,f_sizeLoc",
+                new SqlParam[] {
+                    new SqlParam("f_fdChild",0)
+                    ,new SqlParam("f_complete",false)
+                });
+            PageTool.to_content(files);
         }
     }
 }

@@ -2,19 +2,19 @@
 	[f_id] [char](32) COLLATE Chinese_PRC_CI_AS NOT NULL,
 	[f_nameLoc] [varchar](50) COLLATE Chinese_PRC_CI_AS NULL CONSTRAINT [DF_up6_folders_f_nameLoc]  DEFAULT (''),
 	[f_pid] [char](32) COLLATE Chinese_PRC_CI_AS NULL CONSTRAINT [DF_up6_folders_f_pid]  DEFAULT ((0)),
-	[fd_uid] [int] NULL CONSTRAINT [DF_up6_folders_fd_uid]  DEFAULT ((0)),
-	[fd_length] [bigint] NULL CONSTRAINT [DF_up6_folders_fd_length]  DEFAULT ((0)),
-	[fd_size] [varchar](50) COLLATE Chinese_PRC_CI_AS NULL CONSTRAINT [DF_up6_folders_fd_size]  DEFAULT (''),
-	[fd_pathLoc] [varchar](255) COLLATE Chinese_PRC_CI_AS NULL CONSTRAINT [DF_up6_folders_fd_pathLoc]  DEFAULT (''),
-	[fd_pathSvr] [varchar](255) COLLATE Chinese_PRC_CI_AS NULL CONSTRAINT [DF_up6_folders_fd_pathSvr]  DEFAULT (''),
-	[fd_folders] [int] NULL CONSTRAINT [DF_up6_folders_fd_folders]  DEFAULT ((0)),
+	[f_uid] [int] NULL CONSTRAINT [DF_up6_folders_f_uid]  DEFAULT ((0)),
+	[f_length] [bigint] NULL CONSTRAINT [DF_up6_folders_f_length]  DEFAULT ((0)),
+	[f_size] [varchar](50) COLLATE Chinese_PRC_CI_AS NULL CONSTRAINT [DF_up6_folders_f_size]  DEFAULT (''),
+	[f_pathLoc] [varchar](255) COLLATE Chinese_PRC_CI_AS NULL CONSTRAINT [DF_up6_folders_f_pathLoc]  DEFAULT (''),
+	[f_pathSvr] [varchar](255) COLLATE Chinese_PRC_CI_AS NULL CONSTRAINT [DF_up6_folders_f_pathSvr]  DEFAULT (''),
+	[f_scan] [int] NULL CONSTRAINT [DF_up6_folders_f_scan]  DEFAULT ((0)),
 	[fd_files] [int] NULL CONSTRAINT [DF_up6_folders_fd_files]  DEFAULT ((0)),
 	[f_fdTask] [int] NULL CONSTRAINT [DF_up6_folders_f_fdTask]  DEFAULT ((0)),
 	[f_complete] [bit] NULL CONSTRAINT [DF_up6_folders_f_complete]  DEFAULT ((0)),
 	[f_deleted] [bit] NULL CONSTRAINT [DF_up6_folders_f_deleted]  DEFAULT ((0)),
 	[f_time] [datetime] NULL CONSTRAINT [DF_up6_folders_f_time]  DEFAULT (getdate()),
 	[f_pidRoot] [char](32) COLLATE Chinese_PRC_CI_AS NULL CONSTRAINT [DF_up6_folders_f_pidRoot]  DEFAULT ((0)),
-	[fd_pathRel] [nvarchar](255) COLLATE Chinese_PRC_CI_AS NULL CONSTRAINT [DF_up6_folders_fd_pathRel]  DEFAULT ('')
+	[f_pathRel] [nvarchar](255) COLLATE Chinese_PRC_CI_AS NULL CONSTRAINT [DF_up6_folders_f_pathRel]  DEFAULT ('')
 ) ON [PRIMARY]
 
 SET ANSI_PADDING OFF
@@ -23,17 +23,17 @@ EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'文件夹名�
 
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'父级ID' ,@level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'up6_folders', @level2type=N'COLUMN', @level2name=N'f_pid'
 
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'用户ID。' ,@level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'up6_folders', @level2type=N'COLUMN', @level2name=N'fd_uid'
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'用户ID。' ,@level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'up6_folders', @level2type=N'COLUMN', @level2name=N'f_uid'
 
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'数字化的大小。以字节为单位。示例：1023652' ,@level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'up6_folders', @level2type=N'COLUMN', @level2name=N'fd_length'
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'数字化的大小。以字节为单位。示例：1023652' ,@level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'up6_folders', @level2type=N'COLUMN', @level2name=N'f_length'
 
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'格式化的大小。示例：10G' ,@level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'up6_folders', @level2type=N'COLUMN', @level2name=N'fd_size'
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'格式化的大小。示例：10G' ,@level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'up6_folders', @level2type=N'COLUMN', @level2name=N'f_size'
 
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'文件夹在客户端的路径' ,@level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'up6_folders', @level2type=N'COLUMN', @level2name=N'fd_pathLoc'
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'文件夹在客户端的路径' ,@level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'up6_folders', @level2type=N'COLUMN', @level2name=N'f_pathLoc'
 
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'文件夹在服务端的路径' ,@level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'up6_folders', @level2type=N'COLUMN', @level2name=N'fd_pathSvr'
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'文件夹在服务端的路径' ,@level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'up6_folders', @level2type=N'COLUMN', @level2name=N'f_pathSvr'
 
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'文件夹数' ,@level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'up6_folders', @level2type=N'COLUMN', @level2name=N'fd_folders'
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'文件夹数' ,@level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'up6_folders', @level2type=N'COLUMN', @level2name=N'f_scan'
 
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'文件数' ,@level0type=N'SCHEMA', @level0name=N'dbo', @level1type=N'TABLE', @level1name=N'up6_folders', @level2type=N'COLUMN', @level2name=N'fd_files'
 

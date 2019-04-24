@@ -86,9 +86,9 @@
     <Content Include="down2\js\folder.png" />
     <Content Include="down2\js\jquery-1.4.min.js" />
     <Content Include="down2\js\json2.min.js" />
-    <Content Include="filemgr\app\down2_svr.aspx" />
-    <Content Include="filemgr\app\form.aspx" />
-    <Content Include="filemgr\app\up6_svr.aspx" />
+    <Content Include="filemgr\biz\down2_svr.aspx" />
+    <Content Include="filemgr\biz\form.aspx" />
+    <Content Include="filemgr\biz\up6_svr.aspx" />
     <Content Include="filemgr\data\index.js" />
     <Content Include="filemgr\down2\down-single.js" />
     <Content Include="filemgr\down2\down.app.js" />
@@ -225,6 +225,7 @@
     <Content Include="filemgr\res\moment\moment.min.js" />
     <Content Include="filemgr\res\sql.search.js" />
     <Content Include="filemgr\res\vue.min.js" />
+    <Content Include="filemgr\test.aspx" />
     <Content Include="filemgr\up.aspx" />
     <Content Include="filemgr\up6\del.png" />
     <Content Include="filemgr\up6\file.png" />
@@ -429,18 +430,20 @@
     </Compile>
     <Compile Include="filemgr\app\ConfigReader.cs" />
     <Compile Include="filemgr\app\DbBase.cs" />
-    <Compile Include="filemgr\app\down2_svr.aspx.cs">
+    <Compile Include="filemgr\app\DbFolder.cs" />
+    <Compile Include="filemgr\app\SqlParamCreater.cs" />
+    <Compile Include="filemgr\biz\down2_svr.aspx.cs">
       <DependentUpon>down2_svr.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="filemgr\app\down2_svr.aspx.designer.cs">
+    <Compile Include="filemgr\biz\down2_svr.aspx.designer.cs">
       <DependentUpon>down2_svr.aspx</DependentUpon>
     </Compile>
-    <Compile Include="filemgr\app\form.aspx.cs">
+    <Compile Include="filemgr\biz\form.aspx.cs">
       <DependentUpon>form.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="filemgr\app\form.aspx.designer.cs">
+    <Compile Include="filemgr\biz\form.aspx.designer.cs">
       <DependentUpon>form.aspx</DependentUpon>
     </Compile>
     <Compile Include="filemgr\app\PageTool.cs" />
@@ -454,11 +457,11 @@
     <Compile Include="filemgr\app\SqlValueSetter.cs" />
     <Compile Include="filemgr\app\SqlWhereCondition.cs" />
     <Compile Include="filemgr\app\SqlWhereMerge.cs" />
-    <Compile Include="filemgr\app\up6_svr.aspx.cs">
+    <Compile Include="filemgr\biz\up6_svr.aspx.cs">
       <DependentUpon>up6_svr.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="filemgr\app\up6_svr.aspx.designer.cs">
+    <Compile Include="filemgr\biz\up6_svr.aspx.designer.cs">
       <DependentUpon>up6_svr.aspx</DependentUpon>
     </Compile>
     <Compile Include="filemgr\app\WebBase.cs">
@@ -470,6 +473,13 @@
     </Compile>
     <Compile Include="filemgr\index.aspx.designer.cs">
       <DependentUpon>index.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="filemgr\test.aspx.cs">
+      <DependentUpon>test.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="filemgr\test.aspx.designer.cs">
+      <DependentUpon>test.aspx</DependentUpon>
     </Compile>
     <Compile Include="filemgr\up.aspx.cs">
       <DependentUpon>up.aspx</DependentUpon>

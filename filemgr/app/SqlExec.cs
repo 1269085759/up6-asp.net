@@ -89,6 +89,49 @@ namespace up6.filemgr.app
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="table"></param>
+        /// <param name="sql"></param>
+        /// <param name="fields">字段名称</param>
+        /// <param name="newNames">重新命名的字段名称</param>
+        /// <returns></returns>
+        public JToken exec(string table, string sql, string fields,string newNames="")
+        {
+            //加载结构
+            this.m_table = this.m_database.SelectToken(table);
+            var field_all = this.m_table.SelectToken("fields");
+            var field_sel = this.from_fields(fields, field_all);
+            var names = newNames.Split(',');
+
+            DbHelper db = new DbHelper();
+            var cmd = db.GetCommand(sql);
+
+
+            var r = db.ExecuteReader(cmd);
+
+            JArray a = new JArray();
+
+            while (r.Read())
+            {
+                int index = 0;
+                var o = new JObject();
+                foreach (var field in field_sel)
+                {
+                    var fd = field_sel[index];
+                    var field_name = field["name"].ToString();
+                    if (names.Length > 0) field_name = names[index];
+                    var fd_type = fd["type"].ToString().ToLower();
+                    o[field_name] = this.m_cmdRd[fd_type](r, index++);
+                }
+                a.Add(o);
+            }
+            r.Close();
+            return JToken.FromObject(a);
+
+        }
+
+        /// <summary>
         /// 批量SQL语句
         /// </summary>
         /// <param name="table"></param>
@@ -675,6 +718,20 @@ namespace up6.filemgr.app
             }
             r.Close();
             return JToken.FromObject(a);
+        }
+
+        /// <summary>
+        /// 批量获取字段结构信息
+        /// </summary>
+        /// <param name="names">字段名称列表</param>
+        /// <param name="field_all"></param>
+        /// <returns></returns>
+        JToken from_fields(string names,JToken field_all) {
+            var data = from n in names.Split(',')
+                       join f in field_all
+                       on n.Trim() equals f["name"].ToString()
+                       select f;
+            return JToken.FromObject(data);
         }
     }
 }

@@ -164,17 +164,21 @@ namespace up6.filemgr.app
         }
         void file_process()
         {
-            var obj = this.req_to_json();
+            string id = Request.QueryString["id"];
+            string uid = Request.QueryString["uid"];
+            string offset = Request.QueryString["offset"];
+            string lenSvr = Request.QueryString["lenSvr"];
+            string perSvr = Request.QueryString["perSvr"];
             string callback = Request.QueryString["callback"];//jsonp参数
 
             string json = callback + "({\"state\":0})";//返回jsonp格式数据。
-            if (!string.IsNullOrEmpty(obj["id"].ToString())
-                && !string.IsNullOrEmpty(obj["lenSvr"].ToString())
-                && !string.IsNullOrEmpty(obj["perSvr"].ToString()))
+            if (!string.IsNullOrEmpty(id)
+                && !string.IsNullOrEmpty(lenSvr)
+                && !string.IsNullOrEmpty(perSvr))
             {
-                SqlExec se = new SqlExec();
-                se.update("up6_files", "f_pos,f_lenSvr,f_perSvr", "f_id", obj);
-                up6_biz_event.file_post_process(obj["id"].ToString());
+                DBFile db = new DBFile();
+                db.f_process(int.Parse(uid), id, long.Parse(offset), long.Parse(lenSvr), perSvr);
+                up6_biz_event.file_post_process(id);
                 json = callback + "({\"state\":1})";//返回jsonp格式数据。
             }
             PageTool.to_content(json);
@@ -250,6 +254,8 @@ namespace up6.filemgr.app
             SqlExec se = new SqlExec();
             se.insert("up6_folders", new SqlParam[] {
                 new SqlParam("f_id",id)
+                ,new SqlParam("f_pathLoc",fileSvr.pathLoc)
+                ,new SqlParam("f_size",fileSvr.sizeLoc)
                 ,new SqlParam("f_nameLoc",fileSvr.nameLoc)
                 ,new SqlParam("f_pid",pid)
                 ,new SqlParam("f_pidRoot",pidRoot)

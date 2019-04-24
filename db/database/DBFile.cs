@@ -139,6 +139,8 @@ namespace up6.db.database
             StringBuilder sb = new StringBuilder();
             string sql = @"insert into up6_files(
                              f_id
+                            ,f_pid
+                            ,f_pidRoot
                             ,f_sizeLoc
                             ,f_pos
                             ,f_lenSvr
@@ -159,6 +161,8 @@ namespace up6.db.database
 
                             ) values (
                              @f_id
+                            ,@f_pid
+                            ,@f_pidRoot
                             ,@f_sizeLoc
                             ,@f_pos
                             ,@f_lenSvr
@@ -182,6 +186,8 @@ namespace up6.db.database
             DbCommand cmd = db.GetCommand(sql);
 
             db.AddString(ref cmd, "@f_id", model.id, 32);
+            db.AddString(ref cmd, "@f_pid", model.pid, 32);
+            db.AddString(ref cmd, "@f_pidRoot", model.pidRoot, 32);
             db.AddString(ref cmd, "@f_sizeLoc", model.sizeLoc, 10);
             db.AddInt64(ref cmd, "@f_pos", model.offset);
             db.AddInt64(ref cmd, "@f_lenSvr", model.lenSvr);
@@ -220,7 +226,7 @@ namespace up6.db.database
         static public void fd_complete(string f_id,string uid)
         {
             string sql = "update up6_files set f_perSvr='100%',f_lenSvr=f_lenLoc,f_complete=1 where f_id=@f_id and f_uid=@uid;";
-            sql += "update up6_folders set f_complete=1 where f_id=@f_id and fd_uid=@uid;";
+            sql += "update up6_folders set f_complete=1 where f_id=@f_id and f_uid=@uid;";
             sql += "update up6_files set f_perSvr='100%',f_lenSvr=f_lenLoc,f_complete=1 where f_pidRoot=@f_id;";
 
             DbHelper db = new DbHelper();

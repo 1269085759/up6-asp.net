@@ -97,11 +97,11 @@ namespace up6.db.biz.folder
             sb.Append(" f_id");
             sb.Append(",f_pid");
             sb.Append(",f_pidRoot");
-            sb.Append(",fd_uid");
+            sb.Append(",f_uid");
             sb.Append(",f_nameLoc");
             sb.Append(",fd_pathLoc");
             sb.Append(",fd_pathSvr");
-            sb.Append(",fd_pathRel");
+            sb.Append(",f_pathRel");
             sb.Append(",f_complete");
 
             sb.Append(") values (");

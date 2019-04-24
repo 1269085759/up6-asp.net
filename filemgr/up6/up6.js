@@ -134,6 +134,7 @@ function HttpUploaderMgr()
         , "queueComplete": function () {/*队列上传完毕*/ }
         , "addFdError": function (json) {/*添加文件夹失败*/ }
         , "after_sel_file": function () {/**/ }
+        , "loadComplete": function () {/*控件加载完毕*/ }
 	};
 
 	this.working = false;
@@ -291,7 +292,8 @@ function HttpUploaderMgr()
             }
         }
         if (needUpdate) this.update_notice();
-        else {  }
+        else { }
+        this.event.loadComplete();
     };
 	this.load_complete_edge = function (json)
 	{

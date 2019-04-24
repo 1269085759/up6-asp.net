@@ -22,6 +22,20 @@ namespace up6.filemgr
             else if (op == "del-batch") this.file_del_batch();
             else if (op == "path") this.build_path();
             else if (op == "mk-folder") this.mk_folder();
+            else if (op == "uncomp") this.load_uncomplete();
+        }
+
+        /// <summary>
+        /// 加载未完成的文件和目录列表
+        /// </summary>
+        void load_uncomplete() {
+
+            SqlExec se = new SqlExec();
+            var files = se.exec("up6_files"
+                , "select f_id as id,f_nameLoc as nameLoc,f_pathLoc as pathLoc,f_sizeLoc as sizeLoc,f_lenSvr as lenSvr,f_perSvr as perSvr,f_fdTask as fdTask from up6_files where f_complete=0 and f_fdChild=0"
+                , "f_id,f_nameLoc,f_pathLoc,f_sizeLoc,f_lenSvr,f_perSvr,f_fdTask"
+                ,"id,nameLoc,pathLoc,sizeLoc,lenSvr,perSvr,fdTask");
+            PageTool.to_content(files);
         }
 
         void mk_folder() {
