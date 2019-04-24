@@ -206,6 +206,8 @@ namespace up6.filemgr.app
         void folder_init()
         {
             string id = Request.QueryString["id"];
+            string pid = Request.QueryString["pid"];
+            string pidRoot = Request.QueryString["pidRoot"];
             string uid = Request.QueryString["uid"];
             string lenLoc = Request.QueryString["lenLoc"];
             string sizeLoc = Request.QueryString["sizeLoc"];
@@ -223,6 +225,8 @@ namespace up6.filemgr.app
 
             FileInf fileSvr = new FileInf();
             fileSvr.id = id;
+            fileSvr.pid = pid;
+            fileSvr.pidRoot = pidRoot;
             fileSvr.fdChild = false;
             fileSvr.fdTask = true;
             fileSvr.uid = int.Parse(uid);//将当前文件UID设置为当前用户UID

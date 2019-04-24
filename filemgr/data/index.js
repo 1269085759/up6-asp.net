@@ -52,6 +52,9 @@ function PageLogic() {
             file_post_complete: function () {
                 _this.attr.event.btn_refresh_click();
             }
+            , folder_post_complete: function () {
+                _this.attr.event.btn_refresh_click();
+            }
             , file_append: function (f) {
                 f.ui.path.text(_this.pathCur.f_nameLoc);
             }
@@ -61,6 +64,10 @@ function PageLogic() {
             , file_md5_complete: function (obj) {
                 obj.fileSvr.pid = _this.pathCur.f_id;
                 obj.fileSvr.pidRoot = _this.pathCur.f_pidRoot;
+            }
+            , scan_complete:function (f) {
+                f.folderSvr.pid = _this.pathCur.f_id;
+                f.folderSvr.pidRoot = _this.pathCur.f_pidRoot;
             }
             , btn_up_click: function () {
                 layer.open({
@@ -402,8 +409,10 @@ $(function () {
 
     pl.up6 = new HttpUploaderMgr();
     pl.up6.event.fileComplete = function () { pl.attr.event.file_post_complete(); };
+    pl.up6.event.fdComplete = function () { pl.attr.event.folder_post_complete(); };
     pl.up6.event.fileAppend = function (f) { pl.attr.event.file_append(f); };
     pl.up6.event.folderAppend = function (f) { pl.attr.event.folder_append(f); };
+    pl.up6.event.scanComplete = function (f) { pl.attr.event.scan_complete(f); };
     pl.up6.event.after_sel_file = function () { pl.attr.event.up6_sel_file(); };
     pl.up6.event.md5Complete = function (obj) { pl.attr.event.file_md5_complete(obj); };
     pl.up6.load_to("http-up6");

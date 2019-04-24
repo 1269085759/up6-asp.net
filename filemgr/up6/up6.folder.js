@@ -273,6 +273,8 @@ function FolderUploader(fdLoc, mgr)
         this.ui.msg.text("初始化...");
         var param = jQuery.extend({}, this.fields, {
             id: this.folderSvr.id,
+            pid: this.folderSvr.pid,
+            pidRoot: this.folderSvr.pidRoot,
             lenLoc: this.folderSvr.lenLoc,
             sizeLoc: this.folderSvr.sizeLoc,
             pathLoc: encodeURIComponent(this.folderSvr.pathLoc),
