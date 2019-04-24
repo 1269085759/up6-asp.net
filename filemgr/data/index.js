@@ -49,14 +49,14 @@ function PageLogic() {
         ]
         , app: null
         , event: {
-              file_post_complete: function () {
-                layui.use(['table'], function () {
-                    var table = layui.table;
-                    table.reload('files', {
-                        url: 'index.aspx?op=data&tm=' + new Date().getTime()
-                        , page: { curr: 1 }//第一页
-                    });
-                });
+            file_post_complete: function () {
+                _this.attr.event.btn_refresh_click();
+            }
+            , file_append: function (f) {
+                f.ui.path.text(_this.pathCur.f_nameLoc);
+            }
+            , folder_append: function (f) {
+                f.ui.path.text(_this.pathCur.f_nameLoc);
             }
             , file_md5_complete: function (obj) {
                 obj.fileSvr.pid = _this.pathCur.f_id;
@@ -84,7 +84,6 @@ function PageLogic() {
                 });
             }
             , btn_up_paste_click: function () {
-                debugger;
                 _this.up6.pasteFiles();
             }
             , btn_mk_folder_click: function () {
@@ -403,6 +402,8 @@ $(function () {
 
     pl.up6 = new HttpUploaderMgr();
     pl.up6.event.fileComplete = function () { pl.attr.event.file_post_complete(); };
+    pl.up6.event.fileAppend = function (f) { pl.attr.event.file_append(f); };
+    pl.up6.event.folderAppend = function (f) { pl.attr.event.folder_append(f); };
     pl.up6.event.after_sel_file = function () { pl.attr.event.up6_sel_file(); };
     pl.up6.event.md5Complete = function (obj) { pl.attr.event.file_md5_complete(obj); };
     pl.up6.load_to("http-up6");

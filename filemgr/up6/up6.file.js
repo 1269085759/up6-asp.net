@@ -194,7 +194,6 @@ function FileUploader(fileLoc, mgr)
         this.fileSvr.md5 = json.md5;
         this.ui.msg.text("初始化...");
         this.event.md5Complete(this, json.md5);//biz event
-        debugger;
 
         var loc_path = encodeURIComponent(this.fileSvr.pathLoc);
         var loc_len = this.fileSvr.lenLoc;

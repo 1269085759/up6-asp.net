@@ -127,6 +127,8 @@ function HttpUploaderMgr()
 	this.event = {
 	      "md5Complete": function (obj/*HttpUploader对象*/, md5) { }
         , "scanComplete": function (obj/*文件夹扫描完毕，参考：FolderUploader*/) { }
+        , "fileAppend": function (obj/*文件添加完毕，参考：FileUploader*/) { }
+        , "folderAppend": function (obj/*文件添加完毕，参考：FileUploader*/) { }
         , "fileComplete": function (obj/*文件上传完毕，参考：FileUploader*/) { }
         , "fdComplete": function (obj/*文件夹上传完毕，参考：FolderUploader*/) { }
         , "queueComplete": function () {/*队列上传完毕*/ }
@@ -213,19 +215,21 @@ function HttpUploaderMgr()
 	this.set_config = function (v) { jQuery.extend(this.Config, v);};
 	this.open_files = function (json)
     {
-	    for (var i = 0, l = json.files.length; i < l; ++i)
-        {
-	        this.addFileLoc(json.files[i]);
-        }
         this.event.after_sel_file();
+        for (var i = 0, l = json.files.length; i < l; ++i)
+        {
+            var f = this.addFileLoc(json.files[i]);
+            this.event.fileAppend(f);
+        }
 	    setTimeout(function () { _this.PostFirst(); },500);
 	};
 	this.open_folders = function (json)
     {
-        for (var i = 0, l = json.folders.length; i < l; ++i) {
-            this.addFolderLoc(json.folders[i]);
-        }
         this.event.after_sel_file();
+        for (var i = 0, l = json.folders.length; i < l; ++i) {
+            var f = this.addFolderLoc(json.folders[i]);
+            this.event.folderAppend(f);
+        }
 	    setTimeout(function () { _this.PostFirst(); }, 500);
 	};
 	this.paste_files = function (json)
@@ -669,6 +673,7 @@ function HttpUploaderMgr()
             , ico_ok: obj.find(this.ui.ele.ico_ok)
             , process: obj.find(this.ui.ele.process)
             , size: obj.find(this.ui.ele.size)
+            , path: obj.find(this.ui.ele.path)
             , percent: obj.find(this.ui.ele.percent)
             , btn: {
                 del: obj.find(this.ui.ele.btn_del)
@@ -684,7 +689,6 @@ function HttpUploaderMgr()
 	//fileLoc:name,id,ext,size,length,pathLoc,md5,lenSvr,id
 	this.addFileLoc = function(fileLoc)
 	{
-        debugger;
 		//此类型为过滤类型
 		if (_this.NeedFilter(fileLoc.ext)) return;
 
