@@ -86,7 +86,21 @@
     <Content Include="down2\js\folder.png" />
     <Content Include="down2\js\jquery-1.4.min.js" />
     <Content Include="down2\js\json2.min.js" />
+    <Content Include="filemgr\app\down2_svr.aspx" />
+    <Content Include="filemgr\app\form.aspx" />
+    <Content Include="filemgr\app\up6_svr.aspx" />
     <Content Include="filemgr\data\index.js" />
+    <Content Include="filemgr\down2\down-single.js" />
+    <Content Include="filemgr\down2\down.app.js" />
+    <Content Include="filemgr\down2\down.css" />
+    <Content Include="filemgr\down2\down.edge.js" />
+    <Content Include="filemgr\down2\down.file.js" />
+    <Content Include="filemgr\down2\down.folder.js" />
+    <Content Include="filemgr\down2\down.js" />
+    <Content Include="filemgr\down2\file.png" />
+    <Content Include="filemgr\down2\folder.png" />
+    <Content Include="filemgr\down2\jquery-1.4.min.js" />
+    <Content Include="filemgr\down2\json2.min.js" />
     <Content Include="filemgr\res\bootstrap\css\bootstrap-theme.css" />
     <Content Include="filemgr\res\bootstrap\css\bootstrap-theme.min.css" />
     <Content Include="filemgr\res\bootstrap\css\bootstrap.min.css" />
@@ -101,6 +115,7 @@
     <Content Include="filemgr\res\filemgr.css" />
     <Content Include="filemgr\res\jquery\jquery-1.9.1.min.js" />
     <Content Include="filemgr\res\jquery\jquery.serializejson.min.js" />
+    <Content Include="filemgr\res\layer.window.js" />
     <Content Include="filemgr\res\layui\css\layui.css" />
     <Content Include="filemgr\res\layui\css\layui.mobile.css" />
     <Content Include="filemgr\res\layui\css\modules\code.css" />
@@ -211,6 +226,22 @@
     <Content Include="filemgr\res\sql.search.js" />
     <Content Include="filemgr\res\vue.min.js" />
     <Content Include="filemgr\up.aspx" />
+    <Content Include="filemgr\up6\del.png" />
+    <Content Include="filemgr\up6\file.png" />
+    <Content Include="filemgr\up6\folder.png" />
+    <Content Include="filemgr\up6\jquery-1.4.min.js" />
+    <Content Include="filemgr\up6\json2.min.js" />
+    <Content Include="filemgr\up6\post.png" />
+    <Content Include="filemgr\up6\setup.htm" />
+    <Content Include="filemgr\up6\stop.png" />
+    <Content Include="filemgr\up6\up6-single.js" />
+    <Content Include="filemgr\up6\up6.app.js" />
+    <Content Include="filemgr\up6\up6.config.js" />
+    <Content Include="filemgr\up6\up6.css" />
+    <Content Include="filemgr\up6\up6.edge.js" />
+    <Content Include="filemgr\up6\up6.file.js" />
+    <Content Include="filemgr\up6\up6.folder.js" />
+    <Content Include="filemgr\up6\up6.js" />
     <Content Include="index-single.htm" />
     <Content Include="index.aspx" />
     <Content Include="js\cab.html" />
@@ -398,6 +429,20 @@
     </Compile>
     <Compile Include="filemgr\app\ConfigReader.cs" />
     <Compile Include="filemgr\app\DbBase.cs" />
+    <Compile Include="filemgr\app\down2_svr.aspx.cs">
+      <DependentUpon>down2_svr.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="filemgr\app\down2_svr.aspx.designer.cs">
+      <DependentUpon>down2_svr.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="filemgr\app\form.aspx.cs">
+      <DependentUpon>form.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="filemgr\app\form.aspx.designer.cs">
+      <DependentUpon>form.aspx</DependentUpon>
+    </Compile>
     <Compile Include="filemgr\app\PageTool.cs" />
     <Compile Include="filemgr\app\SqlCmdReader.cs" />
     <Compile Include="filemgr\app\SqlExec.cs" />
@@ -406,8 +451,16 @@
     <Compile Include="filemgr\app\SqlParValSetter.cs" />
     <Compile Include="filemgr\app\SqlSearchComb.cs" />
     <Compile Include="filemgr\app\SqlSearchCombParam.cs" />
+    <Compile Include="filemgr\app\SqlValueSetter.cs" />
     <Compile Include="filemgr\app\SqlWhereCondition.cs" />
     <Compile Include="filemgr\app\SqlWhereMerge.cs" />
+    <Compile Include="filemgr\app\up6_svr.aspx.cs">
+      <DependentUpon>up6_svr.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="filemgr\app\up6_svr.aspx.designer.cs">
+      <DependentUpon>up6_svr.aspx</DependentUpon>
+    </Compile>
     <Compile Include="filemgr\app\WebBase.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>

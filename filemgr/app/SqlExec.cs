@@ -180,6 +180,7 @@ namespace up6.filemgr.app
             var cmd = db.GetCommand(sql);
             this.to_param_db(cmd, where);
 
+            SqlCmdReader scr = new SqlCmdReader();
             var r = db.ExecuteReader(cmd);
             if (r.Read())
             {
@@ -188,33 +189,7 @@ namespace up6.filemgr.app
                 foreach (var field in arr)
                 {
                     var fd = field_object[index];
-                    var fd_type = fd["type"].ToString().ToLower();
-
-                    if (string.Equals(fd_type, "string"))
-                    {
-                        o[field] = r.IsDBNull(index) ? string.Empty : r.GetString(index);
-                    }
-                    else if (string.Equals(fd_type, "int"))
-                    {
-                        o[field] = r.IsDBNull(index) ? 0 : r.GetInt32(index);
-                    }
-                    else if (string.Equals(fd_type, "datetime"))
-                    {
-                        o[field] = r.IsDBNull(index) ? DateTime.Now : r.GetDateTime(index);
-                    }
-                    else if (string.Equals(fd_type, "long"))
-                    {
-                        o[field] = r.IsDBNull(index) ? 0 : r.GetInt64(index);
-                    }
-                    else if (string.Equals(fd_type, "smallint"))
-                    {
-                        o[field] = r.IsDBNull(index) ? 0 : r.GetInt16(index);
-                    }
-                    else if (string.Equals(fd_type, "tinyint"))
-                    {
-                        o[field] = r.IsDBNull(index) ? 0 : r.GetByte(index);
-                    }
-                    ++index;//索引后移
+                    o[field] = scr[fd["type"].ToString()](r, index++);
                 }
             }
             r.Close();
@@ -290,6 +265,50 @@ namespace up6.filemgr.app
             var cmd = db.GetCommand(sql);
             this.to_param_db(cmd, where);
             db.ExecuteNonQuery(cmd);
+        }
+
+        /// <summary>
+        /// 批量删除
+        /// </summary>
+        /// <param name="table"></param>
+        /// <param name="ws">条件</param>
+        /// <param name="values">值，[{id:1},{id,2}]</param>
+        /// <param name="predicate"></param>
+        public void delete_batch(string table,SqlParam[] ws,JToken values, string predicate = "and") {
+
+            //加载结构
+            this.m_table = this.m_database.SelectToken(table);
+            var table_fields = this.m_table.SelectToken("fields");
+            var field_sel = (from w in ws
+                            join tf in table_fields
+                            on w.Name.Trim() equals tf["name"].ToString()
+                            select tf).ToArray();
+
+            JObject o = new JObject();
+            string sql = string.Format("delete from [{0}] where {1}"
+                , table
+                , this.to_condition(ws, predicate));
+
+            DbHelper db = new DbHelper();
+            var cmd = db.GetCommand(sql);
+            this.to_param_db(cmd, ws);
+            cmd.Connection.Open();
+            cmd.Prepare();
+
+            SqlValueSetter pvs = new SqlValueSetter();
+
+            foreach (var v in values)
+            {
+                //设置变量
+                int index = 0;
+                foreach (var w in ws)
+                {
+                    pvs[w.Type](cmd, field_sel[index++], v);
+                }
+                cmd.ExecuteNonQuery();
+            }            
+
+            cmd.Connection.Close();
         }
 
         public int count(string table,SqlParam[] where)
@@ -387,12 +406,12 @@ namespace up6.filemgr.app
         /// </summary>
         /// <param name="cmd"></param>
         /// <param name="ps"></param>
-        public void to_param_db(DbCommand cmd, SqlParam[] ps,JToken field_obj)
+        public void to_param_db(DbCommand cmd, SqlParam[] ps,JToken field_all)
         {
             if (null == ps) return;
 
             var fs = from p in ps
-                     join fo in field_obj
+                     join fo in field_all
                      on p.Name equals fo["name"].ToString()
                      select fo;
             var field_arr = fs.ToArray();

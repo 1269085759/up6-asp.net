@@ -2,11 +2,11 @@
 function PageLogic() {
     var _this = this;
     this.downer = null;
-    this.down_files = [];
+    this.files_checked = [];
     this.up6 = null;
 
     this.attr = {
-        ui: { table:null,btnUp: "#btn-up",btnDown:"#btn-down", key:"#search-key",up6:null}
+        ui: { table: null, btnUp: "#btn-up", btnDown: "#btn-down", key: "#search-key", up6: null, btnDel:"#btn-del"}
         , nav_path: null
         , ui_ents: [
             {
@@ -17,6 +17,11 @@ function PageLogic() {
             {
                 id: "#btn-down", e: "click", n: function () {
                     _this.attr.event.btn_down_click();
+                }
+            },
+            {
+                id: "#btn-del", e: "click", n: function () {
+                    _this.attr.event.btn_del_click();
                 }
             },
             {
@@ -89,7 +94,7 @@ function PageLogic() {
                     , success: function (layero, index) {
 
                         if (_this.downer.Config["Folder"] == "") { _this.downer.app.openFolder(); return; }
-                        $.each(_this.down_files, function (i, f) {
+                        $.each(_this.files_checked, function (i, f) {
                             //文件夹
                             if (f.f_fdTask) {
                                 _this.downer.app.addFolder(f);
@@ -123,6 +128,35 @@ function PageLogic() {
                     //_this.attr.event.path_changed(data);
                 });  
             }
+            , btn_del_click: function () {
+                layer.msg('确实要删除选中文件？', {
+                    time: 0 //不自动关闭
+                    , btn: ['确定', '取消']
+                    , yes: function (index) {
+                        layer.close(index);
+
+                        debugger;
+                        var str = JSON.stringify(_this.files_checked);
+                        str = encodeURIComponent(str);
+                        var param = jQuery.extend({}, { data: str, time: new Date().getTime() });
+                        $.ajax({
+                            type: "GET"
+                            , dataType: "json"
+                            , url: "index.aspx?op=del-batch"
+                            , data: param
+                            , success: function (res) {
+                                _this.attr.ui.table.reload('files', {
+                                    url: 'index.aspx?op=data&tm=' + new Date().getTime()
+                                    , page: { curr: 1 }//第一页
+                                });
+
+                            }
+                            , error: function (req, txt, err) { }
+                            , complete: function (req, sta) { req = null; }
+                        });
+                    }
+                });
+            }
             , table_tool_click: function (obj, table) {
                 _this.attr.table_events[obj.event](obj, table);
             }
@@ -131,10 +165,12 @@ function PageLogic() {
                 //未选中
                 if (cs.data.length < 1) {
                     $(_this.attr.ui.btnDown).addClass("hide");
+                    $(_this.attr.ui.btnDel).addClass("hide");
                 }
                 else {
                     $(_this.attr.ui.btnDown).removeClass("hide");
-                    _this.down_files = cs.data;
+                    $(_this.attr.ui.btnDel).removeClass("hide");
+                    _this.files_checked = cs.data;
                 }
             }
             , table_edit: function (obj,table) {

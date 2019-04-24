@@ -13,6 +13,9 @@ namespace up6.filemgr.app
     public class SqlParValSetter
     {
         public delegate void setterDelegate(DbCommand cmd, JToken fieldVal, JToken fieldInf);
+        /// <summary>
+        /// 字段类型
+        /// </summary>
         Dictionary<string, setterDelegate> m_map;
 
         public setterDelegate this[string index]

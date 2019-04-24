@@ -16,10 +16,11 @@ namespace up6.filemgr
             string op = Request.QueryString["op"];
 
             if (op == "data") this.load_data();
-            if (op == "search") this.search();
-            if (op == "rename") this.file_rename();
-            if (op == "del") this.file_del();
-            if (op == "path") this.build_path();
+            else if (op == "search") this.search();
+            else if (op == "rename") this.file_rename();
+            else if (op == "del") this.file_del();
+            else if (op == "del-batch") this.file_del_batch();
+            else if (op == "path") this.build_path();
         }
 
         /// <summary>
@@ -133,6 +134,22 @@ namespace up6.filemgr
                 );
 
             PageTool.to_content(f);
+        }
+
+        /// <summary>
+        /// 批量删除
+        /// </summary>
+        void file_del_batch() {
+            var par = Request.QueryString["data"];
+            par = Server.UrlDecode(par);
+            var obj = JToken.Parse(par);
+
+            SqlExec se = new SqlExec();
+            se.delete_batch("up6_files", new SqlParam[] {
+                new SqlParam("f_id",string.Empty)
+            },obj);
+
+            PageTool.to_content(obj);
         }
 
         void load_data() {

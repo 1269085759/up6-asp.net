@@ -13,6 +13,7 @@
               , this.m_path["moment"]
               , this.m_path["vue"]
               , this.m_path["up6"]
+              , this.m_path["down2"]
               , this.m_path["root"]+"/filemgr/data/index.js"
               , this.m_path["res"]+"layer.window.js"
               ) %>
@@ -21,7 +22,8 @@
     <div class="container-fluid">
         <div class="m-t-md clearfix">
             <button class="btn btn-default btn-sm pull-left m-r-xs" role="button" id="btn-up"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 上传文件</button>
-            <button class="btn btn-default btn-sm pull-left hide" role="button" id="btn-down"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 下载</button>
+            <button class="btn btn-default btn-sm pull-left hide m-r-xs" role="button" id="btn-down"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 下载</button>
+            <button class="btn btn-default btn-sm pull-left hide" role="button" id="btn-del"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> 删除</button>
             <span class="pull-right form-inline">
                 <input type="text" class="form-control input-sm pull-left m-r-xs" id="search-key" placeholder="" />
                 <button class="btn btn-default btn-sm pull-left" role="button" id="btn-search"><span class="glyphicon glyphicon-search" aria-hidden="true"></span> 搜索</button>
@@ -82,7 +84,7 @@
                     , size: 'sm'
                     , height: 'full'//高度,full, 
                     , url: 'index.aspx?op=data' //数据接口
-                    , limit: 30//每页显示的条数，默认10
+                    , limit: 20//每页显示的条数，默认10
                     , page: true //开启分页
                     , cols: [[ //表头
                         { width: 50, sort: false, type: 'numbers' }
