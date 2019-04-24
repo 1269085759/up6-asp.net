@@ -1,4 +1,4 @@
-function WebServer(mgr)
+function WebServerDown2(mgr)
 {
     var _this = this;
     // 创建一个Socket实例

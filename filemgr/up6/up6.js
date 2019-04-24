@@ -181,7 +181,7 @@ function HttpUploaderMgr()
 	this.chrVer = navigator.appVersion.match(/Chrome\/(\d+)/);
 	this.ffVer = navigator.userAgent.match(/Firefox\/(\d+)/);
 	this.edge = navigator.userAgent.indexOf("Edge") > 0;
-    this.edgeApp = new WebServer(this);
+    this.edgeApp = new WebServerUp6(this);
     this.edgeApp.ent.on_close = function () { _this.socket_close(); };
     this.app = up6_app;
     this.app.edgeApp = this.edgeApp;
@@ -291,7 +291,7 @@ function HttpUploaderMgr()
 	this.load_complete_edge = function (json)
 	{
 	    this.edge_load = true;
-        this.btnSetup.hide();
+        //this.btnSetup.hide();
         _this.app.init();
     };
     this.add_folder_error = function (json) {
@@ -418,7 +418,7 @@ function HttpUploaderMgr()
 	this.load_to = function(oid)
     {
         var dom = $("#" + oid).append(this.GetHtmlContainer());
-        dom = $("#" + oid);
+        //dom = $("#" + oid);
 	    this.initUI(dom);
 	};
 

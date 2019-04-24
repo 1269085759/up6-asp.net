@@ -101,7 +101,7 @@ function DownloaderMgr()
 	this.nat_load = false;
     this.chrVer = navigator.appVersion.match(/Chrome\/(\d+)/);
     this.edge = navigator.userAgent.indexOf("Edge") > 0;
-    this.edgeApp = new WebServer(this);
+    this.edgeApp = new WebServerDown2(this);
     this.edgeApp.ent.on_close = function () { _this.socket_close(); };
     this.app = down2_app;
     this.app.edgeApp = this.edgeApp;

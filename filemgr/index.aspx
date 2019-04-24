@@ -13,7 +13,6 @@
               , this.m_path["moment"]
               , this.m_path["vue"]
               , this.m_path["up6"]
-              , this.m_path["down2"]
               , this.m_path["root"]+"/filemgr/data/index.js"
               , this.m_path["res"]+"layer.window.js"
               ) %>
@@ -62,7 +61,6 @@
                 </div>
             </div>
         </div>
-        <span id="up6-panel"></span>
         <span id="down2-panel" class="hide"></span>
         <!--路径导航-->
         <ol class="breadcrumb  m-t-xs" style="margin-bottom:-10px;" id="path">
