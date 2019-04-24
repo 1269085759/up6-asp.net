@@ -28,6 +28,8 @@ namespace up6.filemgr.app
         {
             string md5 = Request.QueryString["md5"];
             string id = Request.QueryString["id"];
+            string pid = Request.QueryString["pid"];
+            string pidRoot = Request.QueryString["pidRoot"];
             string uid = Request.QueryString["uid"];
             string lenLoc = Request.QueryString["lenLoc"];
             string sizeLoc = Request.QueryString["sizeLoc"];
@@ -48,6 +50,8 @@ namespace up6.filemgr.app
             fileSvr.fdChild = false;
             fileSvr.uid = int.Parse(uid);//将当前文件UID设置为当前用户UID
             fileSvr.id = id;
+            fileSvr.pid = pid;
+            fileSvr.pidRoot = pidRoot;
             fileSvr.nameLoc = Path.GetFileName(pathLoc);
             fileSvr.pathLoc = pathLoc;
             fileSvr.lenLoc = Convert.ToInt64(lenLoc);

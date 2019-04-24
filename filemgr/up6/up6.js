@@ -694,9 +694,10 @@ function HttpUploaderMgr()
 		var ui = _this.ui.file.clone();//文件信息
 		_this.ui.list.append(ui);//添加文件信息
         ui.css("display", "block");
+        ui = this.find_ui(ui);
 		var upFile = new FileUploader(fileLoc, _this);
         this.filesMap[fileLoc.id] = upFile;//添加到映射表
-        upFile.ui = this.find_ui(ui);
+        upFile.ui = ui;
         
 		ui.name.text(nameLoc).attr("title", nameLoc);
         ui.size.text(fileLoc.sizeLoc);

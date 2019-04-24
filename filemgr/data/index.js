@@ -58,6 +58,10 @@ function PageLogic() {
                     });
                 });
             }
+            , file_md5_complete: function (obj) {
+                obj.fileSvr.pid = _this.pathCur.f_id;
+                obj.fileSvr.pidRoot = _this.pathCur.f_pidRoot;
+            }
             , btn_up_click: function () {
                 layer.open({
                     type: 2
@@ -400,6 +404,7 @@ $(function () {
     pl.up6 = new HttpUploaderMgr();
     pl.up6.event.fileComplete = function () { pl.attr.event.file_post_complete(); };
     pl.up6.event.after_sel_file = function () { pl.attr.event.up6_sel_file(); };
+    pl.up6.event.md5Complete = function (obj) { pl.attr.event.file_md5_complete(obj); };
     pl.up6.load_to("http-up6");
 
     pl.downer = new DownloaderMgr();

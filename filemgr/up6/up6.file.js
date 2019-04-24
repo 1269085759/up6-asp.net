@@ -194,11 +194,21 @@ function FileUploader(fileLoc, mgr)
         this.fileSvr.md5 = json.md5;
         this.ui.msg.text("初始化...");
         this.event.md5Complete(this, json.md5);//biz event
+        debugger;
 
         var loc_path = encodeURIComponent(this.fileSvr.pathLoc);
         var loc_len = this.fileSvr.lenLoc;
         var loc_size = this.fileSvr.sizeLoc;
-        var param = jQuery.extend({}, this.fields, { md5: json.md5, id: this.fileSvr.id, lenLoc: loc_len, sizeLoc: loc_size, pathLoc: loc_path, time: new Date().getTime() });
+        var param = jQuery.extend({}, this.fields, {
+            md5: json.md5
+            , id: this.fileSvr.id
+            , pid: this.fileSvr.pid
+            , pidRoot: this.fileSvr.pidRoot
+            , lenLoc: loc_len
+            , sizeLoc: loc_size
+            , pathLoc: loc_path
+            , time: new Date().getTime()
+        });
 
         $.ajax({
             type: "GET"
