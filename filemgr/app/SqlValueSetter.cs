@@ -16,6 +16,9 @@ namespace up6.filemgr.app
         /// <summary>
         /// Command变量创建器
         /// </summary>
+        /// <param name="cmd"></param>
+        /// <param name="field">字段类型信息</param>
+        /// <param name="val">字段值</param>
         public delegate void dbValueSetDelegate(DbCommand cmd, JToken field, JToken val);
         Dictionary<string, dbValueSetDelegate> m_dbParamSetter;
 

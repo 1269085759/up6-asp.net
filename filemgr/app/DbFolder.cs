@@ -112,5 +112,55 @@ namespace up6.filemgr.app
 
             return JToken.FromObject(psort);
         }
+
+        /// <summary>
+        /// 获取所有子目录
+        /// </summary>
+        /// <param name="id"></param>
+        public static string[] all_childs(string id)
+        {
+
+            SqlExec se = new SqlExec();
+
+            var folders = se.select("up6_folders", "f_id,f_pid", null);
+
+            var dt = new Dictionary<string, HashSet<string>>();
+            foreach (var f in folders)
+            {
+                var fid = f["f_id"].ToString().Trim();
+                var fpid = f["f_pid"].ToString().Trim();
+
+                if (fpid == string.Empty) fpid = "0";
+
+                if (dt.ContainsKey(fpid))
+                {
+                    dt[fpid].Add(fid);
+                }
+                else {
+                    dt[fpid] = new HashSet<string>();
+                    dt[fpid].Add(fid);
+                }
+            }
+
+            if (id.Trim() == "") id = "0";
+            var pids = new List<string>();
+            pids.Add(id);
+
+            //子目录ID列表
+            var childs = new List<string>();
+            var pidCur = id;
+            while (pids.Count>0)
+            {
+                //不存在此pid的数据
+                if(!dt.ContainsKey(pidCur) ) break;
+
+                childs.AddRange(dt[pidCur]);
+                pids.AddRange(dt[pidCur]);//将所有子ID添加成pid
+                pids.Remove(pidCur);//移除此PID
+                pidCur = dt[pidCur].First();
+            }
+
+            return childs.ToArray();
+        }
     }
 }

@@ -52,6 +52,7 @@ namespace up6.filemgr.app
         JToken m_database;
         JToken m_table;
 
+        SqlParamCreater m_pc;
         SqlParValSetter m_pvSetter;
         SqlParamSetter m_parSetter;
         SqlCmdReader m_cmdRd;
@@ -63,6 +64,7 @@ namespace up6.filemgr.app
             //初始化变量设置器
             this.m_pvSetter = new SqlParValSetter();
             this.m_parSetter = new SqlParamSetter();
+            this.m_pc = new SqlParamCreater();
             this.m_cmdRd = new SqlCmdReader();
         }
 
@@ -84,6 +86,60 @@ namespace up6.filemgr.app
             this.to_param_db(cmd, fields, o, field_all);
             this.to_param_db(cmd, where, o, field_all);
             db.ExecuteNonQuery(cmd);
+        }
+
+        /// <summary>
+        /// 批量SQL语句
+        /// </summary>
+        /// <param name="table"></param>
+        /// <param name="sql"></param>
+        /// <param name="fields"></param>
+        /// <param name="where"></param>
+        /// <param name="values">字段值列表</param>
+        public void exec_batch(string table,string sql,string fields,string where,JToken values)
+        {
+            //加载结构
+            this.m_table = this.m_database.SelectToken(table);
+            var field_all = this.m_table.SelectToken("fields");
+
+            var field_sels = from f in fields.Split(',')
+                             join field in field_all
+                             on f.Trim() equals field["name"].ToString()
+                             select field;
+
+            var field_where_sels = from f in @where.Split(',')
+                                   join field in field_all
+                                   on f.Trim() equals field["name"].ToString()
+                                   select field;
+
+            DbHelper db = new DbHelper();
+            var cmd = db.GetCommand(sql);
+            this.to_param_db(cmd, JToken.FromObject(field_sels));
+            this.to_param_db(cmd,JToken.FromObject(field_where_sels) );
+
+            cmd.Connection.Open();
+            cmd.Prepare();
+
+            SqlValueSetter pvs = new SqlValueSetter();
+
+            //设置条件
+            foreach (var v in values)
+            {
+                //设置变量
+                foreach (var w in field_sels)
+                {
+                    pvs[w["type"].ToString()](cmd, w, v);
+                }
+
+                //设置值
+                foreach (var w in field_where_sels)
+                {
+                    pvs[w["type"].ToString()](cmd, w, v);
+                }
+                cmd.ExecuteNonQuery();
+            }
+
+            cmd.Connection.Close();
         }
 
         /// <summary>
@@ -232,10 +288,71 @@ namespace up6.filemgr.app
             db.ExecuteNonQuery(cmd);
         }
 
+
         /// <summary>
-        /// 
+        /// 批量删除
         /// </summary>
-        /// <param name="fields"></param>
+        /// <param name="table"></param>
+        /// <param name="field">更新的字段列表</param>
+        /// <param name="ws">条件</param>
+        /// <param name="values">值，[{id:1},{id,2}]</param>
+        /// <param name="predicate"></param>
+        public void update_batch(string table,string fields, SqlParam[] ws,JToken values, string predicate = "and")
+        {
+            //加载结构
+            this.m_table = this.m_database.SelectToken(table);
+            var table_fields = this.m_table.SelectToken("fields");
+            var field_whers = (from w in ws
+                             join tf in table_fields
+                             on w.Name.Trim() equals tf["name"].ToString()
+                             select tf).ToArray();
+
+            var field_sels = (from w in fields.Split(',')
+                              join tf in table_fields
+                              on w.Trim() equals tf["name"].ToString()
+                              select tf).ToArray();
+
+            JObject o = new JObject();
+            string sql = string.Format("update {0} set {1} where {2}"
+                , table
+                ,this.to_assignment(fields)
+                , this.to_condition(ws, predicate));
+
+            DbHelper db = new DbHelper();
+            var cmd = db.GetCommand(sql);
+            this.to_param_db(cmd,JToken.FromObject(field_sels));
+            this.to_param_db(cmd, ws);
+            cmd.Connection.Open();
+            cmd.Prepare();
+
+            SqlValueSetter pvs = new SqlValueSetter();
+
+            //设置条件
+            foreach (var v in values)
+            {
+                //设置变量
+                int index = 0;
+                foreach (var w in ws)
+                {
+                    pvs[w.Type](cmd, field_whers[index++], v);
+                }
+
+                //设置值
+                index = 0;
+                foreach (var w in field_sels)
+                {
+                    pvs[w["type"].ToString()](cmd,w, v);
+                }
+                cmd.ExecuteNonQuery();
+            }
+
+            cmd.Connection.Close();
+        }
+
+        /// <summary>
+        /// 转成赋值语句
+        /// </summary>
+        /// <param name="fields">字段列表</param>
         /// <returns></returns>
         string to_assignment(string fields)
         {
@@ -454,8 +571,8 @@ namespace up6.filemgr.app
         /// 为cmd添加字段,按照fields顺序
         /// </summary>
         /// <param name="cmd"></param>
-        /// <param name="fields"></param>
-        /// <param name="obj"></param>
+        /// <param name="fields">字段列表</param>
+        /// <param name="obj">字段的值，name:"",age:""</param>
         /// <param name="field_all">所有字段结构信息</param>
         /// <returns></returns>
         public void to_param_db(DbCommand cmd,string fields, JObject obj,JToken field_all)
@@ -471,6 +588,21 @@ namespace up6.filemgr.app
                 var fd_type = o["type"].ToString().ToLower();
 
                 this.m_pvSetter[fd_type](cmd, obj, o);
+            }
+        }
+
+        /// <summary>
+        /// 为cmd创建变量
+        /// </summary>
+        /// <param name="cmd"></param>
+        /// <param name="fields">选择的字段列表</param>
+        public void to_param_db(DbCommand cmd,JToken fields)
+        {
+            foreach (var o in fields)
+            {
+                var fd_type = o["type"].ToString().ToLower();
+
+                this.m_pc[fd_type](cmd, o);
             }
         }
 

@@ -205,7 +205,7 @@ function PageLogic() {
 
                         var ids = [];
                         $.each(_this.files_checked, function (i, n) {
-                            ids.push({f_id:n.f_id});
+                            ids.push({ f_id: n.f_id, f_fdTask: n.f_fdTask });
                         });
                         var str = JSON.stringify(ids);
                         str = encodeURIComponent(str);
@@ -216,10 +216,7 @@ function PageLogic() {
                             , url: "index.aspx?op=del-batch"
                             , data: param
                             , success: function (res) {
-                                _this.attr.ui.table.reload('files', {
-                                    url: 'index.aspx?op=data&tm=' + new Date().getTime()
-                                    , page: { curr: 1 }//第一页
-                                });
+                                _this.attr.event.btn_refresh_click();
                                 $(_this.attr.ui.btnDel).addClass("hide");
                             }
                             , error: function (req, txt, err) { }
