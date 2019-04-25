@@ -12,7 +12,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>up6</RootNamespace>
     <AssemblyName>up6</AssemblyName>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>4.0</OldToolsVersion>
@@ -46,16 +46,25 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Experimental.IO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.Experimental.IO.1.0.0.0\lib\NETFramework40\Microsoft.Experimental.IO.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>3rd\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.XML" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="db\f_process.aspx" />
@@ -204,6 +213,7 @@
     </Compile>
     <Compile Include="db\model\FileInf.cs" />
     <Compile Include="db\utils\Md5Tool.cs" />
+    <Compile Include="db\utils\PathTool.cs" />
     <Compile Include="db\XDebug.cs" />
     <Compile Include="down2\db\clear.aspx.cs">
       <DependentUpon>clear.aspx</DependentUpon>
@@ -281,6 +291,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
     <None Include="sql\up6_files.sql" />
   </ItemGroup>
   <ItemGroup>
