@@ -311,7 +311,7 @@ function PageLogic() {
                     , yes: function (index) {
                         layer.close(index);
 
-                        var param = { data: encodeURIComponent(JSON.stringify(obj.data) ) };
+                        var param = { id:obj.data.f_id };
                         $.ajax({
                             type: "GET"
                             , dataType: "json"
@@ -376,8 +376,17 @@ function PageLogic() {
                 , data: param
                 , success: function (res) {
                     $.each(res, function (i, n) {
-                        debugger;
-                        _this.up6.addFileLoc(n);
+                        if (n.fdTask) {
+                            var f = _this.up6.addFolderLoc(n);
+                            f.folderInit = true;
+                            f.ui.btn.post.show();
+                            f.ui.btn.del.show();
+                        }
+                        else {
+                            var f = _this.up6.addFileLoc(n);
+                            f.ui.btn.post.show();
+                            f.ui.btn.del.show();
+                        }
                     });
                     _this.attr.event.up6_sel_file();
                 }

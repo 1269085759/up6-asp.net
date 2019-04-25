@@ -32,7 +32,7 @@ namespace up6.filemgr
 
             SqlExec se = new SqlExec();
             var files = se.exec("up6_files"
-                , "select f_id as id,f_nameLoc as nameLoc,f_pathLoc as pathLoc,f_sizeLoc as sizeLoc,f_lenSvr as lenSvr,f_perSvr as perSvr,f_fdTask as fdTask from up6_files where f_complete=0 and f_fdChild=0"
+                , "select f_id as id,f_nameLoc as nameLoc,f_pathLoc as pathLoc,f_sizeLoc as sizeLoc,f_lenSvr as lenSvr,f_perSvr as perSvr,f_fdTask as fdTask from up6_files where f_complete=0 and f_fdChild=0 and f_deleted=0"
                 , "f_id,f_nameLoc,f_pathLoc,f_sizeLoc,f_lenSvr,f_perSvr,f_fdTask"
                 ,"id,nameLoc,pathLoc,sizeLoc,lenSvr,perSvr,fdTask");
             PageTool.to_content(files);
@@ -81,31 +81,29 @@ namespace up6.filemgr
         }
 
         void file_del() {
-            var data = Request.QueryString["data"];
-            data = Server.UrlDecode(data);
-            var f = JObject.Parse(data);
+            var id = Request.QueryString["id"];
 
             SqlExec se = new SqlExec();
             se.update("up6_folders"
                 ,new SqlParam[] { new SqlParam("f_deleted", true)}
                 , new SqlParam[] {
-                    new SqlParam("f_id",f["f_id"].ToString())
-                    ,new SqlParam("f_pid",f["f_id"].ToString())
-                    ,new SqlParam("f_pidRoot",f["f_id"].ToString())
+                    new SqlParam("f_id",id)
+                    ,new SqlParam("f_pid",id)
+                    ,new SqlParam("f_pidRoot",id)
                 }
                 ,"or"
                 );
             se.update("up6_files"
                 ,new SqlParam[] { new SqlParam("f_deleted", true)}
                 , new SqlParam[] {
-                    new SqlParam("f_id",f["f_id"].ToString())
-                    ,new SqlParam("f_pid",f["f_id"].ToString())
-                    ,new SqlParam("f_pidRoot",f["f_id"].ToString())
+                    new SqlParam("f_id",id)
+                    ,new SqlParam("f_pid",id)
+                    ,new SqlParam("f_pidRoot",id)
                 }
                 ,"or"
                 );
 
-            PageTool.to_content(f);
+            PageTool.to_content(new JObject { { "ret",1} });
         }
 
         /// <summary>

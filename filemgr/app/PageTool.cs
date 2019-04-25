@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Experimental.IO;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Web;
 
@@ -11,9 +12,9 @@ namespace up6.filemgr.app
         /// </summary>
         /// <param name="name"></param>
         /// <param name="p"></param>
-        public static void to_param(string name,JToken p) {
+        public static void to_param(string name, JToken p) {
             string v = string.Format("<script>var {0}={1};</script>"
-                ,name
+                , name
                 , JsonConvert.SerializeObject(p));
 
             HttpContext.Current.Response.Write(v);
@@ -25,7 +26,7 @@ namespace up6.filemgr.app
         /// <param name="p"></param>
         public static void to_content(JToken p) {
             HttpContext.Current.Response.Clear();
-            HttpContext.Current.Response.Write( JsonConvert.SerializeObject(p) );
+            HttpContext.Current.Response.Write(JsonConvert.SerializeObject(p));
             HttpContext.Current.Response.End();
         }
 

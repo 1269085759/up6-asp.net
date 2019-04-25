@@ -26,7 +26,7 @@ function FolderUploader(fdLoc, mgr)
     //准备
     this.Ready = function ()
     {
-        this.ui.msg.text("正在上传队列中等待...");
+        this.ui.msg.text("等待上传...");
         this.State = HttpUploaderState.Ready;
     };
     this.svr_create = function (fdSvr)
@@ -371,6 +371,5 @@ function FolderUploader(fdLoc, mgr)
         this.manager.Delete(this.id);
         this.svr_remove();
         this.ui.div.remove();
-        this.ui.split.remove();
     };
 }

@@ -13,7 +13,12 @@ namespace up6.filemgr
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            this.exec_read_test();
+            this.re_folder_test();
+        }
+
+        void re_folder_test()
+        {
+            PathTool.createDirectory("F:/csharp/apps/up6/upload/2019/04/25/a1ed4bfde038437398eb749e119267d5/RecyclerView-master-master/app/build/tmp/expandedArchives/classes.jar_11pliug4uedhkwo9i99jr8jlm/android/support/v4/media/session/");
         }
 
         void exec_read_test()

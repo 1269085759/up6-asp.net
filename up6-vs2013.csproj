@@ -46,6 +46,9 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Experimental.IO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.Experimental.IO.1.0.0.0\lib\NETFramework40\Microsoft.Experimental.IO.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>3rd\Newtonsoft.Json.dll</HintPath>
@@ -101,6 +104,7 @@
     <Content Include="filemgr\down2\folder.png" />
     <Content Include="filemgr\down2\jquery-1.4.min.js" />
     <Content Include="filemgr\down2\json2.min.js" />
+    <Content Include="filemgr\filemgr.txt" />
     <Content Include="filemgr\res\bootstrap\css\bootstrap-theme.css" />
     <Content Include="filemgr\res\bootstrap\css\bootstrap-theme.min.css" />
     <Content Include="filemgr\res\bootstrap\css\bootstrap.min.css" />
@@ -431,6 +435,7 @@
     <Compile Include="filemgr\app\ConfigReader.cs" />
     <Compile Include="filemgr\app\DbBase.cs" />
     <Compile Include="filemgr\app\DbFolder.cs" />
+    <Compile Include="filemgr\app\PathTool.cs" />
     <Compile Include="filemgr\app\SqlParamCreater.cs" />
     <Compile Include="filemgr\biz\down2_svr.aspx.cs">
       <DependentUpon>down2_svr.aspx</DependentUpon>
@@ -519,6 +524,7 @@
     <Content Include="filemgr\res\bootstrap\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="filemgr\data\config.json" />
     <Content Include="filemgr\data\database.json" />
+    <None Include="packages.config" />
     <None Include="sql\up6_files.sql" />
   </ItemGroup>
   <ItemGroup>

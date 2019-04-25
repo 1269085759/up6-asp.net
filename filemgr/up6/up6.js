@@ -86,7 +86,7 @@ function HttpUploaderMgr()
 		//文件夹操作相关
 		, "UrlFdCreate"		: page.path.fe + "biz/up6_svr.aspx?op=fd-init"
 		, "UrlFdComplete"	: page.path.fe + "biz/up6_svr.aspx?op=fd-comp"
-		, "UrlFdDel"	    : page.path.fe + "biz/up6_svr.aspx?op="
+		, "UrlFdDel"	    : page.path.fe + "biz/up6_svr.aspx?op=del"
 		//文件操作相关
 		, "UrlCreate"		: page.path.fe + "biz/up6_svr.aspx?op=init"
 		, "UrlPost"			: page.path.fe + "biz/up6_svr.aspx?op=post"
@@ -717,10 +717,10 @@ function HttpUploaderMgr()
 		});
         ui.btn.post.click(function ()
 		{
-		    btnPost.hide();
-		    btnDel.hide();
-		    btnCancel.hide();
-		    btnStop.show();
+		    ui.btn.post.hide();
+		    ui.btn.del.hide();
+		    ui.btn.cancel.hide();
+		    ui.btn.stop.show();
 		    if (!_this.IsPostQueueFull())
 		    {
 		        upFile.post();
@@ -764,7 +764,7 @@ function HttpUploaderMgr()
         ui.process.css("width",fdLoc.perSvr);
         ui.name.text(fdLoc.nameLoc);
         ui.name.attr("title", fdLoc.nameLoc + "\n文件：" + fdLoc.files.length + "\n文件夹：" + fdLoc.foldersCount + "\n大小：" + fdLoc.sizeLoc);
-        ui.size.text("0字节");
+        ui.size.text(json.sizeLoc);
 
         var fdTask = new FolderUploader(fdLoc, this);
         fdTask.ui = ui;
@@ -777,10 +777,10 @@ function HttpUploaderMgr()
 	    });
         fdTask.ui.btn.post.click(function ()
 	    {
-	        btnPost.hide();
-	        btnDel.hide();
-	        btnCancel.hide();
-	        btnStop.show();
+	        ui.btn.post.hide();
+	        ui.btn.del.hide();
+	        ui.btn.cancel.hide();
+	        ui.btn.stop.show();
 
 	        if (!_this.IsPostQueueFull())
 	        {

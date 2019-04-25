@@ -20,6 +20,7 @@ namespace up6.filemgr.app
             else if (op == "post") this.file_post();
             else if (op == "proc") this.file_process();
             else if (op == "cmp") this.file_complete();
+            else if (op == "del") this.file_del();
             else if (op == "fd-init") this.folder_init();
             else if (op == "fd-comp") this.folder_complete();
         }
@@ -108,10 +109,10 @@ namespace up6.filemgr.app
             string blockIndex = Request.Headers["blockIndex"];//当前块索引，基于1
             string blockMd5 = Request.Headers["blockMd5"];//块MD5
             string complete = Request.Headers["complete"];//true/false
-            string pathSvr = Request.Headers["pathSvr"];//add(2015-03-19):
+            string pathSvr = Request.Form["pathSvr"];//add(2015-03-19):
             pathSvr = HttpUtility.UrlDecode(pathSvr);
 
-            if ( this.head_val_null_empty("lenLoc, uid, id, blockOffset, pathSvr")) return;
+            if ( this.head_val_null_empty("lenLoc, uid, id, blockOffset")) return;
 
             if (Request.Files.Count < 1)
             {
@@ -205,6 +206,33 @@ namespace up6.filemgr.app
                 ret = 1;
             }
             PageTool.to_content(cbk + "(" + ret + ")");//必须返回jsonp格式数据
+        }
+
+        void file_del()
+        {
+            var id = Request.QueryString["id"];
+
+            SqlExec se = new SqlExec();
+            se.update("up6_folders"
+                , new SqlParam[] { new SqlParam("f_deleted", true) }
+                , new SqlParam[] {
+                    new SqlParam("f_id",id)
+                    ,new SqlParam("f_pid",id)
+                    ,new SqlParam("f_pidRoot",id)
+                }
+                , "or"
+                );
+            se.update("up6_files"
+                , new SqlParam[] { new SqlParam("f_deleted", true) }
+                , new SqlParam[] {
+                    new SqlParam("f_id",id)
+                    ,new SqlParam("f_pid",id)
+                    ,new SqlParam("f_pidRoot",id)
+                }
+                , "or"
+                );
+
+            PageTool.to_content(new JObject { { "ret", 1 } });
         }
 
         void folder_init()
