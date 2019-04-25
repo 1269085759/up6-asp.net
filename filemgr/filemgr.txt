@@ -1,0 +1,5 @@
+﻿2019-04-25
+	完善文件创建逻辑，增加对长文件路径的支持（超过255个字符）
+	FileBlockWriter.make
+	FileBlockWriter.write
+	f_post.aspx.cs
