@@ -1,6 +1,8 @@
-﻿using System.IO;
+﻿using Microsoft.Experimental.IO;
+using System.IO;
 using System.Threading;
 using System.Web;
+using up6.filemgr.app;
 
 namespace up6.db.utils
 {
@@ -27,12 +29,22 @@ namespace up6.db.utils
 		{
 			//文件不存在则创建
             if (string.IsNullOrEmpty(filePath)) return;
-			if (!File.Exists(filePath))
+			if (!LongPathFile.Exists(filePath))
 			{
+                var pos = filePath.LastIndexOf('\\');
+                if (-1 == pos) pos = filePath.LastIndexOf('/');
+                var dir = filePath.Substring(0, pos);
                 //自动创建目录
-                if(!Directory.Exists(filePath)) Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+                if (!LongPathDirectory.Exists(dir))
+                {
+                    System.Diagnostics.Debug.WriteLine(string.Format("路径不存在：{0}", dir));
+                    PathTool.createDirectory(dir);
+                }
+                else {
+                    System.Diagnostics.Debug.WriteLine(string.Format("路径存在：{0}", dir));
+                }
 
-                FileStream fs = new FileStream(filePath, FileMode.Create);
+                var fs = LongPathFile.Open(filePath, FileMode.Create, FileAccess.Write);
                 fs.SetLength(len);
                 fs.Close();
 			}
@@ -46,7 +58,7 @@ namespace up6.db.utils
 		public void write(string path, long offset, ref HttpPostedFile fileRange)
 		{
 			//文件已存在，写入数据
-			FileStream fs = new FileStream(path, FileMode.Open, FileAccess.Write, FileShare.Write);
+			FileStream fs = LongPathFile.Open(path, FileMode.Open, FileAccess.Write, FileShare.Write);
 			fs.Seek(offset, SeekOrigin.Begin);                
 			byte[] ByteArray = new byte[fileRange.InputStream.Length];
             fileRange.InputStream.Seek(0, SeekOrigin.Begin);
