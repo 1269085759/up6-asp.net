@@ -1,6 +1,10 @@
 ﻿数据库：SQL2005
 编码：utf-8
 
+NuGet安装依赖
+Install-Package Newtonsoft.Json
+Install-Package Microsoft.Experimental.IO
+
 ---------
 更新记录：
 2019-04-26
