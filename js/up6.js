@@ -98,7 +98,7 @@ function HttpUploaderMgr()
         , "FdSizeLimit"     : 0//文件夹大小限制。0表示不限制
         , "FdChildLimit"    : 0//文件夹子元素数量限制（子文件+子文件夹）。0表示不限制
         , "ProcSaveTm"      : 60//定时保存进度。单位：秒，默认：1分钟
-        , "AutoConnect"     : {opened:true,time:3000}//启动错误自动重传
+        , "AutoConnect"     : {opened:false,time:3000}//启动错误自动重传
 		//文件夹操作相关
 		, "UrlFdCreate"		: "http://localhost:8888/db/fd_create.aspx"
 		, "UrlFdComplete"	: "http://localhost:8888/db/fd_complete.aspx"
@@ -915,7 +915,7 @@ function HttpUploaderMgr()
 	参数:
 	[0]:文件名称
 	*/
-	this.Exist = function()
+	this.Exist = function(fn)
 	{
 		for (a in _this.filesMap)
 		{
