@@ -201,6 +201,13 @@ function FolderUploader(fdLoc, mgr)
         this.svr_update();
 
         setTimeout(function () { _this.manager.PostNext(); }, 500);
+
+        if (this.Config.AutoConnect.opened) {
+            setTimeout(function () {
+                if (_this.State == HttpUploaderState.Posting) return;
+                _this.post();
+            }, this.Config.AutoConnect.time);
+        }
     };
     this.post_process = function (json)
     {

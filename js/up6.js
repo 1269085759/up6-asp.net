@@ -98,6 +98,7 @@ function HttpUploaderMgr()
         , "FdSizeLimit"     : 0//文件夹大小限制。0表示不限制
         , "FdChildLimit"    : 0//文件夹子元素数量限制（子文件+子文件夹）。0表示不限制
         , "ProcSaveTm"      : 60//定时保存进度。单位：秒，默认：1分钟
+        , "AutoConnect"     : {opened:true,time:3000}//启动错误自动重传
 		//文件夹操作相关
 		, "UrlFdCreate"		: "http://localhost:8888/db/fd_create.aspx"
 		, "UrlFdComplete"	: "http://localhost:8888/db/fd_complete.aspx"
@@ -916,8 +917,6 @@ function HttpUploaderMgr()
 	*/
 	this.Exist = function()
 	{
-		var fn = arguments[0];
-
 		for (a in _this.filesMap)
 		{
 		    var fileSvr = _this.filesMap[a].fileSvr;
@@ -989,7 +988,10 @@ function HttpUploaderMgr()
 	this.addFileLoc = function(fileLoc)
 	{
 		//本地文件名称存在
-		//if (_this.Exist(fileLoc.pathLoc)) return;
+        if (_this.Exist(fileLoc.pathLoc)) {
+            alert("队列中已存在相同文件，请重新选择。");
+            return;
+        }
 		//此类型为过滤类型
 		if (_this.NeedFilter(fileLoc.ext)) return;
 
@@ -1067,7 +1069,10 @@ function HttpUploaderMgr()
 	{
 	    var fdLoc = json;
 		//本地文件夹存在
-	    //if (this.Exist(fdLoc.pathLoc)) return;
+        if (this.Exist(fdLoc.pathLoc)) {
+            alert("队列中已存在相同文件，请重新选择。");
+            return;
+        }
         //针对空文件夹的处理
 	    if (json.files == null) jQuery.extend(fdLoc,{files:[]});
 	    //if (json.lenLoc == 0) return;
