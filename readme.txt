@@ -21,6 +21,8 @@ Install-Package Microsoft.Experimental.IO
 	  自动加载未完成列表
 	  js/single-panel
 	  single-panel.aspx
+	优化edge控件加载逻辑
+	  up6.edge.js
 
 2019-04-26
 	1.添加文件，添加文件夹时检查防止重复添加

@@ -177,7 +177,7 @@ function HttpUploaderMgr()
 	this.chrVer = navigator.appVersion.match(/Chrome\/(\d+)/);
 	this.ffVer = navigator.userAgent.match(/Firefox\/(\d+)/);
 	this.edge = navigator.userAgent.indexOf("Edge") > 0;
-    this.edgeApp = new WebServer(this);
+    this.edgeApp = new WebServerUp6(this);
     this.edgeApp.ent.on_close = function () { _this.socket_close(); };
     this.app = up6_app;
     this.app.edgeApp = this.edgeApp;
