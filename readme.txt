@@ -17,6 +17,10 @@ Install-Package Microsoft.Experimental.IO
 	    del_file
 	  up6.folder.js
 	    remove方法更新，
+	新增单面板示例，
+	  自动加载未完成列表
+	  js/single-panel
+	  single-panel.aspx
 
 2019-04-26
 	1.添加文件，添加文件夹时检查防止重复添加
