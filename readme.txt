@@ -12,7 +12,7 @@ Install-Package Microsoft.Experimental.IO
 	  up6.js
 	  12,13,14,15
 	删除文件夹后清除本地路径
-	新增删除文件对象方法，从队列中取消文件时调用。
+	新增删除文件对象方法，从队列中取消文件夹时调用。从队列中取消文件时调用
 	  up6.js
 	    del_file
 	  up6.folder.js

@@ -305,6 +305,7 @@ function FileUploader(fileLoc, mgr)
     //删除，一般在用户点击"删除"按钮时调用
     this.remove = function ()
     {
+        this.mgr.del_file(this.fileSvr.id);
         this.app.delFile(this.fileSvr);
         this.ui.div.remove();
         this.ui.split.remove();
