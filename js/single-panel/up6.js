@@ -147,7 +147,8 @@ function HttpUploaderMgr()
 
 	//http://www.ncmem.com/
 	this.Domain = "http://" + document.location.host;
-	this.working = false;
+    this.working = false;
+    this.nativeLoaded = false;
 
     this.FileFilter = this.Config.FileFilter.split(","); //文件过滤器
 	this.filesMap = new Object(); //本地文件列表映射表
@@ -383,7 +384,10 @@ function HttpUploaderMgr()
         }, 1000);
     };
 	this.load_complete_edge = function (json)
-	{
+    {
+        if (this.nativeLoaded) return;//fix:触发多次
+        this.nativeLoaded = true;
+
 	    this.edge_load = true;
         this.btnSetup.hide();
         _this.app.init();
@@ -857,7 +861,7 @@ function HttpUploaderMgr()
 	    var fdLoc = json;
 		//本地文件夹存在
         if (this.Exist(fdLoc.pathLoc)) {
-            alert("队列中已存在相同文件，请重新选择。");
+            alert("队列中已存在相同文件夹，请重新选择。");
             return;
         }
         //针对空文件夹的处理

@@ -23,6 +23,8 @@ Install-Package Microsoft.Experimental.IO
 	  single-panel.aspx
 	优化edge控件加载逻辑
 	  up6.edge.js
+	修复load_complete_edge会触发多次的问题
+	  新增nativeLoaded
 
 2019-04-26
 	1.添加文件，添加文件夹时检查防止重复添加
