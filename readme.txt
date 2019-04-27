@@ -44,6 +44,8 @@ Install-Package Microsoft.Experimental.IO
 	  edge初始化逻辑更新，防止频繁初始化
 	    down.js
 		  load_complete_edge
+	单面板样式优化
+	  single-panel
 
 2019-04-26
 	1.添加文件，添加文件夹时检查防止重复添加
