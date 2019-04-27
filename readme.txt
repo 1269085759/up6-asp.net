@@ -7,6 +7,11 @@ Install-Package Microsoft.Experimental.IO
 
 ---------
 更新记录：
+2019-04-27
+	增加错误码
+	  up6.js
+	  12,13,14,15
+
 2019-04-26
 	1.添加文件，添加文件夹时检查防止重复添加
 		up6.js
@@ -18,3 +23,5 @@ Install-Package Microsoft.Experimental.IO
 	3.增加对长路径的处理。
 		FileBlockWriter.make
 		新增PathTool.cs
+	4.新增服务器错误标识
+	  11
