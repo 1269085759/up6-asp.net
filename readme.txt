@@ -11,6 +11,12 @@ Install-Package Microsoft.Experimental.IO
 	增加错误码
 	  up6.js
 	  12,13,14,15
+	删除文件夹后清除本地路径
+	新增删除文件对象方法，从队列中取消文件时调用。
+	  up6.js
+	    del_file
+	  up6.folder.js
+	    remove方法更新，
 
 2019-04-26
 	1.添加文件，添加文件夹时检查防止重复添加

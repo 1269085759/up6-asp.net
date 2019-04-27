@@ -481,6 +481,12 @@ function HttpUploaderMgr()
 		$("#liPnlFiles").click();
 	};
 
+    //删除文件对象
+    this.del_file = function (id) {
+        this.filesMap = $.grep(this.filesMap, function (i, n) {
+            return i == id;
+        },true);
+    };
 	this.set_config = function (v) { jQuery.extend(this.Config, v);};
 	this.open_files = function (json)
 	{

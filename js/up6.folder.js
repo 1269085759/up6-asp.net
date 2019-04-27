@@ -57,7 +57,7 @@ function FolderUploader(fdLoc, mgr)
             , url: this.Config["UrlProcess"]
             , data: param
             , success: function (msg) {}
-            , error: function (req, txt, err) { alert("更新文件夹进度失败！" + req.responseText); }
+            , error: function (req, txt, err) { /*alert("更新文件夹进度失败！" + req.responseText);*/ }
             , complete: function (req, sta) { req = null; }
         });
     };
@@ -374,6 +374,7 @@ function FolderUploader(fdLoc, mgr)
     //从上传列表中删除上传任务
     this.remove = function ()
     {
+        this.manager.del_file(this.folderSvr.id);
         this.app.delFolder({ id: this.id });
         this.manager.Delete(this.id);
         this.svr_remove();
