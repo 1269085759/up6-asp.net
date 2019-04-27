@@ -218,8 +218,8 @@ function HttpUploaderMgr()
 						<div name="msg" class="msg top-space">15.3MB 20KB/S 10:02:00</div>\
 					</div>\
 					<div class="area-r">\
-                        <span class="btn-box" name="cancel" title="取消"><img src="js/stop.png"/><div>取消</div></span>\
                         <span class="btn-box hide" name="post" title="继续"><img src="js/post.png"/><div>继续</div></span>\
+                        <span class="btn-box" name="cancel" title="取消"><img src="js/stop.png"/><div>取消</div></span>\
 						<span class="btn-box hide" name="stop" title="停止"><img src="js/stop.png"/><div>停止</div></span>\
 						<span class="btn-box hide" name="del" title="删除"><img src="js/del.png"/><div>删除</div></span>\
 					</div>';
@@ -237,8 +237,8 @@ function HttpUploaderMgr()
 						<div name="msg" class="msg top-space">15.3MB 20KB/S 10:02:00</div>\
 					</div>\
 					<div class="area-r">\
-                        <span class="btn-box" name="cancel" title="取消"><img src="js/stop.png"/><div>取消</div></span>\
                         <span class="btn-box hide" name="post" title="继续"><img src="js/post.png"/><div>继续</div></span>\
+                        <span class="btn-box" name="cancel" title="取消"><img src="js/stop.png"/><div>取消</div></span>\
 						<span class="btn-box hide" name="stop" title="停止"><img src="js/stop.png"/><div>停止</div></span>\
 						<span class="btn-box hide" name="del" title="删除"><img src="js/del.png"/><div>删除</div></span>\
 					</div>';
