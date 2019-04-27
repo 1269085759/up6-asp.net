@@ -931,7 +931,6 @@ function HttpUploaderMgr()
 		for (a in _this.filesMap)
 		{
 		    var fileSvr = _this.filesMap[a].fileSvr;
-		    if (_this.filesMap[a].isFolder) fileSvr = _this.filesMap[a].folderSvr;
 		    if (fileSvr.pathLoc == fn)
 		    {
 		        return true;
