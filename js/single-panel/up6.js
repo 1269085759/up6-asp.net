@@ -244,18 +244,18 @@ function HttpUploaderMgr()
 					</div>';
         com += '</div>';
         //上传列表
-        com += '<div class="file-list" name="post_panel">\
-					<div name="post_head" class="toolbar">\
-						<span class="btn" name="btnAddFiles">选择多个文件</span>\
-						<span class="btn" name="btnAddFolder">选择文件夹</span>\
-						<span class="btn" name="btnPasteFile">粘贴文件和目录</span>\
+        com += '<div name="post_panel">\
+					<div name="post_head" class="files-toolbar">\
+						<span class="btn" name="btnAddFiles"><img name="up-file" src="js/16/upload.png"/>上传文件</span>\
+						<span class="btn" name="btnAddFolder"><img name="up-folder" src="js/16/folder.png"/>上传文件夹</span>\
+						<span class="btn" name="btnPasteFile"><img name="paste" src="js/16/paste.png"/>粘贴上传</span>\
 						<span class="btn" name="btnSetup">安装控件</span>\
 					</div>\
-					<div class="content" name="post_content">\
-						<div name="post_body" class="file-post-view"></div>\
+					<div name="post_content">\
+						<div name="post_body" class="files-list"></div>\
 					</div>\
-					<div class="footer" name="post_footer">\
-						<span class="btn-footer" name="btnClear">清除已完成文件</a>\
+					<div class="files-toolbar" name="post_footer">\
+						<span class="btn" name="btnClear"><img name="paste" src="js/16/clear.png"/>清除已完成</a>\
 					</div>\
 				</div>';
         com += '</div>';

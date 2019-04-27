@@ -3,8 +3,6 @@ a:hover{ color:#004477; text-decoration:underline; }
 .btn-footer{text-decoration: none; color:#244281; cursor:pointer;display:inline-block;height:35px;line-height:35px;padding:0 5px;}
 .btn-footer-hover{background-color:#DADADA;}
 
-/*文件上传列表*/
-.file-post-view{background-color: #FFF;font:12px/12px 宋体,新宋体;/*防目外部样式破坏*/overflow-x:hidden;overflow-y:scroll;}
 /*新构架*/
 div.top-space{margin:3px 0 0 0;}
 div.lineSpace{margin:10px 0 0 0;}
@@ -22,7 +20,6 @@ div.UploaderItemRight{width:54px; float:left;margin:3px 0 0 0;}
     border-bottom: 1px solid #E3E6EB;
 }
 .file-item-single{width:417px;}
-/*文件名称*/
 .file-item .name{font:bold 12px/20px 新宋体;width:180px; height:20px; float:left; overflow:hidden; text-overflow: ellipsis;overflow: hidden;white-space: nowrap; vertical-align:middle;}
 /*文件大小*/
 .file-item .size{font:12px/20px 新宋体;height:20px;color:#728089;float:right; text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
@@ -46,16 +43,27 @@ div.UploaderItemRight{width:54px; float:left;margin:3px 0 0 0;}
 .hide{display:none;}
 .BtnInfo{height:12px;}
 /*上传面板*/
-.files-panel{font:12px/12px 宋体;width:436px; height:400px;}
+.files-panel {
+    font: 12px/12px 宋体;
+    width: 436px;
+    height: 400px;
+    border: 1px solid #CBCBCB;
+}
 .files-panel .header{ height:31px; line-height:31px; background:#EEE; border-bottom:solid 1px #FFF; padding:0 0 0 10px; font-weight:bold;}
-.files-panel .toolbar{height:43px;background:#EEE; line-height:43px;}
-.files-panel .toolbar input{margin:0 0 0 7px; }
-.files-panel .toolbar a.btn{padding:0 10px; height:43px; line-height:43px;cursor:pointer;text-decoration:none;display:inline-block;}
-.files-panel .toolbar a.btn:hover{background-color:#DADADA;padding:0 10px; height:43px; line-height:43px;cursor:pointer;text-decoration:none;display:inline-block;}
-.files-panel .toolbar .btn{padding:0 10px; height:43px; line-height:43px;cursor:pointer;text-decoration:none;display:inline-block;}
-.files-panel .toolbar .btn-hover{background-color:#DADADA;}
-.files-panel .content{ background:#ECF9FF;}
-.files-panel .footer{height:35px; line-height:25px; color:#7A8F99; background:#EEE;}
+.files-toolbar{
+    height: 43px;
+    background: #EEE;
+    line-height: 43px;
+}
+.files-toolbar img{vertical-align:middle;}
+.files-toolbar .btn{padding:0 10px; cursor:pointer;text-decoration:none;display:inline-block;}
+.files-toolbar .btn-hover{background-color:#DADADA;}
+.files-list{
+    background-color: #FFF;
+    font: 12px/12px 宋体,新宋体; /*防目外部样式破坏*/
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
 /*单文件上传面板*/
 #UpPanel{background:#ECF9FF; border:solid 1px #4CA5D8;width:300px;}
 #UpPanel a{color:#004477; text-decoration:none;margin:0 0 0 10px;}
@@ -64,26 +72,6 @@ div.UploaderItemRight{width:54px; float:left;margin:3px 0 0 0;}
 #UpPanel a.msg{color:#004477; text-decoration:none;}
 #UpPanel a.msg:hover{text-decoration:none;}
 #UpPanel a:hover{color:#004477; text-decoration:underline;}
-/*服务器文件列表*/
-/*列表项*/
-.file-list{}
-.file-list ul{margin:0;padding:0; list-style-type:none;clear:both;}
-.file-list ul li{ height:25px; float:left;  font:12px/25px 宋体; text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
-.file-list ul li.fcb{width:25px; text-align:center;vertical-align:middle;}
-.file-list ul li.fname{width:194px;padding:0 0 0 5px;}
-.file-list ul li.fsize{width:53px;text-align:right;}
-.file-list ul li.fper{width:45px;text-align:right;}
-/*头*/
-.file-list-head{margin:0;padding:0; list-style-type:none;background:#F1F1F1;height:25px; border-bottom:solid 1px #C1C8D2;}
-.file-list-head li{ height:25px; float:left; background:#F1F1F1;font:12px/12px 宋体; line-height:25px; vertical-align:middle;}
-.file-list-head li.hcb{width:25px; border-right:solid 1px #C6C9CA; text-align:center; vertical-align:middle;}
-.file-list-head li.hname{width:194px;padding:0 0 0 5px;border-right:solid 1px #C6C9CA; border-left:solid 1px #FDFEFE;}
-.file-list-head li.hsize{width:50px;padding:0 5px 0 0;text-align:right;border-right:solid 1px #C6C9CA;border-left:solid 1px #FDFEFE;}
-.file-list-head li.hper{width:40px;padding:0 5px 0 0; text-align:right;border-right:solid 1px #C6C9CA;border-left:solid 1px #FDFEFE;}
-.file-list-head li.hop{width:71px;text-align:right;padding:0 5px 0 0;}
-/*列表项-操作按钮*/
-.file-list ul li.fop{width:70px;text-align:right;padding:0 5px 0 0;}
-.file-list ul li.fop span{ color:#244281; font:12px/25px 新宋体; cursor:pointer; }
 .divHidden{ display:none;}
 /*标签*/
 .tab-panel{width:436px; height:458px;border: solid 1px #cbcbcb; background-color: #CCC; }
