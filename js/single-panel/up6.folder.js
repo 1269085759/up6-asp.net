@@ -179,7 +179,7 @@ function FolderUploader(fdLoc, mgr)
         this.ui.msg.text("传输已停止....");
         this.manager.RemoveQueuePost(this.id);
         this.manager.AppendQueueWait(this.id);//添加到未上传列表
-        this.manager.PostNext();
+        setTimeout(function () { _this.manager.PostNext(); }, 500);
     };
     this.post_error = function (json)
     {
