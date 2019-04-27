@@ -162,7 +162,6 @@ function HttpUploaderMgr()
 	this.Droper = null;
 	this.tmpFile = null;
 	this.tmpFolder = null;
-	this.tmpSpliter = null;
 	this.uiSetupTip = null;
 	this.btnSetup = null;
     //检查版本 Win32/Win64/Firefox/Chrome
@@ -451,8 +450,6 @@ function HttpUploaderMgr()
 						<span class="btn-box hide" name="del" title="删除"><img src="js/del.png"/><div>删除</div></span>\
 					</div>';
 		acx += '</div>';
-		//分隔线
-		acx += '<div class="file-line" name="lineSplite"></div>';
 		//上传列表
 		acx += '<div class="files-panel" name="post_panel">\
 					<div name="post_head" class="toolbar">\
@@ -721,7 +718,6 @@ function HttpUploaderMgr()
 	    this.filesUI        = post_body;
 	    this.tmpFile        = panel.find('div[name="fileItem"]');
 	    this.tmpFolder      = panel.find('div[name="folderItem"]');
-	    this.tmpSpliter     = panel.find('div[name="lineSplite"]');
 	    this.pnlHeader      = panel.find('div[name="pnlHeader"]');
         this.btnSetup       = panel.find('span[name="btnSetup"]').click(function () {
             window.open(_this.Config.exe.path);
@@ -1014,11 +1010,8 @@ function HttpUploaderMgr()
 		_this.AppendQueue(fileLoc.id);//添加到队列
 
 		var ui = _this.tmpFile.clone();//文件信息
-		var sp = _this.tmpSpliter.clone();//分隔线
 		_this.filesUI.append(ui);//添加文件信息
-		_this.filesUI.append(sp);//添加分隔线
 		ui.css("display", "block");
-		sp.css("display", "block");
 
 		var uiName      = ui.find("div[name='fileName']");
 		var uiSize      = ui.find("div[name='fileSize']")
@@ -1032,7 +1025,7 @@ function HttpUploaderMgr()
 		
 		var upFile = new FileUploader(fileLoc, _this);
 		this.filesMap[fileLoc.id] = upFile;//添加到映射表
-		var ui_eles = { msg: uiMsg, process: uiProcess,percent:uiPercent, btn: { del: btnDel, cancel: btnCancel,post:btnPost,stop:btnStop }, div: ui, split: sp };
+		var ui_eles = { msg: uiMsg, process: uiProcess,percent:uiPercent, btn: { del: btnDel, cancel: btnCancel,post:btnPost,stop:btnStop }, div: ui};
         upFile.ui = ui_eles;
         $.each(ui_eles.btn, function (i, n) {
             $(n).hover(function () {
@@ -1095,11 +1088,8 @@ function HttpUploaderMgr()
 		this.AppendQueue(json.id);//添加到队列
 
 		var ui = this.tmpFolder.clone();//文件夹信息
-		var sp = this.tmpSpliter.clone();//分隔线
 		this.filesUI.append(ui);//添加到上传列表面板
-		this.filesUI.append(sp);
 		ui.css("display", "block");
-		sp.css("display", "block");
 
 		var uiName      = ui.find("div[name='fileName']");
 		var uiSize      = ui.find("div[name='fileSize']")
@@ -1110,7 +1100,7 @@ function HttpUploaderMgr()
 		var btnStop     = ui.find("span[name='stop']");
 		var btnDel      = ui.find("span[name='del']");
 		var divPercent	= ui.find("div[name='percent']");
-		var ui_eles = { msg: divMsg,size:uiSize, process: divProcess, percent: divPercent, btn: { del: btnDel, cancel: btnCancel, post: btnPost, stop: btnStop }, split: sp, div: ui };
+		var ui_eles = { msg: divMsg,size:uiSize, process: divProcess, percent: divPercent, btn: { del: btnDel, cancel: btnCancel, post: btnPost, stop: btnStop }, div: ui };
         $.each(ui_eles.btn, function (i, e) {
             $(e).hover(function () {
             $(this).addClass("btn-box-hover");

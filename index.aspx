@@ -43,6 +43,7 @@
     <p>up6.2多文件上传演示页面</p>
     <p><a href="db/sql.aspx" target="_blank">初始化数据库</a>：用于创建数据表和存储过程，在首次使用时操作。需要先配置数据库连接信息。</p>
     <p><a href="db/clear.aspx" target="_blank">清空数据库</a></p>
+    <p><a href="single-panel.htm" target="_blank">单面板演示</a></p>
     <p><a href="down2/index.htm" target="_blank">打开下载页面</a></p>
     <p><a href="index-single.htm" target="_blank">单文件上传演示</a></p>
     <p>

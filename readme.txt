@@ -28,6 +28,11 @@ Install-Package Microsoft.Experimental.IO
 	传输已停止，改为定时器调用
 	  up6.folder.js
 	    post_stoped
+	分隔线样式与文件样式合并
+	  up6.css
+	  up6.js
+	  up6.file.js
+	  up6.folder.js
 
 2019-04-26
 	1.添加文件，添加文件夹时检查防止重复添加

@@ -7,7 +7,7 @@ function FolderUploader(fdLoc, mgr)
 {
     var _this = this;
     this.id = fdLoc.id;
-    this.ui = { msg: null, process: null, percent: null, btn: { del: null, cancel: null,stop:null,post:null }, div: null, split: null };
+    this.ui = { msg: null, process: null, percent: null, btn: { del: null, cancel: null,stop:null,post:null }, div: null};
     this.isFolder = true; //是文件夹
     this.folderInit = false;//文件夹已初始化
     this.Scaned = false;//是否已经扫描
@@ -379,6 +379,5 @@ function FolderUploader(fdLoc, mgr)
         this.manager.Delete(this.id);
         this.svr_remove();
         this.ui.div.remove();
-        this.ui.split.remove();
     };
 }
