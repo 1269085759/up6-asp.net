@@ -246,16 +246,16 @@ function HttpUploaderMgr()
         //上传列表
         com += '<div name="post_panel">\
 					<div name="post_head" class="files-toolbar">\
-						<span class="btn" name="btnAddFiles"><img name="up-file" src="js/16/upload.png"/>上传文件</span>\
-						<span class="btn" name="btnAddFolder"><img name="up-folder" src="js/16/folder.png"/>上传文件夹</span>\
-						<span class="btn" name="btnPasteFile"><img name="paste" src="js/16/paste.png"/>粘贴上传</span>\
-						<span class="btn" name="btnSetup">安装控件</span>\
+						<span class="tool-btn" name="btnAddFiles"><img name="up-file" src="js/16/upload.png"/>上传文件</span>\
+						<span class="tool-btn" name="btnAddFolder"><img name="up-folder" src="js/16/folder.png"/>上传文件夹</span>\
+						<span class="tool-btn" name="btnPasteFile"><img name="paste" src="js/16/paste.png"/>粘贴上传</span>\
+						<span class="tool-btn" name="btnSetup">安装控件</span>\
 					</div>\
 					<div name="post_content">\
 						<div name="post_body" class="files-list"></div>\
 					</div>\
 					<div class="files-toolbar" name="post_footer">\
-						<span class="btn" name="btnClear"><img name="paste" src="js/16/clear.png"/>清除已完成</a>\
+						<span class="tool-btn" name="btnClear"><img name="paste" src="js/16/clear.png"/>清除已完成</a>\
 					</div>\
 				</div>';
         com += '</div>';
@@ -539,12 +539,12 @@ function HttpUploaderMgr()
         });//("href",this.Config.exe.path);
 	    //drag files
 
-        panel.find('span[class="btn"]').each(function ()
+        panel.find('span[class="tool-btn"]').each(function ()
         {
             $(this).hover(function () {
-                $(this).addClass("btn-hover");
+                $(this).addClass("tool-btn-hover");
             }, function () {
-                $(this).removeClass("btn-hover");
+                $(this).removeClass("tool-btn-hover");
             });
         });
 	    //添加多个文件
@@ -556,9 +556,9 @@ function HttpUploaderMgr()
 	    //清空已完成文件
         panel.find('span[name="btnClear"]').click(function () { _this.ClearComplete(); })
             .hover(function () {
-                $(this).addClass("btn-footer-hover");
+                $(this).addClass("tool-btn-hover");
             }, function () {
-                $(this).removeClass("btn-footer-hover");
+                $(this).removeClass("tool-btn-hover");
             });
 
 	    this.SafeCheck();	    

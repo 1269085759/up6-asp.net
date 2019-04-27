@@ -1,15 +1,7 @@
-a{ text-decoration:none; color:#004477; }
-a:hover{ color:#004477; text-decoration:underline; }
-.btn-footer{text-decoration: none; color:#244281; cursor:pointer;display:inline-block;height:35px;line-height:35px;padding:0 5px;}
-.btn-footer-hover{background-color:#DADADA;}
-
-/*新构架*/
 div.top-space{margin:3px 0 0 0;}
 div.lineSpace{margin:10px 0 0 0;}
 div.UploaderItemLeft{width:315px; float:left;}
 div.UploaderItemRight{width:54px; float:left;margin:3px 0 0 0;}
-/*文件信息*/
-.FileInfo{}
 .file-item {
     font: 12px/12px 新宋体;
     background-color: #FFFFFF;
@@ -41,7 +33,6 @@ div.UploaderItemRight{width:54px; float:left;margin:3px 0 0 0;}
 .file-item .btn-box-hover{background-color:#DADADA;}
 .file-item .btn-box img{ width:32px;height:32px;margin:10px 0 0 0;}
 .hide{display:none;}
-.BtnInfo{height:12px;}
 /*上传面板*/
 .files-panel {
     font: 12px/12px 宋体;
@@ -49,15 +40,24 @@ div.UploaderItemRight{width:54px; float:left;margin:3px 0 0 0;}
     height: 400px;
     border: 1px solid #CBCBCB;
 }
-.files-panel .header{ height:31px; line-height:31px; background:#EEE; border-bottom:solid 1px #FFF; padding:0 0 0 10px; font-weight:bold;}
+.files-panel a {
+    text-decoration: none;
+    color: #004477;
+}
+.files-panel a:hover {
+    color: #004477;
+    text-decoration: underline;
+}
 .files-toolbar{
     height: 43px;
     background: #EEE;
     line-height: 43px;
 }
 .files-toolbar img{vertical-align:middle;}
-.files-toolbar .btn{padding:0 10px; cursor:pointer;text-decoration:none;display:inline-block;}
-.files-toolbar .btn-hover{background-color:#DADADA;}
+.tool-btn{padding:0 10px; cursor:pointer;text-decoration:none;display:inline-block;}
+.tool-btn-hover{
+    background-color: #DADADA;
+}
 .files-list{
     background-color: #FFF;
     font: 12px/12px 宋体,新宋体; /*防目外部样式破坏*/
@@ -72,21 +72,3 @@ div.UploaderItemRight{width:54px; float:left;margin:3px 0 0 0;}
 #UpPanel a.msg{color:#004477; text-decoration:none;}
 #UpPanel a.msg:hover{text-decoration:none;}
 #UpPanel a:hover{color:#004477; text-decoration:underline;}
-.divHidden{ display:none;}
-/*标签*/
-.tab-panel{width:436px; height:458px;border: solid 1px #cbcbcb; background-color: #CCC; }
-/*标签头*/
-.tab-item{width: 436px;height:32px; list-style-type:none;padding:0;margin:0;}
-.tab-item li{display:inline-block; height:32px;padding:0 10px; font:12px/32px 宋体; cursor:pointer; background: #CCC;}
-.tab-item li.hover{ background: #EEE; }
-/*标签内容*/ 
-.tab-body{ height:426px;}
-.tab-body ul{ list-style-type:none;margin:0;padding:0;}
-.tab-body ul.cbItem{ display:none;list-style-type:none;margin:0;padding:0;}
-.tab-body ul li{}
-.tab-body ul.block{ display: block;}
-/*文件夹*/
-.folder-pic{background-repeat: no-repeat;background-image: url(folder.png);background-position: 0 -156px;float: left;width: 33px; height:30px;}
-.ico-folder{background-repeat: no-repeat;background-image: url(icos.png);background-position: 0 0;float: left;width: 32px; height:32px;margin:15px 0 0 0;vertical-align:middle;}
-.ico-file{background-repeat: no-repeat;background-image: url(icos.png);background-position: 0 -32px;float: left;width: 32px; height:32px;margin:15px 0 0 0;}
-.cur-pt { cursor:pointer; }
