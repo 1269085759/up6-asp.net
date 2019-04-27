@@ -205,8 +205,8 @@ function HttpUploaderMgr()
 
         com += '<div name="files-panel" class="files-panel">';
 
-        //上传列表项模板
-        com += '<div class="file-item" id="tmpFile" name="fileItem">\
+        //文件模板
+        com += '<div class="file-item" name="fileItem">\
                     <div class="img-box"><img src="js/file.png"/></div>\
 					<div class="area-l">\
 						<div class="file-head">\
