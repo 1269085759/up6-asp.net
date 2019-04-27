@@ -91,6 +91,11 @@
     <Content Include="down2\js\json2.min.js" />
     <Content Include="index-single.htm" />
     <Content Include="index.aspx" />
+    <Content Include="js\16\clear.png" />
+    <Content Include="js\16\folder.png" />
+    <Content Include="js\16\paste.png" />
+    <Content Include="js\16\upload.png" />
+    <Content Include="js\16\ups.png" />
     <Content Include="js\cab.html" />
     <Content Include="js\del.png" />
     <Content Include="js\file.png" />
@@ -119,6 +124,7 @@
     <Content Include="js\up6.edge.js" />
     <Content Include="js\up6.file.js" />
     <Content Include="js\up6.folder.js" />
+    <Content Include="js\upload.png" />
     <Content Include="readme.txt" />
     <Content Include="single-panel.aspx" />
     <Content Include="sql.down\down_files.sql" />

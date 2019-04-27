@@ -46,6 +46,9 @@ Install-Package Microsoft.Experimental.IO
 		  load_complete_edge
 	单面板样式优化
 	  single-panel
+	    up6.css
+		up6.js
+		js/16
 
 2019-04-26
 	1.添加文件，添加文件夹时检查防止重复添加
