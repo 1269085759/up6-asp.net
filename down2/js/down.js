@@ -86,7 +86,6 @@ function DownloaderMgr()
         , queueComplete: function () { }
 	};
 
-    this.edgeInited = false;
 	var browserName = navigator.userAgent.toLowerCase();
 	this.ie = browserName.indexOf("msie") > 0;
 	this.ie = this.ie ? this.ie : browserName.search(/(msie\s|trident.*rv:)([\w.]+)/) != -1;
@@ -391,8 +390,6 @@ function DownloaderMgr()
         else { this.btnSetup.hide(); }
     };
     this.load_complete_edge = function (json) {
-        if (this.edgeInited) return;
-        this.edgeInited = true;
         this.edge_load = true;
         this.btnSetup.hide();
         _this.app.init();
