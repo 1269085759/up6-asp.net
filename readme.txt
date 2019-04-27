@@ -33,6 +33,15 @@ Install-Package Microsoft.Experimental.IO
 	  up6.js
 	  up6.file.js
 	  up6.folder.js
+	down2,edge控件加载逻辑更新
+	  down.edge.js
+	    runChr
+	  app名称更新
+	    down.app.js
+		  down2_app
+	  edge初始化逻辑更新，防止频繁初始化
+	    down.js
+		  load_complete_edge
 
 2019-04-26
 	1.添加文件，添加文件夹时检查防止重复添加
