@@ -865,9 +865,7 @@ function HttpUploaderMgr()
 
 		var ui = this.tmpFolder.clone();//文件夹信息
 		this.filesUI.append(ui);//添加到上传列表面板
-		this.filesUI.append(sp);
 		ui.css("display", "block");
-		sp.css("display", "block");
 
 		var uiName      = ui.find("div[name='fileName']");
 		var uiSize      = ui.find("div[name='fileSize']")
