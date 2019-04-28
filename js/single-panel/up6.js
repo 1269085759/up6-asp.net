@@ -148,6 +148,7 @@ function HttpUploaderMgr()
 	//http://www.ncmem.com/
 	this.Domain = "http://" + document.location.host;
     this.working = false;
+    this.edgeInited = false;
 
     this.FileFilter = this.Config.FileFilter.split(","); //文件过滤器
 	this.filesMap = new Object(); //本地文件列表映射表
@@ -366,6 +367,9 @@ function HttpUploaderMgr()
     };
     this.load_complete = function (json)
     {
+        if (this.edgeInited) return;
+        this.edgeInited = true;
+
         this.btnSetup.hide();
         var needUpdate = true;
         if (typeof (json.version) != "undefined") {

@@ -7,6 +7,11 @@ Install-Package Microsoft.Experimental.IO
 
 ---------
 更新记录：
+2019-04-28
+	修复edge控件初始化两次的问题
+	  up6.js
+	    load_complete
+
 2019-04-27
 	增加错误码
 	  up6.js
