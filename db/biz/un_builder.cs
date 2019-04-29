@@ -37,7 +37,7 @@ namespace up6.db.biz
             //
             sb.Append(" from up6_files");
             //
-            sb.Append(" where f_uid=@f_uid and f_complete=0 and f_deleted=0 and f_fdChild=0");
+            sb.Append(" where f_uid=@f_uid and f_complete=0 and f_deleted=0 and f_fdChild=0 and f_scan=0");
 
             DbHelper db = new DbHelper();
             DbCommand cmd = db.GetCommand(sb.ToString());

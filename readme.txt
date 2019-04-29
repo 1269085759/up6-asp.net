@@ -7,6 +7,13 @@ Install-Package Microsoft.Experimental.IO
 
 ---------
 更新记录：
+2019-04-29
+	加载未完成列表增加没有扫描的列表
+	  un_builder.cs
+	    f_scan=0
+	  up6.folder.js
+	    post
+
 2019-04-28
 	修复edge控件初始化两次的问题
 	  up6.js

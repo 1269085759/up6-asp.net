@@ -96,7 +96,9 @@ function FolderUploader(fdLoc, mgr)
         //如果文件夹已初始化，表示续传。
         if (this.folderInit)
         {
-            this.post_fd();
+            //已传完，未扫描
+            if (this.fileSvr.lenLoc == this.fileSvr.lenSvr) { this.post_complete({fileCount:0,completes:0,errors:0}); }
+            else this.post_fd();
         }
         else
         {
