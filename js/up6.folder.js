@@ -97,7 +97,7 @@ function FolderUploader(fdLoc, mgr)
         if (this.folderInit)
         {
             //已传完，未扫描
-            if (this.fileSvr.perSvr == this.fileSvr.lenSvr) { this.post_complete_scan(); }
+            if (this.fileSvr.lenLoc == this.fileSvr.lenSvr) { this.post_complete_scan(); }
             else this.post_fd();
         }
         else
