@@ -280,6 +280,8 @@ function HttpUploaderMgr()
                             var fd = _this.addFolderLoc(n);
                             fd.folderInit = true;
                             fd.Scaned = true;
+                            f.ui.percent.text("(" + n.perSvr + ")");
+                            f.ui.process.css("width", n.perSvr);
                             fd.ui.btn.post.show();
                             fd.ui.btn.cancel.show();
                         }
@@ -287,6 +289,8 @@ function HttpUploaderMgr()
                         {
                             var f = _this.addFileLoc(n);
                             if (null == f) return;
+                            f.ui.percent.text("(" + n.perSvr + ")");
+                            f.ui.process.css("width", n.perSvr);
                             f.ui.btn.post.show();
                             f.ui.btn.cancel.show();
                         }
