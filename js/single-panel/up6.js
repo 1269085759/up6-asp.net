@@ -278,12 +278,14 @@ function HttpUploaderMgr()
                         if (n.fdTask)
                         {
                             var fd = _this.addFolderLoc(n);
+                            if (null == fd) return;
                             fd.folderInit = true;
                             fd.Scaned = true;
                             fd.ui.percent.text("(" + n.perSvr + ")");
                             fd.ui.process.css("width", n.perSvr);
                             fd.ui.btn.post.show();
                             fd.ui.btn.cancel.show();
+                            _this.RemoveQueue(fd.fileSvr.id);
                         }
                         else
                         {
@@ -293,6 +295,7 @@ function HttpUploaderMgr()
                             f.ui.process.css("width", n.perSvr);
                             f.ui.btn.post.show();
                             f.ui.btn.cancel.show();
+                            _this.RemoveQueue(f.fileSvr.id);
                         }
                     });
                 }
