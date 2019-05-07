@@ -19,14 +19,10 @@
 		2015-07-31 优化更新进度逻辑
         2019-03-18 完善文件夹粘帖功能，完善文件夹初始化逻辑。
 */
-var HttpUploaderErrorCode = {
-};
 var up6_err_solve = {
     errFolderCreate: "请检查UrlFdCreate地址配置是否正确\n请检查浏览器缓存是否已更新\n请检查数据库是否创建\n请检查数据库连接配置是否正确"
     , errFolderComplete: "请检查UrlFdComplete地址配置是否正确\n请检查浏览器缓存是否已更新\n请检查数据库是否创建\n请检查数据库连接配置是否正确"
     , errFileComplete: "请检查UrlComplete地址配置是否正确\n请检查浏览器缓存是否已更新"
-};
-var HttpUploaderState = {
 };
 
 function getRoot()
@@ -918,7 +914,7 @@ function HttpUploaderMgr()
 			var obj = this.filesMap[index];
 
 			//空闲状态
-			if (HttpUploaderState.Ready == obj.State)
+			if (this.Config.state.Ready == obj.State)
 			{
 				obj.post();
 			}
