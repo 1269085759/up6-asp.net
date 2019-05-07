@@ -38,7 +38,6 @@ function getRoot()
     }
 }
 var root = getRoot();
-//jQuery.getScript(root+"up6.edge.js", function (data, status, xhr) { console.log("加载完毕");});
 
 function debugMsg(m) { $("#msg").append(m); }
 function HttpUploaderMgr()

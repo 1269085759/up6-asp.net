@@ -13,7 +13,7 @@ namespace up6.db
     /// 此文件处理单文件上传逻辑
     /// 此页面需要返回文件的pathSvr路径。并进行urlEncode编码
     /// 更新记录：
-    ///     2016-03-23 优化逻辑，分享子文件逻辑
+    ///     2016-03-23 优化逻辑，分离子文件逻辑
     /// </summary>
     public partial class f_create : System.Web.UI.Page
     {
