@@ -280,8 +280,8 @@ function HttpUploaderMgr()
                             var fd = _this.addFolderLoc(n);
                             fd.folderInit = true;
                             fd.Scaned = true;
-                            f.ui.percent.text("(" + n.perSvr + ")");
-                            f.ui.process.css("width", n.perSvr);
+                            fd.ui.percent.text("(" + n.perSvr + ")");
+                            fd.ui.process.css("width", n.perSvr);
                             fd.ui.btn.post.show();
                             fd.ui.btn.cancel.show();
                         }
@@ -892,9 +892,7 @@ function HttpUploaderMgr()
             });
         });
 		divPercent.text("(0%)");
-		divProcess.css("width",fdLoc.perSvr);
 		divMsg.text("");
-		//if(fdLoc.fdName != null) fdLoc.name = fdLoc.fdName;
 		uiName.text(fdLoc.nameLoc);
 		uiName.attr("title", fdLoc.nameLoc + "\n文件：" + fdLoc.files.length + "\n文件夹：" + fdLoc.foldersCount + "\n大小：" + fdLoc.sizeLoc);
 		uiSize.text("0字节");
