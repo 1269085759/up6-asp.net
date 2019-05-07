@@ -1,5 +1,5 @@
 /*
-	版权所有 2009-2016 荆门泽优软件有限公司
+	版权所有 2009-2019 荆门泽优软件有限公司
 	保留所有权利
 	官方网站：http://www.ncmem.com/
 	产品首页：http://www.ncmem.com/webplug/http-uploader6/
@@ -14,34 +14,8 @@
 	联系信箱：1085617561@qq.com
 	联系QQ：1085617561
     更新记录：
+	    2009-11-05 创建
         2015-08-01 优化
-*/
-var HttpUploaderErrorCode = {
-    "0": "发送数据错误"
-	, "1": "接收数据错误"
-	, "2": "访问本地文件错误"
-	, "3": "域名未授权"
-	, "4": "文件大小超过限制"
-	, "5": "文件大小为0"
-};
-
-//删除元素值
-Array.prototype.remove = function(val)
-{
-	for (var i = 0, n = 0; i < this.length; i++)
-	{
-		if (this[i] != val)
-		{
-			this[n++] = this[i]
-		}
-	}
-	this.length -= 1
-}
-function debugMsg(v) { }
-/*
-	2009-11-5 文件管理类
-	属性：
-		UpFileList
 */
 function HttpUploaderMgr()
 {
@@ -49,7 +23,7 @@ function HttpUploaderMgr()
 	this.Config = {
 		  "EncodeType"		: "utf-8"
 		, "Company"			: "荆门泽优软件有限公司"
-		, "Version"			: "2,7,117,60757"
+		, "Version"			: "2,7,118,5338"
 		, "License"			: ""//
 		, "Authenticate"	: ""//域验证方式：basic,ntlm
 		, "AuthName"		: ""//域帐号
@@ -160,7 +134,7 @@ function HttpUploaderMgr()
 	this.chrVer = navigator.appVersion.match(/Chrome\/(\d+)/);
 	this.ffVer = navigator.userAgent.match(/Firefox\/(\d+)/);
 	this.edge = navigator.userAgent.indexOf("Edge") > 0;
-    this.edgeApp = new WebServer(this);
+    this.edgeApp = new WebServerUp6(this);
     this.app = up6_app;
     this.app.edgeApp = this.edgeApp;
     this.app.Config = this.Config;
