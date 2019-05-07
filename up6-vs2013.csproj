@@ -68,7 +68,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="db\f_process.aspx" />
-    <Content Include="db\sql.aspx" />
     <Content Include="down2\db\clear.aspx" />
     <Content Include="down2\db\fd_data.aspx" />
     <Content Include="down2\db\f_list.aspx" />
@@ -179,13 +178,6 @@
     </Compile>
     <Compile Include="db\f_process.aspx.designer.cs">
       <DependentUpon>f_process.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="db\sql.aspx.cs">
-      <DependentUpon>sql.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="db\sql.aspx.designer.cs">
-      <DependentUpon>sql.aspx</DependentUpon>
     </Compile>
     <Compile Include="db\utils\FileBlockWriter.cs" />
     <Compile Include="db\f_complete.aspx.cs">
