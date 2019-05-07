@@ -39,8 +39,6 @@ function FileUploader(fileLoc, mgr)
     this.Ready = function ()
     {
         this.ui.msg.text("正在上传队列中等待...");
-        this.ui.btn.post.show();
-        this.ui.btn.cancel.show();
         this.State = this.Config.state.Ready;
     };
 

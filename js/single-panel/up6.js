@@ -285,7 +285,10 @@ function HttpUploaderMgr()
                         }
                         else
                         {
-                            _this.addFileLoc(n);
+                            var f = _this.addFileLoc(n);
+                            if (null == f) return;
+                            f.ui.btn.post.show();
+                            f.ui.btn.cancel.show();
                         }
                     });
                 }
@@ -381,7 +384,7 @@ function HttpUploaderMgr()
         else { this.btnSetup.hide(); }
         setTimeout(function () {
             _this.load_files();
-        }, 1000);
+        }, 400);
     };
 	this.load_complete_edge = function (json)
     {
