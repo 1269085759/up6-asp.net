@@ -19,42 +19,10 @@
 		2015-07-31 优化更新进度逻辑
         2019-03-18 完善文件夹粘帖功能，完善文件夹初始化逻辑。
 */
-var HttpUploaderErrorCode = {
-	  "0": "发送数据错误"
-	, "1": "接收数据错误"
-	, "2": "访问本地文件错误"
-	, "3": "域名未授权"
-	, "4": "文件大小超过限制"
-	, "5": "文件大小为0"
-	, "6": "文件被占用"
-    , "7": "文件夹子元素数量超过限制"
-    , "8": "文件夹大小超过限制"
-    , "9": "子文件大小超过限制"
-    , "10": "文件夹数量超过限制"
-    , "11": "服务器返回数据错误"
-    , "12": "连接服务器失败"
-    , "13": "请求超时"
-    , "14": "上传地址错误"
-    , "15": "文件块MD5不匹配"
-	, "100": "服务器错误"
-};
 var up6_err_solve = {
     errFolderCreate: "请检查UrlFdCreate地址配置是否正确\n请检查浏览器缓存是否已更新\n请检查数据库是否创建\n请检查数据库连接配置是否正确"
     , errFolderComplete: "请检查UrlFdComplete地址配置是否正确\n请检查浏览器缓存是否已更新\n请检查数据库是否创建\n请检查数据库连接配置是否正确"
     , errFileComplete: "请检查UrlComplete地址配置是否正确\n请检查浏览器缓存是否已更新"
-};
-var HttpUploaderState = {
-	Ready: 0,
-	Posting: 1,
-	Stop: 2,
-	Error: 3,
-	GetNewID: 4,
-	Complete: 5,
-	WaitContinueUpload: 6,
-	None: 7,
-	Waiting: 8
-	,MD5Working:9
-    , scan: 10
 };
 
 function getRoot()
@@ -132,7 +100,39 @@ function HttpUploaderMgr()
         , edge: {protocol:"up6",port:9100,visible:false}
         , exe: { path: "http://www.ncmem.com/download/up6.3/up6.exe" }
 		, "SetupPath": "http://localhost:4955/demoAccess/js/setup.htm"
-        , "Fields": {"uname": "test","upass": "test","uid":"0"}
+        , "Fields": { "uname": "test", "upass": "test", "uid": "0" }
+        , errCode: {
+            "0": "发送数据错误"
+            , "1": "接收数据错误"
+            , "2": "访问本地文件错误"
+            , "3": "域名未授权"
+            , "4": "文件大小超过限制"
+            , "5": "文件大小为0"
+            , "6": "文件被占用"
+            , "7": "文件夹子元素数量超过限制"
+            , "8": "文件夹大小超过限制"
+            , "9": "子文件大小超过限制"
+            , "10": "文件夹数量超过限制"
+            , "11": "服务器返回数据错误"
+            , "12": "连接服务器失败"
+            , "13": "请求超时"
+            , "14": "上传地址错误"
+            , "15": "文件块MD5不匹配"
+            , "100": "服务器错误"
+        }
+        , state: {
+            Ready: 0,
+            Posting: 1,
+            Stop: 2,
+            Error: 3,
+            GetNewID: 4,
+            Complete: 5,
+            WaitContinueUpload: 6,
+            None: 7,
+            Waiting: 8
+            , MD5Working: 9
+            , scan: 10
+        }
 	};
 
     //biz event
@@ -678,7 +678,7 @@ function HttpUploaderMgr()
 			var obj = this.filesMap[index];
 
 			//空闲状态
-			if (HttpUploaderState.Ready == obj.State)
+			if (this.Config.state.Ready == obj.State)
 			{
 				obj.post();
 			}
@@ -777,7 +777,7 @@ function HttpUploaderMgr()
 		//本地文件名称存在
         if (_this.Exist(fileLoc.pathLoc)) {
             alert("队列中已存在相同文件，请重新选择。");
-            return;
+            return null;
         }
 		//此类型为过滤类型
 		if (_this.NeedFilter(fileLoc.ext)) return;
@@ -855,7 +855,7 @@ function HttpUploaderMgr()
 		//本地文件夹存在
         if (this.Exist(fdLoc.pathLoc)) {
             alert("队列中已存在相同文件夹，请重新选择。");
-            return;
+            return null;
         }
         //针对空文件夹的处理
 	    if (json.files == null) jQuery.extend(fdLoc,{files:[]});
@@ -929,7 +929,8 @@ function HttpUploaderMgr()
 
 	this.ResumeFolder = function (fileSvr)
 	{
-	    var fd = this.addFolderLoc(fileSvr);
+        var fd = this.addFolderLoc(fileSvr);
+        if (null == fd) return;
         fd.folderInit = true;
         fd.Scaned = true;
         fd.ui.size.text(fileSvr.sizeLoc);
