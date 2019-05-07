@@ -94,7 +94,39 @@ function HttpUploaderMgr()
         , edge: {protocol:"up6",port:9100,visible:false}
         , exe: { path: "http://www.ncmem.com/download/up6.3/up6.exe" }
 		, "SetupPath": "http://localhost:4955/demoAccess/js/setup.htm"
-        , "Fields": {"uname": "test","upass": "test","uid":"0","fid":"0"}
+        , "Fields": { "uname": "test", "upass": "test", "uid": "0", "fid": "0" }
+        , errCode: {
+            "0": "发送数据错误"
+            , "1": "接收数据错误"
+            , "2": "访问本地文件错误"
+            , "3": "域名未授权"
+            , "4": "文件大小超过限制"
+            , "5": "文件大小为0"
+            , "6": "文件被占用"
+            , "7": "文件夹子元素数量超过限制"
+            , "8": "文件夹大小超过限制"
+            , "9": "子文件大小超过限制"
+            , "10": "文件夹数量超过限制"
+            , "11": "服务器返回数据错误"
+            , "12": "连接服务器失败"
+            , "13": "请求超时"
+            , "14": "上传地址错误"
+            , "15": "文件块MD5不匹配"
+            , "100": "服务器错误"
+        }
+        , state: {
+            Ready: 0,
+            Posting: 1,
+            Stop: 2,
+            Error: 3,
+            GetNewID: 4,
+            Complete: 5,
+            WaitContinueUpload: 6,
+            None: 7,
+            Waiting: 8
+            , MD5Working: 9
+            , scan: 10
+        }
 	};
 
     //biz event
@@ -273,7 +305,7 @@ function HttpUploaderMgr()
 		{
 			if (null != _this.fileCur)
 			{
-			    if (_this.fileCur.State == HttpUploaderState.Posting)
+			    if (_this.fileCur.State == _this.Config.state.Posting)
 			    {
 			        event.returnValue = "您还有程序正在运行，确定关闭？";
 			    }
@@ -284,7 +316,7 @@ function HttpUploaderMgr()
 		{ 
 		    if (null != _this.fileCur)
 		    {
-		        if (_this.fileCur.State == HttpUploaderState.Posting)
+		        if (_this.fileCur.State == _this.Config.state.Posting)
 		        {
 		            _this.fileCur.Stop();
 		        }
@@ -373,8 +405,8 @@ function HttpUploaderMgr()
 		var file_free = this.fileCur != null;
 		if(file_free)
 		{
-			file_free = this.fileCur.State == HttpUploaderState.Complete;
-			if(!file_free) file_free = this.fileCur.State == HttpUploaderState.Error;			
+			file_free = this.fileCur.State == this.Config.state.Complete;
+			if(!file_free) file_free = this.fileCur.State == this.Config.state.Error;			
 		}		
 		if(this.fileCur == null) file_free = true;
 		if(file_free)
@@ -390,8 +422,8 @@ function HttpUploaderMgr()
 		var file_free = this.fileCur != null;
 		if(file_free)
 		{
-			file_free = this.fileCur.State == HttpUploaderState.Complete;
-			if(!file_free) file_free = this.fileCur.State == HttpUploaderState.Error;			
+			file_free = this.fileCur.State == this.Config.state.Complete;
+			if(!file_free) file_free = this.fileCur.State == this.Config.state.Error;			
 		}		
 		if(this.fileCur == null) file_free = true;
 		if(file_free)
@@ -456,18 +488,6 @@ function HttpUploaderMgr()
 	};
 }
 
-var HttpUploaderState = {
-	Ready: 0,
-	Posting: 1,
-	Stop: 2,
-	Error: 3,
-	GetNewID: 4,
-	Complete: 5,
-	WaitContinueUpload: 6,
-	None: 7,
-	Waiting: 8
-	,MD5Working:9
-};
 //文件上传对象
 function FileUploader(fileLoc, mgr)
 {
@@ -480,7 +500,7 @@ function FileUploader(fileLoc, mgr)
     this.event = mgr.event;
     this.Config = mgr.Config;
     this.fields = jQuery.extend({}, mgr.Config.Fields);//每一个对象自带一个fields幅本
-    this.State = HttpUploaderState.None;
+    this.State = this.Config.state.None;
     this.uid = this.fields.uid;
     this.fileSvr = {
         id: ""
@@ -509,7 +529,7 @@ function FileUploader(fileLoc, mgr)
     this.Ready = function ()
     {
         this.ui.msg.text("正在上传队列中等待...");
-        this.State = HttpUploaderState.Ready;
+        this.State = this.Config.state.Ready;
     };
 
     this.svr_error = function ()
@@ -572,7 +592,7 @@ function FileUploader(fileLoc, mgr)
         this.ui.process.css("width", "100%");
         this.ui.percent.text("(100%)");
         this.ui.msg.text("上传完成");
-        this.State = HttpUploaderState.Complete;
+        this.State = this.Config.state.Complete;
 
         var param = { md5: this.fileSvr.md5, uid: this.uid, id: this.fileSvr.id, time: new Date().getTime() };
 
@@ -596,7 +616,7 @@ function FileUploader(fileLoc, mgr)
         this.ui.process.css("width", "100%");
         this.ui.percent.text("(100%)");
         this.ui.msg.text("服务器存在相同文件，快速上传成功。");
-        this.State = HttpUploaderState.Complete;
+        this.State = this.Config.state.Complete;
         this.event.fileComplete(this);//触发事件
     };
     this.post_stoped = function (json) {
@@ -606,12 +626,12 @@ function FileUploader(fileLoc, mgr)
         this.ui.btn.stop.hide();
         this.ui.msg.text("传输已停止....");
 
-        if (HttpUploaderState.Ready == this.State) return;
-        this.State = HttpUploaderState.Stop;
+        if (this.Config.state.Ready == this.State) return;
+        this.State = this.Config.state.Stop;
     };
     this.post_error = function (json)
     {
-        this.ui.msg.text(HttpUploaderErrorCode[json.value]);
+        this.ui.msg.text(this.Config.errCode[json.value]);
         //文件大小超过限制,文件大小为0
         if ("4" == json.value || "5" == json.value)
         {
@@ -623,7 +643,7 @@ function FileUploader(fileLoc, mgr)
         }
         this.ui.btn.stop.hide();
 
-        this.State = HttpUploaderState.Error;
+        this.State = this.Config.state.Error;
     };
     this.md5_process = function (json)
     {
@@ -663,7 +683,7 @@ function FileUploader(fileLoc, mgr)
     };
     this.md5_error = function (json)
     {
-        this.ui.msg.text(HttpUploaderErrorCode[json.value]);
+        this.ui.msg.text(this.Config.errCode[json.value]);
         //文件大小超过限制,文件大小为0
         if ("4" == json.value
 			|| "5" == json.value)
@@ -676,7 +696,7 @@ function FileUploader(fileLoc, mgr)
             this.ui.btn.post.show();
             this.ui.btn.stop.hide();
         }
-        this.State = HttpUploaderState.Error;
+        this.State = this.Config.state.Error;
 
         this.post_next();
     };
@@ -695,7 +715,7 @@ function FileUploader(fileLoc, mgr)
     {
         this.ui.btn.stop.show();
         this.ui.btn.cancel.hide();
-        this.State = HttpUploaderState.Posting;//
+        this.State = this.Config.state.Posting;//
         var path_loc = this.fileSvr.pathLoc;
         this.fields["pathSvr"] = encodeURIComponent(this.fileSvr.pathSvr);
         this.fields["lenLoc"] = this.fileSvr.lenLoc;
@@ -706,7 +726,7 @@ function FileUploader(fileLoc, mgr)
     {
         this.ui.btn.stop.show();
         this.ui.btn.cancel.hide();
-        this.State = HttpUploaderState.MD5Working;
+        this.State = this.Config.state.MD5Working;
         this.app.checkFile({ id: this.id, pathLoc: this.fileSvr.pathLoc });
     };
     this.stop = function ()
@@ -721,14 +741,14 @@ function FileUploader(fileLoc, mgr)
     //手动停止，一般在StopAll中调用
     this.stop_manual = function ()
     {
-        if (HttpUploaderState.Posting == this.State)
+        if (this.Config.state.Posting == this.State)
         {
             this.ui.btn.stop.hide();
             this.ui.btn.post.show();
             this.ui.btn.del.show();
             this.ui.msg.text("传输已停止....");
             this.app.stopFile({ id: this.id});
-            this.State = HttpUploaderState.Stop;
+            this.State = this.Config.state.Stop;
         }
     };
 

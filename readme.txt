@@ -7,6 +7,12 @@ Install-Package Microsoft.Experimental.IO
 
 ---------
 更新记录：
+2019-05-07
+	单面板加载文件列表逻辑更新
+	多文件上传将错误码合并到Config中
+	多文件上传将状态码合并到Config中
+	  up6.js
+
 2019-04-29
 	加载未完成列表增加没有扫描的列表
 	  un_builder.cs

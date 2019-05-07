@@ -17,7 +17,7 @@
         var cbMgr = new HttpUploaderMgr();
         cbMgr.event.md5Complete = function (obj, md5) { /*alert(md5);*/ };
         cbMgr.event.fileComplete = function (obj) { /*alert(obj.fileSvr.pathSvr);*/ };
-        cbMgr.event.queueComplete = function () { console.log("队列完成"); }
+        cbMgr.event.queueComplete = function () { $(document.body).append("队列完成<br/>"); }
         cbMgr.event.addFdError = function (jv) { alert("本地路径不存在：" + jv.path); };
         cbMgr.event.scanComplete = function (obj) { /*alert(obj.folderSvr.pathLoc);*/ };
         cbMgr.Config["Cookie"] = 'ASP.NET_SessionId=<%=Session.SessionID%>';

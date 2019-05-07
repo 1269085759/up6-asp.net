@@ -20,23 +20,6 @@
         2019-03-18 完善文件夹粘帖功能，完善文件夹初始化逻辑。
 */
 var HttpUploaderErrorCode = {
-	  "0": "发送数据错误"
-	, "1": "接收数据错误"
-	, "2": "访问本地文件错误"
-	, "3": "域名未授权"
-	, "4": "文件大小超过限制"
-	, "5": "文件大小为0"
-	, "6": "文件被占用"
-    , "7": "文件夹子元素数量超过限制"
-    , "8": "文件夹大小超过限制"
-    , "9": "子文件大小超过限制"
-    , "10": "文件夹数量超过限制"
-    , "11": "服务器返回数据错误"
-    , "12": "连接服务器失败"
-    , "13": "请求超时"
-    , "14": "上传地址错误"
-    , "15": "文件块MD5不匹配"
-	, "100": "服务器错误"
 };
 var up6_err_solve = {
     errFolderCreate: "请检查UrlFdCreate地址配置是否正确\n请检查浏览器缓存是否已更新\n请检查数据库是否创建\n请检查数据库连接配置是否正确"
@@ -44,17 +27,6 @@ var up6_err_solve = {
     , errFileComplete: "请检查UrlComplete地址配置是否正确\n请检查浏览器缓存是否已更新"
 };
 var HttpUploaderState = {
-	Ready: 0,
-	Posting: 1,
-	Stop: 2,
-	Error: 3,
-	GetNewID: 4,
-	Complete: 5,
-	WaitContinueUpload: 6,
-	None: 7,
-	Waiting: 8
-	,MD5Working:9
-    , scan: 10
 };
 
 function getRoot()
@@ -141,6 +113,38 @@ function HttpUploaderMgr()
                 , del: "http://localhost:8888/js/del.png"
                 , post: "http://localhost:8888/js/post.png"
             }
+        }
+        , errCode: {
+            "0": "发送数据错误"
+            , "1": "接收数据错误"
+            , "2": "访问本地文件错误"
+            , "3": "域名未授权"
+            , "4": "文件大小超过限制"
+            , "5": "文件大小为0"
+            , "6": "文件被占用"
+            , "7": "文件夹子元素数量超过限制"
+            , "8": "文件夹大小超过限制"
+            , "9": "子文件大小超过限制"
+            , "10": "文件夹数量超过限制"
+            , "11": "服务器返回数据错误"
+            , "12": "连接服务器失败"
+            , "13": "请求超时"
+            , "14": "上传地址错误"
+            , "15": "文件块MD5不匹配"
+            , "100": "服务器错误"
+        }
+        , state: {
+            Ready: 0,
+            Posting: 1,
+            Stop: 2,
+            Error: 3,
+            GetNewID: 4,
+            Complete: 5,
+            WaitContinueUpload: 6,
+            None: 7,
+            Waiting: 8
+            , MD5Working: 9
+            , scan: 10
         }
 	};
 
