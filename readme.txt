@@ -7,6 +7,9 @@ Install-Package Microsoft.Experimental.IO
 
 ---------
 更新记录：
+2019-05-08
+	单面板演示页面名称更新
+	  index2.aspx
 2019-05-07
 	文件路径接收方式由head改为form,在head中容易报413错误
 	  f_post.aspx.cs

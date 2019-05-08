@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
-    <title>up6-SQL2005演示页面</title>
+    <title>up6-单面板演示页面</title>
     <link href="js/single-panel/up6.css" type="text/css" rel="Stylesheet" charset="gb2312"/>
     <script type="text/javascript" src="js/jquery-1.4.min.js"></script>
     <script type="text/javascript" src="js/json2.min.js" charset="utf-8"></script>
