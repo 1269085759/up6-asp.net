@@ -125,7 +125,7 @@
     <Content Include="js\up6.folder.js" />
     <Content Include="js\upload.png" />
     <Content Include="readme.txt" />
-    <Content Include="single-panel.aspx" />
+    <Content Include="index2.aspx" />
     <Content Include="sql.down\down_files.sql" />
     <Content Include="js\up6.js" />
     <Content Include="js\setup.htm" />
@@ -286,12 +286,12 @@
       <DependentUpon>index.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="single-panel.aspx.cs">
-      <DependentUpon>single-panel.aspx</DependentUpon>
+    <Compile Include="index2.aspx.cs">
+      <DependentUpon>index2.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="single-panel.aspx.designer.cs">
-      <DependentUpon>single-panel.aspx</DependentUpon>
+    <Compile Include="index2.aspx.designer.cs">
+      <DependentUpon>index2.aspx</DependentUpon>
     </Compile>
     <Compile Include="vue\index.aspx.cs">
       <DependentUpon>index.aspx</DependentUpon>
