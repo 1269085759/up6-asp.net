@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
-    <title>up6.2-SQL2005演示页面</title>
+    <title>up6-多标签演示页面</title>
     <link href="js/up6.css" type="text/css" rel="Stylesheet" charset="gb2312"/>
     <script type="text/javascript" src="js/jquery-1.4.min.js"></script>
     <script type="text/javascript" src="js/json2.min.js" charset="utf-8"></script>
@@ -40,7 +40,7 @@
     </script>
 </head>
 <body>
-    <p>up6.2多文件上传演示页面</p>
+    <p>up6多标签上传演示页面</p>
     <p><a href="db/clear.aspx" target="_blank">清空数据库</a></p>
     <p><a href="index2.aspx" target="_blank">单面板演示</a></p>
     <p><a href="down2/index.htm" target="_blank">打开下载页面</a></p>
