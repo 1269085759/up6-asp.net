@@ -1,20 +1,11 @@
 ﻿/*
 版权所有(C) 2009-2018 荆门泽优软件有限公司
 保留所有权利
-官方网站：http://www.ncmem.com
-产品论坛：http://bbs.ncmem.com/forum-41-1.html
-产品首页：http://www.ncmem.com/webapp/down2/index.asp
-开发文档：http://www.cnblogs.com/xproer/archive/2011/03/15/1984950.html
-升级日志：http://www.cnblogs.com/xproer/archive/2011/03/15/1985091.html
-示例下载(asp.net)：http://www.ncmem.com/download/down2/asp.net/down2.rar
-示例下载(jsp-mysql)：http://www.ncmem.com/download/down2/jsp/Down2MySQL.rar
-示例下载(jsp-oracle)：http://www.ncmem.com/download/down2/jsp/Down2Oracle.rar
-示例下载(jsp-sql)：http://www.ncmem.com/download/down2/jsp/Down2SQL.rar
-示例下载(php)：http://www.ncmem.com/download/down2/php/down2.rar
-文档下载：http://www.ncmem.com/download/down2/down2-doc.rar
+产品网站：http://www.ncmem.com/webapp/down2/index.aspx
+控件下载：http://www.ncmem.com/webapp/down2/pack.aspx
+示例下载：http://www.ncmem.com/webapp/down2/versions.aspx
 联系邮箱：1085617561@qq.com
-联系QQ：1085617561
-版本：2.4.11
+版本：2.4.12
 更新记录：
     2009-11-05 创建
 	2014-02-27 优化版本号。
@@ -23,18 +14,6 @@
     2017-07-22 优化文件夹下载，优化文件下载。
 */
 function debug_msg(v) { $(document.body).append("<div>"+v+"</div>");}
-//删除元素值
-Array.prototype.remove = function(val)
-{
-	for (var i = 0, n = 0; i < this.length; i++)
-	{
-		if (this[i] != val)
-		{
-			this[n++] = this[i]
-		}
-	}
-	this.length -= 1
-}
 
 function DownloaderMgr()
 {
@@ -288,7 +267,11 @@ function DownloaderMgr()
 	    }
 	    return v;
 	};
-	this.remove_url = function (url) { this.filesUrl.remove(url); };
+    this.remove_url = function (url) {
+        this.filesUrl = $.grep(this.filesUrl, function (n, i) {
+            return n == url;
+        },true);
+    };
     this.remove_wait = function (id) {
         if (this.queueWait.length == 0) return;
         this.queueWait = $.grep(this.queueWait, function (n, i){

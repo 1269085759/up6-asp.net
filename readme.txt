@@ -7,6 +7,9 @@ Install-Package Microsoft.Experimental.IO
 
 ---------
 更新记录：
+2019-05-09
+	下载示例删除remove方法
+	  down.js
 2019-05-08
 	单面板演示页面名称更新
 	  index2.aspx
