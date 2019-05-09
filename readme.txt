@@ -1,2 +1,7 @@
-﻿数据库：SQL2005
-编码：GB2312
+﻿更新记录：
+
+2019-04-25
+	完善文件创建逻辑，增加对长文件路径的支持（超过255个字符）
+	FileBlockWriter.make
+	FileBlockWriter.write
+	f_post.aspx.cs

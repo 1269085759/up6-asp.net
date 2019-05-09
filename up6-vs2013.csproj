@@ -104,7 +104,7 @@
     <Content Include="filemgr\down2\folder.png" />
     <Content Include="filemgr\down2\jquery-1.4.min.js" />
     <Content Include="filemgr\down2\json2.min.js" />
-    <Content Include="filemgr\filemgr.txt" />
+    <Content Include="readme.txt" />
     <Content Include="filemgr\res\bootstrap\css\bootstrap-theme.css" />
     <Content Include="filemgr\res\bootstrap\css\bootstrap-theme.min.css" />
     <Content Include="filemgr\res\bootstrap\css\bootstrap.min.css" />
