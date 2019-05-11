@@ -7,6 +7,9 @@ Install-Package Microsoft.Experimental.IO
 
 ---------
 更新记录：
+2019-05-11
+	新增错误码，读取文件夹配置信息错误
+	  up6.js
 2019-05-09
 	下载示例删除remove方法
 	  down.js
