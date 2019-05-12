@@ -46,7 +46,6 @@ div.top-space{margin:3px 0 0 0;}
 .file-item .img-box img{ width:32px;height:32px;margin:17px 0 0 0;}
 .file-item .file-head{width:280px; height:20px;overflow:hidden; vertical-align:middle;}
 .file-item .btn-box { width:45px;height:65px;float:left; overflow:hidden; text-align:center; text-decoration:none; vertical-align:middle;line-height:65px;cursor:pointer;}
-.file-item .btn-box-hover{background-color:#DADADA;}
 .file-item .btn-box img{ width:32px;height:32px;margin:10px 0 0 0;}
 .d-hide{display:none;}
 /*文件列表*/
