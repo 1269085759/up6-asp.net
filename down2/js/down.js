@@ -1,5 +1,5 @@
 ﻿/*
-版权所有(C) 2009-2018 荆门泽优软件有限公司
+版权所有(C) 2009-2019 荆门泽优软件有限公司
 保留所有权利
 产品网站：http://www.ncmem.com/webapp/down2/index.aspx
 控件下载：http://www.ncmem.com/webapp/down2/pack.aspx
@@ -56,7 +56,29 @@ function DownloaderMgr()
         , chrome45: { name: "com.xproer.down2", path: "http://www.ncmem.com/download/down2/2.4/down2.nat.crx" }
         , exe: { path: "http://www.ncmem.com/download/down2/2.4/down2.exe" }
         , edge: {protocol:"down2",port:9700,visible:false}
-        , "Fields": {"uname": "test","upass": "test","uid":"0"}
+        , "Fields": { "uname": "test", "upass": "test", "uid": "0" }
+        , errCode: {
+            "0": "发送数据错误"
+            , "1": "接收数据错误"
+            , "2": "访问本地文件错误"
+            , "3": "域名未授权"
+            , "4": "文件大小超过限制"
+            , "5": "地址为空"
+            , "6": "配置文件不存在"
+            , "7": "本地目录不存在"
+            , "8": "查询文件信息失败"
+            , "9": "子文件大小超过限制"
+            , "10": "子文件数量超过限制"}
+        , state: {
+            Ready: 0,
+            Posting: 1,
+            Stop: 2,
+            Error: 3,
+            GetNewID: 4,
+            Complete: 5,
+            WaitContinueUpload: 6,
+            None: 7,
+            Waiting: 8}
 	};
 
     this.event = {
