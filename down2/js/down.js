@@ -196,8 +196,11 @@ function DownloaderMgr()
 	this.add_ui = function (f)
 	{
 	    //存在相同项
-        if (this.exist_url(f.f_id)) return null;
-        this.filesUrl.push(f.f_id);
+        if (this.exist_url(f.nameLoc)) {
+            alert("已存在相同名称的任务：" + f.nameLoc);
+            return null;
+        }
+        this.filesUrl.push(f.nameLoc);
 
 	    var _this = this;
 

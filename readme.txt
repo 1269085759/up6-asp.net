@@ -8,6 +8,8 @@ Install-Package Microsoft.Experimental.IO
 ---------
 更新记录：
 2019-05-12
+	下载，增加防重复功能。针对任务名称来检查
+	  down.js
 	down2，将错误码和状态码合并到down.js.Config中
 	  down.js
 	  down.file.js
