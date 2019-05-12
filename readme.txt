@@ -8,6 +8,11 @@ Install-Package Microsoft.Experimental.IO
 ---------
 更新记录：
 2019-05-12
+	下载样式优化
+	  分隔线与文件项合并
+	  精简按钮背景项样式
+	  文件ui元素合并到模板
+	  down.js
 	下载，增加防重复功能。针对任务名称来检查
 	  down.js
 	down2，将错误码和状态码合并到down.js.Config中

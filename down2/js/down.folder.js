@@ -1,7 +1,7 @@
 ﻿function FdDownloader(fileLoc, mgr)
 {
     var _this = this;
-    this.ui = { msg: null, process: null, percent: null, btn: {del:null,cancel:null,down:null,stop:null},div:null,split:null};
+    this.ui = { msg: null, process: null, percent: null, btn: {del:null,cancel:null,down:null,stop:null},div:null};
     this.app = mgr.app;
     this.Manager = mgr;
     this.Config = mgr.Config;
@@ -126,7 +126,6 @@
     {
         this.app.stopFile({id:this.fileSvr.id});
         //从上传列表中删除
-        this.ui.split.remove();
         this.ui.div.remove();
         this.Manager.remove_url(this.fileSvr.f_id);
         this.svr_delete();
