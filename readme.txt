@@ -9,6 +9,7 @@ Install-Package Microsoft.Experimental.IO
 更新记录：
 2019-05-13
 	新增文件管理器
+	web.config增加woff映射
 2019-05-12
 	下载样式优化
 	  分隔线与文件项合并

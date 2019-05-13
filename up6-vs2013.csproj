@@ -119,7 +119,7 @@
     <Content Include="filemgr\res\imgs\16\folder.png" />
     <Content Include="filemgr\res\imgs\16\ok.png" />
     <Content Include="filemgr\res\imgs\16\paste.png" />
-    <Content Include="filemgr\res\imgs\16\set.png" />
+    <Content Include="filemgr\res\imgs\16\config.png" />
     <Content Include="filemgr\res\imgs\16\start.png" />
     <Content Include="filemgr\res\imgs\16\stop.png" />
     <Content Include="filemgr\res\imgs\16\upload.png" />
@@ -237,14 +237,14 @@
     <Content Include="filemgr\res\moment\moment-with-locales.min.js" />
     <Content Include="filemgr\res\moment\moment.min.js" />
     <Content Include="filemgr\res\vue.min.js" />
-    <Content Include="filemgr\up6\del.png" />
-    <Content Include="filemgr\up6\file.png" />
-    <Content Include="filemgr\up6\folder.png" />
+    <Content Include="filemgr\res\imgs\32\del.png" />
+    <Content Include="filemgr\res\imgs\32\file.png" />
+    <Content Include="filemgr\res\imgs\32\folder.png" />
     <Content Include="filemgr\up6\jquery-1.4.min.js" />
     <Content Include="filemgr\up6\json2.min.js" />
-    <Content Include="filemgr\up6\post.png" />
+    <Content Include="filemgr\res\imgs\32\post.png" />
     <Content Include="filemgr\up6\setup.htm" />
-    <Content Include="filemgr\up6\stop.png" />
+    <Content Include="filemgr\res\imgs\32\stop.png" />
     <Content Include="filemgr\up6\up6.app.js" />
     <Content Include="filemgr\up6\up6.config.js" />
     <Content Include="filemgr\up6\up6.css" />
@@ -500,7 +500,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="filemgr\data\config\config.json" />
-    <Content Include="filemgr\data\config\database\down2_files.json" />
+    <Content Include="filemgr\data\config\database\down_files.json" />
     <Content Include="filemgr\data\config\database\up6_files.json" />
     <Content Include="filemgr\data\config\database\up6_folders.json" />
     <Content Include="filemgr\data\config\path.json" />

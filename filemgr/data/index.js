@@ -89,7 +89,7 @@
                         , perLoc: n.f_perLoc
                         , fdTask: n.f_fdTask
                     };
-                    _this.data.down2.resume_file(dt);
+                    if(n.f_fdTask)_this.data.down2.resume_file(dt);
                 });
             }
             , error: function (req, txt, err) { alert("加载文件列表失败！" +req.responseText); }

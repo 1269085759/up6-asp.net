@@ -130,8 +130,10 @@ function DownloaderMgr()
           downComplete: function (obj) { }
         , downError: function (obj, err) { }
         , queueComplete: function () { }
+        , loadComplete: function () { }
 	};
 
+    this.websocketInited = false;
 	var browserName = navigator.userAgent.toLowerCase();
 	this.ie = browserName.indexOf("msie") > 0;
 	this.ie = this.ie ? this.ie : browserName.search(/(msie\s|trident.*rv:)([\w.]+)/) != -1;
@@ -404,6 +406,9 @@ function DownloaderMgr()
 	this.queue_begin = function (json) { this.working = true;};
 	this.queue_end = function (json) { this.working = false;};
     this.load_complete = function (json) {
+        if (this.websocketInited) return;
+        this.websocketInited = true;
+
         this.btnSetup.hide();
         var needUpdate = true;
         if (typeof (json.version) != "undefined") {
@@ -413,6 +418,7 @@ function DownloaderMgr()
         }
         if (needUpdate) this.update_notice();
         else { this.btnSetup.hide(); }
+        this.event.loadComplete();
     };
     this.load_complete_edge = function (json) {
         this.edge_load = true;

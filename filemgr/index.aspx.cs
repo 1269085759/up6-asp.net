@@ -40,7 +40,7 @@ namespace up6.filemgr
         {
             string uid = Request.QueryString["uid"];
             SqlExec se = new SqlExec();
-            var files = se.select("down3_files"
+            var files = se.select("down_files"
                 , "f_id,f_nameLoc,f_pathLoc,f_perLoc,f_sizeSvr,f_fdTask"
                 , new SqlParam[] { new SqlParam("f_uid", int.Parse(uid)) });
 
