@@ -127,11 +127,11 @@ function HttpUploaderMgr()
             ,header:"div[name='post_head']"
             , list:"div[name='post_body']"
             ,icon: {
-                file: page.path.res +"imgs/16/file.png"
-                , folder: page.path.res +"imgs/16/folder.png"
-                , stop: page.path.res +"imgs/16/stop.png"
-                , del: page.path.res +"imgs/16/del.png"
-                , post: page.path.res +"imgs/16/post.png"
+                file: page.path.res +"imgs/32/file.png"
+                , folder: page.path.res +"imgs/32/folder.png"
+                , stop: page.path.res +"imgs/32/stop.png"
+                , del: page.path.res +"imgs/32/del.png"
+                , post: page.path.res +"imgs/32/post.png"
                 , postF: page.path.res +"imgs/16/file.png"
                 , postFd: page.path.res +"imgs/16/folder.png"
                 , paste: page.path.res +"imgs/16/paste.png"
@@ -224,9 +224,9 @@ function HttpUploaderMgr()
 	    if (this.ie)
 	    {
 	        //拖拽组件
-	        com += '<object name="droper" classid="clsid:' + this.Config.ie.drop.clsid + '"';
-	        com += ' codebase="' + this.Config.ie.path + '#version=' + this.Config.Version + '" width="192" height="192" >';
-	        com += '</object>';
+	        //com += '<object name="droper" classid="clsid:' + this.Config.ie.drop.clsid + '"';
+	        //com += ' codebase="' + this.Config.ie.path + '#version=' + this.Config.Version + '" width="192" height="192" >';
+	        //com += '</object>';
 	    }
 	    if (this.edge) com = '';
 	    //文件夹选择控件

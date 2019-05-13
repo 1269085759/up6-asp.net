@@ -114,7 +114,7 @@ div.top-space {
     display: none;
 }
 /*上传面板*/
-.post-container {font: 12px/12px 宋体;}
+.post-container {font: 12px/12px 宋体;font-size:12px !important;}
 
 .files-toolbar{
     height: 43px;
@@ -125,7 +125,7 @@ div.top-space {
     vertical-align: middle;
 }
 
-.btn-t{
+.btn-t {
     padding: 0 5px;
     cursor: pointer;
     text-decoration: none;
