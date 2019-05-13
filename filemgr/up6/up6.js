@@ -167,6 +167,7 @@ function HttpUploaderMgr()
 	      "md5Complete": function (obj/*HttpUploader对象*/, md5) { }
         , "scanComplete": function (obj/*文件夹扫描完毕，参考：FolderUploader*/) { }
         , "fileComplete": function (obj/*文件上传完毕，参考：FileUploader*/) { }
+        , "fileAppend": function (/*文件和目录添加事件*/) { }
         , "fdComplete": function (obj/*文件夹上传完毕，参考：FolderUploader*/) { }
         , "queueComplete": function () {/*队列上传完毕*/ }
         , "loadComplete": function () {/*队列上传完毕*/ }
@@ -260,7 +261,8 @@ function HttpUploaderMgr()
 	    for (var i = 0, l = json.files.length; i < l; ++i)
         {
 	        this.addFileLoc(json.files[i]);
-	    }
+        }
+        this.event.fileAppend();
 	    setTimeout(function () { _this.PostFirst(); },500);
 	};
 	this.open_folders = function (json)
@@ -268,6 +270,7 @@ function HttpUploaderMgr()
         for (var i = 0, l = json.folders.length; i < l; ++i) {
             this.addFolderLoc(json.folders[i]);
         }
+        this.event.fileAppend();
 	    setTimeout(function () { _this.PostFirst(); }, 500);
 	};
 	this.paste_files = function (json)

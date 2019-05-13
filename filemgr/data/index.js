@@ -13,6 +13,9 @@
     this.init_up6 = function () {
         if (this.data.up6 != null) return;
         this.data.up6 = new HttpUploaderMgr();
+        this.data.up6.event.fileAppend = function () {
+            _this.open_upload_panel();
+        };
         this.data.up6.event.md5Complete = function (obj, md5) { /*alert(md5);*/ };
         this.data.up6.event.fdComplete = function (obj) {
             _this.attr.event.file_post_complete();
