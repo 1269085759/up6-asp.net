@@ -11,6 +11,7 @@
             ,{name:"up-fd", url:page.path.res + "imgs/16/folder.png"}
             ,{ name: "paste", url:page.path.res + "imgs/16/paste.png" }
             , { name: "del", url:page.path.res + "imgs/16/del.png" }
+            , { name: "down", url:page.path.res + "imgs/16/down.png" }
         ]
     };
     this.init_up6 = function () {
