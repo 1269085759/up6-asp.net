@@ -22,10 +22,12 @@
     <div class="container-fluid">
         <div class="m-t-md clearfix">
             <button class="btn btn-default btn-sm pull-left m-r-xs" role="button" id="btn-up"><img name="up"/> 上传文件</button>
+            <button class="btn btn-default btn-sm pull-left m-r-xs" role="button" id="btn-up-fd"><img name="up-fd"/> 上传目录</button>
+            <button class="btn btn-default btn-sm pull-left m-r-xs" role="button" id="btn-up-paste"><img name="paste"/> 粘贴上传</button>
             <button class="btn btn-default btn-sm pull-left m-r-xs" role="button" id="btn-open-up"><span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span> 打开上传面板</button>
             <button class="btn btn-default btn-sm pull-left m-r-xs" role="button" id="btn-open-down"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 打开下载面板</button>
             <button class="btn btn-default btn-sm pull-left hide m-r-xs" role="button" id="btn-down"><span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span> 下载</button>
-            <button class="btn btn-default btn-sm pull-left hide" role="button" id="btn-del"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> 删除</button>
+            <button class="btn btn-default btn-sm pull-left hide" role="button" id="btn-del"><img name="del"/> 删除</button>
         </div>
         <div id="up6-panel" style="display:none;">
             <%=this.template(this.m_path["rootAbs"]+"filemgr/data/ui-up.html") %>

@@ -7,7 +7,10 @@
     };
     this.ui = {
         ico: [
-            {name:"up", url:page.path.res + "imgs/16/upload.png" ,w:16}
+            {name:"up", url:page.path.res + "imgs/16/upload.png"}
+            ,{name:"up-fd", url:page.path.res + "imgs/16/folder.png"}
+            ,{ name: "paste", url:page.path.res + "imgs/16/paste.png" }
+            , { name: "del", url:page.path.res + "imgs/16/del.png" }
         ]
     };
     this.init_up6 = function () {
@@ -64,7 +67,7 @@
             , url: "index.aspx?op=uncomp"
             , data: param
             , success: function (res) {
-                _this.open_upload_panel();
+                if (res.length>0) _this.open_upload_panel();
 
                 $.each(res, function (i, n) {
                     if (n.fdTask) {
@@ -80,8 +83,7 @@
                         f.ui.btn.post.show();
                         f.ui.btn.del.show();
                     }
-                });
-                //_this.attr.event.up6_sel_file();
+                });                
             }
             , error: function (req, txt, err) { }
             , complete: function (req, sta) { req = null; }
@@ -172,6 +174,20 @@
         }
         this.data.up6.openFile();
     };
+    this.upload_folder = function () {
+        if (!this.data.up_inited) {
+            layer.alert('控件没有初始化成功', { icon: 2 });
+            return;
+        }
+        this.data.up6.openFolder();
+    };
+    this.upload_paste = function () {
+        if (!this.data.up_inited) {
+            layer.alert('控件没有初始化成功', { icon: 2 });
+            return;
+        }
+        this.data.up6.pasteFiles();
+    };
 
     this.attr = {
         ui: {
@@ -191,13 +207,18 @@
                 }
             },
             {
-                id: "#btn-open-up", e: "click", n: function () {
-                    _this.open_upload_panel();
+                id: "#btn-up-fd", e: "click", n: function () {
+                    _this.upload_folder();
                 }
             },
             {
                 id: "#btn-up-paste", e: "click", n: function () {
-                    _this.attr.event.btn_up_paste_click();
+                    _this.upload_paste();
+                }
+            },
+            {
+                id: "#btn-open-up", e: "click", n: function () {
+                    _this.open_upload_panel();
                 }
             },
             {
@@ -503,6 +524,7 @@
                 if (obj.data.f_fdTask) _this.attr.open_folder(obj.data, table);
             }
             , path_changed: function (data) {
+                return;
                 _this.pathCur = data;
                 $.ajax({
                     type: "GET"
@@ -527,6 +549,7 @@
             , "file": function (obj, table) { _this.attr.event.table_file_click(obj, table); }
         }
         , open_folder: function (data, table) {
+            return;
             layui.use(['table'], function () {
                 var table = layui.table;
                 table.reload('files', {

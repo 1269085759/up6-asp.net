@@ -840,13 +840,13 @@ function HttpUploaderMgr()
             $(this).removeClass("bk-hover");
             });
         });
-		ui.percent.text("(0%)");
+        if (typeof (fdLoc.perSvr) != undefined) ui.percent.text("(" + fdLoc.perSvr + ")");
 		ui.process.css("width",fdLoc.perSvr);
 		ui.msg.text("");
 		//if(fdLoc.fdName != null) fdLoc.name = fdLoc.fdName;
 		ui.name.text(fdLoc.nameLoc);
 		ui.name.attr("title", fdLoc.nameLoc + "\n文件：" + fdLoc.files.length + "\n文件夹：" + fdLoc.foldersCount + "\n大小：" + fdLoc.sizeLoc);
-		ui.size.text("0字节");
+		ui.size.text(fdLoc.sizeLoc);
 
 		var fdTask = new FolderUploader( fdLoc, this);
 		this.filesMap[fdLoc.id] = fdTask;//添加到映射表
