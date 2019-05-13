@@ -1,0 +1,123 @@
+﻿{
+    "fields": [
+        {
+            "name": "fd_id",
+            "type": "string",
+            "primary": false,
+            "length": 32,
+            "identity": false
+        },
+        {
+            "name": "fd_name",
+            "type": "string",
+            "primary": false,
+            "length": 50,
+            "identity": false
+        },
+        {
+            "name": "fd_pid",
+            "type": "string",
+            "primary": false,
+            "length": 32,
+            "identity": false
+        },
+        {
+            "name": "fd_uid",
+            "type": "int",
+            "primary": false,
+            "length": 4,
+            "identity": false
+        },
+        {
+            "name": "fd_length",
+            "type": "long",
+            "primary": false,
+            "length": 8,
+            "identity": false
+        },
+        {
+            "name": "fd_size",
+            "type": "string",
+            "primary": false,
+            "length": 50,
+            "identity": false
+        },
+        {
+            "name": "fd_pathLoc",
+            "type": "string",
+            "primary": false,
+            "length": 255,
+            "identity": false
+        },
+        {
+            "name": "fd_pathSvr",
+            "type": "string",
+            "primary": false,
+            "length": 255,
+            "identity": false
+        },
+        {
+            "name": "fd_folders",
+            "type": "int",
+            "primary": false,
+            "length": 4,
+            "identity": false
+        },
+        {
+            "name": "fd_files",
+            "type": "int",
+            "primary": false,
+            "length": 4,
+            "identity": false
+        },
+        {
+            "name": "fd_filesComplete",
+            "type": "int",
+            "primary": false,
+            "length": 4,
+            "identity": false
+        },
+        {
+            "name": "fd_complete",
+            "type": "bool",
+            "primary": false,
+            "length": 1,
+            "identity": false
+        },
+        {
+            "name": "fd_delete",
+            "type": "bool",
+            "primary": false,
+            "length": 1,
+            "identity": false
+        },
+        {
+            "name": "fd_json",
+            "type": "string",
+            "primary": false,
+            "length": -1,
+            "identity": false
+        },
+        {
+            "name": "timeUpload",
+            "type": "DateTime",
+            "primary": false,
+            "length": 8,
+            "identity": false
+        },
+        {
+            "name": "fd_pidRoot",
+            "type": "string",
+            "primary": false,
+            "length": 32,
+            "identity": false
+        },
+        {
+            "name": "fd_pathRel",
+            "type": "string",
+            "primary": false,
+            "length": 255,
+            "identity": false
+        }
+    ]
+}
