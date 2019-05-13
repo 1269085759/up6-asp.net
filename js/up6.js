@@ -143,6 +143,7 @@ function HttpUploaderMgr()
         , "fileComplete": function (obj/*文件上传完毕，参考：FileUploader*/) { }
         , "fdComplete": function (obj/*文件夹上传完毕，参考：FolderUploader*/) { }
         , "queueComplete": function () {/*队列上传完毕*/ }
+        , "loadComplete": function () {/*控件初始化完毕*/ }
         , "addFdError": function (json) {/*添加文件夹失败*/ }
 	};
 
@@ -565,6 +566,7 @@ function HttpUploaderMgr()
         }
         if (needUpdate) this.update_notice();
         else { this.btnSetup.hide(); }
+        this.event.loadComplete();
     };
 	this.load_complete_edge = function (json)
     {

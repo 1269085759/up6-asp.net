@@ -3,7 +3,13 @@
     this.files_checked = [];
     this.pathCur = { f_id: "", f_pid: "", f_pidRoot: "", f_nameLoc: "根目录", f_pathRel: "/" };//
     this.data = {
-        downPath: "", up6: null, panel: {up:null,down:null},down2:null};
+        downPath: "", up6: null, panel: { up: null, down: null }, down2: null,up_inited:false,down_inited:false
+    };
+    this.ui = {
+        ico: [
+            {name:"up", url:page.path.res + "imgs/16/upload.png" ,w:16}
+        ]
+    };
     this.init_up6 = function () {
         if (this.data.up6 != null) return;
         this.data.up6 = new HttpUploaderMgr();
@@ -15,6 +21,7 @@
             _this.attr.event.file_post_complete();
         };
         this.data.up6.event.loadComplete = function () {
+            _this.data.up_inited = true;
             setTimeout(function () {
                 _this.load_uncomp();
             }, 300);
@@ -25,6 +32,7 @@
         if (this.data.down2 != null) return;
         this.data.down2 = new DownloaderMgr();
         this.data.down2.event.loadComplete = function () {
+            _this.data.down_inited = true;
             setTimeout(function () {
                 _this.load_uncmp_down();
             }, 300);
@@ -33,6 +41,15 @@
             layer.alert('相同下载项已存在：'+name, { icon: 2 });
         };
         this.data.down2.loadTo(this.attr.ui.down2);
+    };
+    this.init_imgs = function () {
+        $.each(this.ui.ico, function (i, n) {
+            var img = $("img[name='" + n.name + "']");
+            img.attr("src", n.url);
+            if (typeof (n.w) != undefined) {
+                img.css("width", n.w);
+            }
+        });
     };
 
     //加载未完成列表
@@ -145,6 +162,14 @@
         _this.data.panel.down.show();
     };
 
+    this.upload_file = function () {
+        if (!this.data.up_inited) {
+            layer.alert('控件没有初始化成功', { icon: 2 });
+            return;
+        }
+        this.data.up6.openFile();
+    };
+
     this.attr = {
         ui: {
             table: null, btnDown: "#btn-down", key: "#search-key"
@@ -159,6 +184,11 @@
         , ui_ents: [
             {
                 id: "#btn-up", e: "click", n: function () {
+                    _this.upload_file();
+                }
+            },
+            {
+                id: "#btn-open-up", e: "click", n: function () {
                     _this.open_upload_panel();
                 }
             },
@@ -175,6 +205,11 @@
             {
                 id: "#btn-down", e: "click", n: function () {
                     _this.attr.event.btn_down_click();
+                }
+            },
+            {
+                id: "#btn-open-down", e: "click", n: function () {
+                    _this.open_down_panel();
                 }
             },
             {
@@ -518,6 +553,7 @@
         $.each(_this.attr.ui_ents, function (i, n) {
             $(n.id).bind(n.e, n.n);
         });
+        this.init_imgs();
     };
     //
 }

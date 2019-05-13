@@ -10,6 +10,8 @@ Install-Package Microsoft.Experimental.IO
 2019-05-13
 	新增文件管理器
 	web.config增加woff映射
+	up6增加加载完毕的事件
+	  up6.js
 2019-05-12
 	下载样式优化
 	  分隔线与文件项合并
