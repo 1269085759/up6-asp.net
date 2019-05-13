@@ -131,14 +131,19 @@ function HttpUploaderMgr()
                 , folder: page.path.fm +"up6/folder.png"
                 , stop: page.path.fm +"up6/stop.png"
                 , del: page.path.fm +"up6/del.png"
-                , post: page.path.fm +"up6/post.png"
+                , postF: page.path.res +"imgs/16/file.png"
+                , postFd: page.path.res +"imgs/16/folder.png"
+                , paste: page.path.res +"imgs/16/paste.png"
+                , clear: page.path.res +"imgs/16/clear.png"
             }
             , ele: {
-                name: 'div[name="fileName"]'
+                name: 'div[name="name"]'
                 , ico:{
                     file: 'img[name="file"]'
                     , folder: 'img[name="folder"]'
-                    , ok: 'img[name="ico-ok"]'
+                    , post: 'img[name="post"]'
+                    , del: 'img[name="del"]'
+                    , stop: 'img[name="stop"]'
                 }
                 , size: 'div[name="fileSize"]'
                 , path: 'div[name="path"]'
@@ -457,29 +462,28 @@ function HttpUploaderMgr()
 
 	//加载容器，上传面板，文件列表面板
 	this.load_to = function(oid)
-	{
-	    var dom = $(oid).append(this.getHtml());
-	    this.initUI(dom);
+    {
+        var tp = $(oid);
+	    var dom = tp.append(this.getHtml());
+	    this.initUI(tp);
 	};
 
 	this.initUI = function (dom)
 	{
         var panel = dom.find(this.Config.ui.panel);
+        this.ui.list = dom.find(this.Config.ui.list);
+        this.ui.file = dom.find(this.Config.ui.file);
+        this.ui.folder = dom.find(this.Config.ui.folder);
         this.parter  = dom.find('embed[name="ffParter"]').get(0);
         this.ieParter= dom.find('object[name="parter"]').get(0);
 	    this.Droper  = dom.find('object[name="droper"]').get(0);
 
         //更新图标
         $.each(this.Config.ui.icon, function (i, n) {
-            panel.find("img[name=\"" + i + "\"]").attr("src",n);
+            dom.find("img[name=\"" + i + "\"]").attr("src",n);
         });
-        this.ui.list = panel.find(this.Config.ui.list);
-        var post_header = panel.find(this.Config.ui.header);
-        this.ui.list.height(panel.height() - post_header.outerHeight());
 
-	    this.ui.file   = panel.find(this.Config.ui.file);
-	    this.ui.folder = panel.find(this.Config.ui.folder);
-        this.btnSetup  = panel.find('span[name="btnSetup"]').click(function () {
+        this.btnSetup = dom.find('span[name="btnSetup"]').click(function () {
             window.open(_this.Config.exe.path);
         });//("href",this.Config.exe.path);
 	    //drag files
@@ -501,9 +505,9 @@ function HttpUploaderMgr()
 	    //清空已完成文件
         panel.find('span[name="btnClear"]').click(function () { _this.ClearComplete(); })
             .hover(function () {
-                $(this).addClass("btn-footer-hover");
+                $(this).addClass("bk-hover");
             }, function () {
-                $(this).removeClass("btn-footer-hover");
+                $(this).removeClass("bk-hover");
             });
 
 	    this.SafeCheck();
@@ -718,7 +722,7 @@ function HttpUploaderMgr()
 
     this.find_ui = function (ui) {
         var tmp = {
-            name:ui.find(this.Config.ui.ele.msg)
+            name:ui.find(this.Config.ui.ele.name)
             ,size: ui.find(this.Config.ui.ele.size)
             , path: ui.find(this.Config.ui.ele.path)
             , state: ui.find(this.Config.ui.ele.state)
@@ -749,9 +753,9 @@ function HttpUploaderMgr()
 		var nameLoc = fileLoc.nameLoc;
 		_this.AppendQueue(fileLoc.id);//添加到队列
 
-		var tmp = _this.ui.file.clone();//文件信息
+		var tmp = this.ui.file.clone();//文件信息
 		tmp.css("display", "block");
-		this.ui.list.append(tmp);//添加文件信息
+        this.ui.list.append(tmp);//添加文件信息
 		var ui = this.find_ui(tmp);
 
 		var upFile = new FileUploader(fileLoc, _this);

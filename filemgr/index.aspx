@@ -35,7 +35,7 @@
                 <a class="link" >根目录</a>
             </li>
         </ol>
-        <table class="layui-table" lay-size="sm" id="files" lay-filter="files" lay-skin="nob"></table>
+        <table class="layui-hide" lay-size="sm" id="files" lay-filter="files" lay-skin="nob"></table>
         <script type="text/javascript">
             //JavaScript代码区域
             layui.use(['element', 'table','laytpl'], function () {

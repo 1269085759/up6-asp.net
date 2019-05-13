@@ -113,15 +113,15 @@ namespace up6.filemgr
             var id = Request.QueryString["id"];
 
             SqlExec se = new SqlExec();
-            se.update("up6_folders"
-                , new SqlParam[] { new SqlParam("f_deleted", true) }
-                , new SqlParam[] {
-                    new SqlParam("f_id",id)
-                    ,new SqlParam("f_pid",id)
-                    ,new SqlParam("f_pidRoot",id)
-                }
-                , "or"
-                );
+            //se.update("up6_folders"
+            //    , new SqlParam[] { new SqlParam("f_deleted", true) }
+            //    , new SqlParam[] {
+            //        new SqlParam("f_id",id)
+            //        ,new SqlParam("f_pid",id)
+            //        ,new SqlParam("f_pidRoot",id)
+            //    }
+            //    , "or"
+            //    );
             se.update("up6_files"
                 , new SqlParam[] { new SqlParam("f_deleted", true) }
                 , new SqlParam[] {
@@ -154,11 +154,11 @@ namespace up6.filemgr
                 , obj);
 
             //更新文件夹
-            se.exec_batch("up6_folders"
-                , "update up6_folders set f_deleted=1 where f_id=@f_id"
-                , string.Empty
-                , "f_id"
-                , obj);
+            //se.exec_batch("up6_folders"
+            //    , "update up6_folders set f_deleted=1 where f_id=@f_id"
+            //    , string.Empty
+            //    , "f_id"
+            //    , obj);
 
             PageTool.to_content(obj);
         }

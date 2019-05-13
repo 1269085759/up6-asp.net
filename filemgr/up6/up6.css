@@ -114,28 +114,16 @@ div.top-space {
     display: none;
 }
 /*上传面板*/
-.post-container {
-    font: 12px/12px 宋体;
-}
-
-    .post-container a {
-        text-decoration: none;
-        color: #004477;
-    }
-
-        .post-container a:hover {
-            color: #004477;
-            text-decoration: underline;
-        }
+.post-container {font: 12px/12px 宋体;}
 
 .files-toolbar{
     height: 43px;
     line-height: 43px;
 }
 
-    .files-toolbar img {
-        vertical-align: middle;
-    }
+.files-toolbar img {
+    vertical-align: middle;
+}
 
 .btn-t{
     padding: 0 5px;
