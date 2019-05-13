@@ -81,7 +81,21 @@ function DownloaderMgr()
         , ui: {
             file: 'div[name="file"]'
             ,panel: 'div[name="down_panel"]'
-            ,list: 'div[name="down_body"]'
+            , list: 'div[name="down_body"]'
+            , ico: {
+                file: page.path.res + "imgs/32/file.png"
+                , folder: page.path.res + "imgs/32/folder.png"
+                , stop: page.path.res + "imgs/16/stop.png"
+                , del: page.path.res + "imgs/16/del.png"
+                , post: page.path.res + "imgs/16/post.png"
+                , postF: page.path.res + "imgs/16/file.png"
+                , postFd: page.path.res + "imgs/16/folder.png"
+                , paste: page.path.res + "imgs/16/paste.png"
+                , clear: page.path.res + "imgs/16/clear.png"
+                , config: page.path.res + "imgs/16/config.png"
+                , "start-all": page.path.res + "imgs/16/start.png"
+                , "stop-all": page.path.res + "imgs/16/stop.png"
+            }
             , header: 'div[name="down_header"]'
             , toolbar: 'div[name="down_toolbar"]'
             , footer: 'div[name="down_footer"]'
@@ -207,6 +221,13 @@ function DownloaderMgr()
             }
             ,div:o
         };
+        $.each(tmp.btn, function (i, n) {
+            $(n).hover(function () {
+                $(this).addClass("bk-hover");
+            }, function () {
+                $(this).removeClass("bk-hover");
+            });
+        });
         return tmp;
     };
 	this.add_ui = function (f)
@@ -224,10 +245,6 @@ function DownloaderMgr()
 	    tmp.css("display", "block");
 	    this.ui.list.append(tmp);
         var ui = this.find_ui(tmp);
-
-        tmp.find('span[tp="btn-item"]').hover(function () {
-            $(this).addClass("bk-hover");
-        }, function () {$(this).removeClass("bk-hover");});
 
         var downer;
         if (f.fdTask) { downer = new FdDownloader(f, this); }
@@ -374,6 +391,8 @@ function DownloaderMgr()
     {
         this.allStoped = false;
         this.down_next();
+        this.down_next();
+        this.down_next();
     };
 	this.stop_queue = function (json)
     {
@@ -507,7 +526,7 @@ function DownloaderMgr()
 	    var obj = $(id);
 	    var html = this.getHtml();
 	    var ui = obj.append(html);
-	    this.initUI(ui);
+	    this.initUI(obj);
 	};
 	this.initUI = function (ui/*jquery obj*/)
 	{
@@ -524,21 +543,18 @@ function DownloaderMgr()
 	    down_body.height(this.down_panel.height() - post_bar.height() - down_head.height() - post_foot.outerHeight() - 1);
 
 	    var btnSetFolder = ui.find(this.Config.ui.btn.setFolder);
-	    this.ui.list = down_body;
+        this.ui.list = down_body;
+        //设置图标
+        $.each(this.Config.ui.ico, function (i, n) {
+            ui.find('img[name="' + i + '"]').attr("src", n);
+        });
 
 	    //设置下载文件夹
         btnSetFolder.click(function () { _this.open_folder(); });
 		//清除已完成
-        ui.find(this.Config.ui.btn.clear).click(function () { _this.clearComplete(); }).hover(function () {
-            $(this).addClass("btn-footer-hover");
-        }, function () {
-            $(this).removeClass("btn-footer-hover");
-        });
+        ui.find(this.Config.ui.btn.clear).click(function () { _this.clearComplete(); });
 		ui.find('span[name="btnStart"]').click(function () { _this.start_queue(); });
         ui.find('span[name="btnStop"]').click(function () { _this.stop_queue(); });
-        ui.find('span[class="toolbar-btn"]').hover(function () {
-            $(this).addClass("bk-hover");
-        }, function () { $(this).removeClass("bk-hover"); });
 
         this.safeCheck();//
 

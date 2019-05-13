@@ -304,7 +304,7 @@
                 else {
                     _this.open_down_panel();
                     $.each(_this.files_checked, function (i, f) {
-                        if (_this.data.down2.exist_name(f.f_nameLoc)) {
+                        if (_this.data.down2.exist_url(f.f_nameLoc)) {
                             layer.alert('相同下载项已存在：' + f.f_nameLoc, { icon: 2 });
                             return;
                         }
