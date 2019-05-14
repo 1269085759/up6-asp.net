@@ -242,7 +242,7 @@ function FileUploader(fileLoc, mgr)
     this.post_next = function ()
     {
         var obj = this;
-        setTimeout(function () { obj.Manager.PostNext(); }, 500);
+        setTimeout(function () { obj.Manager.PostNext(); }, 300);
     };
     this.post = function ()
     {

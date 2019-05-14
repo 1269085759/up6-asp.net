@@ -200,7 +200,7 @@ function FileDownloader(fileLoc, mgr)
         this.ui.msg.text("下载完成");
         this.State = this.Config.state.Complete;
         this.svr_delete();
-        setTimeout(function () { _this.Manager.down_next(); }, 500);
+        setTimeout(function () { _this.Manager.down_next(); }, 300);
     };
 
     this.down_recv_size = function (json)

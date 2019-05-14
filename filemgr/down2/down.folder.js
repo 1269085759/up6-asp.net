@@ -249,7 +249,7 @@
         this.ui.msg.text("文件数：" + json.fileCount + " 成功：" + json.cmpCount);
         this.State = this.Config.state.Complete;
         this.svr_delete();
-        setTimeout(function () { _this.Manager.down_next(); }, 500);
+        setTimeout(function () { _this.Manager.down_next(); }, 300);
     };
 
     this.down_process = function (json)

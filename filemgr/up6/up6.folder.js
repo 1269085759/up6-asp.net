@@ -180,7 +180,7 @@ function FolderUploader(fdLoc, mgr)
         this.ui.msg.text("传输已停止....");
         this.manager.RemoveQueuePost(this.id);
         this.manager.AppendQueueWait(this.id);//添加到未上传列表
-        setTimeout(function () { _this.manager.PostNext(); }, 500);
+        setTimeout(function () { _this.manager.PostNext(); }, 300);
     };
     this.post_error = function (json)
     {
@@ -201,7 +201,7 @@ function FolderUploader(fdLoc, mgr)
 
         this.svr_update();
 
-        setTimeout(function () { _this.manager.PostNext(); }, 500);
+        setTimeout(function () { _this.manager.PostNext(); }, 300);
 
         if (this.Config.AutoConnect.opened) {
             setTimeout(function () {
@@ -251,7 +251,7 @@ function FolderUploader(fdLoc, mgr)
 			, success: function (msg)
 			{
 			    _this.event.fdComplete(_this);//触发事件
-			    _this.manager.PostNext();
+                setTimeout(function () { _this.manager.PostNext(); }, 300);
 			}
 			, error: function (req, txt, err) { alert("向服务器发送文件夹Complete信息错误！" + req.responseText); }
 			, complete: function (req, sta) { req = null; }
@@ -283,7 +283,7 @@ function FolderUploader(fdLoc, mgr)
             , data: param
             , success: function (msg) {
                 _this.event.fdComplete(_this);//触发事件
-                _this.manager.PostNext();
+                setTimeout(function () { _this.manager.PostNext(); }, 300);
             }
             , error: function (req, txt, err) { alert("向服务器发送文件夹Complete信息错误！" + req.responseText); }
             , complete: function (req, sta) { req = null; }
@@ -375,7 +375,7 @@ function FolderUploader(fdLoc, mgr)
 			, success: function (msg)
 			{
 			    _this.event.fdComplete(_this);//触发事件
-			    _this.manager.PostNext();
+                setTimeout(function () { _this.manager.PostNext(); }, 300);
 			}
 			, error: function (req, txt, err) { alert("向服务器发送文件夹Complete信息错误！" + req.responseText); }
 			, complete: function (req, sta) { req = null; }
