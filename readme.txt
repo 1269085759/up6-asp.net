@@ -7,6 +7,11 @@ Install-Package Microsoft.Experimental.IO
 
 ---------
 更新记录：
+2019-05-14
+	文件项与文件夹项模板合并
+	  ui-up.htm
+	  up6.js
+	修复文件尺寸ui项错误的问题
 2019-05-13
 	新增文件管理器
 	web.config增加woff映射

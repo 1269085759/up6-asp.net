@@ -146,7 +146,7 @@ function HttpUploaderMgr()
                     , del: 'img[name="del"]'
                     , stop: 'img[name="stop"]'
                 }
-                , size: 'div[name="fileSize"]'
+                , size: 'div[name="size"]'
                 , path: 'div[name="path"]'
                 , state: 'div[name="msg"]'
                 , process: 'div[name="process"]'
@@ -728,7 +728,11 @@ function HttpUploaderMgr()
 
     this.find_ui = function (ui) {
         var tmp = {
-            name:ui.find(this.Config.ui.ele.name)
+            ico: {
+                file: ui.find(this.Config.ui.ele.ico.file)
+                , folder: ui.find(this.Config.ui.ele.ico.folder)
+            }
+            ,name:ui.find(this.Config.ui.ele.name)
             ,size: ui.find(this.Config.ui.ele.size)
             , path: ui.find(this.Config.ui.ele.path)
             , state: ui.find(this.Config.ui.ele.state)
@@ -743,6 +747,13 @@ function HttpUploaderMgr()
             }
             ,div:ui
         };
+        $.each(tmp.btn, function (i, n) {
+            $(n).hover(function () {
+                $(this).addClass("bk-hover");
+            }, function () {
+                $(this).removeClass("bk-hover");
+            });
+        });
         return tmp;
     };
 	//fileLoc:name,id,ext,size,length,pathLoc,md5,lenSvr,id
@@ -768,13 +779,6 @@ function HttpUploaderMgr()
 		this.filesMap[fileLoc.id] = upFile;//添加到映射表		
 		
         upFile.ui = ui;
-        $.each(ui.btn, function (i, n) {
-            $(n).hover(function () {
-                $(this).addClass("bk-hover");
-            }, function () {
-                $(this).removeClass("bk-hover");
-            });
-        });
 
 		ui.name.text(nameLoc).attr("title", nameLoc);
 		ui.size.text(fileLoc.sizeLoc);
@@ -828,20 +832,17 @@ function HttpUploaderMgr()
 
 		this.AppendQueue(json.id);//添加到队列
 
-		var tmp = this.ui.folder.clone();//文件夹信息
+        var tmp = this.ui.file.clone();//文件夹信息
 		tmp.css("display", "block");
 		this.ui.list.append(tmp);//添加到上传列表面板
-		var ui = this.find_ui(tmp);
+        var ui = this.find_ui(tmp);
+        ui.ico.file.hide();
+        ui.ico.folder.show();
 
-		$.each(ui.btn, function (i, e) {
-            $(e).hover(function () {
-            $(this).addClass("bk-hover");
-            }, function () {
-            $(this).removeClass("bk-hover");
-            });
-        });
-        if (typeof (fdLoc.perSvr) != undefined) ui.percent.text("(" + fdLoc.perSvr + ")");
-		ui.process.css("width",fdLoc.perSvr);
+        if (typeof (fdLoc.perSvr) != "undefined") {
+            ui.percent.text("(" + fdLoc.perSvr + ")");
+            ui.process.css("width", fdLoc.perSvr);
+        }
 		ui.msg.text("");
 		//if(fdLoc.fdName != null) fdLoc.name = fdLoc.fdName;
 		ui.name.text(fdLoc.nameLoc);
