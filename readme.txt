@@ -7,6 +7,8 @@ Install-Package Microsoft.Experimental.IO
 
 ---------
 更新记录：
+2019-05-16
+	首页增加文件管理器演示链接
 2019-05-14
 	文件项与文件夹项模板合并
 	  ui-up.htm
