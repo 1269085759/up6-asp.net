@@ -42,6 +42,7 @@
 <body>
     <p>up6多标签上传演示页面</p>
     <p><a href="db/clear.aspx" target="_blank">清空数据库</a></p>
+    <p><a href="filemgr/index.aspx" target="_blank">文件管理器演示</a></p>
     <p><a href="index2.aspx" target="_blank">单面板演示</a></p>
     <p><a href="down2/index.htm" target="_blank">打开下载页面</a></p>
     <p><a href="index-single.htm" target="_blank">单文件上传演示</a></p>
