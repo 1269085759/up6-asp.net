@@ -5,7 +5,14 @@ NuGet安装依赖
 Install-Package Newtonsoft.Json
 Install-Package Microsoft.Experimental.IO
 
----------
+文件管理器
+	filemgr/index.aspx
+	路径配置
+	  filemgr/data/config/path.json
+	模板路径配置
+	  filemgr/data/config/config.json
+
+========================================================================
 更新记录：
 2019-05-16
 	首页增加文件管理器演示链接
