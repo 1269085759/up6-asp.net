@@ -68,7 +68,7 @@ GO
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'是否已上传完毕' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'up6_folders', @level2type=N'COLUMN',@level2name=N'f_complete'
 GO
 
-EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'是否已删除' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'up6_folders', @level2type=N'COLUMN',@level2name=N'f_delete'
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'是否已删除' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'up6_folders', @level2type=N'COLUMN',@level2name=N'f_deleted'
 GO
 
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'上传时间' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'up6_folders', @level2type=N'COLUMN',@level2name=N'f_time'
@@ -107,7 +107,7 @@ GO
 ALTER TABLE [dbo].[up6_folders] ADD  CONSTRAINT [DF_up6_folders_fd_complete]  DEFAULT ((0)) FOR [f_complete]
 GO
 
-ALTER TABLE [dbo].[up6_folders] ADD  CONSTRAINT [DF_up6_folders_fd_delete]  DEFAULT ((0)) FOR [f_delete]
+ALTER TABLE [dbo].[up6_folders] ADD  CONSTRAINT [DF_up6_folders_fd_delete]  DEFAULT ((0)) FOR [f_deleted]
 GO
 
 ALTER TABLE [dbo].[up6_folders] ADD  CONSTRAINT [DF_up6_folders_timeUpload]  DEFAULT (getdate()) FOR [f_time]
