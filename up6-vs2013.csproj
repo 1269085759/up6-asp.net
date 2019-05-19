@@ -293,7 +293,6 @@
     <Content Include="sql.down\down_files.sql" />
     <Content Include="js\up6.js" />
     <Content Include="js\setup.htm" />
-    <Content Include="sql\fd_files_check.sql" />
     <Content Include="sql\up6_folders.sql" />
     <Content Include="vue\index.aspx" />
     <Content Include="Web.config" />

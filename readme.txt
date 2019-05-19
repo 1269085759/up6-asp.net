@@ -15,6 +15,7 @@ Install-Package Microsoft.Experimental.IO
 ========================================================================
 更新记录：
 2019-05-19
+	删除存储过程fd_files_check.sql
 	文件夹表结构更新
 	  DBFile.cs
 	  DBFolder.cs
