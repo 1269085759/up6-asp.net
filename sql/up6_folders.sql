@@ -24,7 +24,7 @@ CREATE TABLE [dbo].[up6_folders](
 	[f_fileCount] [int] NULL,
 	[f_filesComplete] [int] NULL,
 	[f_complete] [bit] NULL,
-	[f_delete] [bit] NULL,
+	[f_deleted] [bit] NULL,
 	[f_time] [datetime] NULL,
 	[f_pidRoot] [char](32) NULL,
 	[f_pathRel] [nvarchar](255) NULL
