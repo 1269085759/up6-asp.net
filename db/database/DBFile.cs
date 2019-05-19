@@ -220,7 +220,7 @@ namespace up6.db.database
         static public void fd_complete(string f_id,string uid)
         {
             string sql = "update up6_files set f_perSvr='100%',f_lenSvr=f_lenLoc,f_complete=1 where f_id=@f_id and f_uid=@uid;";
-            sql += "update up6_folders set fd_complete=1 where fd_id=@f_id and fd_uid=@uid;";
+            sql += "update up6_folders set f_complete=1 where f_id=@f_id and f_uid=@uid;";
             sql += "update up6_files set f_perSvr='100%',f_lenSvr=f_lenLoc,f_complete=1 where f_pidRoot=@f_id;";
 
             DbHelper db = new DbHelper();
