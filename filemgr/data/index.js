@@ -83,8 +83,11 @@
                     }
                     else {
                         var f = _this.data.up6.addFileLoc(n);
+                        f.ui.percent.text("(" + n.perSvr + ")");
+                        f.ui.process.css("width", n.perSvr);
                         f.ui.btn.post.show();
                         f.ui.btn.del.show();
+                        f.ui.btn.cancel.hide();
                     }
                 });                
             }
@@ -114,7 +117,7 @@
                         , perLoc: n.f_perLoc
                         , fdTask: n.f_fdTask
                     };
-                    if(n.f_fdTask)_this.data.down2.resume_file(dt);
+                    _this.data.down2.resume_file(dt);
                 });
             }
             , error: function (req, txt, err) { alert("加载文件列表失败！" +req.responseText); }
