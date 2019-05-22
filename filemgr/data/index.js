@@ -194,6 +194,10 @@
         }
         this.data.up6.pasteFiles();
     };
+    this.page_close = function () {
+        this.data.up6.page_close();
+        this.data.down2.page_close();
+    };
 
     this.attr = {
         ui: {
@@ -590,10 +594,9 @@
     //
 }
 
-var pl = new PageLogic();
-
 $(function () {
-    pl.init();
-    pl.init_up6();
-    pl.init_down2();
+    pageApp = new PageLogic();
+    pageApp.init();
+    pageApp.init_up6();
+    pageApp.init_down2();
 });

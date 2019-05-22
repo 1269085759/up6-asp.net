@@ -248,7 +248,7 @@ function FileUploader(fileLoc, mgr)
     {
         this.Manager.AppendQueuePost(this.fileSvr.id);
         this.Manager.RemoveQueueWait(this.fileSvr.id);
-        if (this.fileSvr.md5.length > 0)
+        if (this.fileSvr.md5.length > 0 || this.fileSvr.lenSvr > 0)
         {
             this.post_file();
         }

@@ -458,7 +458,14 @@ function HttpUploaderMgr()
 				_this.StopAll();
             }
 		});
-	};
+    };
+
+    this.page_close = function () {
+        if (this.edge) _this.edgeApp.close();
+        if (_this.QueuePost.length > 0) {
+            _this.StopAll();
+        }
+    };
 
 	this.loadAuto = function ()
 	{

@@ -16,6 +16,9 @@ Install-Package Microsoft.Experimental.IO
 更新记录：
 2019-05-22
 	完善文件加载逻辑
+	完善页面刷新和关闭逻辑
+	完善文件续传逻辑
+	  up6.file.js
 2019-05-19
 	增加分页存储过程
 	  spPager.sql
