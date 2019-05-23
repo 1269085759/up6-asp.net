@@ -74,47 +74,47 @@ GO
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'上传时间' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'up6_folders', @level2type=N'COLUMN',@level2name=N'f_time'
 GO
 
-ALTER TABLE [dbo].[up6_folders] ADD  CONSTRAINT [DF_up6_folders_fd_name]  DEFAULT ('') FOR [f_nameLoc]
+ALTER TABLE [dbo].[up6_folders] ADD  CONSTRAINT [DF_up6_folders_f_nameLoc]  DEFAULT ('') FOR [f_nameLoc]
 GO
 
-ALTER TABLE [dbo].[up6_folders] ADD  CONSTRAINT [DF_up6_folders_fd_pid]  DEFAULT ((0)) FOR [f_pid]
+ALTER TABLE [dbo].[up6_folders] ADD  CONSTRAINT [DF_up6_folders_f_pid]  DEFAULT ((0)) FOR [f_pid]
 GO
 
-ALTER TABLE [dbo].[up6_folders] ADD  CONSTRAINT [DF_up6_folders_fd_uid]  DEFAULT ((0)) FOR [f_uid]
+ALTER TABLE [dbo].[up6_folders] ADD  CONSTRAINT [DF_up6_folders_f_uid]  DEFAULT ((0)) FOR [f_uid]
 GO
 
-ALTER TABLE [dbo].[up6_folders] ADD  CONSTRAINT [DF_up6_folders_fd_length]  DEFAULT ((0)) FOR [f_lenLoc]
+ALTER TABLE [dbo].[up6_folders] ADD  CONSTRAINT [DF_up6_folders_f_lenLoc]  DEFAULT ((0)) FOR [f_lenLoc]
 GO
 
-ALTER TABLE [dbo].[up6_folders] ADD  CONSTRAINT [DF_up6_folders_fd_size]  DEFAULT ('') FOR [f_sizeLoc]
+ALTER TABLE [dbo].[up6_folders] ADD  CONSTRAINT [DF_up6_folders_f_sizeLoc]  DEFAULT ('') FOR [f_sizeLoc]
 GO
 
-ALTER TABLE [dbo].[up6_folders] ADD  CONSTRAINT [DF_up6_folders_fd_pathLoc]  DEFAULT ('') FOR [f_pathLoc]
+ALTER TABLE [dbo].[up6_folders] ADD  CONSTRAINT [DF_up6_folders_f_pathLoc]  DEFAULT ('') FOR [f_pathLoc]
 GO
 
-ALTER TABLE [dbo].[up6_folders] ADD  CONSTRAINT [DF_up6_folders_fd_pathSvr]  DEFAULT ('') FOR [f_pathSvr]
+ALTER TABLE [dbo].[up6_folders] ADD  CONSTRAINT [DF_up6_folders_f_pathSvr]  DEFAULT ('') FOR [f_pathSvr]
 GO
 
-ALTER TABLE [dbo].[up6_folders] ADD  CONSTRAINT [DF_up6_folders_fd_folders]  DEFAULT ((0)) FOR [f_folders]
+ALTER TABLE [dbo].[up6_folders] ADD  CONSTRAINT [DF_up6_folders_f_folders]  DEFAULT ((0)) FOR [f_folders]
 GO
 
-ALTER TABLE [dbo].[up6_folders] ADD  CONSTRAINT [DF_up6_folders_fd_files]  DEFAULT ((0)) FOR [f_fileCount]
+ALTER TABLE [dbo].[up6_folders] ADD  CONSTRAINT [DF_up6_folders_f_fileCount]  DEFAULT ((0)) FOR [f_fileCount]
 GO
 
-ALTER TABLE [dbo].[up6_folders] ADD  CONSTRAINT [DF_up6_folders_fd_filesComplete]  DEFAULT ((0)) FOR [f_filesComplete]
+ALTER TABLE [dbo].[up6_folders] ADD  CONSTRAINT [DF_up6_folders_f_filesComplete]  DEFAULT ((0)) FOR [f_filesComplete]
 GO
 
-ALTER TABLE [dbo].[up6_folders] ADD  CONSTRAINT [DF_up6_folders_fd_complete]  DEFAULT ((0)) FOR [f_complete]
+ALTER TABLE [dbo].[up6_folders] ADD  CONSTRAINT [DF_up6_folders_f_complete]  DEFAULT ((0)) FOR [f_complete]
 GO
 
-ALTER TABLE [dbo].[up6_folders] ADD  CONSTRAINT [DF_up6_folders_fd_delete]  DEFAULT ((0)) FOR [f_deleted]
+ALTER TABLE [dbo].[up6_folders] ADD  CONSTRAINT [DF_up6_folders_f_deleted]  DEFAULT ((0)) FOR [f_deleted]
 GO
 
-ALTER TABLE [dbo].[up6_folders] ADD  CONSTRAINT [DF_up6_folders_timeUpload]  DEFAULT (getdate()) FOR [f_time]
+ALTER TABLE [dbo].[up6_folders] ADD  CONSTRAINT [DF_up6_folders_f_time]  DEFAULT (getdate()) FOR [f_time]
 GO
 
-ALTER TABLE [dbo].[up6_folders] ADD  CONSTRAINT [DF_up6_folders_fd_pidRoot]  DEFAULT ((0)) FOR [f_pidRoot]
+ALTER TABLE [dbo].[up6_folders] ADD  CONSTRAINT [DF_up6_folders_f_pidRoot]  DEFAULT ((0)) FOR [f_pidRoot]
 GO
 
-ALTER TABLE [dbo].[up6_folders] ADD  CONSTRAINT [DF_up6_folders_fd_pathRel]  DEFAULT ('') FOR [f_pathRel]
+ALTER TABLE [dbo].[up6_folders] ADD  CONSTRAINT [DF_up6_folders_f_pathRel]  DEFAULT ('') FOR [f_pathRel]
 GO
