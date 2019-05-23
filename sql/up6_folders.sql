@@ -13,7 +13,7 @@ GO
 
 CREATE TABLE [dbo].[up6_folders](
 	[f_id] [char](32) NOT NULL,
-	[f_nameLoc] [varchar](50) NULL,
+	[f_nameLoc] [varchar](255) NULL,
 	[f_pid] [char](32) NULL,
 	[f_uid] [int] NULL,
 	[f_lenLoc] [bigint] NULL,
