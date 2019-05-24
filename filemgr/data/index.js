@@ -198,6 +198,18 @@
         this.data.up6.page_close();
         this.data.down2.page_close();
     };
+    this.open_folder = function (data, table) {
+        return;
+        layui.use(['table'], function () {
+            var table = layui.table;
+            table.reload('files', {
+                url: 'index.aspx?op=data&pid=' + data.f_id //
+                , page: { curr: 1 }//第一页
+            });
+
+            _this.attr.event.path_changed(data);
+        });
+    };
 
     this.attr = {
         ui: {
@@ -558,18 +570,6 @@
             , "rename": function (obj, table) { _this.attr.event.table_rename(obj, table); }
             , "file": function (obj, table) { _this.attr.event.table_file_click(obj, table); }
         }
-        , open_folder: function (data, table) {
-            return;
-            layui.use(['table'], function () {
-                var table = layui.table;
-                table.reload('files', {
-                    url: 'index.aspx?op=data&pid=' + data.f_id //
-                    , page: { curr: 1 }//第一页
-                });
-
-                _this.attr.event.path_changed(data);
-            });
-        }
         
         , search: function (sql) {
             layui.use(['table'], function () {
@@ -595,7 +595,6 @@
 }
 
 $(function () {
-    pageApp = new PageLogic();
     pageApp.init();
     pageApp.init_up6();
     pageApp.init_down2();
