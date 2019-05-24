@@ -20,6 +20,14 @@ namespace up6.filemgr.app
             get { return this.m_map[index]; }
         }
 
+        public void setVal(DbCommand cmd,JToken fields,JToken val)
+        {
+            foreach (var f in fields)
+            {
+                var type = f["type"].ToString().ToLower();
+                this.m_map[type](cmd, val, f);
+            }
+        }
 
         public SqlParValSetter()
         {

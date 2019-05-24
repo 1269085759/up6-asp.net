@@ -84,11 +84,13 @@ namespace up6.filemgr.app
             //加载结构
             this.m_table = this.table(table);
             var field_all = this.m_table.SelectToken("fields");
+            var field_sel = this.selFields(fields, field_all);
+            var field_cdt = this.selFields(where, field_all);
 
             DbHelper db = new DbHelper();
             var cmd = db.GetCommand(sql);
-            this.to_param_db(cmd, fields, o, field_all);
-            this.to_param_db(cmd, where, o, field_all);
+            this.m_pvSetter.setVal(cmd, field_sel, o);
+            this.m_pvSetter.setVal(cmd, field_cdt, o);
             db.ExecuteNonQuery(cmd);
         }
 
@@ -112,7 +114,6 @@ namespace up6.filemgr.app
             DbHelper db = new DbHelper();
             var cmd = db.GetCommand(sql);
 
-
             var r = db.ExecuteReader(cmd);
 
             JArray a = new JArray();
@@ -120,15 +121,7 @@ namespace up6.filemgr.app
             while (r.Read())
             {
                 int index = 0;
-                var o = new JObject();
-                foreach (var field in field_sel)
-                {
-                    var fd = field_sel[index];
-                    var field_name = field["name"].ToString();
-                    if (names.Length > 0) field_name = names[index];
-                    var fd_type = fd["type"].ToString().ToLower();
-                    o[field_name] = this.m_cmdRd[fd_type](r, index++);
-                }
+                var o = this.m_cmdRd.read(r, field_sel);
                 a.Add(o);
             }
             r.Close();
@@ -149,21 +142,13 @@ namespace up6.filemgr.app
             //加载结构
             this.m_table = this.table(table);
             var field_all = this.m_table.SelectToken("fields");
-
-            var field_sels = from f in fields.Split(',')
-                             join field in field_all
-                             on f.Trim() equals field["name"].ToString()
-                             select field;
-
-            var field_where_sels = from f in @where.Split(',')
-                                   join field in field_all
-                                   on f.Trim() equals field["name"].ToString()
-                                   select field;
+            var field_sel = this.selFields(fields, field_all);
+            var field_cdt = this.selFields(where, field_all);
 
             DbHelper db = new DbHelper();
             var cmd = db.GetCommand(sql);
-            this.to_param_db(cmd, JToken.FromObject(field_sels));
-            this.to_param_db(cmd, JToken.FromObject(field_where_sels));
+            this.m_pc.create(cmd, field_sel);
+            this.m_pc.create(cmd, field_cdt);
 
             cmd.Connection.Open();
             cmd.Prepare();
@@ -173,17 +158,8 @@ namespace up6.filemgr.app
             //设置条件
             foreach (var v in values)
             {
-                //设置变量
-                foreach (var w in field_sels)
-                {
-                    pvs[w["type"].ToString()](cmd, w, v);
-                }
-
-                //设置值
-                foreach (var w in field_where_sels)
-                {
-                    pvs[w["type"].ToString()](cmd, w, v);
-                }
+                pvs.setVal(cmd, field_sel, v);
+                pvs.setVal(cmd, field_cdt, v);
                 cmd.ExecuteNonQuery();
             }
 
@@ -202,6 +178,7 @@ namespace up6.filemgr.app
             this.m_table = this.table(table);
             var identity = this.m_table.SelectToken("fields[?(@.identity==true && @.primary==true)]");
             var field_all = this.m_table.SelectToken("fields");
+            var field_sel = this.selFields(fields, field_all);
 
             string sql = string.Format("insert into [{0}] ( {1} ) values( {2} );"
                 , table
@@ -215,7 +192,7 @@ namespace up6.filemgr.app
 
             DbHelper db = new DbHelper();
             var cmd = db.GetCommand(sql);
-            this.to_param_db(cmd, fields, o, field_all);
+            this.m_pvSetter.setVal(cmd, field_sel, o);
             var id = db.ExecuteScalar(cmd);
             return Convert.ToInt32(id);
         }
@@ -229,12 +206,13 @@ namespace up6.filemgr.app
         {
             //加载结构
             this.m_table = this.table(table);
-            var field_object = this.m_table.SelectToken("fields");
-            var identity = field_object.SelectToken("[?(@.identity==true && @.primary==true)]");
+            var field_all = this.m_table.SelectToken("fields");
+            var field_sel = this.selFields(pars, field_all);
+            var identity = field_all.SelectToken("[?(@.identity==true && @.primary==true)]");
 
             string sql = string.Format("insert into [{0}] ( {1} ) values( {2} );"
                 , table
-                , this.to_fields(pars)
+                , this.toSqlFields(pars)
                 , this.toSqlParam(pars));
 
             //有标识主键
@@ -245,7 +223,7 @@ namespace up6.filemgr.app
 
             DbHelper db = new DbHelper();
             var cmd = db.GetCommand(sql);
-            this.to_param_db(cmd, pars, field_object);
+            this.m_parSetter.setVal(cmd, field_sel, pars);
             var id = db.ExecuteScalar(cmd);
             return Convert.ToInt32(id);
         }
@@ -304,6 +282,8 @@ namespace up6.filemgr.app
             //加载结构
             this.m_table = this.table(table);
             var field_all = this.m_table.SelectToken("fields");
+            var field_sel = this.selFields(fields, field_all);
+            var field_cdt = this.selFields(where, field_all);
 
             string sql = string.Format("update [{0}] set {1} where {2}"
                 , table
@@ -312,8 +292,8 @@ namespace up6.filemgr.app
 
             DbHelper db = new DbHelper();
             var cmd = db.GetCommand(sql);
-            this.to_param_db(cmd, fields, obj, field_all);
-            this.to_param_db(cmd, where, obj, field_all);
+            this.m_pvSetter.setVal(cmd, field_sel, obj);
+            this.m_pvSetter.setVal(cmd, field_cdt, obj);
             db.ExecuteNonQuery(cmd);
         }
 
@@ -330,16 +310,9 @@ namespace up6.filemgr.app
         {
             //加载结构
             this.m_table = this.table(table);
-            var table_fields = this.m_table.SelectToken("fields");
-            var field_whers = (from w in ws
-                               join tf in table_fields
-                               on w.Name.Trim() equals tf["name"].ToString()
-                               select tf).ToArray();
-
-            var field_sels = (from w in fields.Split(',')
-                              join tf in table_fields
-                              on w.Trim() equals tf["name"].ToString()
-                              select tf).ToArray();
+            var field_all = this.m_table.SelectToken("fields");
+            var field_sel = this.selFields(fields, field_all);
+            var field_cdt = this.selFields(ws, field_all);
 
             JObject o = new JObject();
             string sql = string.Format("update {0} set {1} where {2}"
@@ -349,8 +322,8 @@ namespace up6.filemgr.app
 
             DbHelper db = new DbHelper();
             var cmd = db.GetCommand(sql);
-            this.to_param_db(cmd, JToken.FromObject(field_sels));
-            this.to_param_db(cmd, ws);
+            this.m_pc.create(cmd, field_sel);
+            this.m_pc.create(cmd, field_cdt);
             cmd.Connection.Open();
             cmd.Prepare();
 
@@ -359,19 +332,8 @@ namespace up6.filemgr.app
             //设置条件
             foreach (var v in values)
             {
-                //设置变量
-                int index = 0;
-                foreach (var w in ws)
-                {
-                    pvs[w.Type](cmd, field_whers[index++], v);
-                }
-
-                //设置值
-                index = 0;
-                foreach (var w in field_sels)
-                {
-                    pvs[w["type"].ToString()](cmd, w, v);
-                }
+                pvs.setVal(cmd, field_sel, v);
+                pvs.setVal(cmd, field_cdt, v);
                 cmd.ExecuteNonQuery();
             }
 
@@ -401,6 +363,8 @@ namespace up6.filemgr.app
         {
             //加载结构
             this.m_table = this.table(table);
+            var field_all = this.m_table.SelectToken("fields");
+            var field_cdt = this.selFields(where, field_all);
 
             JObject o = new JObject();
             string sql = string.Format("delete from [{0}] where {1}"
@@ -409,7 +373,7 @@ namespace up6.filemgr.app
 
             DbHelper db = new DbHelper();
             var cmd = db.GetCommand(sql);
-            this.to_param_db(cmd, where);
+            this.m_parSetter.setVal(cmd, field_cdt, where);            
             db.ExecuteNonQuery(cmd);
         }
 
@@ -422,14 +386,10 @@ namespace up6.filemgr.app
         /// <param name="predicate"></param>
         public void delete_batch(string table, SqlParam[] ws, JToken values, string predicate = "and")
         {
-
             //加载结构
             this.m_table = this.table(table);
-            var table_fields = this.m_table.SelectToken("fields");
-            var field_sel = (from w in ws
-                             join tf in table_fields
-                             on w.Name.Trim() equals tf["name"].ToString()
-                             select tf).ToArray();
+            var field_all = this.m_table.SelectToken("fields");
+            var field_sel = this.selFields(ws, field_all);
 
             JObject o = new JObject();
             string sql = string.Format("delete from [{0}] where {1}"
@@ -438,7 +398,7 @@ namespace up6.filemgr.app
 
             DbHelper db = new DbHelper();
             var cmd = db.GetCommand(sql);
-            this.to_param_db(cmd, ws);
+            this.m_parSetter.setVal(cmd, field_sel, ws);
             cmd.Connection.Open();
             cmd.Prepare();
 
@@ -446,12 +406,7 @@ namespace up6.filemgr.app
 
             foreach (var v in values)
             {
-                //设置变量
-                int index = 0;
-                foreach (var w in ws)
-                {
-                    pvs[w.Type](cmd, field_sel[index++], v);
-                }
+                pvs.setVal(cmd, field_sel, v);
                 cmd.ExecuteNonQuery();
             }
 
@@ -460,8 +415,9 @@ namespace up6.filemgr.app
 
         public int count(string table, SqlParam[] where)
         {
-            //加载结构
             this.m_table = this.table(table);
+            var field_all = this.m_table.SelectToken("fields");
+            var field_cdt = this.selFields(where, field_all);
 
             JObject o = new JObject();
             string sql = string.Format("select count(*) from [{0}] where {1}"
@@ -470,18 +426,18 @@ namespace up6.filemgr.app
 
             DbHelper db = new DbHelper();
             var cmd = db.GetCommand(sql);
-            this.to_param_db(cmd, where);
+            this.m_parSetter.setVal(cmd, field_cdt, where);
             var obj = db.ExecuteScalar(cmd);
             return Convert.ToInt32(obj);
         }
 
         /// <summary>
-        /// 转换成字段名称列表
+        /// 转换成SQL字段
         /// <para>a,b,c,d,e,f,g</para>
         /// </summary>
         /// <param name="ps"></param>
         /// <returns></returns>
-        public string to_fields(SqlParam[] ps)
+        public string toSqlFields(SqlParam[] ps)
         {
             var arr = from t in ps
                       select string.Format("[{0}]", t.Name);
@@ -547,94 +503,6 @@ namespace up6.filemgr.app
                       select string.Format("{0}=@{0}", t.Name);
             var name = string.Join(" " + pre + " ", arr.ToArray());
             return name;
-        }
-
-        /// <summary>
-        /// 转换成数据库变量
-        /// </summary>
-        /// <param name="cmd"></param>
-        /// <param name="ps"></param>
-        public void to_param_db(DbCommand cmd, SqlParam[] ps, JToken field_all)
-        {
-            if (null == ps) return;
-
-            var fs = from p in ps
-                     join fo in field_all
-                     on p.Name equals fo["name"].ToString()
-                     select fo;
-            var field_arr = fs.ToArray();
-
-            var index = 0;
-            foreach (var p in ps)
-            {
-                var fd = field_arr[index++];
-                var fd_type = fd["type"].ToString().ToLower();
-                this.m_parSetter[fd_type](cmd, p, fd);
-            }
-        }
-
-        /// <summary>
-        /// 转换成数据库变量
-        /// </summary>
-        /// <param name="cmd"></param>
-        /// <param name="ps"></param>
-        public void to_param_db(DbCommand cmd, SqlParam[] ps)
-        {
-            if (null == ps) return;
-
-            var field_objects = this.m_table.SelectToken("fields");
-            var res = from p in ps
-                      join field in field_objects
-                      on p.Name equals field["name"].ToString()
-                      select field;
-
-            var field_curs = res.ToArray();
-
-            for (int i = 0; i < ps.Length; i++)
-            {
-                var fd_type = field_curs[i]["type"].ToString();
-
-                this.m_parSetter[fd_type](cmd, ps[i], field_curs[i]);
-            }
-        }
-
-        /// <summary>
-        /// 为cmd添加字段,按照fields顺序
-        /// </summary>
-        /// <param name="cmd"></param>
-        /// <param name="fields">字段列表</param>
-        /// <param name="obj">字段的值，name:"",age:""</param>
-        /// <param name="field_all">所有字段结构信息</param>
-        /// <returns></returns>
-        public void to_param_db(DbCommand cmd, string fields, JObject obj, JToken field_all)
-        {
-            var field_names = fields.Split(',').ToList();
-            var field_obj = from f in field_names
-                            join fo in field_all
-                            on f equals fo["name"].ToString()
-                            select fo;
-
-            foreach (var o in field_obj)
-            {
-                var fd_type = o["type"].ToString().ToLower();
-
-                this.m_pvSetter[fd_type](cmd, obj, o);
-            }
-        }
-
-        /// <summary>
-        /// 为cmd创建变量
-        /// </summary>
-        /// <param name="cmd"></param>
-        /// <param name="fields">选择的字段列表</param>
-        public void to_param_db(DbCommand cmd, JToken fields)
-        {
-            foreach (var o in fields)
-            {
-                var fd_type = o["type"].ToString().ToLower();
-
-                this.m_pc[fd_type](cmd, o);
-            }
         }
 
         /// <summary>

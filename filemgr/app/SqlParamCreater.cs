@@ -17,18 +17,28 @@ namespace up6.filemgr.app
         /// Command变量创建器
         /// </summary>
         public delegate void dbParamSetDelegate(DbCommand cmd, JToken field);
-        Dictionary<string, dbParamSetDelegate> m_dbParamSetter;
+        Dictionary<string, dbParamSetDelegate> m_map;
 
         public dbParamSetDelegate this[string index]
         {
-            get { return this.m_dbParamSetter[index]; }
+            get { return this.m_map[index]; }
+        }
+
+        public void create(DbCommand cmd,JToken fields)
+        {
+            foreach (var f in fields)
+            {
+                var name = f["name"].ToString();
+                var type = f["type"].ToString().ToLower();
+                this.m_map[type](cmd, f);
+            }
         }
 
 
         public SqlParamCreater()
         {
             //初始化mcd变量创建映射
-            this.m_dbParamSetter = new Dictionary<string, dbParamSetDelegate>() {
+            this.m_map = new Dictionary<string, dbParamSetDelegate>() {
                 { "string",(DbCommand cmd,JToken field)=>{
                     var p = cmd.CreateParameter();
                     p.Direction = ParameterDirection.Input;
