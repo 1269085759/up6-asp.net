@@ -35,9 +35,11 @@
         <div id="down2-panel" style="display:none;"><%=this.template(this.m_path["rootAbs"]+"filemgr/data/ui-down.html") %></div>
         <!--路径导航-->
         <ol class="breadcrumb  m-t-xs" style="margin-bottom:-10px;" id="path">
-            <li>
-                <a class="link" >根目录</a>
-            </li>
+            <template v-for="fd in folders">
+                <li>
+                    <a class="link" @click="open_folder(fd)">{{fd.f_nameLoc}}</a>
+                </li>
+            </template>
         </ol>
         <table class="layui-hide" lay-size="sm" id="files" lay-filter="files" lay-skin="nob"></table>
         <script type="text/javascript">

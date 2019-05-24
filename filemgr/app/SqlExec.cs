@@ -105,7 +105,7 @@ namespace up6.filemgr.app
             //加载结构
             this.m_table = this.table(table);
             var field_all = this.m_table.SelectToken("fields");
-            var field_sel = this.from_fields(fields, field_all);
+            var field_sel = this.selFields(fields, field_all);
             var names = newNames.Split(',');
             if (string.IsNullOrEmpty(newNames)) names = fields.Split(',');
 
@@ -206,7 +206,7 @@ namespace up6.filemgr.app
             string sql = string.Format("insert into [{0}] ( {1} ) values( {2} );"
                 , table
                 , fields
-                , this.to_param(fields));
+                , this.toSqlParam(fields));
             //有标识主键
             if (identity != null)
             {
@@ -235,7 +235,7 @@ namespace up6.filemgr.app
             string sql = string.Format("insert into [{0}] ( {1} ) values( {2} );"
                 , table
                 , this.to_fields(pars)
-                , this.to_param(pars));
+                , this.toSqlParam(pars));
 
             //有标识主键
             if (identity != null)
@@ -254,48 +254,25 @@ namespace up6.filemgr.app
         {
             //加载结构
             this.m_table = this.table(table);
-            var field_object = this.m_table.SelectToken("fields");
-
-            string[] arr = fields.Split(',');
-
-            //所有字段
-            if (string.Equals(fields, "*"))
-            {
-                var fns = from f in field_object select f["name"].ToString();
-                arr = fns.ToArray();
-            }//指定字段
-            else
-            {
-                var field_list = fields.Split(',').ToList();
-                List<string> fdArr = new List<string>(arr);
-                var fns = from f in field_list
-                          join fo in field_object
-                          on f equals fo["name"].ToString()
-                          select fo;
-                field_object = JToken.FromObject(fns);
-            }
+            var field_all = this.m_table.SelectToken("fields");
+            var field_sel = this.selFields(fields, field_all);
+            var field_cdt = this.selFields(where, field_all);
 
             JObject o = null;
             string sql = string.Format("select {0} from [{1}] where {2}"
-                , this.to_fields(field_object)
+                , this.selFieldNames(field_sel)
                 , table
-                , this.to_condition(where, "and"));
+                , this.toSqlCondition(where, "and"));
 
             DbHelper db = new DbHelper();
             var cmd = db.GetCommand(sql);
-            this.to_param_db(cmd, where);
+            this.m_parSetter.setVal(cmd, field_cdt, where);
 
             SqlCmdReader scr = new SqlCmdReader();
             var r = db.ExecuteReader(cmd);
             if (r.Read())
             {
-                o = new JObject();
-                int index = 0;
-                foreach (var field in arr)
-                {
-                    var fd = field_object[index];
-                    o[field] = scr[fd["type"].ToString()](r, index++);
-                }
+                o = this.m_cmdRd.read(r, field_sel);
             }
             r.Close();
             return o;
@@ -305,17 +282,20 @@ namespace up6.filemgr.app
         {
             //加载结构
             this.m_table = this.table(table);
+            var field_all = this.m_table.SelectToken("fields");
+            var field_sel = this.selFields(fields, field_all);
+            var field_cdt = this.selFields(where, field_all);
 
             JObject o = new JObject();
             string sql = string.Format("update [{0}] set {1} where {2}"
                 , table
-                , this.to_condition(fields)
-                , this.to_condition(where, predicate));
+                , this.toSqlCondition(fields)
+                , this.toSqlCondition(where, predicate));
 
             DbHelper db = new DbHelper();
             var cmd = db.GetCommand(sql);
-            this.to_param_db(cmd, fields);
-            this.to_param_db(cmd, where);
+            this.m_parSetter.setVal(cmd, field_sel, fields);
+            this.m_parSetter.setVal(cmd, field_cdt, where);
             db.ExecuteNonQuery(cmd);
         }
 
@@ -327,8 +307,8 @@ namespace up6.filemgr.app
 
             string sql = string.Format("update [{0}] set {1} where {2}"
                 , table
-                , this.to_assignment(fields)
-                , this.to_assignment(where));
+                , this.toSqlSeter(fields)
+                , this.toSqlSeter(where));
 
             DbHelper db = new DbHelper();
             var cmd = db.GetCommand(sql);
@@ -364,8 +344,8 @@ namespace up6.filemgr.app
             JObject o = new JObject();
             string sql = string.Format("update {0} set {1} where {2}"
                 , table
-                , this.to_assignment(fields)
-                , this.to_condition(ws, predicate));
+                , this.toSqlSeter(fields)
+                , this.toSqlCondition(ws, predicate));
 
             DbHelper db = new DbHelper();
             var cmd = db.GetCommand(sql);
@@ -399,11 +379,11 @@ namespace up6.filemgr.app
         }
 
         /// <summary>
-        /// 转成赋值语句
+        /// 转换成SQL赋值语句
         /// </summary>
         /// <param name="fields">字段列表</param>
         /// <returns></returns>
-        string to_assignment(string fields)
+        string toSqlSeter(string fields)
         {
             var lst = fields.Split(',').ToList();
             var arr = from t in lst
@@ -425,7 +405,7 @@ namespace up6.filemgr.app
             JObject o = new JObject();
             string sql = string.Format("delete from [{0}] where {1}"
                 , table
-                , this.to_condition(where, predicate));
+                , this.toSqlCondition(where, predicate));
 
             DbHelper db = new DbHelper();
             var cmd = db.GetCommand(sql);
@@ -454,7 +434,7 @@ namespace up6.filemgr.app
             JObject o = new JObject();
             string sql = string.Format("delete from [{0}] where {1}"
                 , table
-                , this.to_condition(ws, predicate));
+                , this.toSqlCondition(ws, predicate));
 
             DbHelper db = new DbHelper();
             var cmd = db.GetCommand(sql);
@@ -486,7 +466,7 @@ namespace up6.filemgr.app
             JObject o = new JObject();
             string sql = string.Format("select count(*) from [{0}] where {1}"
                 , table
-                , this.to_condition(where, "and"));
+                , this.toSqlCondition(where, "and"));
 
             DbHelper db = new DbHelper();
             var cmd = db.GetCommand(sql);
@@ -515,7 +495,7 @@ namespace up6.filemgr.app
         /// <param name="o"></param>
         /// <param name="field">JSON中的字段名称</param>
         /// <returns></returns>
-        public string to_fields(JToken o, string field = "name")
+        public string selFieldNames(JToken o, string field = "name")
         {
             var arr = from t in o
                       select string.Format("[{0}]", t[field]);
@@ -524,12 +504,12 @@ namespace up6.filemgr.app
         }
 
         /// <summary>
-        /// 拼接成变量
+        /// 转换成SQL变量字段
         /// <para>@a,@b,@c</para>
         /// </summary>
         /// <param name="ps"></param>
         /// <returns></returns>
-        public string to_param(SqlParam[] ps)
+        public string toSqlParam(SqlParam[] ps)
         {
             var names = from t in ps
                         select "@" + t.Name;
@@ -538,12 +518,12 @@ namespace up6.filemgr.app
         }
 
         /// <summary>
-        /// 拼接成变量
+        /// 转换在SQL变量
         /// <para>@a,@b,@c</para>
         /// </summary>
         /// <param name="ps"></param>
         /// <returns></returns>
-        public string to_param(string fields)
+        public string toSqlParam(string fields)
         {
             var arr = fields.Split(',').ToList();
             var names = from a in arr
@@ -553,13 +533,13 @@ namespace up6.filemgr.app
         }
 
         /// <summary>
-        /// 拼装成赋值
+        /// 转换成SQL赋值语句
         /// <para>a=@a,b=@b</para>
         /// </summary>
         /// <param name="ps"></param>
         /// <param name="p">谓词</param>
         /// <returns></returns>
-        public string to_condition(SqlParam[] ps, string pre = ",")
+        public string toSqlCondition(SqlParam[] ps, string pre = ",")
         {
             if (ps == null) return "1=1";
 
@@ -669,60 +649,32 @@ namespace up6.filemgr.app
         {
             //加载结构
             this.m_table = this.table(table);
-            var fields_all = this.m_table.SelectToken("fields");
-
-            string[] field_names = fields.Split(',');
-
-            if (string.Equals(fields, "*"))
-            {
-                var fns = from f in fields_all select f["name"].ToString();
-                field_names = fns.ToArray();
-            }//指定了字段
-            else
-            {
-                var field_sels = from fn in field_names.ToList()
-                                 join item in fields_all
-                                 on fn.Trim() equals item["name"].ToString().Trim()
-                                 select item;
-                fields_all = JToken.FromObject(field_sels.ToArray());
-            }
+            var field_all = this.m_table.SelectToken("fields");
+            var field_sel = this.selFields(fields, field_all);
+            var field_cdt = this.selFields(where, field_all);
 
             //防止字段名称冲突
-            var fns_sql = from f in fields_all
+            var fns_sql = from f in field_sel
                           select "[" + f["name"].ToString() + "]";
             fields = string.Join(",", fns_sql.ToArray());
 
-            string sql = string.Format("select {0} from {1} where {2}"
+            if (!string.IsNullOrEmpty(sort)) sort = string.Format(" order by {0}", sort);
+            string sql = string.Format("select {0} from {1} where {2} {3}"
                 , fields
                 , table
-                , this.to_condition(where, "and"));
-            //有排序
-            if (!string.IsNullOrEmpty(sort))
-            {
-                sql = string.Format("select {0} from {1} where {2} order by {3}"
-                , fields
-                , table
-                , this.to_condition(where, "and")
-                , sort);
-            }
+                , this.toSqlCondition(where, "and")
+                ,sort);
 
             DbHelper db = new DbHelper();
             var cmd = db.GetCommand(sql);
-            this.to_param_db(cmd, where);
+            this.m_parSetter.setVal(cmd, field_cdt, where);
             var r = db.ExecuteReader(cmd);
 
             JArray a = new JArray();
 
             while (r.Read())
             {
-                int index = 0;
-                var o = new JObject();
-                foreach (var field in field_names)
-                {
-                    var fd = fields_all[index];
-                    var fd_type = fd["type"].ToString().ToLower();
-                    o[field] = this.m_cmdRd[fd_type](r, index++);
-                }
+                var o = this.m_cmdRd.read(r, field_sel);                
                 a.Add(o);
             }
             r.Close();
@@ -735,11 +687,21 @@ namespace up6.filemgr.app
         /// <param name="names">字段名称列表</param>
         /// <param name="field_all"></param>
         /// <returns></returns>
-        JToken from_fields(string names, JToken field_all)
+        JToken selFields(string names, JToken field_all)
         {
+            if (names == "*") return field_all;
+
             var data = from n in names.Split(',')
                        join f in field_all
                        on n.Trim() equals f["name"].ToString()
+                       select f;
+            return JToken.FromObject(data);
+        }
+        JToken selFields(SqlParam[] sp, JToken field_all)
+        {
+            var data = from n in sp
+                       join f in field_all
+                       on n.Name equals f["name"].ToString()
                        select f;
             return JToken.FromObject(data);
         }

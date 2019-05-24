@@ -91,7 +91,9 @@ namespace up6.filemgr
             data = Server.UrlDecode(data);
             var fd = JObject.Parse(data);
 
-            PageTool.to_content(DbFolder.build_path_by_id(fd));
+            DbFolder df = new DbFolder();
+
+            this.toContent(df.build_path_by_id(fd));
         }
 
         void file_rename()

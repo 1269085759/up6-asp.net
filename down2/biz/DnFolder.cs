@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Common;
 using up6.db.database;
 using up6.down2.model;
+using up6.filemgr.app;
 
 namespace up6.down2.biz
 {
@@ -16,6 +17,22 @@ namespace up6.down2.biz
             DbHelper db = new DbHelper();
             DbCommand cmd = db.GetCommand("delete from down_folders;");
             db.ExecuteNonQuery(ref cmd);
+        }
+
+        /// <summary>
+        /// 获取指定目录的所有子文件
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public string files(string id)
+        {
+            var se = new SqlExec();
+            var data = se.select("up6_files"
+                , "f_id,f_nameLoc,f_pathSvr,f_lenSvr,f_sizeLoc"
+                , new SqlParam[] {
+                    new SqlParam("",0)
+            });
+            return data.ToString();
         }
 
         public static string all_file(string id)

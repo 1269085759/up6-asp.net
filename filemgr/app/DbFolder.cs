@@ -11,6 +11,69 @@ namespace up6.filemgr.app
     /// </summary>
     public class DbFolder
     {
+        //根节点
+        JObject root = new JObject { { "f_id", "" }, { "f_nameLoc", "根目录" }, { "f_pid", "" }, { "f_pidRoot", "" } };
+
+        public DbFolder()
+        {
+        }
+
+        /// <summary>
+        /// 将目录列表转换成键值表
+        /// f_id,folder
+        /// f_id,folder
+        /// </summary>
+        /// <param name="folders"></param>
+        /// <returns></returns>
+        public Dictionary<string,JToken> toDic(ref JToken folders)
+        {
+            Dictionary<string, JToken> dt = new Dictionary<string, JToken>();
+            foreach (var fd in folders)
+            {
+                dt[fd["f_id"].ToString()] = fd;
+            }
+            return dt;
+        }
+
+        /// <summary>
+        /// 将所有目录转换成关联数组
+        /// </summary>
+        /// <param name="id">文件夹ID</param>
+        /// <param name="pid"></param>
+        /// <returns></returns>
+        public Dictionary<String, JToken> foldersToDic(string pidRoot)
+        {
+            //默认加载根目录
+            string sql = string.Format("select f_id,f_nameLoc,f_pid,f_pidRoot from up6_folders where f_pidRoot='{0}'", pidRoot); 
+
+            SqlExec se = new SqlExec();
+            var folders = se.exec("up6_folders", sql, "f_id,f_nameLoc,f_pid,f_pidRoot");
+            return this.toDic(ref folders);
+        }
+
+        /// <summary>
+        /// 按照层级顺序排序
+        /// pid,idCur
+        /// </summary>
+        /// <param name="dt">目录表</param>
+        /// <param name="idCur">当前目录ID</param>
+        /// <param name="psort">排序结果</param>
+        public void sortByPid(ref Dictionary<string, JToken> dt, string idCur,ref List<JToken> psort) {
+
+            string cur = idCur;
+            while (true)
+            {
+                //key不存在
+                if (!dt.ContainsKey(cur)) break;
+
+                var d = dt[cur];//查父ID
+                psort.Insert(0, d);//将父节点排在前面
+                cur = d["f_pid"].ToString().Trim();//取父级ID
+
+                if (cur.Trim() == "0") break;
+                if (string.IsNullOrEmpty(cur)) break;
+            }
+        }
 
         /// <summary>
         /// 获取文件夹中所有子项（文件和目录）
@@ -76,7 +139,7 @@ namespace up6.filemgr.app
         /// 根据pid查询
         /// </summary>
         /// <param name="fdCur"></param>
-        public static JToken build_path_by_id(JObject fdCur) {
+        public JToken build_path_by_id(JObject fdCur) {
 
             var id = fdCur["f_id"].ToString().Trim();//
             var pid = fdCur["f_pid"].ToString().Trim();//
@@ -87,58 +150,30 @@ namespace up6.filemgr.app
             List<JToken> psort = new List<JToken>();
             if (string.IsNullOrEmpty(id))
             {
-                psort.Insert(0, new JObject { { "f_id", "" }, { "f_nameLoc", "根目录" }, { "f_pid", "" }, { "f_pidRoot", "" } });
+                psort.Insert(0, this.root);
 
                 return JToken.FromObject(psort);
             }
 
-            string sql = "select f_id,f_nameLoc,f_pid,f_pidRoot from up7_folders where f_pid='';";
-            //子目录
-            if (!isRoot)
-            {
-                //加载所有根目录结构
-                sql = string.Format("select f_id,f_nameLoc,f_pid,f_pidRoot from up7_folders where f_pidRoot='{0}'", pidRoot);
-            }
-
-            SqlExec se = new SqlExec();
-
-            var folders = se.exec("up7_folders", sql, "f_id,f_nameLoc,f_pid,f_pidRoot");
-
             //构建目录映射表(id,folder)
-            //id,folder
-            Dictionary<string, JToken> dt = new Dictionary<string, JToken>();
-            foreach (var fd in folders)
-            {
-                dt[fd["f_id"].ToString()] = fd;
-            }
+            Dictionary<string, JToken> dt = this.foldersToDic(pidRoot);
 
             //按层级顺序排列目录
-            string cur = fdCur["f_id"].ToString().Trim();
-            while (true)
-            {
-                //key不存在
-                if (!dt.ContainsKey(cur)) break;
+            this.sortByPid(ref dt, id, ref psort);
 
-                var d = dt[cur];//查父ID
-                psort.Insert(0, d);
-                cur = d["f_pid"].ToString().Trim();//取父级ID
-
-                if (cur.Trim() == "0") break;
-                if (string.IsNullOrEmpty(cur)) break;
-            }
-
+            SqlExec se = new SqlExec();
             //是子目录->添加根目录
             if (!string.IsNullOrEmpty(pidRoot))
             {
-                var root = se.read("up7_files", "f_id,f_nameLoc,f_pid,f_pidRoot", new SqlParam[] { new SqlParam("f_id", pidRoot) });
+                var root = se.read("up6_files", "f_id,f_nameLoc,f_pid,f_pidRoot", new SqlParam[] { new SqlParam("f_id", pidRoot) });
                 psort.Insert(0, root);
             }//是根目录->添加根目录
             else if (!string.IsNullOrEmpty(id) && string.IsNullOrEmpty(pidRoot))
             {
-                var root = se.read("up7_files", "f_id,f_nameLoc,f_pid,f_pidRoot", new SqlParam[] { new SqlParam("f_id", id) });
+                var root = se.read("up6_files", "f_id,f_nameLoc,f_pid,f_pidRoot", new SqlParam[] { new SqlParam("f_id", id) });
                 psort.Insert(0, root);
             }
-            psort.Insert(0, (new JObject { { "f_id", "" }, { "f_nameLoc", "根目录" }, { "f_pid", "" }, { "f_pidRoot", "" } }));
+            psort.Insert(0, this.root);
 
             return JToken.FromObject(psort);
         }
@@ -152,7 +187,7 @@ namespace up6.filemgr.app
 
             SqlExec se = new SqlExec();
 
-            var folders = se.select("up7_folders", "f_id,f_pid", null);
+            var folders = se.select("up6_folders", "f_id,f_pid", null);
 
             var dt = new Dictionary<string, HashSet<string>>();
             foreach (var f in folders)

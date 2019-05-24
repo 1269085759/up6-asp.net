@@ -20,18 +20,17 @@ namespace up6.filemgr.app
         /// <param name="field">字段类型信息</param>
         /// <param name="val">字段值</param>
         public delegate void dbValueSetDelegate(DbCommand cmd, JToken field, JToken val);
-        Dictionary<string, dbValueSetDelegate> m_dbParamSetter;
+        Dictionary<string, dbValueSetDelegate> m_map;
 
         public dbValueSetDelegate this[string index]
         {
-            get { return this.m_dbParamSetter[index]; }
+            get { return this.m_map[index]; }
         }
-
 
         public SqlValueSetter()
         {
             //初始化mcd变量创建映射
-            this.m_dbParamSetter = new Dictionary<string, dbValueSetDelegate>() {
+            this.m_map = new Dictionary<string, dbValueSetDelegate>() {
                 { "string",(DbCommand cmd,JToken field, JToken val)=>{
                     var pn = field["name"].ToString();
                     var p = cmd.Parameters["@"+pn];

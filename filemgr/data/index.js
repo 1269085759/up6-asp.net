@@ -60,6 +60,20 @@
             }
         });
     };
+    this.init_path = function () {
+        if (this.attr.nav_path == null) {
+            this.attr.nav_path = new Vue({
+                el: '#path',
+                data: { folders: [], folderCur: this.pathCur }
+                , methods: {
+                    open_folder: function (d) {
+                        _this.open_folder(d);
+                    }
+                }
+            });
+            this.attr.nav_path.folders.push(this.pathCur);
+        }
+    };
 
     //加载未完成列表
     this.load_uncomp= function () {
@@ -198,17 +212,13 @@
         this.data.up6.page_close();
         this.data.down2.page_close();
     };
-    this.open_folder = function (data, table) {
-        return;
-        layui.use(['table'], function () {
-            var table = layui.table;
-            table.reload('files', {
-                url: 'index.aspx?op=data&pid=' + data.f_id //
-                , page: { curr: 1 }//第一页
-            });
-
-            _this.attr.event.path_changed(data);
+    this.open_folder = function (data) {
+        this.attr.ui.table.reload('files', {
+            url: 'index.aspx?op=data&pid=' + data.f_id //
+            , page: { curr: 1 }//第一页
         });
+
+        _this.attr.event.path_changed(data);
     };
 
     this.attr = {
@@ -543,10 +553,9 @@
 
             }
             , table_file_click: function (obj, table) {
-                if (obj.data.f_fdTask) _this.attr.open_folder(obj.data, table);
+                if (obj.data.f_fdTask) _this.open_folder(obj.data);
             }
             , path_changed: function (data) {
-                return;
                 _this.pathCur = data;
                 $.ajax({
                     type: "GET"
@@ -590,6 +599,7 @@
             $(n.id).bind(n.e, n.n);
         });
         this.init_imgs();
+        this.init_path();
     };
     //
 }

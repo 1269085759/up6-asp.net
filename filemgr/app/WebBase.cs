@@ -192,5 +192,23 @@ namespace up6.filemgr.app
             }
             return sb.ToString();
         }
+
+        /// <summary>
+        /// 将JSON作为页面内容输出，
+        /// </summary>
+        /// <param name="p"></param>
+        public void toContent(JToken p)
+        {
+            Response.Clear();
+            Response.Write(JsonConvert.SerializeObject(p));
+            Response.End();
+        }
+
+        public void toContent(string v)
+        {
+            Response.Clear();
+            Response.Write(v);
+            Response.End();
+        }
     }
 }
