@@ -96,10 +96,7 @@
         }).bind("select_node.jstree", function (e, data) {
             var ins = data.instance;
             var nodeSel = data.node;
-            //data.instance;//获取树对象
-            //window.location.href = data.node.a_attr.href;
-            //访问原始数据
-            //data.node.original
+            if (nodeSel.children.length > 0) return;
             var param = jQuery.extend({}, { pid: data.node.original.id, time: new Date().getTime() });
             $.ajax({
                 type: "GET"
@@ -111,7 +108,6 @@
 
                     $.each(res, function (i, n) {
                         var item = {id: n.id, text: n.text};
-                        //$('#jstree_div').jstree('create_node', selectedNode, obj, 'last');
                         ins.create_node(nodeSel, item);
                     });
                 }
