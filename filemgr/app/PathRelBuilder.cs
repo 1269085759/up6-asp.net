@@ -33,7 +33,7 @@ namespace up6.filemgr.app
         /// 当前目录ID
         /// </summary>
         /// <param name="id"></param>
-        public void build(string id,ref Dictionary<string,JToken> folders)
+        public void buildFolder(string id,ref Dictionary<string,JToken> folders)
         {
             var ids = from f in folders
                       select f.Value["f_id"].ToString();
@@ -66,7 +66,7 @@ namespace up6.filemgr.app
             }
         }
 
-        public JToken buildFiles(ref JToken files)
+        public JToken buildFile(ref JToken files)
         {
             var fs = files.Children<JObject>().ToDictionary(x => x["f_id"].ToString(), x => x);
 

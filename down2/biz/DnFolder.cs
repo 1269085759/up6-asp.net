@@ -48,8 +48,8 @@ namespace up6.down2.biz
 
             //构建子目录路径
             PathRelBuilder prb = new PathRelBuilder();
-            prb.build(id, ref foldersDic);
-            var fs = prb.buildFiles(ref files);
+            prb.buildFolder(id, ref foldersDic);
+            var fs = prb.buildFile(ref files);
             
 
             return JsonConvert.SerializeObject(fs);
