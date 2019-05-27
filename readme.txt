@@ -16,6 +16,8 @@ Install-Package Microsoft.Experimental.IO
 更新记录：
 2019-05-27
 	初步完成子文件构建逻辑。
+	  根据选择的目录自动生成相对路径。
+	  根据选择的目录加载对应的文件。
 	修复文件夹下载后没有从已存在列表中清除的问题
 	  down.folder.js
 2019-05-24

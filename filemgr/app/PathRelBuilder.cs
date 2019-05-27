@@ -22,10 +22,15 @@ namespace up6.filemgr.app
         /// <summary>
         /// 无关目录，非当前目录的子目录
         /// </summary>
-        private Dictionary<string,string> m_childs;
+        private Dictionary<string,string> m_childsOther;
+        /// <summary>
+        /// 有关的目录列表
+        /// </summary>
+        private Dictionary<string, string> m_childs;
 
         public PathRelBuilder() {
             this.m_fdQuerys = new List<string>();
+            this.m_childsOther = new Dictionary<string, string>();
             this.m_childs = new Dictionary<string, string>();
         }
 
@@ -37,13 +42,14 @@ namespace up6.filemgr.app
         {
             var ids = from f in folders
                       select f.Value["f_id"].ToString();
-            this.m_childs = ids.ToDictionary(x => x, x => x);
+            this.m_childsOther = ids.ToDictionary(x => x, x => x);
 
             this.m_folders = folders;
             string idCur = id;
-            this.m_childs.Remove(id);
+            this.m_childsOther.Remove(id);
+            this.m_childs.Add(id, id);
             var fdPrev = m_folders[id];
-            fdPrev["f_pathRel"] = fdPrev["f_nameLoc"].ToString();
+            fdPrev["f_pathRel"] = string.Empty;
             while (true)
             {
                 //更新所有子目录相对路径
@@ -60,7 +66,7 @@ namespace up6.filemgr.app
             }
 
             //清除无关数据
-            foreach(var c in this.m_childs)
+            foreach(var c in this.m_childsOther)
             {
                 folders.Remove(c.Key);
             }
@@ -70,21 +76,21 @@ namespace up6.filemgr.app
         {
             var fs = files.Children<JObject>().ToDictionary(x => x["f_id"].ToString(), x => x);
 
-            //删除无关数据
-            foreach (var f in fs)
-            {
-                if(this.m_childs.ContainsKey( f.Value["f_pid"].ToString()))
-                {
-                    fs.Remove(f.Value["f_id"].ToString());
-                }
-            }
-
             JArray arr = new JArray();
             //更新路径
             foreach (var f in fs)
             {
+                if (!this.m_childs.ContainsKey(f.Value["f_pid"].ToString())) continue;
+
                 var parent = this.m_folders[f.Value["f_pid"].ToString()];
                 f.Value["f_pathRel"] = parent["f_pathRel"].ToString() + "/" + f.Value["f_nameLoc"].ToString();
+
+                //更名
+                f.Value["nameLoc"] = f.Value["f_nameLoc"].ToString();
+                f.Value["pathSvr"] = f.Value["f_pathSvr"].ToString();
+                f.Value["pathRel"] = f.Value["f_pathRel"].ToString();
+                f.Value["lenSvr"] = f.Value["f_lenSvr"].ToString();
+                f.Value["sizeSvr"] = f.Value["f_sizeLoc"].ToString();
                 arr.Add(f.Value);
             }
 
@@ -100,8 +106,11 @@ namespace up6.filemgr.app
             foreach (var c in childs)
             {
                 this.m_fdQuerys.Add(c.Value["f_id"].ToString());
-                this.m_childs.Remove(c.Value["f_id"].ToString());
+                this.m_childsOther.Remove(c.Value["f_id"].ToString());
+                this.m_childs.Add(c.Value["f_id"].ToString(), c.Value["f_id"].ToString());
                 c.Value["f_pathRel"] = parentRel + "/" + c.Value["f_nameLoc"].ToString();
+                if (string.IsNullOrEmpty(parentRel))
+                    c.Value["f_pathRel"] = c.Value["f_nameLoc"].ToString();
             }
             return childs.Count() > 0;
         }
