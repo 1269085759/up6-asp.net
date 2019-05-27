@@ -96,6 +96,9 @@
         }).bind("select_node.jstree", function (e, data) {
             var ins = data.instance;
             var nodeSel = data.node;
+
+            _this.open_folder(nodeSel.original.a_attr);
+
             if (nodeSel.children.length > 0) return;
             var param = jQuery.extend({}, { pid: data.node.original.id, time: new Date().getTime() });
             $.ajax({
@@ -107,8 +110,7 @@
                     nodeSel.state.opened = true;
 
                     $.each(res, function (i, n) {
-                        var item = {id: n.id, text: n.text};
-                        ins.create_node(nodeSel, item);
+                        ins.create_node(nodeSel, n);
                     });
                 }
                 , error: function (req, txt, err) { }

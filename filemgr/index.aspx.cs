@@ -32,23 +32,24 @@ namespace up6.filemgr
             SqlExec se = new SqlExec();
             JArray arr = new JArray();
             var data = se.select("up6_files"
-                , "f_id,f_nameLoc"
+                , "f_id,f_pid,f_pidRoot,f_nameLoc"
                 , swm.to_sql()
                 ,string.Empty);
 
             //查子目录
             if (!string.IsNullOrEmpty(pid))
             {
-                data = se.select("up6_folders", "f_id,f_nameLoc", new SqlParam[] { new SqlParam("f_pid", pid) });
+                data = se.select("up6_folders", "f_id,f_pid,f_pidRoot,f_nameLoc", new SqlParam[] { new SqlParam("f_pid", pid) });
             }
 
             foreach (var f in data)
             {
-                arr.Add(new JObject {
-                    { "id", f["f_id"].ToString() }
-                    , { "text", f["f_nameLoc"].ToString() }
-                    , { "parent", "#" }
-                });
+                var item = new JObject();
+                item["id"] = f["f_id"].ToString();
+                item["text"] = f["f_nameLoc"].ToString();
+                item["parent"] = "#";
+                item["a_attr"] = f;
+                arr.Add(item);
             }
             this.toContent(arr);
         }
