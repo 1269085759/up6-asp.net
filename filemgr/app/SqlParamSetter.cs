@@ -23,6 +23,8 @@ namespace up6.filemgr.app
 
         public void setVal(DbCommand cmd, JToken fields, SqlParam[] sp)
         {
+            if (sp == null) return;
+            if (sp.Length < 1) return;
             int i = 0;
             foreach (var f in fields)
             {

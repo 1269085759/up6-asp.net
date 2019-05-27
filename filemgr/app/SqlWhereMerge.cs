@@ -51,6 +51,11 @@ namespace up6.filemgr.app
             this.m_cds[n] = string.Format("{0}={1}", n, v);
         }
 
+        public void equal(string n, bool v)
+        {
+            this.m_cds[n] = string.Format("{0}={1}", n, v);
+        }
+
         /// <summary>
         /// 相等条件，a=b，从查询字符串中获取变量（Request.QueryString)
         /// </summary>

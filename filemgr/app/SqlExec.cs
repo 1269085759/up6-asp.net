@@ -526,12 +526,15 @@ namespace up6.filemgr.app
                           select "[" + f["name"].ToString() + "]";
             fields = string.Join(",", fns_sql.ToArray());
 
+            string sql_where = "";
+            if (where.Length > 0) sql_where = string.Format("where {0}", this.toSqlCondition(where, "and"));
+
             if (!string.IsNullOrEmpty(sort)) sort = string.Format(" order by {0}", sort);
-            string sql = string.Format("select {0} from {1} where {2} {3}"
+            string sql = string.Format("select {0} from {1} {2} {3}"
                 , fields
                 , table
-                , this.toSqlCondition(where, "and")
-                ,sort);
+                , sql_where
+                , sort);
 
             DbHelper db = new DbHelper();
             var cmd = db.GetCommand(sql);
@@ -609,6 +612,7 @@ namespace up6.filemgr.app
         }
         JToken selFields(SqlParam[] sp, JToken field_all)
         {
+            if (sp.Length < 1) return null;
             var data = from n in sp
                        join f in field_all
                        on n.Name equals f["name"].ToString()

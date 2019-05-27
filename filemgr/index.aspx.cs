@@ -19,9 +19,39 @@ namespace up6.filemgr
             else if (op == "mk-folder") this.mk_folder();
             else if (op == "uncomp") this.load_uncomplete();
             else if (op == "uncmp-down") this.load_uncmp_down();
+            else if (op == "tree") this.load_tree();
         }
 
+        void load_tree() {
+            var pid = Request.QueryString["pid"];
+            var swm = new SqlWhereMerge();
+            swm.equal("f_fdChild", 0);
+            swm.equal("f_fdTask", 1);
+            if (!string.IsNullOrEmpty(pid)) swm.equal("f_pid", pid);
 
+            SqlExec se = new SqlExec();
+            JArray arr = new JArray();
+            var data = se.select("up6_files"
+                , "f_id,f_nameLoc"
+                , swm.to_sql()
+                ,string.Empty);
+
+            //查子目录
+            if (!string.IsNullOrEmpty(pid))
+            {
+                data = se.select("up6_folders", "f_id,f_nameLoc", new SqlParam[] { new SqlParam("f_pid", pid) });
+            }
+
+            foreach (var f in data)
+            {
+                arr.Add(new JObject {
+                    { "id", f["f_id"].ToString() }
+                    , { "text", f["f_nameLoc"].ToString() }
+                    , { "parent", "#" }
+                });
+            }
+            this.toContent(arr);
+        }
 
         /// <summary>
         /// 加载未完成的文件和目录列表
