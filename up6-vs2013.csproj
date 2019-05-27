@@ -240,6 +240,7 @@
     <Content Include="filemgr\res\imgs\32\del.png" />
     <Content Include="filemgr\res\imgs\32\file.png" />
     <Content Include="filemgr\res\imgs\32\folder.png" />
+    <Content Include="filemgr\test.aspx" />
     <Content Include="filemgr\up6\jquery-1.4.min.js" />
     <Content Include="filemgr\up6\json2.min.js" />
     <Content Include="filemgr\res\imgs\32\post.png" />
@@ -447,6 +448,7 @@
     <Compile Include="filemgr\app\DbFolder.cs" />
     <Compile Include="filemgr\app\HtmlTemplater.cs" />
     <Compile Include="filemgr\app\PageTool.cs" />
+    <Compile Include="filemgr\app\PathRelBuilder.cs" />
     <Compile Include="filemgr\app\SqlCmdReader.cs" />
     <Compile Include="filemgr\app\SqlExec.cs" />
     <Compile Include="filemgr\app\SqlParam.cs" />
@@ -474,6 +476,13 @@
     </Compile>
     <Compile Include="filemgr\index.aspx.designer.cs">
       <DependentUpon>index.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="filemgr\test.aspx.cs">
+      <DependentUpon>test.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="filemgr\test.aspx.designer.cs">
+      <DependentUpon>test.aspx</DependentUpon>
     </Compile>
     <Compile Include="index.aspx.cs">
       <DependentUpon>index.aspx</DependentUpon>

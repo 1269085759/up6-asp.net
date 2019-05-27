@@ -25,7 +25,7 @@ namespace up6.filemgr.app
         /// </summary>
         /// <param name="folders"></param>
         /// <returns></returns>
-        public Dictionary<string,JToken> toDic(ref JToken folders)
+        public Dictionary<string, JToken> toDic(ref JToken folders)
         {
             Dictionary<string, JToken> dt = new Dictionary<string, JToken>();
             foreach (var fd in folders)
@@ -44,7 +44,7 @@ namespace up6.filemgr.app
         public Dictionary<String, JToken> foldersToDic(string pidRoot)
         {
             //默认加载根目录
-            string sql = string.Format("select f_id,f_nameLoc,f_pid,f_pidRoot from up6_folders where f_pidRoot='{0}'", pidRoot); 
+            string sql = string.Format("select f_id,f_nameLoc,f_pid,f_pidRoot from up6_folders where f_pidRoot='{0}'", pidRoot);
 
             SqlExec se = new SqlExec();
             var folders = se.exec("up6_folders", sql, "f_id,f_nameLoc,f_pid,f_pidRoot");
@@ -58,7 +58,7 @@ namespace up6.filemgr.app
         /// <param name="dt">目录表</param>
         /// <param name="idCur">当前目录ID</param>
         /// <param name="psort">排序结果</param>
-        public void sortByPid(ref Dictionary<string, JToken> dt, string idCur,ref List<JToken> psort) {
+        public void sortByPid(ref Dictionary<string, JToken> dt, string idCur, ref List<JToken> psort) {
 
             string cur = idCur;
             while (true)
@@ -187,7 +187,7 @@ namespace up6.filemgr.app
 
             SqlExec se = new SqlExec();
 
-            var folders = se.select("up6_folders", "f_id,f_pid", null);
+            var folders = se.select("up6_folders", "f_id,f_pid", string.Empty);
 
             var dt = new Dictionary<string, HashSet<string>>();
             foreach (var f in folders)

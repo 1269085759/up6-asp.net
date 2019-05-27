@@ -79,6 +79,24 @@ namespace up6.filemgr.app
             this.m_cds.Add(n, string.Format("{0} like '%{1}%'", n, v));
         }
 
+        /// <summary>
+        /// 以key结尾
+        /// </summary>
+        /// <param name="n"></param>
+        /// <param name="v"></param>
+        public void likeR(string n, string v) {
+            this.m_cds.Add(n, string.Format("{0} like '%{1}'", n, v));
+        }
+
+        /// <summary>
+        /// 以key开始
+        /// </summary>
+        /// <param name="n"></param>
+        /// <param name="v"></param>
+        public void likeL(string n, string v) {
+            this.m_cds.Add(n, string.Format("{0} like '{1}%'", n, v));
+        }
+
         public void like(string n, string v)
         {
             this.m_cds.Add(n, string.Format("{0} like '%{1}%'", n, v));

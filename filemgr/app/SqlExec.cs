@@ -550,6 +550,48 @@ namespace up6.filemgr.app
         }
 
         /// <summary>
+        /// 选择多条数据
+        /// </summary>
+        /// <param name="table"></param>
+        /// <param name="fields">字段列表a,b,c,d,e或者所有字段：*</param>
+        /// <param name="where"></param>
+        /// <param name="sort">排序。示例：time desc</param>
+        /// <returns></returns>
+        public JToken select(string table, string fields, string where, string sort = "")
+        {
+            //加载结构
+            this.m_table = this.table(table);
+            var field_all = this.m_table.SelectToken("fields");
+            var field_sel = this.selFields(fields, field_all);
+
+            //防止字段名称冲突
+            var fns_sql = from f in field_sel
+                          select "[" + f["name"].ToString() + "]";
+            fields = string.Join(",", fns_sql.ToArray());
+
+            if (!string.IsNullOrEmpty(sort)) sort = string.Format(" order by {0}", sort);
+            string sql = string.Format("select {0} from {1} where {2} {3}"
+                , fields
+                , table
+                , where
+                , sort);
+
+            DbHelper db = new DbHelper();
+            var cmd = db.GetCommand(sql);
+            var r = db.ExecuteReader(cmd);
+
+            JArray a = new JArray();
+
+            while (r.Read())
+            {
+                var o = this.m_cmdRd.read(r, field_sel);
+                a.Add(o);
+            }
+            r.Close();
+            return JToken.FromObject(a);
+        }
+
+        /// <summary>
         /// 批量获取字段结构信息
         /// </summary>
         /// <param name="names">字段名称列表</param>
