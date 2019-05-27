@@ -43,13 +43,10 @@ namespace up6.down2.biz
             var fd = se.read("up6_folders", "f_pidRoot", new SqlParam[] { new SqlParam("f_id", id) });
             var pidRoot = fd["f_pidRoot"].ToString();
             DbFolder df = new DbFolder();
-            var foldersDic = df.foldersToDic(pidRoot);//获取目录列表            
-            var files = this.allFiles(pidRoot);//获取文件列表
 
             //构建子目录路径
             PathRelBuilder prb = new PathRelBuilder();
-            prb.buildFolder(id, ref foldersDic);
-            var fs = prb.buildFile(ref files);
+            var fs = prb.build(id,pidRoot);
             
 
             return JsonConvert.SerializeObject(fs);

@@ -15,38 +15,54 @@ namespace up6.filemgr.app
         /// 目录列表
         /// </summary>
         private Dictionary<string, JToken> m_folders;
+        private JToken m_files;
         /// <summary>
         /// 需要查询的子目录列表
         /// </summary>
         private List<string> m_fdQuerys;
         /// <summary>
-        /// 无关目录，非当前目录的子目录
-        /// </summary>
-        private Dictionary<string,string> m_childsOther;
-        /// <summary>
-        /// 有关的目录列表
+        /// 子目录列表
         /// </summary>
         private Dictionary<string, string> m_childs;
 
         public PathRelBuilder() {
             this.m_fdQuerys = new List<string>();
-            this.m_childsOther = new Dictionary<string, string>();
+            this.m_files = null;
             this.m_childs = new Dictionary<string, string>();
         }
 
+        public JToken build(string id, string pidRoot)
+        {
+            this.query(id, pidRoot);
+            this.buildFolder(id);
+            return this.buildFile();
+        }
+
         /// <summary>
-        /// 当前目录ID
+        /// 查询目录和文件列表
         /// </summary>
         /// <param name="id"></param>
-        public void buildFolder(string id,ref Dictionary<string,JToken> folders)
+        void query(string id,string pidRoot)
         {
-            var ids = from f in folders
-                      select f.Value["f_id"].ToString();
-            this.m_childsOther = ids.ToDictionary(x => x, x => x);
+            //查询目录
+            DbFolder df = new DbFolder();
+            this.m_folders = df.foldersToDic(pidRoot);
 
-            this.m_folders = folders;
+            //查询文件
+            var se = new SqlExec();
+            this.m_files = se.select("up6_files"
+                , "f_id,f_pid,f_nameLoc,f_pathSvr,f_pathRel,f_lenSvr,f_sizeLoc"
+                , new SqlParam[] { new SqlParam("f_pidRoot", pidRoot) }
+            );
+        }
+
+        /// <summary>
+        /// 为所有子目录构建路径
+        /// </summary>
+        /// <param name="id"></param>
+        void buildFolder(string id)
+        {
             string idCur = id;
-            this.m_childsOther.Remove(id);
             this.m_childs.Add(id, id);
             var fdPrev = m_folders[id];
             fdPrev["f_pathRel"] = string.Empty;
@@ -66,15 +82,19 @@ namespace up6.filemgr.app
             }
 
             //清除无关数据
-            foreach(var c in this.m_childsOther)
+            foreach(var c in this.m_childs)
             {
-                folders.Remove(c.Key);
+                if(!this.m_folders.ContainsKey(c.Key)) this.m_folders.Remove(c.Key);
             }
         }
 
-        public JToken buildFile(ref JToken files)
+        /// <summary>
+        /// 为所有文件构建路径
+        /// </summary>
+        /// <returns></returns>
+        JToken buildFile()
         {
-            var fs = files.Children<JObject>().ToDictionary(x => x["f_id"].ToString(), x => x);
+            var fs = this.m_files.Children<JObject>().ToDictionary(x => x["f_id"].ToString(), x => x);
 
             JArray arr = new JArray();
             //更新路径
@@ -98,7 +118,7 @@ namespace up6.filemgr.app
         }
 
         /// <summary>
-        /// 更新子目录相对路径
+        /// 更新所有子目录路径
         /// </summary>
         bool updateChilds(string pid,string parentRel)
         {
@@ -106,7 +126,6 @@ namespace up6.filemgr.app
             foreach (var c in childs)
             {
                 this.m_fdQuerys.Add(c.Value["f_id"].ToString());
-                this.m_childsOther.Remove(c.Value["f_id"].ToString());
                 this.m_childs.Add(c.Value["f_id"].ToString(), c.Value["f_id"].ToString());
                 c.Value["f_pathRel"] = parentRel + "/" + c.Value["f_nameLoc"].ToString();
                 if (string.IsNullOrEmpty(parentRel))
