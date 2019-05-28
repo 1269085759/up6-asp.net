@@ -3,7 +3,7 @@
     this.files_checked = [];
     this.pathCur = { f_id: "", f_pid: "", f_pidRoot: "", f_nameLoc: "根目录", f_pathRel: "/" };//
     this.data = {
-        downPath: "", up6: null, panel: { up: null, down: null }, down2: null,up_inited:false,down_inited:false
+        downPath: "",treeID:"#tree", up6: null, panel: { up: null, down: null }, down2: null,up_inited:false,down_inited:false
     };
     this.ui = {
         ico: [
@@ -76,7 +76,7 @@
     };
     this.init_tree = function () {
         var param = jQuery.extend({}, { time: new Date().getTime() });
-        $('#tree').jstree({
+        this.data.tree= $('#tree').jstree({
             "plugins": ["wholerow"],
             'core': {
                 "check_callback": true,
@@ -116,7 +116,6 @@
                 , error: function (req, txt, err) { }
                 , complete: function (req, sta) { req = null; }
             });
-
         });
     };
 
@@ -338,6 +337,14 @@
             , folder_append: function (f) {
                 f.ui.path.text(_this.pathCur.f_nameLoc);
             }
+            , folder_created: function (data)
+            {
+                if (data.f_pid == "")
+                {
+                    var tree = $(_this.data.treeID).jstree(true);
+                    tree.create_node("#", { id: data.f_id, text: data.f_nameLoc ,nodeSvr:data});
+                }
+            }
             , file_md5_complete: function (obj) {
                 obj.fileSvr.pid = _this.pathCur.f_id;
                 obj.fileSvr.pidRoot = _this.pathCur.f_pidRoot;
@@ -405,6 +412,7 @@
                                     layer.alert('创建失败,'+res.msg, { icon: 5 });
                                 }
                                 else {
+                                    _this.attr.event.folder_created(res);
                                     _this.attr.event.btn_refresh_click();
                                 }
                             }

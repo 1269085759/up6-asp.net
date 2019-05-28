@@ -86,6 +86,9 @@ namespace up6.filemgr
             var name = obj["f_nameLoc"].ToString().Trim();
             var pid = obj["f_pid"].ToString().Trim();
             var pidRoot = obj["f_pidRoot"].ToString().Trim();
+            obj["f_nameLoc"] = name;
+            obj["f_pid"] = pid;
+            obj["f_pidRoot"] = pidRoot;
 
             DbFolder df = new DbFolder();
             if (df.exist_same_folder(name, pid))
@@ -100,8 +103,10 @@ namespace up6.filemgr
             //根目录
             if (string.IsNullOrEmpty(pid))
             {
+                obj["f_id"] = Guid.NewGuid().ToString("N");
+
                 se.insert("up6_files", new SqlParam[] {
-                    new SqlParam("f_id",Guid.NewGuid().ToString("N"))
+                    new SqlParam("f_id",obj["f_id"].ToString())
                     ,new SqlParam("f_pid",obj["f_pid"].ToString())
                     ,new SqlParam("f_pidRoot",obj["f_pidRoot"].ToString())
                     ,new SqlParam("f_nameLoc",obj["f_nameLoc"].ToString())
@@ -111,9 +116,10 @@ namespace up6.filemgr
             }//子目录
             else
             {
+                obj["f_id"] = Guid.NewGuid().ToString("N");
                 se.insert("up6_folders"
                     , new SqlParam[] {
-                    new SqlParam("f_id",Guid.NewGuid().ToString("N"))
+                    new SqlParam("f_id",obj["f_id"].ToString())
                     ,new SqlParam("f_pid",obj["f_pid"].ToString())
                     ,new SqlParam("f_pidRoot",obj["f_pidRoot"].ToString())
                     ,new SqlParam("f_nameLoc",obj["f_nameLoc"].ToString())
