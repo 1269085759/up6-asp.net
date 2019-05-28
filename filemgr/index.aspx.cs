@@ -27,6 +27,7 @@ namespace up6.filemgr
             var swm = new SqlWhereMerge();
             swm.equal("f_fdChild", 0);
             swm.equal("f_fdTask", 1);
+            swm.equal("f_deleted", 0);
             if (!string.IsNullOrEmpty(pid)) swm.equal("f_pid", pid);
 
             SqlExec se = new SqlExec();
