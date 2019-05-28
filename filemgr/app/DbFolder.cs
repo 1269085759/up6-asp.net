@@ -227,5 +227,32 @@ namespace up6.filemgr.app
 
             return childs.ToArray();
         }
+
+        public bool exist_same_file(string name,string pid)
+        {
+            SqlWhereMerge swm = new SqlWhereMerge();
+            swm.equal("f_nameLoc", name.Trim());
+            swm.equal("f_pid", pid.Trim());
+
+            string sql = string.Format("select f_id from up6_files {0} ", swm.to_sql());
+
+            var se = new SqlExec();
+            var fid = se.exec("up6_files", sql, "f_id", string.Empty);
+            return fid != null;
+        }
+
+        public bool exist_same_folder(string name,string pid)
+        {
+            SqlWhereMerge swm = new SqlWhereMerge();
+            swm.equal("f_nameLoc", name.Trim());
+            swm.equal("LTRIM (f_pid)", pid.Trim());
+
+            string sql = string.Format("select f_id from up6_files where {0} " +
+                                        " union select f_id from up6_folders where {0}", swm.to_sql());
+
+            var se = new SqlExec();
+            var fid = (JArray)se.exec("up6_files", sql, "f_id", string.Empty);
+            return fid.Count > 0;
+        }
     }
 }

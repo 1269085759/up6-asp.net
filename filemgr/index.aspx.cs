@@ -83,34 +83,46 @@ namespace up6.filemgr
             var data = Request.QueryString["data"];
             data = Server.UrlDecode(data);
             var obj = JObject.Parse(data);
+            var name = obj["f_nameLoc"].ToString().Trim();
+            var pid = obj["f_pid"].ToString().Trim();
             var pidRoot = obj["f_pidRoot"].ToString().Trim();
+
+            DbFolder df = new DbFolder();
+            if (df.exist_same_folder(name, pid))
+            {
+                var ret = new JObject { { "ret", false }, { "msg", "已存在同名目录" } };
+                this.toContent(ret);
+                return;
+            }
 
             SqlExec se = new SqlExec();
 
             //根目录
-            if (string.IsNullOrEmpty(pidRoot))
+            if (string.IsNullOrEmpty(pid))
             {
                 se.insert("up6_files", new SqlParam[] {
-            new SqlParam("f_id",Guid.NewGuid().ToString("N"))
-            ,new SqlParam("f_pid",obj["f_pid"].ToString())
-            ,new SqlParam("f_pidRoot",obj["f_pidRoot"].ToString())
-            ,new SqlParam("f_nameLoc",obj["f_nameLoc"].ToString())
-            ,new SqlParam("f_complete",true)
-            ,new SqlParam("f_fdTask",true)
-            });
+                    new SqlParam("f_id",Guid.NewGuid().ToString("N"))
+                    ,new SqlParam("f_pid",obj["f_pid"].ToString())
+                    ,new SqlParam("f_pidRoot",obj["f_pidRoot"].ToString())
+                    ,new SqlParam("f_nameLoc",obj["f_nameLoc"].ToString())
+                    ,new SqlParam("f_complete",true)
+                    ,new SqlParam("f_fdTask",true)
+                });
             }//子目录
             else
             {
-                se.insert("up6_folders", new SqlParam[] {
-            new SqlParam("f_id",Guid.NewGuid().ToString("N"))
-            ,new SqlParam("f_pid",obj["f_pid"].ToString())
-            ,new SqlParam("f_pidRoot",obj["f_pidRoot"].ToString())
-            ,new SqlParam("f_nameLoc",obj["f_nameLoc"].ToString())
-            ,new SqlParam("f_complete",true)
-            });
+                se.insert("up6_folders"
+                    , new SqlParam[] {
+                    new SqlParam("f_id",Guid.NewGuid().ToString("N"))
+                    ,new SqlParam("f_pid",obj["f_pid"].ToString())
+                    ,new SqlParam("f_pidRoot",obj["f_pidRoot"].ToString())
+                    ,new SqlParam("f_nameLoc",obj["f_nameLoc"].ToString())
+                    ,new SqlParam("f_complete",true)
+                    });
             }
 
-            PageTool.to_content(obj);
+            obj["ret"] = true;
+            this.toContent(obj);
         }
 
         /// <summary>

@@ -38,6 +38,9 @@
                     <button class="btn btn-default btn-sm pull-left m-r-xs" role="button" id="btn-up-paste">
                         <img name="paste" />
                         粘贴上传</button>
+                    <button class="btn btn-default btn-sm pull-left m-r-xs" role="button" id="btn-mk-folder">
+                        <img name="paste" />
+                        新建文件夹</button>
                     <button class="btn btn-default btn-sm pull-left m-r-xs" role="button" id="btn-open-up">
                         <img name="up-panel" />
                         打开上传面板</button>

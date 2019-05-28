@@ -120,7 +120,6 @@ namespace up6.filemgr.app
 
             while (r.Read())
             {
-                int index = 0;
                 var o = this.m_cmdRd.read(r, field_sel);
                 a.Add(o);
             }
@@ -245,6 +244,33 @@ namespace up6.filemgr.app
             DbHelper db = new DbHelper();
             var cmd = db.GetCommand(sql);
             this.m_parSetter.setVal(cmd, field_cdt, where);
+
+            SqlCmdReader scr = new SqlCmdReader();
+            var r = db.ExecuteReader(cmd);
+            if (r.Read())
+            {
+                o = this.m_cmdRd.read(r, field_sel);
+            }
+            r.Close();
+            return o;
+        }
+
+        public JObject read(string table, string fields, string where)
+        {
+            //加载结构
+            this.m_table = this.table(table);
+            var field_all = this.m_table.SelectToken("fields");
+            var field_sel = this.selFields(fields, field_all);
+
+            if (!string.IsNullOrEmpty(where)) where = string.Format("where {0}", where);
+            JObject o = null;
+            string sql = string.Format("select {0} from [{1}] {2}"
+                , this.selFieldNames(field_sel)
+                , table
+                , where);
+
+            DbHelper db = new DbHelper();
+            var cmd = db.GetCommand(sql);
 
             SqlCmdReader scr = new SqlCmdReader();
             var r = db.ExecuteReader(cmd);

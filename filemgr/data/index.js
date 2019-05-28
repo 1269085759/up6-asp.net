@@ -401,7 +401,12 @@
                             , url: "index.aspx?op=mk-folder"
                             , data: param
                             , success: function (res) {
-                                _this.attr.event.btn_refresh_click();
+                                if (!res.ret) {
+                                    layer.alert('创建失败,'+res.msg, { icon: 5 });
+                                }
+                                else {
+                                    _this.attr.event.btn_refresh_click();
+                                }
                             }
                             , error: function (req, txt, err) { }
                             , complete: function (req, sta) { req = null; }
