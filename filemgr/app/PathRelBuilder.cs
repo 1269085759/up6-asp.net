@@ -40,6 +40,7 @@ namespace up6.filemgr.app
 
         /// <summary>
         /// 查询目录和文件列表
+        /// 只加载已完成且未删除的
         /// </summary>
         /// <param name="id"></param>
         void query(string id,string pidRoot)
