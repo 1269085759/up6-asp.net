@@ -68,6 +68,7 @@
                 , methods: {
                     open_folder: function (d) {
                         _this.open_folder(d);
+                        _this.open_tree_node(d);
                     }
                 }
             });
