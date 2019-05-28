@@ -355,6 +355,10 @@
                     tree.create_node(nodeSel, { id: data.f_id, text: data.f_nameLoc, nodeSvr: data });
                 }
             }
+            , folder_deleted: function (ids) {
+                var tree = $(_this.data.treeID).jstree(true);
+                tree.delete_node(ids);
+            }
             , file_md5_complete: function (obj) {
                 obj.fileSvr.pid = _this.pathCur.f_id;
                 obj.fileSvr.pidRoot = _this.pathCur.f_pidRoot;
@@ -501,8 +505,10 @@
                         layer.close(index);
 
                         var ids = [];
+                        var id_arr = [];
                         $.each(_this.files_checked, function (i, n) {
                             ids.push({ f_id: n.f_id, f_fdTask: n.f_fdTask });
+                            id_arr.push(n.f_id);
                         });
                         var str = JSON.stringify(ids);
                         str = encodeURIComponent(str);
@@ -514,7 +520,8 @@
                             , data: param
                             , success: function (res) {
                                 _this.attr.event.btn_refresh_click();
-                                $(_this.attr.ui.btnDel).addClass("hide");
+                                $(_this.attr.ui.btnDel).addClass("hide");                                
+                                _this.attr.event.folder_deleted(id_arr);
                             }
                             , error: function (req, txt, err) { }
                             , complete: function (req, sta) { req = null; }
@@ -611,6 +618,10 @@
                             , data: param
                             , success: function (res) {
                                 obj.del();
+                                if (obj.data.f_fdTask) {
+                                    var ids = [obj.data.f_id];
+                                    _this.attr.event.folder_deleted(ids);
+                                }
                             }
                             , error: function (req, txt, err) { }
                             , complete: function (req, sta) { req = null; }
