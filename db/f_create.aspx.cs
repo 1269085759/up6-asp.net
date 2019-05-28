@@ -31,7 +31,7 @@ namespace up6.db
             string pathLoc      = HttpUtility.UrlDecode(Request.QueryString["pathLoc"]);//utf-8解码
 
             if (string.IsNullOrEmpty(pid)) pid = string.Empty;
-            if (string.IsNullOrEmpty(pidRoot)) pidRoot = string.Empty;
+            if (string.IsNullOrEmpty(pidRoot)) pidRoot = pid;
 
             //参数为空
             if (string.IsNullOrEmpty(md5)
