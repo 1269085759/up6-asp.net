@@ -48,7 +48,7 @@ namespace up6.filemgr
                 item["id"] = f["f_id"].ToString();
                 item["text"] = f["f_nameLoc"].ToString();
                 item["parent"] = "#";
-                item["a_attr"] = f;
+                item["nodeSvr"] = f;
                 arr.Add(item);
             }
             this.toContent(arr);

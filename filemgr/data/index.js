@@ -97,7 +97,7 @@
             var ins = data.instance;
             var nodeSel = data.node;
 
-            _this.open_folder(nodeSel.original.a_attr);
+            _this.open_folder(nodeSel.original.nodeSvr);
 
             if (nodeSel.children.length > 0) return;
             var param = jQuery.extend({}, { pid: data.node.original.id, time: new Date().getTime() });
