@@ -45,14 +45,29 @@ namespace up6.filemgr.app
         void query(string id,string pidRoot)
         {
             //查询目录
-            DbFolder df = new DbFolder();
-            this.m_folders = df.foldersToDic(pidRoot);
+            var se = new SqlExec();
+            var folders = se.select("up6_folders"
+                , "f_id,f_nameLoc,f_pid,f_pidRoot"
+                , new SqlParam[] { new SqlParam("f_deleted", 0) }
+                , string.Empty);
+
+            this.m_folders = folders.Children<JObject>().ToDictionary(x => x["f_id"].ToString(), x =>JToken.FromObject(x));
+
+            //是根节点
+            if (id == pidRoot)
+            {
+                var root = se.read("up6_files", "f_nameLoc", new SqlParam[] { new SqlParam("f_id", id) });
+                this.m_folders.Add(id, new JObject { { "f_id", id }, { "f_pid", string.Empty }, { "f_pidRoot", string.Empty }, { "f_nameLoc", root["f_nameLoc"].ToString() } });
+            }
 
             //查询文件
-            var se = new SqlExec();
             this.m_files = se.select("up6_files"
                 , "f_id,f_pid,f_nameLoc,f_pathSvr,f_pathRel,f_lenSvr,f_sizeLoc"
-                , new SqlParam[] { new SqlParam("f_pidRoot", pidRoot) }
+                , new SqlParam[] {
+                    new SqlParam("f_pidRoot", pidRoot)
+                    ,new SqlParam("f_deleted", false)
+                    ,new SqlParam("f_complete", true)
+                }
             );
         }
 

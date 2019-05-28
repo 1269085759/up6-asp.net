@@ -187,11 +187,11 @@ namespace up6.filemgr
                 , obj);
 
             //更新文件夹
-            //se.exec_batch("up6_folders"
-            //    , "update up6_folders set f_deleted=1 where f_id=@f_id"
-            //    , string.Empty
-            //    , "f_id"
-            //    , obj);
+            se.exec_batch("up6_folders"
+                , "update up6_folders set f_deleted=1 where f_id=@f_id"
+                , string.Empty
+                , "f_id"
+                , obj);
 
             PageTool.to_content(obj);
         }
