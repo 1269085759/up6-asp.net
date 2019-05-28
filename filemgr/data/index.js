@@ -339,10 +339,13 @@
             }
             , folder_created: function (data)
             {
-                if (data.f_pid == "")
-                {
-                    var tree = $(_this.data.treeID).jstree(true);
-                    tree.create_node("#", { id: data.f_id, text: data.f_nameLoc ,nodeSvr:data});
+                var tree = $(_this.data.treeID).jstree(true);
+                if (data.f_pid == "") {
+                    tree.create_node("#", { id: data.f_id, text: data.f_nameLoc, nodeSvr: data });
+                }
+                else {
+                    var nodeSel = tree.get_node(data.f_pid);
+                    tree.create_node(nodeSel, { id: data.f_id, text: data.f_nameLoc, nodeSvr: data });
                 }
             }
             , file_md5_complete: function (obj) {
