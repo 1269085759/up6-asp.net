@@ -19,6 +19,8 @@ namespace up6.db
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            string pid          = Request.QueryString["pid"];
+            string pidRoot      = Request.QueryString["pidRoot"];
             string md5          = Request.QueryString["md5"];
             string id           = Request.QueryString["id"];
             string uid          = Request.QueryString["uid"];
@@ -27,6 +29,9 @@ namespace up6.db
             string callback     = Request.QueryString["callback"];//jsonp参数
             //客户端使用的是encodeURIComponent编码，
             string pathLoc      = HttpUtility.UrlDecode(Request.QueryString["pathLoc"]);//utf-8解码
+
+            if (string.IsNullOrEmpty(pid)) pid = string.Empty;
+            if (string.IsNullOrEmpty(pidRoot)) pidRoot = string.Empty;
 
             //参数为空
             if (string.IsNullOrEmpty(md5)
@@ -41,6 +46,9 @@ namespace up6.db
             fileSvr.fdChild = false;
             fileSvr.uid = int.Parse(uid);//将当前文件UID设置为当前用户UID
             fileSvr.id = id;
+            fileSvr.pid = pid;
+            fileSvr.fdChild = !string.IsNullOrEmpty(pid);
+            fileSvr.pidRoot = pidRoot;
             fileSvr.nameLoc = Path.GetFileName(pathLoc);
             fileSvr.pathLoc = pathLoc;
             fileSvr.lenLoc = Convert.ToInt64(lenLoc);

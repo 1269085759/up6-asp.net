@@ -270,6 +270,8 @@
             , page: { curr: 1 }//第一页
         });
 
+        $.extend(this.data.up6.Config.bizData, { "pid": data.f_id, "pidRoot": data.f_pidRoot });
+
         _this.attr.event.path_changed(data);
     };
 

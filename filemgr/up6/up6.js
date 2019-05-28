@@ -86,7 +86,8 @@ function HttpUploaderMgr()
         , edge: {protocol:"up6",port:9100,visible:false}
         , exe: { path: "http://www.ncmem.com/download/up6.3/up6.exe" }
 		, "SetupPath": "http://localhost:4955/demoAccess/js/setup.htm"
-        , "Fields": {"uname": "test","upass": "test","uid":"0"}
+        , "Fields": { "uname": "test", "upass": "test", "uid": "0" }
+        , bizData: {pid:"",pidRoot:""}
         , errCode: {
             "0": "发送数据错误"
             , "1": "接收数据错误"
