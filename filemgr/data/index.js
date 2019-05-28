@@ -118,6 +118,13 @@
             });
         });
     };
+    this.open_tree_node = function (data) {
+        var tree = $(_this.data.treeID).jstree(true);
+        tree.deselect_all(true);
+        var nodeCur = tree.get_node(data.f_id);
+        if (nodeCur == null) alert("未找到节点");
+        tree.select_node(nodeCur);
+    };
 
     //加载未完成列表
     this.load_uncomp= function () {
@@ -614,7 +621,10 @@
 
             }
             , table_file_click: function (obj, table) {
-                if (obj.data.f_fdTask) _this.open_folder(obj.data);
+                if (obj.data.f_fdTask) {
+                    _this.open_folder(obj.data);
+                    _this.open_tree_node(obj.data);
+                }
             }
             , path_changed: function (data) {
                 _this.pathCur = data;
