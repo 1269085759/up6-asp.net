@@ -27,6 +27,7 @@ namespace up6.db
                 //根节点
                 FileInf root = new FileInf();
                 root.id = inf.pidRoot;
+                //当前节点是根节点
                 if (string.IsNullOrEmpty(root.id)) root.id = inf.id;
                 
                 //上传完毕
