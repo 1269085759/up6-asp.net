@@ -274,5 +274,54 @@ namespace up6.filemgr.app
             file.pathSvr = o["f_pathSvr"].ToString().Trim();
             return file;
         }
+
+        /// <summary>
+        /// 重命名文件检查
+        /// </summary>
+        /// <param name="newName"></param>
+        /// <param name="pid"></param>
+        /// <returns></returns>
+        public bool rename_file_check(string newName,string pid)
+        {
+            SqlExec se = new SqlExec();            
+            var res = (JArray)se.select("up6_files"
+                , "f_id"
+                ,new SqlParam[] {
+                    new SqlParam("f_nameLoc",newName)
+                    ,new SqlParam("f_pid",pid)
+                });
+            return res.Count > 0;
+        }
+
+        /// <summary>
+        /// 重命名目录检查
+        /// </summary>
+        /// <param name="newName"></param>
+        /// <param name="pid"></param>
+        /// <returns></returns>
+        public bool rename_folder_check(string newName, string pid)
+        {
+            SqlExec se = new SqlExec();
+            var res = (JArray)se.select("up6_folders"
+                , "f_id"
+                , new SqlParam[] {
+                    new SqlParam("f_nameLoc",newName)
+                    ,new SqlParam("f_pid",pid)
+                });
+            return res.Count > 0;
+        }
+
+        public void rename_file(string name,string id) {
+            SqlExec se = new SqlExec();
+            se.update("up6_files"
+                , new SqlParam[] { new SqlParam("f_nameLoc", name) }
+                , new SqlParam[] { new SqlParam("f_id", id) });
+        }
+        public void rename_folder(string name, string id, string pid) {
+            SqlExec se = new SqlExec();
+            se.update("up6_folders"
+                , new SqlParam[] { new SqlParam("f_nameLoc", name) }
+                , new SqlParam[] { new SqlParam("f_id", id) });
+        }
     }
 }

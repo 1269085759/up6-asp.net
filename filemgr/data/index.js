@@ -12,6 +12,7 @@
             ,{ name: "paste", url:page.path.res + "imgs/16/paste.png" }
             , { name: "del", url:page.path.res + "imgs/16/del.png" }
             , { name: "down", url:page.path.res + "imgs/16/down.png" }
+            , { name: "edit", url:page.path.res + "imgs/16/edit.png" }
             , { name: "up-panel", url:page.path.res + "imgs/16/up-panel.png" }
             , { name: "down-panel", url:page.path.res + "imgs/16/down-panel.png" }
         ]
@@ -369,6 +370,10 @@
                 var tree = $(_this.data.treeID).jstree(true);
                 tree.delete_node(ids);
             }
+            , folder_renamed: function (data) {
+                var tree = $(_this.data.treeID).jstree(true);
+                tree.set_text(data.f_id, data.f_nameLoc);
+            }
             , file_md5_complete: function (obj) {
                 obj.fileSvr.pid = _this.pathCur.f_id;
                 obj.fileSvr.pidRoot = _this.pathCur.f_pidRoot;
@@ -600,7 +605,14 @@
                             , url: "index.aspx?op=rename"
                             , data: param
                             , success: function (res) {
-                                obj.update({ "f_nameLoc": newData.f_nameLoc });
+                                if (res.state)
+                                {
+                                    obj.update({ "f_nameLoc": newData.f_nameLoc });
+                                    _this.attr.event.folder_renamed(data);
+                                }
+                                else {
+                                    layer.alert('更名失败,存在同名项', { icon: 5 });
+                                }
                             }
                             , error: function (req, txt, err) { }
                             , complete: function (req, sta) { req = null; }

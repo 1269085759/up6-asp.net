@@ -97,7 +97,12 @@
                                 }
                                 , { field: 'f_sizeLoc', title: '大小', width: 80, sort: false, }
                                 , { field: 'f_time', title: '上传时间', width: 150, templet: function (d) { return moment(d.f_time).format('YYYY-MM-DD HH:mm:ss') } }
-                                , { title: '编辑', templet: function (d) { return '<a class="layui-table-link link" lay-event="delete"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> 删除</a>'; } }
+                                , {
+                                    title: '编辑', templet: function (d) {
+                                          var str =  laytpl('<a class="layui-table-link link m-r-md" lay-event="rename"><img src="{{d.edit}}"/>重命名</a><a class="layui-table-link link" lay-event="delete"><img src="{{d.del}}"/>删除</a>').render({edit:page.path.res+'imgs/16/edit.png',del:page.path.res+"imgs/16/del.png"});
+                                        return str;
+                                    }
+                                }
                             ]],
                             done: function (res, curr, count) { }
                         });
