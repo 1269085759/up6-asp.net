@@ -24,9 +24,9 @@
         };
         this.data.up6.event.md5Complete = function (obj, md5) { /*alert(md5);*/ };
         this.data.up6.event.fdComplete = function (obj) {
-            _this.attr.event.file_post_complete();
+            _this.attr.event.folder_post_complete(obj);
         };
-            this.data.up6.event.fileComplete = function (obj) {
+        this.data.up6.event.fileComplete = function (obj) {
             _this.attr.event.file_post_complete();
         };
         this.data.up6.event.loadComplete = function () {
@@ -338,8 +338,15 @@
             file_post_complete: function () {
                 _this.attr.event.btn_refresh_click();
             }
-            , folder_post_complete: function () {
+            , folder_post_complete: function (obj) {
                 _this.attr.event.btn_refresh_click();
+                _this.attr.event.folder_created($.extend(obj.fileSvr
+                    , {
+                        f_pid: obj.fileSvr.pid
+                        , f_id: obj.fileSvr.id
+                        , f_pidRoot: obj.fileSvr.pidRoot
+                        , f_nameLoc: obj.fileSvr.nameLoc
+                }));
             }
             , file_append: function (f) {
                 f.ui.path.text(_this.pathCur.f_nameLoc);

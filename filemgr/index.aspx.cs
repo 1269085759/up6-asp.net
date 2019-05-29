@@ -40,7 +40,12 @@ namespace up6.filemgr
             //查子目录
             if (!string.IsNullOrEmpty(pid))
             {
-                data = se.select("up6_folders", "f_id,f_pid,f_pidRoot,f_nameLoc", new SqlParam[] { new SqlParam("f_pid", pid) });
+                data = se.select("up6_folders"
+                    , "f_id,f_pid,f_pidRoot,f_nameLoc"
+                    , new SqlParam[] {
+                        new SqlParam("f_pid", pid)
+                        ,new SqlParam("f_deleted", false)
+                    });
             }
 
             foreach (var f in data)

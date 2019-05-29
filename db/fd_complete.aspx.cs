@@ -24,15 +24,17 @@ namespace up6.db
             {
                 DbFolder db = new DbFolder();
                 FileInf inf = db.read(id);
-                string root = inf.pathSvr;
+                //根节点
+                FileInf root = new FileInf();
+                root.id = inf.pidRoot;
                 
                 //上传完毕
                 DBFile.fd_complete(id, uid);
 
                 //扫描文件夹结构，
                 fd_scan sa = new fd_scan();
-                sa.root = inf;//
-                sa.scan(inf,root);
+                sa.root = root;//
+                sa.scan(inf,inf.pathSvr);
 
                 //更新扫描状态
                 DBFile.fd_scan(id, uid);

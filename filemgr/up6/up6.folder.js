@@ -318,6 +318,7 @@ function FolderUploader(fdLoc, mgr)
         }
         //在此处增加服务器验证代码。
         this.ui.msg.text("初始化...");
+        $.extend(this.fileSvr, this.Config.bizData);
         var param = jQuery.extend({}, this.fields, this.Config.bizData, {
             id: this.fileSvr.id,
             lenLoc: this.fileSvr.lenLoc,
@@ -419,7 +420,7 @@ function FolderUploader(fdLoc, mgr)
         this.manager.del_file(this.fileSvr.id);
         this.app.delFolder({ id: this.id });
         this.manager.Delete(this.id);
-        this.svr_remove();
+        if (this.State != this.Config.state.Complete) this.svr_remove();
         this.ui.div.remove();
     };
 }

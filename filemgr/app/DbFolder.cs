@@ -263,12 +263,15 @@ namespace up6.filemgr.app
         /// <returns></returns>
         public FileInf read(string id) {
             SqlExec se = new SqlExec();
-            string sql = string.Format("select f_pathSvr from up6_files where f_id='{0}' union select f_pathSvr from up6_folders where f_id='{0}'", id);
-            var data = (JArray)se.exec("up6_files", sql, "f_pathSvr");
-            var inf = JObject.FromObject(data[0]);
+            string sql = string.Format("select f_pid,f_pidRoot,f_pathSvr from up6_files where f_id='{0}' union select f_pid,f_pidRoot,f_pathSvr from up6_folders where f_id='{0}'", id);
+            var data = (JArray)se.exec("up6_files", sql, "f_pid,f_pidRoot,f_pathSvr");
+            var o = JObject.FromObject(data[0]);
+
             FileInf file = new FileInf();
             file.id = id;
-            file.pathSvr = inf["f_pathSvr"].ToString().Trim();
+            file.pid = o["f_pid"].ToString().Trim();
+            file.pidRoot = o["f_pidRoot"].ToString().Trim();
+            file.pathSvr = o["f_pathSvr"].ToString().Trim();
             return file;
         }
     }
