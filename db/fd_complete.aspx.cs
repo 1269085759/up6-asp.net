@@ -3,6 +3,7 @@ using up6.db.biz;
 using up6.db.biz.folder;
 using up6.db.database;
 using up6.db.model;
+using up6.filemgr.app;
 
 namespace up6.db
 {
@@ -21,9 +22,8 @@ namespace up6.db
             }
             else
             {
-                FileInf inf = new FileInf();
-                DBFile db = new DBFile();
-                db.read(id,ref inf);
+                DbFolder db = new DbFolder();
+                FileInf inf = db.read(id);
                 string root = inf.pathSvr;
                 
                 //上传完毕

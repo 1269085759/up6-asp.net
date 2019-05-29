@@ -69,6 +69,13 @@ function FolderUploader(fdLoc, mgr)
         });
         this.ui.btn.post.show();
     };
+    this.svr_err_same_name = function ()
+    {
+        this.manager.RemoveQueuePost(this.fileSvr.id);
+        this.ui.msg.text("服务器存在同名目录");
+        this.ui.btn.stop.hide();
+        this.ui.btn.cancel.show();
+    };
     this.svr_remove = function ()
     {
         var param = { uid: this.fields["uid"], id: this.id, time: new Date().getTime() };
@@ -326,9 +333,15 @@ function FolderUploader(fdLoc, mgr)
 			, url: this.Config["UrlFdCreate"]
             , data: param
 			, success: function (msg)
-			{
+            {
+                //存在同名目录
+                if (!msg.ret) {
+                    _this.svr_err_same_name();
+                    return;
+                }
+
 				try
-				{
+                {
 					var json = JSON.parse(decodeURIComponent(msg.value));
 					_this.svr_create(json);
 				}

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using up6.db.model;
 
 namespace up6.filemgr.app
 {
@@ -253,6 +254,22 @@ namespace up6.filemgr.app
             var se = new SqlExec();
             var fid = (JArray)se.exec("up6_files", sql, "f_id", string.Empty);
             return fid.Count > 0;
+        }
+
+        /// <summary>
+        /// 获取根目录或子目录信息
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public FileInf read(string id) {
+            SqlExec se = new SqlExec();
+            string sql = string.Format("select f_pathSvr from up6_files where f_id='{0}' union select f_pathSvr from up6_folders where f_id='{0}'", id);
+            var data = (JArray)se.exec("up6_files", sql, "f_pathSvr");
+            var inf = JObject.FromObject(data[0]);
+            FileInf file = new FileInf();
+            file.id = id;
+            file.pathSvr = inf["f_pathSvr"].ToString().Trim();
+            return file;
         }
     }
 }

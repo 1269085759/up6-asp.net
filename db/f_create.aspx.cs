@@ -63,7 +63,7 @@ namespace up6.db
             DbFolder df = new DbFolder();
             if (df.exist_same_file(fileSvr.nameLoc,pid))
             {
-                var data = callback + "({'value':'','ret':false,'msg':'存在同名文件'})";
+                var data = callback + "({'value':'','ret':false,'code':'101'})";
                 PageTool.to_content(data);
                 return;
             }
