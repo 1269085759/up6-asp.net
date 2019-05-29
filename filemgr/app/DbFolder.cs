@@ -234,7 +234,7 @@ namespace up6.filemgr.app
             swm.equal("f_nameLoc", name.Trim());
             swm.equal("f_pid", pid.Trim());
 
-            string sql = string.Format("select f_id from up6_files {0} ", swm.to_sql());
+            string sql = string.Format("select f_id from up6_files where {0} ", swm.to_sql());
 
             var se = new SqlExec();
             var fid = se.exec("up6_files", sql, "f_id", string.Empty);
