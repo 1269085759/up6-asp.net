@@ -30,8 +30,13 @@ namespace up6.down2.biz
             var se = new SqlExec();
             var fd = se.read("up6_folders", "f_pidRoot", new SqlParam[] { new SqlParam("f_id", id) });
             string pidRoot = string.Empty;
+            //子目录表中不存在，表示当前目录是根目录
             if (fd == null) pidRoot = id;
-            else pidRoot = fd["f_pidRoot"].ToString().Trim();
+            else
+            {
+                //子目录表中存在，表示当前目录是子目录
+                pidRoot = fd["f_pidRoot"].ToString().Trim();
+            }
             
             return this.filesChild(id,pidRoot);
         }
