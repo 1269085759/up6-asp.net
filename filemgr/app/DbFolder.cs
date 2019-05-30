@@ -143,9 +143,7 @@ namespace up6.filemgr.app
         public JToken build_path_by_id(JObject fdCur) {
 
             var id = fdCur["f_id"].ToString().Trim();//
-            var pid = fdCur["f_pid"].ToString().Trim();//
             var pidRoot = fdCur["f_pidRoot"].ToString().Trim();//
-            bool isRoot = string.IsNullOrEmpty(pid);//根目录
 
             //根目录
             List<JToken> psort = new List<JToken>();

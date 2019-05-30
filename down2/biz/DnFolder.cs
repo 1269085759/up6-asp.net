@@ -31,6 +31,7 @@ namespace up6.down2.biz
             var fd = se.read("up6_folders", "f_pidRoot", new SqlParam[] { new SqlParam("f_id", id) });
             string pidRoot = string.Empty;
             if (fd == null) pidRoot = id;
+            else pidRoot = fd["f_pidRoot"].ToString().Trim();
             
             return this.filesChild(id,pidRoot);
         }
