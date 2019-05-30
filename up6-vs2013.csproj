@@ -461,6 +461,7 @@
     <Compile Include="filemgr\app\HtmlTemplater.cs" />
     <Compile Include="filemgr\app\PageTool.cs" />
     <Compile Include="filemgr\app\PathRelBuilder.cs" />
+    <Compile Include="filemgr\app\SqlBuilder.cs" />
     <Compile Include="filemgr\app\SqlCmdReader.cs" />
     <Compile Include="filemgr\app\SqlExec.cs" />
     <Compile Include="filemgr\app\SqlParam.cs" />

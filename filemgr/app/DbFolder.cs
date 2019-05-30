@@ -154,18 +154,23 @@ namespace up6.filemgr.app
                 return JToken.FromObject(psort);
             }
 
+            //当前目录是子目录
+            SqlExec se = new SqlExec();
+            var data = (JArray)se.selectUnion(new string[] { "up6_files", "up6_folders" }, "f_pidRoot"
+                , new SqlParam[] { new SqlParam("f_id", id) });
+            if (data.Count > 0) pidRoot = data[0]["f_pidRoot"].ToString().Trim();
+
             //构建目录映射表(id,folder)
             Dictionary<string, JToken> dt = this.foldersToDic(pidRoot);
 
             //按层级顺序排列目录
             this.sortByPid(ref dt, id, ref psort);
 
-            SqlExec se = new SqlExec();
             //是子目录->添加根目录
             if (!string.IsNullOrEmpty(pidRoot))
             {
-                var root = se.read("up6_files", "f_id,f_nameLoc,f_pid,f_pidRoot", new SqlParam[] { new SqlParam("f_id", pidRoot) });
-                psort.Insert(0, root);
+                var cur = se.read("up6_files", "f_id,f_nameLoc,f_pid,f_pidRoot", new SqlParam[] { new SqlParam("f_id", pidRoot) });
+                psort.Insert(0, cur);
             }//是根目录->添加根目录
             else if (!string.IsNullOrEmpty(id) && string.IsNullOrEmpty(pidRoot))
             {

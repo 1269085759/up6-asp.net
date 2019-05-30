@@ -620,6 +620,64 @@ namespace up6.filemgr.app
             return JToken.FromObject(a);
         }
 
+        public JToken selectUnion(string[] tables, string fields, string where)
+        {
+            this.m_table = this.table(tables[0]);
+            var field_all = this.m_table.SelectToken("fields");
+            var field_sel = this.selFields(fields, field_all);
+
+            List<string> sels = new List<string>();
+            SqlBuilder sb = new SqlBuilder();
+            foreach(var t in tables)
+            {
+                sels.Add(sb.select(t, fields, where));
+            }
+            var sql = string.Join(" union ", sels.ToArray());
+
+            DbHelper db = new DbHelper();
+            var cmd = db.GetCommand(sql);
+            var r = db.ExecuteReader(cmd);
+
+            JArray arr = new JArray();
+            while (r.Read())
+            {
+                var o = this.m_cmdRd.read(r, field_sel);
+                arr.Add(o);
+            }
+            r.Close();
+            return JToken.FromObject(arr);
+        }
+
+        public JToken selectUnion(string[] tables, string fields, SqlParam[] where)
+        {
+            this.m_table = this.table(tables[0]);
+            var field_all = this.m_table.SelectToken("fields");
+            var field_sel = this.selFields(fields, field_all);
+            var field_cdt = this.selFields(where, field_all);
+
+            List<string> sels = new List<string>();
+            SqlBuilder sb = new SqlBuilder();
+            foreach (var t in tables)
+            {
+                sels.Add(sb.select(t, fields, this.toSqlCondition(where,"and")) );
+            }
+            var sql = string.Join(" union ", sels.ToArray());
+
+            DbHelper db = new DbHelper();
+            var cmd = db.GetCommand(sql);
+            this.m_parSetter.setVal(cmd, field_cdt, where);
+            var r = db.ExecuteReader(cmd);
+
+            JArray arr = new JArray();
+            while (r.Read())
+            {
+                var o = this.m_cmdRd.read(r, field_sel);
+                arr.Add(o);
+            }
+            r.Close();
+            return JToken.FromObject(arr);
+        }
+
         /// <summary>
         /// 批量获取字段结构信息
         /// </summary>
