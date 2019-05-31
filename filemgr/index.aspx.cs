@@ -67,7 +67,7 @@ namespace up6.filemgr
         {
             SqlExec se = new SqlExec();
             var files = se.exec("up6_files"
-                , "select f_id as id,f_nameLoc as nameLoc,f_pathLoc as pathLoc,f_sizeLoc as sizeLoc,f_lenSvr as lenSvr,f_perSvr as perSvr,f_fdTask as fdTask from up6_files where f_complete=0 and f_fdChild=0 and f_deleted=0"
+                , "select f_id ,f_nameLoc ,f_pathLoc ,f_sizeLoc ,f_lenSvr ,f_perSvr ,f_fdTask from up6_files where f_complete=0 and f_deleted=0"
                 , "f_id,f_nameLoc,f_pathLoc,f_sizeLoc,f_lenSvr,f_perSvr,f_fdTask"
                 , "id,nameLoc,pathLoc,sizeLoc,lenSvr,perSvr,fdTask");
             PageTool.to_content(files);

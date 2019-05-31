@@ -16,6 +16,8 @@ Install-Package Microsoft.Experimental.IO
 更新记录：
 2019-05-31
 	修复未上传完列表加载逻辑字段名称未转换的问题
+	  修复未上传完列表数据为空的问题,f_fdChild=1条件导致
+	  index.aspx.cs
 2019-05-30
 	完善路径生成逻辑
 	  DbFolder.build_path_by_id
