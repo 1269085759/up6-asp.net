@@ -120,7 +120,15 @@ namespace up6.filemgr.app
 
             while (r.Read())
             {
-                var o = this.m_cmdRd.read(r, field_sel);
+                var o = new JObject();
+                int i = 0;
+                foreach (var f in field_sel)
+                {
+                    var name = names[i];
+                    var type = f["type"].ToString().ToLower();
+                    o[name] = this.m_cmdRd[type](r, i);
+                    ++i;
+                }
                 a.Add(o);
             }
             r.Close();
