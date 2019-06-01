@@ -254,9 +254,9 @@ function HttpUploaderMgr()
 
     //删除文件对象
     this.del_file = function (id) {
-        this.filesMap = $.grep(this.filesMap, function (i, n) {
+        $.grep(this.filesMap, function (i, n) {
             return i == id;
-        },true);
+        }, true);
     };
 	this.set_config = function (v) { jQuery.extend(this.Config, v);};
 	this.open_files = function (json)
@@ -284,7 +284,7 @@ function HttpUploaderMgr()
 	    }
 	};
 	this.post_process = function (json)
-	{
+    {
 	    var p = this.filesMap[json.id];
 	    p.post_process(json);
 	};
@@ -794,34 +794,6 @@ function HttpUploaderMgr()
 		ui.size.text(fileLoc.sizeLoc);
 		ui.msg.text("");
 		ui.percent.text("(0%)");
-		ui.btn.cancel.click(function()
-		{
-			upFile.stop();
-			upFile.remove();
-			_this.PostFirst();//
-		});
-		ui.btn.post.click(function ()
-		{
-		    ui.btn.post.hide();
-		    ui.btn.del.hide();
-		    ui.btn.cancel.hide();
-		    ui.btn.stop.show();
-		    if (!_this.IsPostQueueFull())
-		    {
-		        upFile.post();
-		    }
-		    else
-		    {
-		        upFile.Ready();
-		        //添加到队列
-                _this.AppendQueue(fileLoc.id);
-		    }
-		});
-		ui.btn.stop.click(function ()
-		{
-		    upFile.stop();
-		});
-		ui.btn.del.click(function () { upFile.remove(); });
 		
 		upFile.Ready(); //准备
 		return upFile;
