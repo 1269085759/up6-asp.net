@@ -253,7 +253,6 @@
     <Content Include="filemgr\res\imgs\32\file.png" />
     <Content Include="filemgr\res\imgs\32\folder.png" />
     <Content Include="filemgr\test.aspx" />
-    <Content Include="filemgr\up6\jquery-1.4.min.js" />
     <Content Include="filemgr\up6\json2.min.js" />
     <Content Include="filemgr\res\imgs\32\post.png" />
     <Content Include="filemgr\up6\setup.htm" />
