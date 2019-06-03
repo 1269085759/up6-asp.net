@@ -59,7 +59,7 @@ function HttpUploaderMgr()
         , "ProcSaveTm"      : 60//定时保存进度。单位：秒，默认：1分钟
         , "AutoConnect"     : {opened:false,time:3000}//启动错误自动重传
 		//文件夹操作相关
-		, "UrlFdCreate"		: page.path.root + "filemgr/fd_create.aspx?op=fd_create"
+		, "UrlFdCreate"		: page.path.root + "filemgr/index.aspx?op=fd_create"
 		, "UrlFdComplete"	: page.path.root + "db/fd_complete.aspx"
 		, "UrlFdDel"	    : page.path.root + "db/fd_del.aspx"
 		//文件操作相关
