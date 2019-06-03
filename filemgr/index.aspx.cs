@@ -1,5 +1,12 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
+using System.IO;
+using System.Web;
+using up6.db.biz;
+using up6.db.database;
+using up6.db.model;
+using up6.db.utils;
 using up6.filemgr.app;
 
 namespace up6.filemgr
@@ -20,6 +27,180 @@ namespace up6.filemgr
             else if (op == "uncomp") this.load_uncomplete();
             else if (op == "uncmp-down") this.load_uncmp_down();
             else if (op == "tree") this.load_tree();
+            else if (op == "f_create") this.f_create();
+            else if (op == "fd_create") this.fd_create();
+        }
+
+        void fd_create() {
+
+            string id       = Request.QueryString["id"];
+            string pid      = Request.QueryString["pid"];
+            string pidRoot  = Request.QueryString["pidRoot"];
+            string uid      = Request.QueryString["uid"];
+            string lenLoc   = Request.QueryString["lenLoc"];
+            string sizeLoc  = Request.QueryString["sizeLoc"];
+            string pathLoc  = HttpUtility.UrlDecode(Request.QueryString["pathLoc"]);
+            string callback = Request.QueryString["callback"];//jsonp参数
+            if (string.IsNullOrEmpty(pid)) pid = string.Empty;
+            if (string.IsNullOrEmpty(pidRoot)) pidRoot = pid;
+            pid = pid.Trim();
+            pidRoot = pidRoot.Trim();
+
+            if (string.IsNullOrEmpty(id)
+                || string.IsNullOrEmpty(uid)
+                || string.IsNullOrEmpty(pathLoc)
+                )
+            {
+                Response.Write(callback + "({\"value\":null})");
+                return;
+            }
+
+            FileInf fileSvr = new FileInf();
+            fileSvr.id = id;
+            fileSvr.pid = pid;
+            fileSvr.pidRoot = pidRoot;
+            fileSvr.fdChild = false;
+            fileSvr.fdTask = true;
+            fileSvr.uid = int.Parse(uid);//将当前文件UID设置为当前用户UID
+            fileSvr.nameLoc = Path.GetFileName(pathLoc);
+            fileSvr.pathLoc = pathLoc;
+            fileSvr.lenLoc = Convert.ToInt64(lenLoc);
+            fileSvr.sizeLoc = sizeLoc;
+            fileSvr.deleted = false;
+            fileSvr.nameSvr = fileSvr.nameLoc;
+
+            //检查同名目录
+            DbFolder df = new DbFolder();
+            if (df.exist_same_folder(fileSvr.nameLoc, pid))
+            {
+                var o = new JObject { { "value", null }, { "ret", false }, { "code", "102" } };
+                var js = callback + string.Format("({0})", JsonConvert.SerializeObject(o));
+                this.toContent(js);
+                return;
+            }
+
+            //生成存储路径
+            PathBuilderUuid pb = new PathBuilderUuid();
+            fileSvr.pathSvr = pb.genFolder(ref fileSvr);
+            fileSvr.pathSvr = fileSvr.pathSvr.Replace("\\", "/");
+            if (!Directory.Exists(fileSvr.pathSvr)) Directory.CreateDirectory(fileSvr.pathSvr);
+
+            //添加成根目录
+            if (string.IsNullOrEmpty(pid))
+            {
+                DBFile db = new DBFile();
+                db.Add(ref fileSvr);
+            }//添加成子目录
+            else
+            {
+                SqlExec se = new SqlExec();
+                se.insert("up6_folders", new SqlParam[] {
+                     new SqlParam("f_id",fileSvr.id)
+                    ,new SqlParam("f_nameLoc",fileSvr.nameLoc)
+                    ,new SqlParam("f_pid",fileSvr.pid)
+                    ,new SqlParam("f_pidRoot",fileSvr.pidRoot)
+                    ,new SqlParam("f_lenLoc",fileSvr.lenLoc)
+                    ,new SqlParam("f_sizeLoc",fileSvr.sizeLoc)
+                    ,new SqlParam("f_pathLoc",fileSvr.pathLoc)
+                    ,new SqlParam("f_pathSvr",fileSvr.pathSvr)
+                    ,new SqlParam("f_uid",fileSvr.uid)
+                });
+            }
+
+            up6_biz_event.folder_create(fileSvr);
+
+            string json = JsonConvert.SerializeObject(fileSvr);
+            json = HttpUtility.UrlEncode(json);
+            json = json.Replace("+", "%20");
+            var jo = new JObject { { "value", json }, { "ret", true } };
+            json = callback + string.Format("({0})", JsonConvert.SerializeObject(jo));
+            this.toContent(json);
+        }
+
+        void f_create() {
+
+            string pid = Request.QueryString["pid"];
+            string pidRoot = Request.QueryString["pidRoot"];
+            string md5 = Request.QueryString["md5"];
+            string id = Request.QueryString["id"];
+            string uid = Request.QueryString["uid"];
+            string lenLoc = Request.QueryString["lenLoc"];
+            string sizeLoc = Request.QueryString["sizeLoc"];
+            string callback = Request.QueryString["callback"];//jsonp参数
+            //客户端使用的是encodeURIComponent编码，
+            string pathLoc = HttpUtility.UrlDecode(Request.QueryString["pathLoc"]);//utf-8解码
+
+            if (string.IsNullOrEmpty(pid)) pid = string.Empty;
+            if (string.IsNullOrEmpty(pidRoot)) pidRoot = pid;
+
+            //参数为空
+            if (string.IsNullOrEmpty(md5)
+                || string.IsNullOrEmpty(uid)
+                || string.IsNullOrEmpty(sizeLoc))
+            {
+                Response.Write(callback + "({\"value\":null})");
+                return;
+            }
+
+            FileInf fileSvr = new FileInf();
+            fileSvr.fdChild = false;
+            fileSvr.uid = int.Parse(uid);//将当前文件UID设置为当前用户UID
+            fileSvr.id = id;
+            fileSvr.pid = pid;
+            fileSvr.fdChild = !string.IsNullOrEmpty(pid);
+            fileSvr.pidRoot = pidRoot;
+            fileSvr.nameLoc = Path.GetFileName(pathLoc);
+            fileSvr.pathLoc = pathLoc;
+            fileSvr.lenLoc = Convert.ToInt64(lenLoc);
+            fileSvr.sizeLoc = sizeLoc;
+            fileSvr.deleted = false;
+            fileSvr.md5 = md5;
+            fileSvr.nameSvr = fileSvr.nameLoc;
+
+            //同名文件检测
+            DbFolder df = new DbFolder();
+            if (df.exist_same_file(fileSvr.nameLoc, pid))
+            {
+                var data = callback + "({'value':'','ret':false,'code':'101'})";
+                this.toContent(data);
+                return;
+            }
+
+            //所有单个文件均以uuid/file方式存储
+            PathBuilderUuid pb = new PathBuilderUuid();
+            fileSvr.pathSvr = pb.genFile(fileSvr.uid, ref fileSvr);
+            fileSvr.pathSvr = fileSvr.pathSvr.Replace("\\", "/");
+
+            //数据库存在相同文件
+            DBFile db = new DBFile();
+            FileInf fileExist = new FileInf();
+            if (db.exist_file(md5, ref fileExist))
+            {
+                fileSvr.nameSvr = fileExist.nameSvr;
+                fileSvr.pathSvr = fileExist.pathSvr;
+                fileSvr.perSvr = fileExist.perSvr;
+                fileSvr.lenSvr = fileExist.lenSvr;
+                fileSvr.complete = fileExist.complete;
+                db.Add(ref fileSvr);
+
+                //触发事件
+                up6_biz_event.file_create_same(fileSvr);
+            }//数据库不存在相同文件
+            else
+            {
+                db.Add(ref fileSvr);
+                //触发事件
+                up6_biz_event.file_create(fileSvr);
+
+                //2.0创建器。仅创建一个空白文件
+                FileBlockWriter fr = new FileBlockWriter();
+                fr.make(fileSvr.pathSvr, fileSvr.lenLoc);
+            }
+            string jv = JsonConvert.SerializeObject(fileSvr);
+            jv = HttpUtility.UrlEncode(jv);
+            jv = jv.Replace("+", "%20");
+            string json = callback + "({\"value\":\"" + jv + "\",\"ret\":true})";//返回jsonp格式数据。
+            this.toContent(json);
         }
 
         void load_tree() {

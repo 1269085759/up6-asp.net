@@ -6,8 +6,6 @@ using up6.db.biz;
 using up6.db.model;
 using up6.db.utils;
 using up6.db.database;
-using up6.filemgr.app;
-using Newtonsoft.Json.Linq;
 
 namespace up6.db
 {
@@ -58,15 +56,6 @@ namespace up6.db
             fileSvr.deleted = false;
             fileSvr.md5 = md5;
             fileSvr.nameSvr = fileSvr.nameLoc;
-
-            //同名文件检测
-            DbFolder df = new DbFolder();
-            if (df.exist_same_file(fileSvr.nameLoc,pid))
-            {
-                var data = callback + "({'value':'','ret':false,'code':'101'})";
-                PageTool.to_content(data);
-                return;
-            }
 
             //所有单个文件均以uuid/file方式存储
             PathBuilderUuid pb = new PathBuilderUuid();
