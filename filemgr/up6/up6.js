@@ -11,21 +11,6 @@
         2019-03-18 完善文件夹粘帖功能，完善文件夹初始化逻辑。
 */
 
-function getRoot()
-{
-    for (var i = 0, l = document.scripts.length; i < l; ++i)
-    {
-        var src = document.scripts[i].src;
-        if (src.lastIndexOf("/up6.js")!=-1)
-        {
-            src = src.replace("/up6.js", "/");
-            return src;
-        }
-    }
-}
-var root = getRoot();
-//jQuery.getScript(root+"up6.edge.js", function (data, status, xhr) { console.log("加载完毕");});
-
 function debugMsg(m) { $("#msg").append(m); }
 function HttpUploaderMgr()
 {
