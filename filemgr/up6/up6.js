@@ -239,7 +239,7 @@ function HttpUploaderMgr()
 
     //删除文件对象
     this.del_file = function (id) {
-        this.filesMap[id].pathLoc = "";
+    	this.filesMap[id].fileSvr.pathLoc="";
     };
 	this.set_config = function (v) { jQuery.extend(this.Config, v);};
 	this.open_files = function (json)
