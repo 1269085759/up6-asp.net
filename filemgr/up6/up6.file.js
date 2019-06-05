@@ -313,7 +313,7 @@ function FileUploader(fileLoc, mgr)
     };
     this.post_file = function ()
     {
-        this.ui.btn.cancel.hide();
+        $.each(this.ui.btn, function (i, n) { n.hide();});
         this.ui.btn.stop.show();
         this.State = this.Config.state.Posting;//
         this.app.postFile({ id: this.fileSvr.id, pathLoc: this.fileSvr.pathLoc, pathSvr:this.fileSvr.pathSvr,lenSvr: this.fileSvr.lenSvr, fields: this.fields });
