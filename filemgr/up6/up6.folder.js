@@ -50,9 +50,9 @@ function FolderUploader(fdLoc, mgr)
             }
         });
         this.ui.btn.stop.click(function () {
-            fdTask.stop();
+            _this.stop();
         });
-        this.ui.btn.del.click(function () { fdTask.remove(); });
+        this.ui.btn.del.click(function () { _this.remove(); });
     };
     this.svr_create = function (fdSvr)
     {
