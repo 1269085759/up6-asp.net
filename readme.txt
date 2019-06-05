@@ -14,6 +14,10 @@ Install-Package Microsoft.Experimental.IO
 
 ========================================================================
 更新记录：
+2019-06-05
+	文件管理器文件列表增加下载按钮
+	  filemgr/index.aspx
+	  filemgr/data/index.js
 2019-06-03
 	精简代码
 	完善删除文件逻辑

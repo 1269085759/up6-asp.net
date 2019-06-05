@@ -659,6 +659,30 @@
                     _this.open_tree_node(obj.data);
                 }
             }
+            , table_down_click: function (obj, table) {
+                if (_this.data.down2.Config["Folder"] == "") {
+                    _this.data.down2.open_folder();
+                }
+                else {
+                    var f = obj.data;
+                    _this.open_down_panel();
+                    if (_this.data.down2.exist_url(f.f_nameLoc)) {
+                        layer.alert('相同下载项已存在：' + f.f_nameLoc, { icon: 2 });
+                        return;
+                    }
+                    //文件夹
+                    if (f.f_fdTask) {
+                        var dt = { f_id: f.f_id, lenSvr: f.f_lenLoc, pathSvr: f.f_pathSvr, nameLoc: f.f_nameLoc, fileUrl: _this.data.down2.Config["UrlDown"] };
+                        _this.data.down2.app.addFolder(dt);
+                    }
+                    else {
+                        //下载数据转换：lenSvr,pathSvr,nameLoc,fileUrl
+                        var dt = { f_id: f.f_id, lenSvr: f.f_lenLoc, pathSvr: f.f_pathSvr, nameLoc: f.f_nameLoc, fileUrl: _this.data.down2.Config["UrlDown"] };
+                        _this.data.down2.app.addFile(dt);
+
+                    }                    
+                }
+            }
             , path_changed: function (data) {
                 _this.pathCur = data;
                 $.ajax({
@@ -682,6 +706,7 @@
             , "delete": function (obj, table) { _this.attr.event.table_del(obj, table); }
             , "rename": function (obj, table) { _this.attr.event.table_rename(obj, table); }
             , "file": function (obj, table) { _this.attr.event.table_file_click(obj, table); }
+            , "down": function (obj, table) { _this.attr.event.table_down_click(obj, table); }
         }
         
         , search: function (sql) {
