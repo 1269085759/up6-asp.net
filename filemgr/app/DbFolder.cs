@@ -250,6 +250,7 @@ namespace up6.filemgr.app
         {
             SqlWhereMerge swm = new SqlWhereMerge();
             swm.equal("f_nameLoc", name.Trim());
+            swm.equal("f_deleted", 0);
             swm.equal("LTRIM (f_pid)", pid.Trim());
 
             string sql = string.Format("select f_id from up6_files where {0} " +
