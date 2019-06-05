@@ -38,7 +38,7 @@ function FolderUploader(fdLoc, mgr)
             _this.ui.btn.cancel.hide();
             _this.ui.btn.stop.show();
 
-            if (!_this.IsPostQueueFull()) {
+            if (!_this.manager.IsPostQueueFull()) {
                 _this.post();
             }
             else {
@@ -46,7 +46,7 @@ function FolderUploader(fdLoc, mgr)
                 _this.State = this.Config.state.Ready;
                 $.each(_this.ui.btn, function (i, n) { n.hide(); });
                 _this.ui.btn.del.show();
-                _this.AppendQueue(_this.fileSvr.id);
+                _this.manager.AppendQueue(_this.fileSvr.id);
             }
         });
         this.ui.btn.stop.click(function () {
