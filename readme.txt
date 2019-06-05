@@ -15,6 +15,7 @@ Install-Package Microsoft.Experimental.IO
 ========================================================================
 更新记录：
 2019-06-05
+	文件管理器文件列表取消文件夹大小显示
 	文件管理器文件列表增加下载按钮
 	  filemgr/index.aspx
 	  filemgr/data/index.js

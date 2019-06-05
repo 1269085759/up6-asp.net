@@ -95,7 +95,9 @@
                                         return str;
                                     }
                                 }
-                                , { field: 'f_sizeLoc', title: '大小', width: 80, sort: false, }
+                                , {
+                                    field: 'f_sizeLoc', title: '大小', width: 80, sort: false, templet: function (d) { if (d.f_fdTask) return ""; else return d.f_sizeLoc;}
+                                }
                                 , { field: 'f_time', title: '上传时间', width: 150, templet: function (d) { return moment(d.f_time).format('YYYY-MM-DD HH:mm:ss') } }
                                 , {
                                     title: '编辑', templet: function (d) {
