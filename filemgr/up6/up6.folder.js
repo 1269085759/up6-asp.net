@@ -43,7 +43,7 @@ function FolderUploader(fdLoc, mgr)
             }
             else {
                 _this.ui.msg.text("正在上传队列中等待...");
-                _this.State = this.Config.state.Ready;
+                _this.State = _this.Config.state.Ready;
                 $.each(_this.ui.btn, function (i, n) { n.hide(); });
                 _this.ui.btn.del.show();
                 _this.manager.AppendQueue(_this.fileSvr.id);
