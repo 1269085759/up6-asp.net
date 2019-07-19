@@ -68,6 +68,18 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="db\f_process.aspx" />
+    <Content Include="debug\big_file.aspx" />
+    <Content Include="debug\check_config.aspx" />
+    <Content Include="debug\complete.html" />
+    <Content Include="debug\create.html" />
+    <Content Include="debug\del.html" />
+    <Content Include="debug\linux.html" />
+    <Content Include="debug\list.html" />
+    <Content Include="debug\post.html" />
+    <Content Include="debug\process.html" />
+    <Content Include="debug\setup.html" />
+    <Content Include="debug\test.gif" />
+    <Content Include="debug\test.htm" />
     <Content Include="down2\db\clear.aspx" />
     <Content Include="down2\db\fd_data.aspx" />
     <Content Include="down2\db\f_list.aspx" />
@@ -395,6 +407,18 @@
     <Compile Include="db\utils\Md5Tool.cs" />
     <Compile Include="db\utils\PathTool.cs" />
     <Compile Include="db\XDebug.cs" />
+    <Compile Include="debug\big_file.aspx.cs">
+      <DependentUpon>big_file.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="debug\big_file.aspx.designer.cs">
+      <DependentUpon>big_file.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="debug\check_config.aspx.cs">
+      <DependentUpon>check_config.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="debug\check_config.aspx.designer.cs">
+      <DependentUpon>check_config.aspx</DependentUpon>
+    </Compile>
     <Compile Include="down2\db\clear.aspx.cs">
       <DependentUpon>clear.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
