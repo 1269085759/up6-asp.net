@@ -91,6 +91,7 @@ function HttpUploaderMgr()
         , edge: {protocol:"up6",port:9100,visible:false}
         , exe: { path: "http://www.ncmem.com/download/up6.3/up6.exe" }
         , mac: { path: "http://res2.ncmem.com/download/up6/pack/6.5.17/up6.pkg" }
+        , linux: { path: "http://res2.ncmem.com/download/up6/pack/6.5.17/setup.sh" }
 		, "SetupPath": "http://localhost:4955/demoAccess/js/setup.htm"
         , "Fields": {"uname": "test","upass": "test","uid":"0"}
         , ui: {
@@ -621,6 +622,13 @@ function HttpUploaderMgr()
             this.app.postMessage = this.app.postMessageEdge;
             this.edgeApp.run = this.edgeApp.runChr;
             this.Config.exe.path = this.Config.mac.path;
+        }
+        else if (window.navigator.platform == "Linux x86_64")
+        {
+            this.edge = true;
+            this.app.postMessage = this.app.postMessageEdge;
+            this.edgeApp.run = this.edgeApp.runChr;
+            this.Config.exe.path = this.Config.linux.path;
         }
 	    else if (this.firefox)
 	    {
