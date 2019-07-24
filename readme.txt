@@ -18,9 +18,10 @@ Install-Package Microsoft.Experimental.IO
 	增加对linux平台的支持
 	down2增加对mac,linux的支持
 	up6增加linux控件下载链接,增加对linux的识别
-	up6文件管理器启动协议更新
 	down2启动协议更新
 	down2启动时间改为3秒
+	up6文件管理器启动协议更新
+	up6文件管理器增加对mac,linux的支持
 2019-07-19
 	edge控件连接频率改为3秒
 	edge启动协议支持macOS-chrome
