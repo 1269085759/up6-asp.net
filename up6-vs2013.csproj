@@ -409,12 +409,14 @@
     <Compile Include="db\XDebug.cs" />
     <Compile Include="debug\big_file.aspx.cs">
       <DependentUpon>big_file.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="debug\big_file.aspx.designer.cs">
       <DependentUpon>big_file.aspx</DependentUpon>
     </Compile>
     <Compile Include="debug\check_config.aspx.cs">
       <DependentUpon>check_config.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="debug\check_config.aspx.designer.cs">
       <DependentUpon>check_config.aspx</DependentUpon>
