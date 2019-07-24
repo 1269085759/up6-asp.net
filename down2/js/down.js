@@ -55,6 +55,8 @@ function DownloaderMgr()
 	    //Chrome 45
         , chrome45: { name: "com.xproer.down2", path: "http://www.ncmem.com/download/down2/2.4/down2.nat.crx" }
         , exe: { path: "http://www.ncmem.com/download/down2/2.4/down2.exe" }
+        , mac: { path: "http://res2.ncmem.com/download/down2/pack/2.4.19/down2.pkg" }
+        , linux: { path: "http://res2.ncmem.com/download/down2/pack/2.4.19/down2.sh" }
         , edge: {protocol:"down2",port:9700,visible:false}
         , "Fields": { "uname": "test", "upass": "test", "uid": "0" }
         , errCode: {
@@ -488,7 +490,19 @@ function DownloaderMgr()
                 this.app.postMessage = this.app.postMessageEdge;
                 this.edgeApp.run = this.edgeApp.runChr;
             }
-	    }
+        }//macOS
+        else if (window.navigator.platform == "MacIntel") {
+            this.edge = true;
+            this.app.postMessage = this.app.postMessageEdge;
+            this.edgeApp.run = this.edgeApp.runChr;
+            this.Config.exe.path = this.Config.mac.path;
+        }//linux
+        else if (window.navigator.platform == "Linux x86_64") {
+            this.edge = true;
+            this.app.postMessage = this.app.postMessageEdge;
+            this.edgeApp.run = this.edgeApp.runChr;
+            this.Config.exe.path = this.Config.linux.path;
+        }
 	    else if (this.chrome)
 	    {
 	        this.app.check = this.app.checkFF;
