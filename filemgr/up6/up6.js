@@ -375,8 +375,20 @@ function HttpUploaderMgr()
 	    if (window.navigator.platform == "Win64")
 	    {
 	        jQuery.extend(this.Config.ie, this.Config.ie64);
-	    }
-	    if (this.firefox)
+        }//macOS
+        else if (window.navigator.platform == "MacIntel") {
+            this.edge = true;
+            this.app.postMessage = this.app.postMessageEdge;
+            this.edgeApp.run = this.edgeApp.runChr;
+            this.Config.exe.path = this.Config.mac.path;
+        }//linux
+        else if (window.navigator.platform == "Linux x86_64") {
+            this.edge = true;
+            this.app.postMessage = this.app.postMessageEdge;
+            this.edgeApp.run = this.edgeApp.runChr;
+            this.Config.exe.path = this.Config.linux.path;
+        }
+	    else if (this.firefox)
 	    {
 	        if (!this.app.checkFF() || parseInt(this.ffVer[1]) >= 50)//仍然支持npapi
             {
@@ -384,18 +396,6 @@ function HttpUploaderMgr()
                 this.app.postMessage = this.app.postMessageEdge;
                 this.edgeApp.run = this.edgeApp.runChr;
             }
-        }//macOS
-        else if (window.navigator.platform == "MacIntel") {
-            this.edge = true;
-            this.app.postMessage = this.app.postMessageEdge;
-            this.edgeApp.run = this.edgeApp.runChr;
-            this.Config.exe.path = this.Config.mac.path;
-        }
-        else if (window.navigator.platform == "Linux x86_64") {
-            this.edge = true;
-            this.app.postMessage = this.app.postMessageEdge;
-            this.edgeApp.run = this.edgeApp.runChr;
-            this.Config.exe.path = this.Config.linux.path;
         }
 	    else if (this.chrome)
 	    {
