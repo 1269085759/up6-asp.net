@@ -1,9 +1,9 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="index2.aspx.cs" Inherits="up6.single_panel" %>
+ï»¿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="index2.aspx.cs" Inherits="up6.single_panel" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
-    <title>up6-µ¥Ãæ°åÑİÊ¾Ò³Ãæ</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>up6-å•é¢æ¿æ¼”ç¤ºé¡µé¢</title>
     <link href="js/single-panel/up6.css" type="text/css" rel="Stylesheet" charset="gb2312"/>
     <script type="text/javascript" src="js/jquery-1.4.min.js"></script>
     <script type="text/javascript" src="js/json2.min.js" charset="utf-8"></script>
@@ -17,8 +17,8 @@
         var cbMgr = new HttpUploaderMgr();
         cbMgr.event.md5Complete = function (obj, md5) { /*alert(md5);*/ };
         cbMgr.event.fileComplete = function (obj) { /*alert(obj.fileSvr.pathSvr);*/ };
-        cbMgr.event.queueComplete = function () { $(document.body).append("¶ÓÁĞÍê³É<br/>"); }
-        cbMgr.event.addFdError = function (jv) { alert("±¾µØÂ·¾¶²»´æÔÚ£º" + jv.path); };
+        cbMgr.event.queueComplete = function () { $(document.body).append("é˜Ÿåˆ—å®Œæˆ<br/>"); }
+        cbMgr.event.addFdError = function (jv) { alert("æœ¬åœ°è·¯å¾„ä¸å­˜åœ¨ï¼š" + jv.path); };
         cbMgr.event.scanComplete = function (obj) { /*alert(obj.folderSvr.pathLoc);*/ };
         cbMgr.Config["Cookie"] = 'ASP.NET_SessionId=<%=Session.SessionID%>';
         cbMgr.Config.Fields["uid"] = 0;
@@ -26,12 +26,12 @@
         $(function ()
         {
             cbMgr.load_to("FilePanel");
-            //ÉÏ´«Ö¸¶¨ÎÄ¼ş
+            //ä¸Šä¼ æŒ‡å®šæ–‡ä»¶
             $("#btnUpF").click(function () {
                 var path = $("#filePath").val();
                 cbMgr.app.addFile({ pathLoc: path });
             });
-            //ÉÏ´«Ö¸¶¨Ä¿Â¼
+            //ä¸Šä¼ æŒ‡å®šç›®å½•
             $("#btnUpFd").click(function () {
                 var path = $("#folderPath").val();
                 cbMgr.app.addFolder({ pathLoc: path });
@@ -40,18 +40,21 @@
     </script>
 </head>
 <body>
-    <p>up6µ¥Ãæ°åÑİÊ¾Ò³Ãæ</p>
-    <p>µ±´ò¿ªÒ³ÃæÊ±×Ô¶¯¼ÓÔØÉÏ´ÎÎ´ÉÏ´«ÍêµÄÎÄ¼şÁĞ±í</p>
-    <p><a href="db/clear.aspx" target="_blank">Çå¿ÕÊı¾İ¿â</a></p>
-    <p><a href="down2/index.htm" target="_blank">´ò¿ªÏÂÔØÒ³Ãæ</a></p>
-    <p><a href="index-single.htm" target="_blank">µ¥ÎÄ¼şÉÏ´«ÑİÊ¾</a></p>
+    <p>up6å•é¢æ¿æ¼”ç¤ºé¡µé¢</p>
+    <p>å½“æ‰“å¼€é¡µé¢æ—¶è‡ªåŠ¨åŠ è½½ä¸Šæ¬¡æœªä¸Šä¼ å®Œçš„æ–‡ä»¶åˆ—è¡¨</p>
+    <p><a href="db/clear.aspx" target="_blank">æ¸…ç©ºæ•°æ®åº“</a></p>
+    <p><a href="filemgr/index.aspx" target="_blank">æ–‡ä»¶ç®¡ç†å™¨æ¼”ç¤º</a></p>
+    <p><a href="index2.aspx" target="_blank">å•é¢æ¿æ¼”ç¤º</a></p>
+    <p><a href="down2/index.htm" target="_blank">æ‰“å¼€ä¸‹è½½é¡µé¢</a></p>
+    <p><a href="index-single.htm" target="_blank">å•æ–‡ä»¶ä¸Šä¼ æ¼”ç¤º</a></p>
+    <p><a href="vue.aspx" target="_blank">vueæ¼”ç¤º</a></p>
     <p>
-        ÎÄ¼şÂ·¾¶£º<input id="filePath" type="text" size="50" value="D:\\360safe-inst.exe" />&nbsp;
-        <input id="btnUpF" type="button" value="ÉÏ´«±¾µØÎÄ¼ş" />
+        æ–‡ä»¶è·¯å¾„ï¼š<input id="filePath" type="text" size="50" value="D:\\360safe-inst.exe" />&nbsp;
+        <input id="btnUpF" type="button" value="ä¸Šä¼ æœ¬åœ°æ–‡ä»¶" />
     </p>
     <p>
-        Ä¿Â¼Â·¾¶£º<input id="folderPath" type="text" size="50" value="C:\\Users\\Administrator\\Desktop\\test" />&nbsp;
-        <input id="btnUpFd" type="button" value="ÉÏ´«±¾µØÄ¿Â¼" />
+        ç›®å½•è·¯å¾„ï¼š<input id="folderPath" type="text" size="50" value="C:\\Users\\Administrator\\Desktop\\test" />&nbsp;
+        <input id="btnUpFd" type="button" value="ä¸Šä¼ æœ¬åœ°ç›®å½•" />
     </p>
 	<div id="FilePanel"></div>
     <div id="msg"></div>

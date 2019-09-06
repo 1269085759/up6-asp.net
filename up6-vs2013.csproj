@@ -312,6 +312,7 @@
     <Content Include="js\up6.file.js" />
     <Content Include="js\up6.folder.js" />
     <Content Include="js\upload.png" />
+    <Content Include="js\vue.min.js" />
     <Content Include="readme.txt" />
     <Content Include="index2.aspx" />
     <Content Include="sql.down\down_files.sql" />
@@ -319,7 +320,7 @@
     <Content Include="js\setup.htm" />
     <Content Include="sql\spPager.sql" />
     <Content Include="sql\up6_folders.sql" />
-    <Content Include="vue\index.aspx" />
+    <Content Include="vue.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -537,12 +538,12 @@
     <Compile Include="index2.aspx.designer.cs">
       <DependentUpon>index2.aspx</DependentUpon>
     </Compile>
-    <Compile Include="vue\index.aspx.cs">
-      <DependentUpon>index.aspx</DependentUpon>
+    <Compile Include="vue.aspx.cs">
+      <DependentUpon>vue.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="vue\index.aspx.designer.cs">
-      <DependentUpon>index.aspx</DependentUpon>
+    <Compile Include="vue.aspx.designer.cs">
+      <DependentUpon>vue.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
