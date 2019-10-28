@@ -34,6 +34,7 @@ namespace up6.db
             if (string.Compare(complete, "true", true) == 0)
             {
                 thumb = Request.Files.Get("thumb");
+                if (thumb == null) return;
                 //保存缩略图
                 FileBlockWriter res = new FileBlockWriter();
                 string thumbPath = pathSvr + ".thumb.png";
