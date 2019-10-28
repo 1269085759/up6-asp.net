@@ -20,7 +20,7 @@ namespace up6.filemgr.app
         /// </summary>
         public ConfigReader()
         {
-            string file = HttpContext.Current.Server.MapPath("/filemgr/data/config.json");
+            string file = HttpContext.Current.Server.MapPath("/filemgr/data/config/config.json");
             this.m_files = JToken.Parse(File.ReadAllText(file));
         }
 
@@ -48,6 +48,13 @@ namespace up6.filemgr.app
             return o;
         }
 
+        public string data(string name)
+        {
+            string file = (string)this.m_files.SelectToken(name);
+            file = HttpContext.Current.Server.MapPath(file);
+            return File.ReadAllText(file);
+        }
+
         public JToken to_json(string name)
         {
             string file = (string)this.m_files.SelectToken(name);
@@ -61,14 +68,6 @@ namespace up6.filemgr.app
             string file = (string)this.m_files.SelectToken(name);
             file = HttpContext.Current.Server.MapPath(file);
             return File.ReadAllText(file);
-        }
-
-        public Dictionary<string,object> read()
-        {
-            string ps = HttpContext.Current.Server.MapPath("/data/config/AppConfig.json");
-            string data = File.ReadAllText(ps);
-            var arr = JsonConvert.DeserializeObject<Dictionary<string,object>>(data);
-            return arr;
         }
 
         /// <summary>

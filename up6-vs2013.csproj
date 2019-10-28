@@ -68,7 +68,18 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="db\f_process.aspx" />
-    <Content Include="db\sql.aspx" />
+    <Content Include="debug\big_file.aspx" />
+    <Content Include="debug\check_config.aspx" />
+    <Content Include="debug\complete.html" />
+    <Content Include="debug\create.html" />
+    <Content Include="debug\del.html" />
+    <Content Include="debug\linux.html" />
+    <Content Include="debug\list.html" />
+    <Content Include="debug\post.html" />
+    <Content Include="debug\process.html" />
+    <Content Include="debug\setup.html" />
+    <Content Include="debug\test.gif" />
+    <Content Include="debug\test.htm" />
     <Content Include="down2\db\clear.aspx" />
     <Content Include="down2\db\fd_data.aspx" />
     <Content Include="down2\db\f_list.aspx" />
@@ -89,11 +100,10 @@
     <Content Include="down2\js\folder.png" />
     <Content Include="down2\js\jquery-1.4.min.js" />
     <Content Include="down2\js\json2.min.js" />
-    <Content Include="filemgr\biz\down2_svr.aspx" />
     <Content Include="filemgr\biz\form.aspx" />
-    <Content Include="filemgr\biz\up6_svr.aspx" />
     <Content Include="filemgr\data\index.js" />
-    <Content Include="filemgr\down2\down-single.js" />
+    <Content Include="filemgr\data\ui-down.html" />
+    <Content Include="filemgr\data\ui-up.html" />
     <Content Include="filemgr\down2\down.app.js" />
     <Content Include="filemgr\down2\down.css" />
     <Content Include="filemgr\down2\down.edge.js" />
@@ -104,7 +114,7 @@
     <Content Include="filemgr\down2\folder.png" />
     <Content Include="filemgr\down2\jquery-1.4.min.js" />
     <Content Include="filemgr\down2\json2.min.js" />
-    <Content Include="filemgr\filemgr.txt" />
+    <Content Include="filemgr\index.aspx" />
     <Content Include="filemgr\res\bootstrap\css\bootstrap-theme.css" />
     <Content Include="filemgr\res\bootstrap\css\bootstrap-theme.min.css" />
     <Content Include="filemgr\res\bootstrap\css\bootstrap.min.css" />
@@ -115,10 +125,33 @@
     <Content Include="filemgr\res\bootstrap\Font-Awesome-3.2.1\font\fontawesome-webfont.svg" />
     <Content Include="filemgr\res\bootstrap\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="filemgr\res\bootstrap\js\bootstrap.min.js" />
-    <Content Include="filemgr\index.aspx" />
     <Content Include="filemgr\res\filemgr.css" />
+    <Content Include="filemgr\res\imgs\16\clear.png" />
+    <Content Include="filemgr\res\imgs\16\file.png" />
+    <Content Include="filemgr\res\imgs\16\folder.png" />
+    <Content Include="filemgr\res\imgs\16\ok.png" />
+    <Content Include="filemgr\res\imgs\16\paste.png" />
+    <Content Include="filemgr\res\imgs\16\config.png" />
+    <Content Include="filemgr\res\imgs\16\start.png" />
+    <Content Include="filemgr\res\imgs\16\stop.png" />
+    <Content Include="filemgr\res\imgs\16\upload.png" />
+    <Content Include="filemgr\res\imgs\16\ups.png" />
+    <Content Include="filemgr\res\imgs\24\file.png" />
+    <Content Include="filemgr\res\imgs\24\folder.png" />
     <Content Include="filemgr\res\jquery\jquery-1.9.1.min.js" />
     <Content Include="filemgr\res\jquery\jquery.serializejson.min.js" />
+    <Content Include="filemgr\res\jstree\jstree.js" />
+    <Content Include="filemgr\res\jstree\jstree.min.js" />
+    <Content Include="filemgr\res\jstree\themes\default-dark\32px.png" />
+    <Content Include="filemgr\res\jstree\themes\default-dark\40px.png" />
+    <Content Include="filemgr\res\jstree\themes\default-dark\style.css" />
+    <Content Include="filemgr\res\jstree\themes\default-dark\style.min.css" />
+    <Content Include="filemgr\res\jstree\themes\default-dark\throbber.gif" />
+    <Content Include="filemgr\res\jstree\themes\default\32px.png" />
+    <Content Include="filemgr\res\jstree\themes\default\40px.png" />
+    <Content Include="filemgr\res\jstree\themes\default\style.css" />
+    <Content Include="filemgr\res\jstree\themes\default\style.min.css" />
+    <Content Include="filemgr\res\jstree\themes\default\throbber.gif" />
     <Content Include="filemgr\res\layer.window.js" />
     <Content Include="filemgr\res\layui\css\layui.css" />
     <Content Include="filemgr\res\layui\css\layui.mobile.css" />
@@ -227,19 +260,15 @@
     <Content Include="filemgr\res\moment\locales.min.js" />
     <Content Include="filemgr\res\moment\moment-with-locales.min.js" />
     <Content Include="filemgr\res\moment\moment.min.js" />
-    <Content Include="filemgr\res\sql.search.js" />
     <Content Include="filemgr\res\vue.min.js" />
+    <Content Include="filemgr\res\imgs\32\del.png" />
+    <Content Include="filemgr\res\imgs\32\file.png" />
+    <Content Include="filemgr\res\imgs\32\folder.png" />
     <Content Include="filemgr\test.aspx" />
-    <Content Include="filemgr\up.aspx" />
-    <Content Include="filemgr\up6\del.png" />
-    <Content Include="filemgr\up6\file.png" />
-    <Content Include="filemgr\up6\folder.png" />
-    <Content Include="filemgr\up6\jquery-1.4.min.js" />
     <Content Include="filemgr\up6\json2.min.js" />
-    <Content Include="filemgr\up6\post.png" />
+    <Content Include="filemgr\res\imgs\32\post.png" />
     <Content Include="filemgr\up6\setup.htm" />
-    <Content Include="filemgr\up6\stop.png" />
-    <Content Include="filemgr\up6\up6-single.js" />
+    <Content Include="filemgr\res\imgs\32\stop.png" />
     <Content Include="filemgr\up6\up6.app.js" />
     <Content Include="filemgr\up6\up6.config.js" />
     <Content Include="filemgr\up6\up6.css" />
@@ -249,6 +278,11 @@
     <Content Include="filemgr\up6\up6.js" />
     <Content Include="index-single.htm" />
     <Content Include="index.aspx" />
+    <Content Include="js\16\clear.png" />
+    <Content Include="js\16\folder.png" />
+    <Content Include="js\16\paste.png" />
+    <Content Include="js\16\upload.png" />
+    <Content Include="js\16\ups.png" />
     <Content Include="js\cab.html" />
     <Content Include="js\del.png" />
     <Content Include="js\file.png" />
@@ -256,6 +290,10 @@
     <Content Include="js\jquery-1.4.min.js" />
     <Content Include="js\json2.min.js" />
     <Content Include="js\post.png" />
+    <Content Include="js\single-panel\up6.css" />
+    <Content Include="js\single-panel\up6.file.js" />
+    <Content Include="js\single-panel\up6.folder.js" />
+    <Content Include="js\single-panel\up6.js" />
     <Content Include="js\stop.png" />
     <Content Include="js\up6-single.js" />
     <Content Include="js\up6.app.js" />
@@ -273,13 +311,16 @@
     <Content Include="js\up6.edge.js" />
     <Content Include="js\up6.file.js" />
     <Content Include="js\up6.folder.js" />
+    <Content Include="js\upload.png" />
+    <Content Include="js\vue.min.js" />
+    <Content Include="readme.txt" />
+    <Content Include="index2.aspx" />
     <Content Include="sql.down\down_files.sql" />
     <Content Include="js\up6.js" />
     <Content Include="js\setup.htm" />
-    <Content Include="sql\fd_files_check.sql" />
     <Content Include="sql\spPager.sql" />
     <Content Include="sql\up6_folders.sql" />
-    <Content Include="vue\index.aspx" />
+    <Content Include="vue.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -327,13 +368,6 @@
     <Compile Include="db\f_process.aspx.designer.cs">
       <DependentUpon>f_process.aspx</DependentUpon>
     </Compile>
-    <Compile Include="db\sql.aspx.cs">
-      <DependentUpon>sql.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="db\sql.aspx.designer.cs">
-      <DependentUpon>sql.aspx</DependentUpon>
-    </Compile>
     <Compile Include="db\utils\FileBlockWriter.cs" />
     <Compile Include="db\f_complete.aspx.cs">
       <DependentUpon>f_complete.aspx</DependentUpon>
@@ -372,7 +406,22 @@
     </Compile>
     <Compile Include="db\model\FileInf.cs" />
     <Compile Include="db\utils\Md5Tool.cs" />
+    <Compile Include="db\utils\PathTool.cs" />
     <Compile Include="db\XDebug.cs" />
+    <Compile Include="debug\big_file.aspx.cs">
+      <DependentUpon>big_file.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="debug\big_file.aspx.designer.cs">
+      <DependentUpon>big_file.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="debug\check_config.aspx.cs">
+      <DependentUpon>check_config.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="debug\check_config.aspx.designer.cs">
+      <DependentUpon>check_config.aspx</DependentUpon>
+    </Compile>
     <Compile Include="down2\db\clear.aspx.cs">
       <DependentUpon>clear.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -435,26 +484,14 @@
     <Compile Include="filemgr\app\ConfigReader.cs" />
     <Compile Include="filemgr\app\DbBase.cs" />
     <Compile Include="filemgr\app\DbFolder.cs" />
-    <Compile Include="filemgr\app\PathTool.cs" />
-    <Compile Include="filemgr\app\SqlParamCreater.cs" />
-    <Compile Include="filemgr\biz\down2_svr.aspx.cs">
-      <DependentUpon>down2_svr.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="filemgr\biz\down2_svr.aspx.designer.cs">
-      <DependentUpon>down2_svr.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="filemgr\biz\form.aspx.cs">
-      <DependentUpon>form.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="filemgr\biz\form.aspx.designer.cs">
-      <DependentUpon>form.aspx</DependentUpon>
-    </Compile>
+    <Compile Include="filemgr\app\HtmlTemplater.cs" />
     <Compile Include="filemgr\app\PageTool.cs" />
+    <Compile Include="filemgr\app\PathRelBuilder.cs" />
+    <Compile Include="filemgr\app\SqlBuilder.cs" />
     <Compile Include="filemgr\app\SqlCmdReader.cs" />
     <Compile Include="filemgr\app\SqlExec.cs" />
     <Compile Include="filemgr\app\SqlParam.cs" />
+    <Compile Include="filemgr\app\SqlParamCreater.cs" />
     <Compile Include="filemgr\app\SqlParamSetter.cs" />
     <Compile Include="filemgr\app\SqlParValSetter.cs" />
     <Compile Include="filemgr\app\SqlSearchComb.cs" />
@@ -462,15 +499,15 @@
     <Compile Include="filemgr\app\SqlValueSetter.cs" />
     <Compile Include="filemgr\app\SqlWhereCondition.cs" />
     <Compile Include="filemgr\app\SqlWhereMerge.cs" />
-    <Compile Include="filemgr\biz\up6_svr.aspx.cs">
-      <DependentUpon>up6_svr.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="filemgr\biz\up6_svr.aspx.designer.cs">
-      <DependentUpon>up6_svr.aspx</DependentUpon>
-    </Compile>
     <Compile Include="filemgr\app\WebBase.cs">
       <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="filemgr\biz\form.aspx.cs">
+      <DependentUpon>form.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="filemgr\biz\form.aspx.designer.cs">
+      <DependentUpon>form.aspx</DependentUpon>
     </Compile>
     <Compile Include="filemgr\index.aspx.cs">
       <DependentUpon>index.aspx</DependentUpon>
@@ -486,13 +523,6 @@
     <Compile Include="filemgr\test.aspx.designer.cs">
       <DependentUpon>test.aspx</DependentUpon>
     </Compile>
-    <Compile Include="filemgr\up.aspx.cs">
-      <DependentUpon>up.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="filemgr\up.aspx.designer.cs">
-      <DependentUpon>up.aspx</DependentUpon>
-    </Compile>
     <Compile Include="index.aspx.cs">
       <DependentUpon>index.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -501,19 +531,27 @@
       <DependentUpon>index.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="vue\index.aspx.cs">
-      <DependentUpon>index.aspx</DependentUpon>
+    <Compile Include="index2.aspx.cs">
+      <DependentUpon>index2.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="vue\index.aspx.designer.cs">
-      <DependentUpon>index.aspx</DependentUpon>
+    <Compile Include="index2.aspx.designer.cs">
+      <DependentUpon>index2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="vue.aspx.cs">
+      <DependentUpon>vue.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="vue.aspx.designer.cs">
+      <DependentUpon>vue.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="filemgr\res\layui\font\iconfont.eot" />
-    <Content Include="filemgr\res\layui\font\iconfont.ttf" />
-    <Content Include="filemgr\res\layui\font\iconfont.woff" />
-    <Content Include="filemgr\data\path.json" />
+    <Content Include="filemgr\data\config\config.json" />
+    <Content Include="filemgr\data\config\database\down_files.json" />
+    <Content Include="filemgr\data\config\database\up6_files.json" />
+    <Content Include="filemgr\data\config\database\up6_folders.json" />
+    <Content Include="filemgr\data\config\path.json" />
     <Content Include="filemgr\res\bootstrap\Font-Awesome-3.2.1\font\fontawesome-webfont.eot" />
     <Content Include="filemgr\res\bootstrap\Font-Awesome-3.2.1\font\fontawesome-webfont.ttf" />
     <Content Include="filemgr\res\bootstrap\Font-Awesome-3.2.1\font\fontawesome-webfont.woff" />
@@ -522,8 +560,9 @@
     <Content Include="filemgr\res\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="filemgr\res\bootstrap\fonts\glyphicons-halflings-regular.woff" />
     <Content Include="filemgr\res\bootstrap\fonts\glyphicons-halflings-regular.woff2" />
-    <Content Include="filemgr\data\config.json" />
-    <Content Include="filemgr\data\database.json" />
+    <Content Include="filemgr\res\layui\font\iconfont.eot" />
+    <Content Include="filemgr\res\layui\font\iconfont.ttf" />
+    <Content Include="filemgr\res\layui\font\iconfont.woff" />
     <None Include="packages.config" />
     <None Include="sql\up6_files.sql" />
   </ItemGroup>
@@ -532,29 +571,10 @@
     <Folder Include="filemgr\res\bootstrap\css\_notes\" />
     <Folder Include="filemgr\res\bootstrap\fonts\_notes\" />
     <Folder Include="filemgr\res\bootstrap\js\_notes\" />
-    <Folder Include="filemgr\res\imgs\16\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <OutputPath>bin\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />

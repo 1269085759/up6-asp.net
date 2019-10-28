@@ -26,16 +26,18 @@ namespace up6.filemgr.app
         /// <summary>
         /// 字段名称，表达式
         /// </summary>
-        Dictionary<string,string> m_cds;
+        Dictionary<string, string> m_cds;
 
-        public SqlWhereMerge() {
+        public SqlWhereMerge()
+        {
             this.m_cds = new Dictionary<string, string>();
         }
 
         /// <summary>
         /// 相等条件，a=b
         /// </summary>
-        public void equal(string n,string v) {
+        public void equal(string n, string v)
+        {
             this.m_cds[n] = string.Format("{0}='{1}'", n, v);
         }
 
@@ -49,13 +51,18 @@ namespace up6.filemgr.app
             this.m_cds[n] = string.Format("{0}={1}", n, v);
         }
 
+        public void equal(string n, bool v)
+        {
+            this.m_cds[n] = string.Format("{0}={1}", n, v);
+        }
+
         /// <summary>
         /// 相等条件，a=b，从查询字符串中获取变量（Request.QueryString)
         /// </summary>
         /// <param name="n"></param>
         /// <param name="v"></param>
         /// <param name="ignore">是否自动忽略空值</param>
-        public void req_equal(string n, string requestName,bool ignore=true)
+        public void req_equal(string n, string requestName, bool ignore = true)
         {
             string v = HttpContext.Current.Request.QueryString[requestName];
             if (string.IsNullOrEmpty(v))
@@ -63,7 +70,7 @@ namespace up6.filemgr.app
                 if (ignore) return;
                 v = string.Empty;
             }
-            this.m_cds.Add(n,string.Format("{0} = '{1}'", n, v));
+            this.m_cds.Add(n, string.Format("{0} = '{1}'", n, v));
         }
 
         public void req_like(string n, string requestName, bool ignore = true)
@@ -74,12 +81,30 @@ namespace up6.filemgr.app
                 if (ignore) return;
                 v = string.Empty;
             }
-            this.m_cds.Add(n,string.Format("{0} like '%{1}%'", n, v));
+            this.m_cds.Add(n, string.Format("{0} like '%{1}%'", n, v));
+        }
+
+        /// <summary>
+        /// 以key结尾
+        /// </summary>
+        /// <param name="n"></param>
+        /// <param name="v"></param>
+        public void likeR(string n, string v) {
+            this.m_cds.Add(n, string.Format("{0} like '%{1}'", n, v));
+        }
+
+        /// <summary>
+        /// 以key开始
+        /// </summary>
+        /// <param name="n"></param>
+        /// <param name="v"></param>
+        public void likeL(string n, string v) {
+            this.m_cds.Add(n, string.Format("{0} like '{1}%'", n, v));
         }
 
         public void like(string n, string v)
         {
-            this.m_cds.Add(n,string.Format("{0} like '%{1}%'", n, v));
+            this.m_cds.Add(n, string.Format("{0} like '%{1}%'", n, v));
         }
 
         public void add(SqlWhereCondition c)
@@ -90,11 +115,11 @@ namespace up6.filemgr.app
         {
             if (c[1].Equals("like"))
             {
-                this.m_cds.Add(c[0],string.Format("{0} like '%{1}%'", c[0], c[2].Trim()));
+                this.m_cds.Add(c[0], string.Format("{0} like '%{1}%'", c[0], c[2].Trim()));
             }
             else if (c[1].Equals("="))
             {
-                this.m_cds.Add(c[0],string.Format("{0} = '{1}'", c[0], c[2].Trim()));
+                this.m_cds.Add(c[0], string.Format("{0} = '{1}'", c[0], c[2].Trim()));
             }
         }
 
@@ -104,7 +129,7 @@ namespace up6.filemgr.app
         /// <param name="n">列名</param>
         /// <param name="p">条件谓词:=,like</param>
         /// <param name="v">值</param>
-        public void add(string n,string p,string v)
+        public void add(string n, string p, string v)
         {
             if (string.IsNullOrEmpty(n) || string.IsNullOrEmpty(v)) return;
             this.add(new string[] { n, p, v });
@@ -116,13 +141,14 @@ namespace up6.filemgr.app
         /// <param name="n">字段名称</param>
         /// <param name="p">谓词，=,</param>
         /// <param name="v">Request 参数名称</param>
-        public void addReq(string n,string p,string v) {
+        public void addReq(string n, string p, string v)
+        {
             v = HttpContext.Current.Request.QueryString[v];
             if (string.IsNullOrEmpty(v)) return;
-            this.add(new string[] { n,p,v});
+            this.add(new string[] { n, p, v });
         }
 
-        public void addInt(string n,string v)
+        public void addInt(string n, string v)
         {
             if (string.IsNullOrEmpty(v)) return;
             this.add(new string[] { n, "int", v });
@@ -130,7 +156,8 @@ namespace up6.filemgr.app
 
         public void clear() { this.m_cds.Clear(); }
         public void del(string n) { this.m_cds.Remove(n); }
-        public string to_sql() {
+        public string to_sql()
+        {
             //return string.Join(" and ", this.m_cds.ToArray());
             return string.Join(" and  ", this.m_cds.Select((n) => n.Value).ToArray());
         }
@@ -140,7 +167,8 @@ namespace up6.filemgr.app
         /// </summary>
         /// <param name="cds"></param>
         /// <returns>a='a' and b like '%b%'</returns>
-        public static string merge(SqlWhereCondition[] cds) {
+        public static string merge(SqlWhereCondition[] cds)
+        {
             List<string> arr = new List<string>();
             foreach (var c in cds)
             {

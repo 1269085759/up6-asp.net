@@ -7,16 +7,15 @@ function FolderUploader(fdLoc, mgr)
 {
     var _this = this;
     this.id = fdLoc.id;
-    this.ui = { msg: null, process: null, percent: null, btn: { del: null, cancel: null,stop:null,post:null }, div: null, split: null };
+    this.ui = { msg: null, process: null, percent: null, btn: { del: null, cancel: null,stop:null,post:null }, div: null};
     this.isFolder = true; //是文件夹
     this.folderInit = false;//文件夹已初始化
     this.Scaned = false;//是否已经扫描
-    this.folderSvr = { nameLoc: "",nameSvr:"",lenLoc:0,sizeLoc: "0byte", lenSvr: 0,perSvr:"0%", id:"",uid: mgr.Config.Fields["uid"], foldersCount: 0, filesCount: 0, filesComplete: 0, pathLoc: "", pathSvr: "", pathRel: "", pidRoot: "", complete: false };
-    jQuery.extend(true,this.folderSvr, fdLoc);//续传信息
+    this.fileSvr = { nameLoc: "",nameSvr:"",lenLoc:0,sizeLoc: "0byte", lenSvr: 0,perSvr:"0%", id:"",uid: mgr.Config.Fields["uid"], foldersCount: 0, filesCount: 0, filesComplete: 0, pathLoc: "", pathSvr: "", pathRel: "", pidRoot: "", complete: false };
+    jQuery.extend(true,this.fileSvr, fdLoc);//续传信息
     this.manager = mgr;
     this.event = mgr.event;
     this.arrFiles = new Array(); //子文件列表(未上传文件列表)，存HttpUploader对象
-    this.FileListMgr = mgr.FileListMgr;//文件列表管理器
     this.Config = mgr.Config;
     this.fields = jQuery.extend({}, mgr.Config.Fields,fdLoc.fields);//每一个对象自带一个fields幅本
     this.app = mgr.app;
@@ -26,12 +25,38 @@ function FolderUploader(fdLoc, mgr)
     //准备
     this.Ready = function ()
     {
-        this.ui.msg.text("等待上传...");
-        this.State = HttpUploaderState.Ready;
+        this.ui.msg.text("正在上传队列中等待...");
+        this.State = this.Config.state.Ready;
+        this.ui.btn.cancel.click(function () {
+            _this.stop();
+            _this.remove();
+
+        });
+        this.ui.btn.post.click(function () {
+            _this.ui.btn.post.hide();
+            _this.ui.btn.del.hide();
+            _this.ui.btn.cancel.hide();
+            _this.ui.btn.stop.show();
+
+            if (!_this.manager.IsPostQueueFull()) {
+                _this.post();
+            }
+            else {
+                _this.ui.msg.text("正在上传队列中等待...");
+                _this.State = _this.Config.state.Ready;
+                $.each(_this.ui.btn, function (i, n) { n.hide(); });
+                _this.ui.btn.del.show();
+                _this.manager.AppendQueue(_this.fileSvr.id);
+            }
+        });
+        this.ui.btn.stop.click(function () {
+            _this.stop();
+        });
+        this.ui.btn.del.click(function () { _this.remove(); });
     };
     this.svr_create = function (fdSvr)
     {
-		//jQuery.extend(this.folderSvr,fdSvr);
+		//jQuery.extend(this.fileSvr,fdSvr);
         if (fdSvr.complete)
         {
             this.all_complete();
@@ -41,15 +66,15 @@ function FolderUploader(fdLoc, mgr)
         this.ui.btn.cancel.hide();
         this.ui.btn.post.hide();
         this.ui.btn.del.hide();
-        this.folderSvr.pathSvr = fdSvr.pathSvr;
+        this.fileSvr.pathSvr = fdSvr.pathSvr;
         this.update_fd();
         this.folderInit = true;
         this.post_fd();
     };
     this.svr_update = function ()
     {
-        if (this.folderSvr.lenSvr == 0) return;
-        var param = { uid: this.fields["uid"], id: this.id, offset: 0, lenSvr: this.folderSvr.lenSvr, perSvr: this.folderSvr.perSvr, time: new Date().getTime() };
+        if (this.fileSvr.lenSvr == 0) return;
+        var param = { uid: this.fields["uid"], id: this.id, offset: 0, lenSvr: this.fileSvr.lenSvr, perSvr: this.fileSvr.perSvr, time: new Date().getTime() };
         $.ajax({
             type: "GET"
             , dataType: 'jsonp'
@@ -57,7 +82,7 @@ function FolderUploader(fdLoc, mgr)
             , url: this.Config["UrlProcess"]
             , data: param
             , success: function (msg) {}
-            , error: function (req, txt, err) { alert("更新文件夹进度失败！" + req.responseText); }
+            , error: function (req, txt, err) { /*alert("更新文件夹进度失败！" + req.responseText);*/ }
             , complete: function (req, sta) { req = null; }
         });
     };
@@ -66,9 +91,16 @@ function FolderUploader(fdLoc, mgr)
         this.folderInit = false;
         this.ui.msg.text("向服务器发送文件夹信息错误").css("cursor", "pointer").click(function ()
         {
-            alert(up6_err_solve.errFolderCreate);
+            //alert(up6_err_solve.errFolderCreate);
         });
         this.ui.btn.post.show();
+    };
+    this.svr_err_same_name = function ()
+    {
+        this.manager.RemoveQueuePost(this.fileSvr.id);
+        this.ui.msg.text("服务器存在同名目录");
+        this.ui.btn.stop.hide();
+        this.ui.btn.cancel.show();
     };
     this.svr_remove = function ()
     {
@@ -87,16 +119,15 @@ function FolderUploader(fdLoc, mgr)
     //上传，创建文件夹结构信息
     this.post = function ()
     {
-        this.ui.btn.stop.show();
-        this.ui.btn.del.hide();
-        this.ui.btn.post.hide();
-        this.ui.btn.cancel.hide();
+        $.each(this.ui.btn, function (i, n) { n.hide();});
         this.manager.AppendQueuePost(this.id);//添加到队列中
-        this.State = HttpUploaderState.Posting;
+        this.State = this.Config.state.Posting;
         //如果文件夹已初始化，表示续传。
         if (this.folderInit)
         {
-            this.post_fd();
+            //已传完，未扫描
+            if (this.fileSvr.lenLoc == this.fileSvr.lenSvr) { this.post_complete_scan(); }
+            else this.post_fd();
         }
         else
         {
@@ -121,7 +152,7 @@ function FolderUploader(fdLoc, mgr)
     {
         this.ui.btn.stop.show();
         this.ui.btn.post.hide();
-        this.State = HttpUploaderState.scan;
+        this.State = this.Config.state.scan;
         this.app.scanFolder({ id: this.id });
     };
     this.scan_process = function (json)
@@ -153,25 +184,23 @@ function FolderUploader(fdLoc, mgr)
     {
         this.ui.btn.stop.show();
         this.ui.btn.post.hide();
-        this.State = HttpUploaderState.MD5Working;
-        var par = jQuery.extend(this.folderSvr, { id: this.id});
+        this.State = this.Config.state.MD5Working;
+        var par = jQuery.extend(this.fileSvr, { id: this.id});
         this.app.checkFolder(par);
     };
     this.post_fd = function ()
     {
-        this.ui.btn.stop.show();
-        this.ui.btn.post.hide();
-        this.State = HttpUploaderState.Posting;
-        var fd = jQuery.extend({}, { id: this.id, pathLoc: this.folderSvr.pathLoc, fields: this.fields });
+        this.State = this.Config.state.Posting;
+        var fd = jQuery.extend({}, { id: this.id, pathLoc: this.fileSvr.pathLoc, fields: this.fields });
         this.app.postFolder(fd);
     };
     this.update_fd = function () {
-        var fd = jQuery.extend({}, { id: this.id, pathSvr: this.folderSvr.pathSvr});
+        var fd = jQuery.extend({}, { id: this.id, pathSvr: this.fileSvr.pathSvr});
         this.app.updateFolder(fd);
     };
     this.post_stoped = function (json)
     {
-        this.State = HttpUploaderState.Stop;
+        this.State = this.Config.state.Stop;
         this.ui.btn.post.show();
         this.ui.btn.del.show();
         this.ui.btn.cancel.hide();
@@ -179,11 +208,11 @@ function FolderUploader(fdLoc, mgr)
         this.ui.msg.text("传输已停止....");
         this.manager.RemoveQueuePost(this.id);
         this.manager.AppendQueueWait(this.id);//添加到未上传列表
-        this.manager.PostNext();
+        setTimeout(function () { _this.manager.PostNext(); }, 300);
     };
     this.post_error = function (json)
     {
-        this.ui.msg.text(HttpUploaderErrorCode[json.value]);
+        this.ui.msg.text(this.Config.errCode[json.value]);
         //文件大小超过限制,文件大小为0
         if (4 == json.value || 5 == json.value){}
         if (6 == json.value) { this.ui.msg.text("文件被占用:" + json.pathLoc); }
@@ -192,7 +221,7 @@ function FolderUploader(fdLoc, mgr)
         this.ui.btn.post.show();
         this.ui.btn.del.show();
 
-        this.State = HttpUploaderState.Error;
+        this.State = this.Config.state.Error;
         //从上传列表中删除
         this.manager.RemoveQueuePost(this.id);
         //添加到未上传列表
@@ -200,12 +229,20 @@ function FolderUploader(fdLoc, mgr)
 
         this.svr_update();
 
-        setTimeout(function () { _this.manager.PostNext(); }, 500);
+        setTimeout(function () { _this.manager.PostNext(); }, 300);
+
+        if (this.Config.AutoConnect.opened) {
+            setTimeout(function () {
+                if (_this.State == _this.Config.state.Posting) return;
+                _this.post();
+            }, this.Config.AutoConnect.time);
+        }
     };
     this.post_process = function (json)
     {
-        this.folderSvr.lenSvr = json.lenSvr;
-        this.folderSvr.perSvr = json.percent;
+        this.ui.btn.stop.show();
+        this.fileSvr.lenSvr = json.lenSvr;
+        this.fileSvr.perSvr = json.percent;
         this.ui.percent.text("(" + json.percent+")");
         this.ui.process.css("width", json.percent);
         var str = "(" + json.fileIndex + "/" + json.fileCount + ") " + json.lenPost + " " + json.speed + " " + json.time;
@@ -221,9 +258,9 @@ function FolderUploader(fdLoc, mgr)
         this.ui.percent.text("(100%)");
         //obj.pMsg.text("上传完成");
         this.manager.arrFilesComplete.push(this);
-        this.State = HttpUploaderState.Complete;
-        this.folderSvr.complete = true;
-        this.folderSvr.perSvr = "100%";
+        this.State = this.Config.state.Complete;
+        this.fileSvr.complete = true;
+        this.fileSvr.perSvr = "100%";
         //从上传列表中删除
         this.manager.RemoveQueuePost(this.id);
         //从未上传列表中删除
@@ -232,7 +269,7 @@ function FolderUploader(fdLoc, mgr)
         if(json.errors > 0 ) str += " 失败：" + json.errors
         this.ui.msg.text(str);
 
-        var param = jQuery.extend({}, this.fields, { id: this.folderSvr.id, time: new Date().getTime() });
+        var param = jQuery.extend({}, this.fields, { id: this.fileSvr.id, time: new Date().getTime() });
 
         $.ajax({
             type: "GET"
@@ -243,10 +280,42 @@ function FolderUploader(fdLoc, mgr)
 			, success: function (msg)
 			{
 			    _this.event.fdComplete(_this);//触发事件
-			    _this.manager.PostNext();
+                setTimeout(function () { _this.manager.PostNext(); }, 300);
 			}
 			, error: function (req, txt, err) { alert("向服务器发送文件夹Complete信息错误！" + req.responseText); }
 			, complete: function (req, sta) { req = null; }
+        });
+    };
+    this.post_complete_scan = function () {
+        $.each(this.ui.btn, function (i, n) {
+            n.hide();
+        });
+        this.ui.process.css("width", "100%");
+        this.ui.percent.text("(100%)");
+        this.manager.arrFilesComplete.push(this);
+        this.State = this.Config.state.Complete;
+        this.fileSvr.complete = true;
+        this.fileSvr.perSvr = "100%";
+        //从上传列表中删除
+        this.manager.RemoveQueuePost(this.id);
+        //从未上传列表中删除
+        this.manager.RemoveQueueWait(this.id);
+        this.ui.msg.text("上传完毕");
+
+        var param = jQuery.extend({}, this.fields, { id: this.fileSvr.id, time: new Date().getTime() });
+
+        $.ajax({
+            type: "GET"
+            , dataType: 'jsonp'
+            , jsonp: "callback" //自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名
+            , url: this.Config["UrlFdComplete"]
+            , data: param
+            , success: function (msg) {
+                _this.event.fdComplete(_this);//触发事件
+                setTimeout(function () { _this.manager.PostNext(); }, 300);
+            }
+            , error: function (req, txt, err) { alert("向服务器发送文件夹Complete信息错误！" + req.responseText); }
+            , complete: function (req, sta) { req = null; }
         });
     };
     this.md5_error = function (json)
@@ -256,28 +325,27 @@ function FolderUploader(fdLoc, mgr)
     };
     this.md5_process = function (json)
     {
-        if (this.State == HttpUploaderState.Stop) return;
+        if (this.State == this.Config.state.Stop) return;
         this.ui.msg.text("正在计算MD5："+json.percent);
     };
     this.md5_complete = function (json)
     {
         if (this.Config["Md5Folder"])
         {
-            jQuery.extend(this.folderSvr, json.data);
+            jQuery.extend(this.fileSvr, json.data);
         }
         else
         {
-            jQuery.extend(this.folderSvr, json);
+            jQuery.extend(this.fileSvr, json);
         }
         //在此处增加服务器验证代码。
         this.ui.msg.text("初始化...");
-        var param = jQuery.extend({}, this.fields, {
-            id: this.folderSvr.id,
-            pid: this.folderSvr.pid,
-            pidRoot: this.folderSvr.pidRoot,
-            lenLoc: this.folderSvr.lenLoc,
-            sizeLoc: this.folderSvr.sizeLoc,
-            pathLoc: encodeURIComponent(this.folderSvr.pathLoc),
+        $.extend(this.fileSvr, this.Config.bizData);
+        var param = jQuery.extend({}, this.fields, this.Config.bizData, {
+            id: this.fileSvr.id,
+            lenLoc: this.fileSvr.lenLoc,
+            sizeLoc: this.fileSvr.sizeLoc,
+            pathLoc: encodeURIComponent(this.fileSvr.pathLoc),
             time: new Date().getTime()
         });
 
@@ -288,9 +356,15 @@ function FolderUploader(fdLoc, mgr)
 			, url: this.Config["UrlFdCreate"]
             , data: param
 			, success: function (msg)
-			{
+            {
+                //存在同名目录
+                if (!msg.ret) {
+                    _this.svr_err_same_name();
+                    return;
+                }
+
 				try
-				{
+                {
 					var json = JSON.parse(decodeURIComponent(msg.value));
 					_this.svr_create(json);
 				}
@@ -319,14 +393,14 @@ function FolderUploader(fdLoc, mgr)
         this.ui.process.css("width", "100%");
         this.ui.percent.text("(100%)");
         this.manager.arrFilesComplete.push(this);
-        this.State = HttpUploaderState.Complete;
-        this.folderSvr.complete = true;
-        this.folderSvr.perSvr = "100%";
+        this.State = this.Config.state.Complete;
+        this.fileSvr.complete = true;
+        this.fileSvr.perSvr = "100%";
         //从上传列表中删除
         this.manager.RemoveQueuePost(this.id);
         //从未上传列表中删除
         this.manager.RemoveQueueWait(this.id);
-        this.ui.msg.text("共" + this.folderSvr.filesCount + "个文件，成功上传" + this.folderSvr.filesCount + "个文件");
+        this.ui.msg.text("共" + this.fileSvr.filesCount + "个文件，成功上传" + this.fileSvr.filesCount + "个文件");
 
         $.ajax({
             type: "GET"
@@ -337,9 +411,7 @@ function FolderUploader(fdLoc, mgr)
 			, success: function (msg)
 			{
 			    _this.event.fdComplete(_this);//触发事件
-			    //添加到文件列表
-			    _this.FileListMgr.UploadComplete(_this.folderSvr);
-			    _this.manager.PostNext();
+                setTimeout(function () { _this.manager.PostNext(); }, 300);
 			}
 			, error: function (req, txt, err) { alert("向服务器发送文件夹Complete信息错误！" + req.responseText); }
 			, complete: function (req, sta) { req = null; }
@@ -351,7 +423,7 @@ function FolderUploader(fdLoc, mgr)
     {
         this.svr_update();
         this.app.stopFile({ id: this.id ,tip:false});
-        this.State = HttpUploaderState.Stop;
+        this.State = this.Config.state.Stop;
     };
     //手动点击“停止”按钮时
     this.stop = function ()
@@ -367,9 +439,10 @@ function FolderUploader(fdLoc, mgr)
     //从上传列表中删除上传任务
     this.remove = function ()
     {
+        this.manager.del_file(this.fileSvr.id);
         this.app.delFolder({ id: this.id });
         this.manager.Delete(this.id);
-        this.svr_remove();
+        if (this.State != this.Config.state.Complete) this.svr_remove();
         this.ui.div.remove();
     };
 }

@@ -1,4 +1,4 @@
-function WebServer(mgr)
+function WebServerDown2(mgr)
 {
     var _this = this;
     // 创建一个Socket实例
@@ -24,9 +24,9 @@ function WebServer(mgr)
         }
     };
     this.runChr = function () {
-        var protocol = mgr.Config.edge.protocol + "://" + mgr.Config.edge.port;
+        var protocol = mgr.Config.edge.protocol + "://?port=" + mgr.Config.edge.port;
         var html = "<iframe id='down2-uri-fra' width=1 height=1 src='" + protocol + "'></iframe>";
-        $("#down2-uri-fra").remove();//
+        $("#down2-uri-fra").remove();
         $(document.body).append(html);
         setTimeout(function () { _this.connect() }, 1000);//启动定时器
     };
@@ -59,7 +59,7 @@ function WebServer(mgr)
                     _this.tryConnect = true;
                     _this.ent.on_close();//
                     _this.run();
-                    setTimeout(function () { _this.connect() }, 1000);//启动定时器
+                    setTimeout(function () { _this.connect() }, 3000);//启动定时器
                 }
             };
         };
@@ -67,7 +67,7 @@ function WebServer(mgr)
         {
             _this.run();
             console.log("连接失败");
-            setTimeout(function () { _this.connect() }, 1000);//启动定时器
+            setTimeout(function () { _this.connect() }, 3000);//启动定时器
         };
     };
     this.close = function ()

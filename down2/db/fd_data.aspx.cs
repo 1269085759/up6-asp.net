@@ -17,7 +17,8 @@ namespace up6.down2.db
 
             if (!string.IsNullOrEmpty(id))
             {
-                string data = HttpUtility.UrlEncode(DnFolder.all_file(id));
+                DnFolder df = new DnFolder();
+                string data = HttpUtility.UrlEncode(df.files(id));
                 data = data.Replace("+", "%20");
 
                 json = "({\"value\":\""+ data + "\"})" ;

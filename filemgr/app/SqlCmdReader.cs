@@ -20,6 +20,19 @@ namespace up6.filemgr.app
             get { return this.m_map[index]; }
         }
 
+        public JObject read(DbDataReader r,JToken fields)
+        {
+            int i = 0;
+            JObject o = new JObject();
+            foreach(var f in fields)
+            {
+                var name = f["name"].ToString();
+                var type = f["type"].ToString().ToLower();
+                o[name] = this.m_map[type](r, i++);
+            }
+            return o;
+        }
+
         public SqlCmdReader()
         {
             //初始化数据读取器
@@ -40,6 +53,12 @@ namespace up6.filemgr.app
                     return r.IsDBNull(index) ? 0:r.GetInt16(index);
                 } }
                 ,{ "tinyint",(DbDataReader r,int index)=>{
+                    return r.IsDBNull(index) ? 0:r.GetByte(index);
+                } }
+                ,{ "short",(DbDataReader r,int index)=>{
+                    return r.IsDBNull(index) ? 0:r.GetInt16(index);
+                } }
+                ,{ "byte",(DbDataReader r,int index)=>{
                     return r.IsDBNull(index) ? 0:r.GetByte(index);
                 } }
                 ,{ "bool",(DbDataReader r,int index)=>{

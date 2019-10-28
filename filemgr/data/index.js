@@ -1,14 +1,286 @@
-﻿
-function PageLogic() {
+﻿function PageLogic() {
     var _this = this;
-    this.downer = null;
     this.files_checked = [];
-    this.up6 = null;
-    this.pathCur = {f_id:"",f_pid:"",f_pidRoot:"",f_nameLoc:"根目录",f_pathRel:"/"};//
+    this.pathCur = { f_id: "", f_pid: "", f_pidRoot: "", f_nameLoc: "根目录", f_pathRel: "/" };//
+    this.data = {
+        downPath: "",treeID:"#tree", up6: null, panel: { up: null, down: null }, down2: null,up_inited:false,down_inited:false
+    };
+    this.ui = {
+        ico: [
+            {name:"up", url:page.path.res + "imgs/16/upload.png"}
+            ,{name:"up-fd", url:page.path.res + "imgs/16/folder.png"}
+            ,{ name: "paste", url:page.path.res + "imgs/16/paste.png" }
+            , { name: "del", url:page.path.res + "imgs/16/del.png" }
+            , { name: "down", url:page.path.res + "imgs/16/down.png" }
+            , { name: "edit", url:page.path.res + "imgs/16/edit.png" }
+            , { name: "up-panel", url:page.path.res + "imgs/16/up-panel.png" }
+            , { name: "down-panel", url:page.path.res + "imgs/16/down-panel.png" }
+        ]
+    };
+    this.init_up6 = function () {
+        if (this.data.up6 != null) return;
+        this.data.up6 = new HttpUploaderMgr();
+        this.data.up6.event.fileAppend = function () {
+            _this.open_upload_panel();
+        };
+        this.data.up6.event.md5Complete = function (obj, md5) { /*alert(md5);*/ };
+        this.data.up6.event.fdComplete = function (obj) {
+            _this.attr.event.folder_post_complete(obj);
+        };
+        this.data.up6.event.fileComplete = function (obj) {
+            _this.attr.event.file_post_complete();
+        };
+        this.data.up6.event.loadComplete = function () {
+            _this.data.up_inited = true;
+            setTimeout(function () {
+                _this.load_uncomp();
+            }, 300);
+        };
+        this.data.up6.load_to(this.attr.ui.up6);
+    };
+    this.init_down2 = function () {
+        if (this.data.down2 != null) return;
+        this.data.down2 = new DownloaderMgr();
+        this.data.down2.event.loadComplete = function () {
+            _this.data.down_inited = true;
+            setTimeout(function () {
+                _this.load_uncmp_down();
+            }, 300);
+        };
+        this.data.down2.event.sameFileExist = function (name) {
+            layer.alert('相同下载项已存在：'+name, { icon: 2 });
+        };
+        this.data.down2.loadTo(this.attr.ui.down2);
+    };
+    this.init_imgs = function () {
+        $.each(this.ui.ico, function (i, n) {
+            var img = $("img[name='" + n.name + "']");
+            img.attr("src", n.url);
+            if (typeof (n.w) != undefined) {
+                img.css("width", n.w);
+            }
+        });
+    };
+    this.init_path = function () {
+        if (this.attr.nav_path == null) {
+            this.attr.nav_path = new Vue({
+                el: '#path',
+                data: { folders: [], folderCur: this.pathCur }
+                , methods: {
+                    open_folder: function (d) {
+                        _this.open_folder(d);
+                        _this.open_tree_node(d);
+                    }
+                }
+            });
+            this.attr.nav_path.folders.push(this.pathCur);
+        }
+    };
+    this.init_tree = function () {
+        var param = jQuery.extend({}, { time: new Date().getTime() });
+        this.data.tree= $('#tree').jstree({
+            "plugins": ["wholerow"],
+            'core': {
+                "check_callback": true,
+                'data': function (obj, cb) {
+                    var ref = this;
+                    $.ajax({
+                        type: "GET",
+                        url: "index.aspx?op=tree",
+                        dataType: "json",
+                        async: false,
+                        success: function (res) {
+                            cb.call(ref, res);
+                        }
+                    });
+                }
+            }
+        }).bind("select_node.jstree", function (e, data) {
+            var ins = data.instance;
+            var nodeSel = data.node;
+
+            _this.open_folder(nodeSel.original.nodeSvr);
+
+            if (nodeSel.children.length > 0) return;
+            var param = jQuery.extend({}, { pid: data.node.original.id, time: new Date().getTime() });
+            $.ajax({
+                type: "GET"
+                , dataType: "json"
+                , url: "index.aspx?op=tree"
+                , data: param
+                , success: function (res) {
+                    nodeSel.state.opened = true;
+
+                    $.each(res, function (i, n) {
+                        ins.create_node(nodeSel, n);
+                    });
+                }
+                , error: function (req, txt, err) { }
+                , complete: function (req, sta) { req = null; }
+            });
+        });
+    };
+    this.open_tree_node = function (data) {
+        var tree = $(_this.data.treeID).jstree(true);
+        tree.deselect_all(true);
+        var nodeCur = tree.get_node(data.f_id);
+        if (nodeCur == null) alert("未找到节点");
+        tree.select_node(nodeCur);
+    };
+
+    //加载未完成列表
+    this.load_uncomp= function () {
+        var param = jQuery.extend({}, { time: new Date().getTime() });
+        $.ajax({
+            type: "GET"
+            , dataType: "json"
+            , url: "index.aspx?op=uncomp"
+            , data: param
+            , success: function (res) {
+                if (res.length>0) _this.open_upload_panel();
+
+                $.each(res, function (i, n) {
+                    if (n.fdTask) {
+                        var f = _this.data.up6.addFolderLoc(n);
+                        f.folderInit = true;
+                        f.folderScan = true;
+                        f.ui.btn.post.show();
+                        f.ui.btn.del.show();
+                        f.ui.btn.cancel.hide();
+                    }
+                    else {
+                        var f = _this.data.up6.addFileLoc(n);
+                        f.ui.percent.text("(" + n.perSvr + ")");
+                        f.ui.process.css("width", n.perSvr);
+                        f.ui.btn.post.show();
+                        f.ui.btn.del.show();
+                        f.ui.btn.cancel.hide();
+                    }
+                });                
+            }
+            , error: function (req, txt, err) { }
+            , complete: function (req, sta) { req = null; }
+        });
+    };
+    this.load_uncmp_down = function () {
+        var param = $.extend({}, this.data.down2.Config.Fields);
+	    $.ajax({
+	        type: "GET"
+            , dataType: 'json'
+            , jsonp: "callback" //自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名
+            , url: "index.aspx?op=uncmp-down"
+            , data: param
+            , success: function (files)
+            {
+                if (files.length > 0) { _this.open_down_panel();}
+                $.each(files, function (i, n) {
+                    var dt = {
+                        svrInit: true
+                        , id: n.f_id
+                        , lenLoc: n.f_lenLoc
+                        , pathLoc: n.f_pathLoc
+                        , nameLoc: n.f_nameLoc
+                        , sizeSvr: n.f_sizeSvr
+                        , perLoc: n.f_perLoc
+                        , fdTask: n.f_fdTask
+                    };
+                    _this.data.down2.resume_file(dt);
+                });
+            }
+            , error: function (req, txt, err) { alert("加载文件列表失败！" +req.responseText); }
+            , complete: function (req, sta) {req = null;}
+	    });
+    };
+
+    this.open_upload_panel = function () {
+        layer.open({
+            type: 1
+            , maxmin: true
+            , shade: 0//不显示遮罩
+            , title: '上传文件'
+            , offset: 'rb'//右下角
+            //, btn: ['确定', '取消']
+            , content: _this.data.panel.up
+            , area: ['452px', '562px']
+            , success: function (layero, index) {
+                _this.data.panel.up.show();
+            }
+            , btn1: function (index, layero) {
+                layer.close(index);//关闭窗口
+                _this.data.panel.up.hide();
+            }
+            , btn2: function (index, layero) {
+                _this.data.panel.up.hide();
+            }
+        });
+        _this.data.panel.up.show();
+    };
+
+    this.open_down_panel = function () {
+        layer.open({
+            type: 1
+            , maxmin: true
+            , shade: 0//不显示遮罩
+            , title: '文件下载'
+            , offset: 'rb'//右下角
+            //, btn: ['确定', '取消']
+            , content: _this.data.panel.down
+            , area: ['452px', '562px']
+            , success: function (layero, index) {
+                _this.data.panel.down.show();
+            }
+            , btn1: function (index, layero) {
+                layer.close(index);//关闭窗口
+                _this.data.panel.down.hide();
+            }
+            , btn2: function (index, layero) {
+                _this.data.panel.down.hide();
+            }
+        });
+        _this.data.panel.down.show();
+    };
+
+    this.upload_file = function () {
+        if (!this.data.up_inited) {
+            layer.alert('控件没有初始化成功', { icon: 2 });
+            return;
+        }
+        this.data.up6.openFile();
+    };
+    this.upload_folder = function () {
+        if (!this.data.up_inited) {
+            layer.alert('控件没有初始化成功', { icon: 2 });
+            return;
+        }
+        this.data.up6.openFolder();
+    };
+    this.upload_paste = function () {
+        if (!this.data.up_inited) {
+            layer.alert('控件没有初始化成功', { icon: 2 });
+            return;
+        }
+        this.data.up6.pasteFiles();
+    };
+    this.page_close = function () {
+        this.data.up6.page_close();
+        this.data.down2.page_close();
+    };
+    this.open_folder = function (data) {
+        this.attr.ui.table.reload('files', {
+            url: 'index.aspx?op=data&pid=' + data.f_id //
+            , page: { curr: 1 }//第一页
+        });
+
+        $.extend(this.data.up6.Config.bizData, { "pid": data.f_id.replace(/\s*/g, ""), "pidRoot": data.f_pidRoot.replace(/\s*/g,"") });
+
+        _this.attr.event.path_changed(data);
+    };
 
     this.attr = {
         ui: {
-            table: null, btnDown: "#btn-down", key: "#search-key", up6: null
+            table: null, btnDown: "#btn-down", key: "#search-key"
+            , up6: "#up6-panel"
+            , down2: "#down2-panel"
             , btnUp: "#btn-up"
             , btnUpPaste: "#btn-up-paste"
             , btnDel: "#btn-del"
@@ -18,12 +290,22 @@ function PageLogic() {
         , ui_ents: [
             {
                 id: "#btn-up", e: "click", n: function () {
-                _this.up6.openFile();
+                    _this.upload_file();
+                }
+            },
+            {
+                id: "#btn-up-fd", e: "click", n: function () {
+                    _this.upload_folder();
                 }
             },
             {
                 id: "#btn-up-paste", e: "click", n: function () {
-                    _this.attr.event.btn_up_paste_click();
+                    _this.upload_paste();
+                }
+            },
+            {
+                id: "#btn-open-up", e: "click", n: function () {
+                    _this.open_upload_panel();
                 }
             },
             {
@@ -34,6 +316,11 @@ function PageLogic() {
             {
                 id: "#btn-down", e: "click", n: function () {
                     _this.attr.event.btn_down_click();
+                }
+            },
+            {
+                id: "#btn-open-down", e: "click", n: function () {
+                    _this.open_down_panel();
                 }
             },
             {
@@ -52,8 +339,15 @@ function PageLogic() {
             file_post_complete: function () {
                 _this.attr.event.btn_refresh_click();
             }
-            , folder_post_complete: function () {
+            , folder_post_complete: function (obj) {
                 _this.attr.event.btn_refresh_click();
+                _this.attr.event.folder_created($.extend(obj.fileSvr
+                    , {
+                        f_pid: obj.fileSvr.pid
+                        , f_id: obj.fileSvr.id
+                        , f_pidRoot: obj.fileSvr.pidRoot
+                        , f_nameLoc: obj.fileSvr.nameLoc
+                }));
             }
             , file_append: function (f) {
                 f.ui.path.text(_this.pathCur.f_nameLoc);
@@ -61,20 +355,35 @@ function PageLogic() {
             , folder_append: function (f) {
                 f.ui.path.text(_this.pathCur.f_nameLoc);
             }
+            , folder_created: function (data)
+            {
+                var tree = $(_this.data.treeID).jstree(true);
+                if (data.f_pid == "") {
+                    tree.create_node("#", { id: data.f_id, text: data.f_nameLoc, nodeSvr: data });
+                }
+                else {
+                    var nodeSel = tree.get_node(data.f_pid);
+                    tree.create_node(nodeSel, { id: data.f_id, text: data.f_nameLoc, nodeSvr: data });
+                }
+            }
+            , folder_deleted: function (ids) {
+                var tree = $(_this.data.treeID).jstree(true);
+                tree.delete_node(ids);
+            }
+            , folder_renamed: function (data) {
+                var tree = $(_this.data.treeID).jstree(true);
+                tree.set_text(data.f_id, data.f_nameLoc);
+            }
             , file_md5_complete: function (obj) {
                 obj.fileSvr.pid = _this.pathCur.f_id;
                 obj.fileSvr.pidRoot = _this.pathCur.f_pidRoot;
             }
-            , scan_complete:function (f) {
+            , scan_complete: function (f) {
                 f.folderSvr.pid = _this.pathCur.f_id;
                 f.folderSvr.pidRoot = _this.pathCur.f_pidRoot;
             }
-            , up6_load_complete: function () {
-                setTimeout(function () {
-                    _this.attr.load_uncomp();
-                }, 1000);
-            }
             , btn_up_click: function () {
+                //上传
                 layer.open({
                     type: 2
                     , title: '上传文件'
@@ -112,8 +421,13 @@ function PageLogic() {
                     }
                     , btn_ok_click: function (ifm) {
                         var newData = ifm.toObj();
+                        var pidRoot = _this.pathCur.f_pidRoot;
+                        pidRoot = pidRoot.replace(/\s+/g, "");
+                        if (pidRoot == "") pidRoot = _this.pathCur.f_id;
+
                         var data = $.extend({}, newData, {
                             f_pid: _this.pathCur.f_id
+                            , f_pidRoot: pidRoot
                         });
 
                         var param = { data: encodeURIComponent(JSON.stringify(data)) };
@@ -123,7 +437,13 @@ function PageLogic() {
                             , url: "index.aspx?op=mk-folder"
                             , data: param
                             , success: function (res) {
-                                _this.attr.event.btn_refresh_click();
+                                if (!res.ret) {
+                                    layer.alert('创建失败,'+res.msg, { icon: 5 });
+                                }
+                                else {
+                                    _this.attr.event.folder_created(res);
+                                    _this.attr.event.btn_refresh_click();
+                                }
                             }
                             , error: function (req, txt, err) { }
                             , complete: function (req, sta) { req = null; }
@@ -135,7 +455,7 @@ function PageLogic() {
             , up6_sel_file: function () {
                 layer.open({
                     type: 1
-                    , maxmin :true
+                    , maxmin: true
                     , shade: 0//不显示遮罩
                     , title: '上传文件'
                     , offset: 'rb'//右下角
@@ -143,51 +463,42 @@ function PageLogic() {
                     , content: _this.attr.ui.up6
                     , area: ['635px', '454px']
                     , success: function (layero, index) {
-                        _this.attr.ui.up6.show();
+                        _this.data.panel.up.show();
                     }
                     , btn1: function (index, layero) {
                         layer.close(index);//关闭窗口
-                        _this.attr.ui.up6.hide();
+                        _this.data.panel.up.hide();
                     }
                     , btn2: function (index, layero) {
-                        _this.attr.ui.up6.hide();
+                        _this.data.panel.up.hide();
                     }
                 });
             }
             , btn_down_click: function () {
-                var pnl = $("#down2-panel");
-                pnl.removeClass("hide");
-                layer.open({
-                    type: 1
-                    , title: "下载"
-                    , btn: ['确定', '取消']
-                    , content: $("#down2-panel")
-                    , closeBtn: 0
-                    , area: ['439px', '528px']
-                    , success: function (layero, index) {
 
-                        if (_this.downer.Config["Folder"] == "") { _this.downer.app.openFolder(); return; }
-                        $.each(_this.files_checked, function (i, f) {
-                            //文件夹
-                            if (f.f_fdTask) {
-                                _this.downer.app.addFolder(f);
-                            }
-                            else {
-                                //下载数据转换：lenSvr,pathSvr,nameLoc,fileUrl
-                                var dt = { f_id:f.f_id,lenSvr: f.f_lenLoc, pathSvr: f.f_pathSvr, nameLoc: f.f_nameLoc, fileUrl: _this.downer.Config["UrlDown"] };
-                                _this.downer.app.addFile(dt);
-                            }
-                        });
-                    }
-                    , btn1: function (index, layero) {
-                        layer.close(index);//
-                        pnl.addClass("hide");
-                    }
-                    , btn2: function (index, layero) {
-                        pnl.addClass("hide");
-                    }
-                });
+                if (_this.data.down2.Config["Folder"] == "") {
+                    _this.data.down2.open_folder();
+                }
+                else {
+                    _this.open_down_panel();
+                    $.each(_this.files_checked, function (i, f) {
+                        if (_this.data.down2.exist_url(f.f_nameLoc)) {
+                            layer.alert('相同下载项已存在：' + f.f_nameLoc, { icon: 2 });
+                            return;
+                        }
+                        //文件夹
+                        if (f.f_fdTask) {
+                            var dt = { f_id: f.f_id, lenSvr: f.f_lenLoc, pathSvr: f.f_pathSvr, nameLoc: f.f_nameLoc, fileUrl: _this.data.down2.Config["UrlDown"] };
+                            _this.data.down2.app.addFolder(dt);
+                        }
+                        else {
+                            //下载数据转换：lenSvr,pathSvr,nameLoc,fileUrl
+                            var dt = { f_id: f.f_id, lenSvr: f.f_lenLoc, pathSvr: f.f_pathSvr, nameLoc: f.f_nameLoc, fileUrl: _this.data.down2.Config["UrlDown"] };
+                            _this.data.down2.app.addFile(dt);
 
+                        }
+                    });
+                }
             }
             , btn_search_click: function () {
                 layui.use(['table'], function () {
@@ -199,7 +510,7 @@ function PageLogic() {
                     });
 
                     //_this.attr.event.path_changed(data);
-                });  
+                });
             }
             , btn_del_click: function () {
                 layer.msg('确实要删除选中文件？', {
@@ -209,20 +520,23 @@ function PageLogic() {
                         layer.close(index);
 
                         var ids = [];
+                        var id_arr = [];
                         $.each(_this.files_checked, function (i, n) {
                             ids.push({ f_id: n.f_id, f_fdTask: n.f_fdTask });
+                            id_arr.push(n.f_id);
                         });
                         var str = JSON.stringify(ids);
                         str = encodeURIComponent(str);
                         var param = jQuery.extend({}, { data: str, time: new Date().getTime() });
                         $.ajax({
-                            type: "GET"
+                            type: "POST"
                             , dataType: "json"
                             , url: "index.aspx?op=del-batch"
                             , data: param
                             , success: function (res) {
                                 _this.attr.event.btn_refresh_click();
-                                $(_this.attr.ui.btnDel).addClass("hide");
+                                $(_this.attr.ui.btnDel).addClass("hide");                                
+                                _this.attr.event.folder_deleted(id_arr);
                             }
                             , error: function (req, txt, err) { }
                             , complete: function (req, sta) { req = null; }
@@ -252,16 +566,16 @@ function PageLogic() {
                     _this.files_checked = cs.data;
                 }
             }
-            , table_edit: function (obj,table) {
+            , table_edit: function (obj, table) {
 
-                var param = jQuery.extend({}, obj.data,{ f_nameLoc: obj.value });
+                var param = jQuery.extend({}, obj.data, { f_nameLoc: obj.value });
                 $.ajax({
                     type: "GET"
                     , dataType: "json"
                     , url: "index.aspx?op=rename"
                     , data: { data: JSON.stringify(param) }
                     , success: function (res) {
-                        obj.update({f_nameLoc: obj.value});
+                        obj.update({ f_nameLoc: obj.value });
                     }
                     , error: function (req, txt, err) { }
                     , complete: function (req, sta) { req = null; }
@@ -272,8 +586,8 @@ function PageLogic() {
                     title: "重命名"
                     , w: "589px"
                     , h: "167px"
-                    , url: "app/form.aspx"
-                    ,btn_ok:"确定"
+                    , url: "biz/form.aspx"
+                    , btn_ok: "确定"
                     , load_complete: function (ifm) {
                         ifm.initUI({
                             ui: [{ id: "f_nameLoc", txt: "文件名称" }]
@@ -291,7 +605,14 @@ function PageLogic() {
                             , url: "index.aspx?op=rename"
                             , data: param
                             , success: function (res) {
-                                obj.update({ "f_nameLoc": newData.f_nameLoc });
+                                if (res.state)
+                                {
+                                    obj.update({ "f_nameLoc": newData.f_nameLoc });
+                                    _this.attr.event.folder_renamed(data);
+                                }
+                                else {
+                                    layer.alert('更名失败,存在同名项', { icon: 5 });
+                                }
                             }
                             , error: function (req, txt, err) { }
                             , complete: function (req, sta) { req = null; }
@@ -306,12 +627,12 @@ function PageLogic() {
 
                 layer.msg(msg, {
                     time: 0 //不自动关闭
-                    ,icon:3
+                    , icon: 3
                     , btn: ['确定', '取消']
                     , yes: function (index) {
                         layer.close(index);
 
-                        var param = { id:obj.data.f_id };
+                        var param = { id: obj.data.f_id };
                         $.ajax({
                             type: "GET"
                             , dataType: "json"
@@ -319,6 +640,10 @@ function PageLogic() {
                             , data: param
                             , success: function (res) {
                                 obj.del();
+                                if (obj.data.f_fdTask) {
+                                    var ids = [obj.data.f_id];
+                                    _this.attr.event.folder_deleted(ids);
+                                }
                             }
                             , error: function (req, txt, err) { }
                             , complete: function (req, sta) { req = null; }
@@ -329,7 +654,34 @@ function PageLogic() {
 
             }
             , table_file_click: function (obj, table) {
-                if (obj.data.f_fdTask) _this.attr.open_folder(obj.data, table);
+                if (obj.data.f_fdTask) {
+                    _this.open_folder(obj.data);
+                    _this.open_tree_node(obj.data);
+                }
+            }
+            , table_down_click: function (obj, table) {
+                if (_this.data.down2.Config["Folder"] == "") {
+                    _this.data.down2.open_folder();
+                }
+                else {
+                    var f = obj.data;
+                    _this.open_down_panel();
+                    if (_this.data.down2.exist_url(f.f_nameLoc)) {
+                        layer.alert('相同下载项已存在：' + f.f_nameLoc, { icon: 2 });
+                        return;
+                    }
+                    //文件夹
+                    if (f.f_fdTask) {
+                        var dt = { f_id: f.f_id, lenSvr: f.f_lenLoc, pathSvr: f.f_pathSvr, nameLoc: f.f_nameLoc, fileUrl: _this.data.down2.Config["UrlDown"] };
+                        _this.data.down2.app.addFolder(dt);
+                    }
+                    else {
+                        //下载数据转换：lenSvr,pathSvr,nameLoc,fileUrl
+                        var dt = { f_id: f.f_id, lenSvr: f.f_lenLoc, pathSvr: f.f_pathSvr, nameLoc: f.f_nameLoc, fileUrl: _this.data.down2.Config["UrlDown"] };
+                        _this.data.down2.app.addFile(dt);
+
+                    }                    
+                }
             }
             , path_changed: function (data) {
                 _this.pathCur = data;
@@ -337,7 +689,7 @@ function PageLogic() {
                     type: "GET"
                     , dataType: "json"
                     , url: "index.aspx?op=path"
-                    , data: { data: encodeURIComponent(JSON.stringify(data) ) }
+                    , data: { data: encodeURIComponent(JSON.stringify(data)) }
                     , success: function (res) {
                         _this.attr.nav_path.folders = res;
                         _this.attr.nav_path.folderCur = data.f_id;
@@ -350,51 +702,13 @@ function PageLogic() {
         , table_events: {
             "up": function (obj, table) {
             }
-            , "mkFolder": function (obj, table) { _this.attr.event.table_file_click(obj, table);}
-            , "delete": function (obj, table) { _this.attr.event.table_del(obj, table);}
-            , "rename": function (obj, table) { _this.attr.event.table_rename(obj, table);}
+            , "mkFolder": function (obj, table) { _this.attr.event.table_file_click(obj, table); }
+            , "delete": function (obj, table) { _this.attr.event.table_del(obj, table); }
+            , "rename": function (obj, table) { _this.attr.event.table_rename(obj, table); }
             , "file": function (obj, table) { _this.attr.event.table_file_click(obj, table); }
+            , "down": function (obj, table) { _this.attr.event.table_down_click(obj, table); }
         }
-        , data: {}
-        , open_folder: function (data, table) {
-            layui.use(['table'], function () {
-                var table = layui.table;
-                table.reload('files', {
-                    url: 'index.aspx?op=data&pid=' + data.f_id //
-                    , page: { curr: 1 }//第一页
-                });
-
-                _this.attr.event.path_changed(data);
-            });            
-        }
-        , load_uncomp: function () {
-            var param = jQuery.extend({}, { time: new Date().getTime() });
-            $.ajax({
-                type: "GET"
-                , dataType: "json"
-                , url: "index.aspx?op=uncomp"
-                , data: param
-                , success: function (res) {
-                    $.each(res, function (i, n) {
-                        if (n.fdTask) {
-                            var f = _this.up6.addFolderLoc(n);
-                            f.folderInit = true;
-                            f.ui.btn.post.show();
-                            f.ui.btn.del.show();
-                        }
-                        else {
-                            var f = _this.up6.addFileLoc(n);
-                            f.ui.btn.post.show();
-                            f.ui.btn.del.show();
-                        }
-                    });
-                    _this.attr.event.up6_sel_file();
-                }
-                , error: function (req, txt, err) { }
-                , complete: function (req, sta) { req = null; }
-            });
-
-        }
+        
         , search: function (sql) {
             layui.use(['table'], function () {
                 var table = layui.table;
@@ -407,48 +721,21 @@ function PageLogic() {
     };
 
     this.init = function () {
+        this.data.panel.up = $("#up6-panel");
+        this.data.panel.down = $("#down2-panel");
+
         $.each(_this.attr.ui_ents, function (i, n) {
             $(n.id).bind(n.e, n.n);
         });
-
-        this.attr.ui.up6 = $("#up-panel");
-
-        this.attr.nav_path = new Vue({
-            el: '#path',
-            data: {
-                folders: [{ f_id: "", f_nameLoc: "根目录", f_pid: "",f_pidRoot:"" }]
-                ,folderCur:""
-            }, methods: {
-                open_folder: function (id) {
-                    var fd = $.grep(this.folders, function (n, i) {
-                        return n.f_id == id;
-                    });
-                    _this.attr.open_folder(fd[0]);
-                }
-            }
-        });
+        this.init_imgs();
+        this.init_path();
     };
     //
 }
 
-var pl = new PageLogic();
-
 $(function () {
-    pl.init();
-
-    pl.up6 = new HttpUploaderMgr();
-    pl.up6.event.fileComplete = function () { pl.attr.event.file_post_complete(); };
-    pl.up6.event.fdComplete = function () { pl.attr.event.folder_post_complete(); };
-    pl.up6.event.fileAppend = function (f) { pl.attr.event.file_append(f); };
-    pl.up6.event.folderAppend = function (f) { pl.attr.event.folder_append(f); };
-    pl.up6.event.scanComplete = function (f) { pl.attr.event.scan_complete(f); };
-    pl.up6.event.after_sel_file = function () { pl.attr.event.up6_sel_file(); };
-    pl.up6.event.md5Complete = function (obj) { pl.attr.event.file_md5_complete(obj); };
-    pl.up6.event.loadComplete = function () { pl.attr.event.up6_load_complete(); };
-    pl.up6.load_to("http-up6");
-
-    pl.downer = new DownloaderMgr();
-    pl.downer.Config["Folder"] = "";
-    pl.downer.loadTo("down2-panel");
-
+    pageApp.init();
+    pageApp.init_up6();
+    pageApp.init_down2();
+    pageApp.init_tree();
 });

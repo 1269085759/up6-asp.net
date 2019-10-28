@@ -40,8 +40,8 @@ function LayerWindow(obj)
         yes: function (index, layero) {
             var ifm = window[layero.find('iframe')[0]['name']];
             var body = layer.getChildFrame('body', index);
-            layer.close(index);//关闭窗口
             _this.sett.btn_ok_click(ifm);
+            layer.close(index);//关闭窗口
         },
         btn2: function (index, layero) { }
     });

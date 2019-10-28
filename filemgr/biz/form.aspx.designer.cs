@@ -7,7 +7,7 @@
 // </自动生成>
 //------------------------------------------------------------------------------
 
-namespace up6.filemgr.app {
+namespace up6.filemgr.biz {
     
     
     public partial class form {

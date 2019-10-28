@@ -3,6 +3,7 @@ using up6.db.biz;
 using up6.db.biz.folder;
 using up6.db.database;
 using up6.db.model;
+using up6.filemgr.app;
 
 namespace up6.db
 {
@@ -21,18 +22,21 @@ namespace up6.db
             }
             else
             {
-                FileInf inf = new FileInf();
-                DBFile db = new DBFile();
-                db.read(id,ref inf);
-                string root = inf.pathSvr;
+                DbFolder db = new DbFolder();
+                FileInf inf = db.read(id);
+                //根节点
+                FileInf root = new FileInf();
+                root.id = inf.pidRoot;
+                //当前节点是根节点
+                if (string.IsNullOrEmpty(root.id)) root.id = inf.id;
                 
                 //上传完毕
                 DBFile.fd_complete(id, uid);
 
                 //扫描文件夹结构，
                 fd_scan sa = new fd_scan();
-                sa.root = inf;//
-                sa.scan(inf,root);
+                sa.root = root;//
+                sa.scan(inf,inf.pathSvr);
 
                 //更新扫描状态
                 DBFile.fd_scan(id, uid);

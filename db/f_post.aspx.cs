@@ -48,7 +48,7 @@ namespace up6.db
             string blockIndex   = Request.Headers["blockIndex"];//当前块索引，基于1
             string blockMd5     = Request.Headers["blockMd5"];//块MD5
             string complete     = Request.Headers["complete"];//true/false
-            string pathSvr      = Request.Headers["pathSvr"];//add(2015-03-19):
+            string pathSvr      = Request.Form["pathSvr"];//
             pathSvr             = HttpUtility.UrlDecode(pathSvr);
 
             if( !this.safe_check(lenLoc,uid,f_id,blockOffset,pathSvr)) return;

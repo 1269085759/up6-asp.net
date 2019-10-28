@@ -7,9 +7,9 @@
 // </自动生成>
 //------------------------------------------------------------------------------
 
-namespace up6.db {
+namespace up6 {
     
     
-    public partial class sql {
+    public partial class single_panel {
     }
 }

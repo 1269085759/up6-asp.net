@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
+using System.Linq;
+using System.Web;
 
 namespace up6.filemgr.app
 {
@@ -21,7 +24,7 @@ namespace up6.filemgr.app
         public SqlParam(string name,string v)
         {
             this.m_name = name;
-            this.m_valStr = v.Trim();
+            this.m_valStr = v;
             this.m_typeDb = DbType.String;
             this.m_type = "string";
         }

@@ -9,6 +9,10 @@ namespace up6.filemgr.app
 {
     public class WebBase : System.Web.UI.Page
     {
+        /// <summary>
+        /// 默认加载data/config/config.json
+        /// </summary>
+        public JToken m_config;
         public JObject m_site;
         //
         public JToken m_cfgObj;
@@ -24,7 +28,7 @@ namespace up6.filemgr.app
         /// </summary>
         public JObject param = new JObject();
         /// <summary>
-        /// 默认加载
+        /// 默认加载/data/config/AppPath.json
         /// </summary>
         public JToken m_path;
 
@@ -48,7 +52,8 @@ namespace up6.filemgr.app
 
         public void regParamPath()
         {
-            this.param.Add("path", this.m_path);
+            var o = this.m_webCfg.module("path");
+            this.param.Add("path", o);
         }
 
         public void regParamRequest() {
@@ -64,7 +69,7 @@ namespace up6.filemgr.app
             this.param.Add("url", HttpContext.Current.Request.Url.AbsoluteUri);
         }
 
-        public JObject req_to_json() {
+        public JObject request_to_json() {
             JObject query = new JObject();
             foreach (var key in HttpContext.Current.Request.QueryString.Keys)
             {
@@ -76,48 +81,6 @@ namespace up6.filemgr.app
         }
 
         /// <summary>
-        /// 检查head值
-        /// </summary>
-        /// <returns></returns>
-        public bool req_val_null_empty(string names)
-        {
-            var arr = names.Split(',');
-            foreach (var a in arr)
-            {
-                var kv = Request.QueryString[a.Trim()];
-                if (string.IsNullOrEmpty(kv.Trim())) return true;
-            }
-            return false;
-        }
-
-        public JObject head_to_json()
-        {
-            JObject query = new JObject();
-            foreach (var key in HttpContext.Current.Request.Headers)
-            {
-                var kv = HttpContext.Current.Request.Headers[key.ToString()];
-                JObject obj = new JObject { { key.ToString(), kv } };
-                query.Add(key.ToString(), kv);
-            }
-            return query;
-        }
-
-        /// <summary>
-        /// 检查head值
-        /// </summary>
-        /// <returns></returns>
-        public bool head_val_null_empty(string names)
-        {
-            var arr = names.Split(',');
-            foreach (var a in arr)
-            {
-                var kv = HttpContext.Current.Request.Headers[a.Trim()];
-                if (string.IsNullOrEmpty(kv.Trim())) return true;
-            }
-            return false;
-        }
-
-        /// <summary>
         /// 注册页面级变量
         /// </summary>
         /// <returns></returns>
@@ -126,6 +89,7 @@ namespace up6.filemgr.app
             string v = string.Format("<script>var page={0};</script>", JsonConvert.SerializeObject(this.param));
             return v;
         }
+
         public string toInclude(string file)
         {
             bool css = file.ToLower().EndsWith("css");
@@ -169,6 +133,82 @@ namespace up6.filemgr.app
                 }
             }
             return sb.ToString();
+        }
+
+        public string localFile(string file)
+        {
+            var ps = HttpContext.Current.Server.MapPath(file);
+            return File.ReadAllText(ps);
+        }
+
+        public string localFile(JToken t)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            if (t.Type == JTokenType.Array)
+            {
+                foreach (var jt in t)
+                {
+                    var data = this.localFile(jt.ToString());
+                    sb.Append(data);
+                }
+            }
+            else if (t.Type == JTokenType.String)
+            {
+                sb.Append(this.localFile(t.ToString()));
+            }
+            return sb.ToString();
+        }
+
+        /// <summary>
+        /// 加载模板文件,
+        /// </summary>
+        /// <param name="file">模板文件相对路径,/data/tmp.html</param>
+        /// <returns></returns>
+        public string template(string file)
+        {
+            HtmlTemplater ht = new HtmlTemplater();
+            ht.setFile(file);
+            return ht.toString();
+        }
+
+        public string template(JToken t)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            HtmlTemplater ht = new HtmlTemplater();
+            if (t.Type == JTokenType.Array)
+            {
+                foreach (var jt in t)
+                {
+                    ht.setFile(jt.ToString());
+                    sb.Append(ht.ToString());
+                }
+            }
+            else if (t.Type == JTokenType.String)
+            {
+                ht.setFile(t.ToString());
+                sb.Append(ht.toString());
+            }
+            return sb.ToString();
+        }
+
+        /// <summary>
+        /// 将JSON作为页面内容输出，
+        /// </summary>
+        /// <param name="p"></param>
+        public void toContent(JToken p)
+        {
+            Response.Clear();
+            Response.Write(JsonConvert.SerializeObject(p));
+            Response.End();
+        }
+
+        public void toContent(string v)
+        {
+            Response.Clear();
+            Response.Write(v);
+            Response.End();
         }
     }
 }

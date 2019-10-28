@@ -3,7 +3,7 @@ function FileUploader(fileLoc, mgr)
 {
     var _this = this;
     this.id = fileLoc.id;
-    this.ui = { msg: null, process: null, percent: null, btn: { del: null, cancel: null,post:null,stop:null }, div: null, split: null };
+    this.ui = { msg: null, process: null, percent: null, btn: { del: null, cancel: null,post:null,stop:null }, div: null};
     this.isFolder = false; //不是文件夹
     this.app = mgr.app;
     this.Manager = mgr; //上传管理器指针
@@ -11,7 +11,7 @@ function FileUploader(fileLoc, mgr)
     this.FileListMgr = mgr.FileListMgr;//文件列表管理器
     this.Config = mgr.Config;
     this.fields = jQuery.extend({}, mgr.Config.Fields, fileLoc.fields);//每一个对象自带一个fields幅本
-    this.State = HttpUploaderState.None;
+    this.State = this.Config.state.None;
     this.uid = this.fields.uid;
     this.fileSvr = {
           pid: ""
@@ -40,7 +40,36 @@ function FileUploader(fileLoc, mgr)
     this.Ready = function ()
     {
         this.ui.msg.text("正在上传队列中等待...");
-        this.State = HttpUploaderState.Ready;
+        this.State = this.Config.state.Ready;
+        this.ui.btn.post.click(function () {
+            _this.ui.btn.post.hide();
+            _this.ui.btn.del.hide();
+            _this.ui.btn.cancel.hide();
+            _this.ui.btn.stop.show();
+            if (!_this.Manager.IsPostQueueFull()) {
+                _this.post();
+            }
+            else {
+                _this.ui.msg.text("正在上传队列中等待...");
+                _this.State = _this.Config.state.Ready;
+                $.each(_this.ui.btn, function (i, n) { n.hide(); });
+                _this.ui.btn.del.show();
+                //添加到队列
+                _this.Manager.AppendQueue(_this.fileSvr.id);
+            }
+        });
+        this.ui.btn.stop.click(function () {
+            _this.stop();
+        });
+        this.ui.btn.del.click(function () {
+            _this.stop();
+            _this.remove();
+        });
+        this.ui.btn.cancel.click(function () {
+            _this.stop();
+            _this.remove();
+            //_this.PostFirst();//
+        });
     };
 
     this.svr_error = function ()
@@ -105,7 +134,7 @@ function FileUploader(fileLoc, mgr)
         this.ui.percent.text("(100%)");
         this.ui.msg.text("上传完成");
         this.Manager.arrFilesComplete.push(this);
-        this.State = HttpUploaderState.Complete;
+        this.State = this.Config.state.Complete;
         //从上传列表中删除
         this.Manager.RemoveQueuePost(this.fileSvr.id);
         //从未上传列表中删除
@@ -138,7 +167,7 @@ function FileUploader(fileLoc, mgr)
         this.ui.percent.text("(100%)");
         this.ui.msg.text("服务器存在相同文件，快速上传成功。");
         this.Manager.arrFilesComplete.push(this);
-        this.State = HttpUploaderState.Complete;
+        this.State = this.Config.state.Complete;
         //从上传列表中删除
         this.Manager.RemoveQueuePost(this.fileSvr.id);
         //从未上传列表中删除
@@ -156,13 +185,13 @@ function FileUploader(fileLoc, mgr)
         this.ui.btn.stop.hide();
         this.ui.msg.text("传输已停止....");
 
-        if (HttpUploaderState.Ready == this.State)
+        if (this.Config.state.Ready == this.State)
         {
             this.Manager.RemoveQueue(this.fileSvr.id);
             this.post_next();
             return;
         }
-        this.State = HttpUploaderState.Stop;
+        this.State = this.Config.state.Stop;
         //从上传列表中删除
         this.Manager.RemoveQueuePost(this.fileSvr.id);
         this.Manager.AppendQueueWait(this.fileSvr.id);//添加到未上传列表
@@ -172,12 +201,12 @@ function FileUploader(fileLoc, mgr)
     this.post_error = function (json)
     {
         this.svr_update();
-        this.ui.msg.text(HttpUploaderErrorCode[json.value]);
+        this.ui.msg.text(this.Config.errCode[json.value]);
         this.ui.btn.stop.hide();
         this.ui.btn.post.show();
         this.ui.btn.del.show();
 
-        this.State = HttpUploaderState.Error;
+        this.State = this.Config.state.Error;
         //从上传列表中删除
         this.Manager.RemoveQueuePost(this.fileSvr.id);
         //添加到未上传列表
@@ -221,7 +250,7 @@ function FileUploader(fileLoc, mgr)
     };
     this.md5_error = function (json)
     {
-        this.ui.msg.text(HttpUploaderErrorCode[json.value]);
+        this.ui.msg.text(this.Config.errCode[json.value]);
         //文件大小超过限制,文件大小为0
         if ("4" == json.value
 			|| "5" == json.value)
@@ -234,7 +263,7 @@ function FileUploader(fileLoc, mgr)
             this.ui.btn.post.show();
             this.ui.btn.stop.hide();
         }
-        this.State = HttpUploaderState.Error;
+        this.State = this.Config.state.Error;
         //从上传列表中删除
         this.Manager.RemoveQueuePost(this.fileSvr.id);
         //添加到未上传列表
@@ -262,35 +291,29 @@ function FileUploader(fileLoc, mgr)
     };
     this.post_file = function ()
     {
-        this.ui.btn.cancel.hide();
+        $.each(this.ui.btn, function (i, n) { n.hide();});
         this.ui.btn.stop.show();
-        this.State = HttpUploaderState.Posting;//
-        this.fields["pathSvr"] = encodeURIComponent(this.fileSvr.pathSvr);
-        this.fields["lenLoc"] = this.fileSvr.lenLoc;
-        this.fields["md5"] = this.fileSvr.md5;
-        this.app.postFile({ id: this.fileSvr.id, pathLoc: this.fileSvr.pathLoc, lenSvr: this.fileSvr.lenSvr, fields: this.fields });
+        this.State = this.Config.state.Posting;//
+        this.app.postFile({ id: this.fileSvr.id, pathLoc: this.fileSvr.pathLoc, pathSvr:this.fileSvr.pathSvr,lenSvr: this.fileSvr.lenSvr, fields: this.fields });
     };
     this.check_file = function ()
     {
         //this.ui.btn.cancel.text("停止").show();
         this.ui.btn.stop.show();
         this.ui.btn.cancel.hide();
-        this.State = HttpUploaderState.MD5Working;
+        this.State = this.Config.state.MD5Working;
         this.app.checkFile({ id: this.fileSvr.id, pathLoc: this.fileSvr.pathLoc });
     };
     this.stop = function ()
     {
-        this.ui.btn.del.hide();
-        this.ui.btn.cancel.hide();
-        this.ui.btn.stop.hide();
-        this.ui.btn.post.hide();
+        $.each(this.ui.btn, function (i, n) { n.hide();});
         this.svr_update();
         this.app.stopFile({ id: this.fileSvr.id });        
     };
     //手动停止，一般在StopAll中调用
     this.stop_manual = function ()
     {
-        if (HttpUploaderState.Posting == this.State)
+        if (this.Config.state.Posting == this.State)
         {
             this.svr_update();
         	this.ui.btn.post.show();
@@ -298,15 +321,15 @@ function FileUploader(fileLoc, mgr)
         	this.ui.btn.cancel.hide();
             this.ui.msg.text("传输已停止....");
             this.app.stopFile({ id: this.fileSvr.id ,tip:false});
-            this.State = HttpUploaderState.Stop;
+            this.State = this.Config.state.Stop;
         }
     };
 
     //删除，一般在用户点击"删除"按钮时调用
     this.remove = function ()
     {
+        this.Manager.del_file(this.fileSvr.id);
         this.app.delFile(this.fileSvr);
         this.ui.div.remove();
-        this.ui.split.remove();
     };
 }

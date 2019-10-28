@@ -19,10 +19,11 @@ namespace up6.filemgr.app
     {
         List<SqlSearchCombParam> m_pars = new List<SqlSearchCombParam>();
 
-        public SqlSearchComb() {
+        public SqlSearchComb()
+        {
         }
 
-        public void add(SqlSearchCombParam p )
+        public void add(SqlSearchCombParam p)
         {
             this.m_pars.Add(p);
         }
@@ -32,13 +33,13 @@ namespace up6.filemgr.app
         /// <para>请求格式：url?where=urlencode(v)</para>
         /// </summary>
         /// <param name="pname">变量名称，默认为where</param>
-        public void parse(string pname="where")
+        public void parse(string pname = "where")
         {
             var kv = HttpContext.Current.Request.QueryString[pname];
             if (!string.IsNullOrEmpty(kv))
             {
                 kv = HttpContext.Current.Server.UrlDecode(kv);
-                this.m_pars= JsonConvert.DeserializeObject<List<SqlSearchCombParam>>(kv);
+                this.m_pars = JsonConvert.DeserializeObject<List<SqlSearchCombParam>>(kv);
             }
         }
 
@@ -46,7 +47,8 @@ namespace up6.filemgr.app
         /// 转换为SQL语句
         /// <para>age=10 and qq=1</para>
         /// </summary>
-        public string to_sql() {
+        public string to_sql()
+        {
             var ss = from s in this.m_pars
                      select s.expression;
             return string.Join(" and  ", ss);
@@ -68,8 +70,12 @@ namespace up6.filemgr.app
         /// <summary>
         /// 获取JSON值，提供给sql.search.js使用。注册成变量(page.where)
         /// </summary>
-        public JToken Value { get {
+        public JToken Value
+        {
+            get
+            {
                 return JToken.FromObject(this.m_pars);
-            } }
+            }
+        }
     }
 }

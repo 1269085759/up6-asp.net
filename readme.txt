@@ -1,2 +1,218 @@
 ﻿数据库：SQL2005
-编码：GB2312
+编码：utf-8
+
+NuGet安装依赖
+Install-Package Newtonsoft.Json
+Install-Package Microsoft.Experimental.IO
+
+文件管理器
+	filemgr/index.aspx
+	路径配置
+	  filemgr/data/config/path.json
+	模板路径配置
+	  filemgr/data/config/config.json
+
+========================================================================
+更新记录：
+2019-07-25
+	linux控件包下载路径更新
+2019-07-24
+	增加对linux平台的支持
+	down2增加对mac,linux的支持
+	up6增加linux控件下载链接,增加对linux的识别
+	down2启动协议更新
+	down2启动时间改为3秒
+	up6文件管理器启动协议更新
+	up6文件管理器增加对mac,linux的支持
+2019-07-19
+	edge控件连接频率改为3秒
+	edge启动协议支持macOS-chrome
+	增加mac平台判断逻辑
+	控件下载地址增加mac判断
+2019-06-05
+	优化文件夹停止逻辑
+	文件夹按钮事件移到up6.folder.js中，完善文件夹上传队列逻辑
+	优化文件上传队列等待逻辑
+	  当上传队列已满时，文件项显示删除按钮。
+	  up6.file.js
+	修复上传队列按钮没有隐藏的问题。
+	文件管理器完善新建目录功能
+	  验证同名文件增加
+	文件管理器文件列表取消文件夹大小显示
+	文件管理器文件列表增加下载按钮
+	  filemgr/index.aspx
+	  filemgr/data/index.js
+2019-06-03
+	精简代码
+	完善删除文件逻辑
+	文件管理器优化文件初始化逻辑
+2019-06-01
+	优化file事件写法,将按钮事件移到Ready方法中
+	修复删除上传队列项时其它项无法上传的问题。
+	  grep用法错误导致
+	  up6.js
+2019-05-31
+	修复未上传完列表加载逻辑字段名称未转换的问题
+	  修复未上传完列表数据为空的问题,f_fdChild=1条件导致
+	  index.aspx.cs
+2019-05-30
+	完善路径生成逻辑
+	  DbFolder.build_path_by_id
+	完善子目录下载逻辑
+2019-05-29
+	完善文件重命名逻辑
+	完善目录重命名逻辑
+	  index.js
+	完善子目录上传逻辑。
+	  fd_complete.aspx
+	文件上传增加同名检查逻辑。
+	  up6.file.js
+	  f_create.aspx
+2019-05-28
+	完善子文件上传逻辑
+	文件初始化增加pid,pidRoot参数
+	完善批量删除目录逻辑
+	完善同步选择逻辑
+	增加新建目录功能。
+	完善目录树导航逻辑
+	完善文件夹下载逻辑，忽略已删除的文件和目录
+	完善批量删除文件夹功能
+2019-05-27
+	初步完善树节点加载
+	  完善目录选择及跳转逻辑
+	初步完成子文件构建逻辑。
+	  根据选择的目录自动生成相对路径。
+	  根据选择的目录加载对应的文件。
+	修复文件夹下载后没有从已存在列表中清除的问题
+	  down.folder.js
+2019-05-24
+	SQL对象优化
+	管理器页面优化
+2019-05-22
+	完善文件加载逻辑
+	完善页面刷新和关闭逻辑
+	完善文件续传逻辑
+	  up6.file.js
+2019-05-19
+	增加分页存储过程
+	  spPager.sql
+	删除存储过程fd_files_check.sql
+	文件夹表结构更新
+	  DBFile.cs
+	  DBFolder.cs
+	  up6_folders
+2019-05-16
+	首页增加文件管理器演示链接
+2019-05-14
+	文件项与文件夹项模板合并
+	  ui-up.htm
+	  up6.js
+	修复文件尺寸ui项错误的问题
+2019-05-13
+	新增文件管理器
+	web.config增加woff映射
+	up6增加加载完毕的事件
+	  up6.js
+	添加文件和目录后触发事件
+2019-05-12
+	下载样式优化
+	  分隔线与文件项合并
+	  精简按钮背景项样式
+	  文件ui元素合并到模板
+	  down.js
+	下载，增加防重复功能。针对任务名称来检查
+	  down.js
+	down2，将错误码和状态码合并到down.js.Config中
+	  down.js
+	  down.file.js
+	  down.folder.js
+2019-05-11
+	新增错误码，读取文件夹配置信息错误
+	  up6.js
+2019-05-09
+	下载示例删除remove方法
+	  down.js
+2019-05-08
+	单面板演示页面名称更新
+	  index2.aspx
+2019-05-07
+	文件路径接收方式由head改为form,在head中容易报413错误
+	  f_post.aspx.cs
+	文件附加字段取消pathSvr,不以附加字段传递，以值传递
+	  up6.file.js.post_file
+
+	单面板加载文件列表逻辑更新
+	单面板续传逻辑完善
+	单面板错误码状态码合并到Config中
+	多文件上传将错误码合并到Config中
+	多文件上传将状态码合并到Config中
+	  up6.js
+
+2019-04-29
+	加载未完成列表增加没有扫描的列表
+	  un_builder.cs
+	    f_scan=0
+	  up6.folder.js
+	    post
+
+2019-04-28
+	修复edge控件初始化两次的问题
+	  up6.js
+	    load_complete
+
+2019-04-27
+	增加错误码
+	  up6.js
+	  12,13,14,15
+	删除文件夹后清除本地路径
+	新增删除文件对象方法，从队列中取消文件夹时调用。从队列中取消文件时调用
+	  up6.js
+	    del_file
+	  up6.folder.js
+	    remove方法更新，
+	新增单面板示例，
+	  自动加载未完成列表
+	  js/single-panel
+	  single-panel.aspx
+	优化edge控件加载逻辑
+	  up6.edge.js
+	修复load_complete_edge会触发多次的问题
+	  新增nativeLoaded
+	传输已停止，改为定时器调用
+	  up6.folder.js
+	    post_stoped
+	分隔线样式与文件样式合并
+	  up6.css
+	  up6.js
+	  up6.file.js
+	  up6.folder.js
+	文件夹，folderSvr属性名称更名为fileSvr
+	  up6.folder.js
+	down2,edge控件加载逻辑更新
+	  down.edge.js
+	    runChr
+	  app名称更新
+	    down.app.js
+		  down2_app
+	  edge初始化逻辑更新，防止频繁初始化
+	    down.js
+		  load_complete_edge
+	单面板样式优化
+	  single-panel
+	    up6.css
+		up6.js
+		js/16
+
+2019-04-26
+	1.添加文件，添加文件夹时检查防止重复添加
+		up6.js
+		addFileLoc
+		addFolderLoc
+	2.文件夹增加自动续传功能
+		up6.js
+		Config.AutoConnect
+	3.增加对长路径的处理。
+		FileBlockWriter.make
+		新增PathTool.cs
+	4.新增服务器错误标识
+	  11

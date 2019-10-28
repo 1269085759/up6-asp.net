@@ -7,9 +7,9 @@
 // </自动生成>
 //------------------------------------------------------------------------------
 
-namespace up6.vue {
+namespace up6 {
     
     
-    public partial class index {
+    public partial class vue {
     }
 }
