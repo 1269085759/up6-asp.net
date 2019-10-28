@@ -14,6 +14,11 @@ Install-Package Microsoft.Experimental.IO
 
 ========================================================================
 更新记录：
+2019-10-28
+	pdf,pdf增加缩略图支持
+	  thumb字段：thumb
+	  thumb文件名称：原始名称.thumb.png
+	  thumb数据：文件块的最后一块
 2019-07-25
 	linux控件包下载路径更新
 2019-07-24

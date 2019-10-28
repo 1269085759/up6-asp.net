@@ -26,6 +26,23 @@ namespace up6.db
         }
 
         /// <summary>
+        /// 保存缩略图，psd,pdf
+        /// </summary>
+        void saveThumb(string pathSvr) {
+            string complete = Request.Headers["complete"];
+            HttpPostedFile thumb = null;//缩略图
+            if (string.Compare(complete, "true", true) == 0)
+            {
+                thumb = Request.Files.Get("thumb");
+                //保存缩略图
+                FileBlockWriter res = new FileBlockWriter();
+                string thumbPath = pathSvr + ".thumb.png";
+                res.make(thumbPath, thumb.InputStream.Length);
+                res.write(thumbPath, 0, ref thumb);
+            }
+        }
+
+        /// <summary>
         /// 只负责拼接文件块。将接收的文件块数据写入到文件中。
         /// 更新记录：
         ///		2012-04-12 更新文件大小变量类型，增加对2G以上文件的支持。
@@ -60,6 +77,7 @@ namespace up6.db
                 string msg = string.Empty;
                 string md5Svr = string.Empty;
                 HttpPostedFile file = Request.Files.Get(0);//文件块
+                this.saveThumb(pathSvr);//保存缩略图
 
                 //计算文件块MD5
                 if (!string.IsNullOrEmpty(blockMd5))
