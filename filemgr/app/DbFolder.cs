@@ -183,6 +183,44 @@ namespace up6.filemgr.app
         }
 
         /// <summary>
+        /// 构建路径
+        /// </summary>
+        /// <param name="fd"></param>
+        /// <returns></returns>
+        public JToken build_path(JObject fdCur)
+        {
+            //查询文件表目录数据
+            SqlExec se = new SqlExec();
+            var files = se.select("up6_files", "f_id,f_pid,f_nameLoc", new SqlParam[] { new SqlParam("f_fdTask", true) });
+            var folders = se.select("up6_folders", "f_id,f_pid,f_nameLoc",new SqlParam[] { });
+            var id = fdCur["f_id"].ToString().Trim();//
+
+            //根目录
+            List<JToken> psort = new List<JToken>();
+            if (string.IsNullOrEmpty(id))
+            {
+                psort.Insert(0, this.root);
+
+                return JToken.FromObject(psort);
+            }
+
+            //构建目录映射表(id,folder)
+            Dictionary<string, JToken> dtFiles = this.toDic(ref files);
+            Dictionary<string, JToken> dtFolders = this.toDic(ref folders);
+            foreach (var fd in dtFolders)
+            {
+                if(!dtFiles.ContainsKey(fd.Key))dtFiles.Add(fd.Key, fd.Value);
+            }
+
+            //按层级顺序排列目录
+            this.sortByPid(ref dtFiles, id, ref psort);
+
+            psort.Insert(0, this.root);
+
+            return JToken.FromObject(psort);
+        }
+
+        /// <summary>
         /// 获取所有子目录
         /// </summary>
         /// <param name="id"></param>

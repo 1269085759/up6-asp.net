@@ -1,4 +1,5 @@
 ﻿Vue.component('up6', {
+    props: ['f_create','fd_create'],
     data: function () {
         return {
             mgr: null
@@ -24,6 +25,8 @@
     mounted: function () {
         var _this = this;
         this.mgr = new HttpUploaderMgr();
+        this.mgr.Config["UrlCreate"] = this.f_create;
+        this.mgr.Config["UrlFdCreate"] = this.fd_create;
         this.mgr.event.loadComplete = function () {
             _this.pluginInited = true;
             
@@ -45,7 +48,7 @@
     },
     template: '<div name="files-panel" class="post-container">\
         <div class="post-item" name="file" >\
-        <div class="img-box"><img :src="ico.file" /><img :src="ico.folder" class="hide1" /></div>\
+        <div class="img-box"><img name="file" :src="ico.file" /><img name="folder" :src="ico.folder" class="hide1" /></div>\
         <div class="area-l">\
             <div class="file-head">\
                 <div name="name" class="name">HttpUploader程序开发.pdf</div>\

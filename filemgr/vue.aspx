@@ -53,13 +53,19 @@
                         删除</button>
                         </div>
                 </div>
+                <!--上传面板-->
                 <up6 id="pnl-up" ref="up6" style="display: none;" 
+                    :fd_create="url.fd_create"
+                    :f_create="url.f_create"
                     @load_complete="up6_loadComplete"
                     @item_selected="up6_itemSelected"
                     @file_append="up6_fileAppend"
                     @file_complete="up6_fileComplete"
                     @folder_complete="up6_folderComplete"></up6>
-                <down2 id="pnl-down" ref="down2" style="display: none;"></down2>
+                <!--下载面板-->
+                <down2 id="pnl-down" ref="down" style="display: none;"
+                    @load_complete="down_loadComplete"
+                    @same_file_exist="down_sameFileExist"></down2>
                 <!--路径导航-->
                 <ol class="breadcrumb  m-t-xs" style="margin-bottom: -5px;">
                     <template v-for="p in pathNav">
@@ -87,7 +93,7 @@
                             <td>{{tm_format(f.f_time)}}</td>
                             <td>
                                 <a class="m-r-md link" @click=""><img :src="ico.btnEdit"/>重命名</a>
-                                <a class="m-r-md link" @click=""><img :src="ico.btnDown"/>下载</a>
+                                <a class="m-r-md link" @click="itemDown_click(f)"><img :src="ico.btnDown"/>下载</a>
                                 <a class=" link" @click="btnDel_click(f)"><img :src="ico.btnDel"/>删除</a>
                             </td>
                         </tr>

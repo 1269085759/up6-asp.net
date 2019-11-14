@@ -728,7 +728,11 @@ $(function () {
         el: '#app',
         data: {
             items: page.items.data
-            ,count:page.items.count
+            , count: page.items.count
+            , url: {
+                f_create: page.path.root + "filemgr/vue.aspx?op=f_create",
+                fd_create: page.path.root + "filemgr/vue.aspx?op=fd_create"
+            }
             , pathNav: []
             , pathCur: { f_id: "", f_pid: "", f_pidRoot: "", f_nameLoc: "根目录", f_pathRel: "/" }
             , pathRoot: { f_id: "", f_pid: "", f_pidRoot: "", f_nameLoc: "根目录", f_pathRel: "/" }
@@ -860,7 +864,28 @@ $(function () {
                     }
                 });
             }
-            , openDown_click: function () { }
+            , openDown_click: function () {
+                layer.open({
+                    type: 1
+                    , maxmin: true
+                    , shade: 0//不显示遮罩
+                    , title: '文件下载'
+                    , offset: 'rb'//右下角
+                    //, btn: ['确定', '取消']
+                    , content: $("#pnl-down")
+                    , area: ['452px', '562px']
+                    , success: function (layero, index) {
+                        $(v_app.$refs.down2).show();                        
+                    }
+                    , btn1: function (index, layero) {
+                        layer.close(index);
+                        $(v_app.$refs.down2).hide();                        
+                    }
+                    , btn2: function (index, layero) {
+                        $(v_app.$refs.down2).hide();                        
+                    }
+                });
+            }
             , nav_click: function (p) {
                 //加载路径
                 var param = jQuery.extend({}, p,{time: new Date().getTime() });
@@ -936,7 +961,20 @@ $(function () {
                 });
 
             }
+            , itemDown_click: function (f) {
+                var dt = {
+                    f_id: f.f_id
+                    , lenSvr: f.f_lenLoc
+                    , pathSvr: f.f_pathSvr
+                    , nameLoc: f.f_nameLoc
+                    , fileUrl: this.$refs.down.mgr.Config["UrlDown"]
+                };
+
+                v_app.$refs.down.mgr.app.addFile(dt);
+            }
+            , itemRename_click: function (f) { }
             , up6_loadComplete: function () {
+                this.up6_loadTask();
             }
             , up6_itemSelected: function () {
                 this.openUp_click();
@@ -950,6 +988,72 @@ $(function () {
             }
             , up6_folderComplete: function (f) {
                 this.page_changed(1, 20);
+            }
+            , up6_loadTask: function () {
+                var param = jQuery.extend({}, { time: new Date().getTime() });
+                $.ajax({
+                    type: "GET"
+                    , dataType: "json"
+                    , url: "vue.aspx?op=uncomp"
+                    , data: param
+                    , success: function (res) {
+                        if (res.length > 0) _this.open_upload_panel();
+
+                        $.each(res, function (i, n) {
+                            if (n.fdTask) {
+                                var f = v_app.$refs.up6.mgr.addFolderLoc(n);
+                                f.folderInit = true;
+                                f.folderScan = true;
+                                f.ui.btn.post.show();
+                                f.ui.btn.del.show();
+                                f.ui.btn.cancel.hide();
+                            }
+                            else {
+                                var f = v_app.$refs.up6.mgr.addFileLoc(n);
+                                f.ui.percent.text("(" + n.perSvr + ")");
+                                f.ui.process.css("width", n.perSvr);
+                                f.ui.btn.post.show();
+                                f.ui.btn.del.show();
+                                f.ui.btn.cancel.hide();
+                            }
+                        });
+                    }
+                    , error: function (req, txt, err) { }
+                    , complete: function (req, sta) { req = null; }
+                });
+            }
+            , down_loadComplete: function () {
+                this.down_loadTask();
+            }
+            , down_sameFileExist: function (n) { }
+            , down_loadTask: function () {
+                //加载未完成的任务
+                var param = $.extend({}, this.$refs.down.mgr.Config.Fields);
+                $.ajax({
+                    type: "GET"
+                    , dataType: 'json'
+                    , jsonp: "callback" //自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名
+                    , url: "vue.aspx?op=uncmp-down"
+                    , data: param
+                    , success: function (files) {
+                        if (files.length > 0) { _this.open_down_panel(); }
+                        $.each(files, function (i, n) {
+                            var dt = {
+                                svrInit: true
+                                , id: n.f_id
+                                , lenLoc: n.f_lenLoc
+                                , pathLoc: n.f_pathLoc
+                                , nameLoc: n.f_nameLoc
+                                , sizeSvr: n.f_sizeSvr
+                                , perLoc: n.f_perLoc
+                                , fdTask: n.f_fdTask
+                            };
+                            v_app.$refs.down.mgr.resume_file(dt);
+                        });
+                    }
+                    , error: function (req, txt, err) { alert("加载文件列表失败！" + req.responseText); }
+                    , complete: function (req, sta) { req = null; }
+                });
             }
         }
     });

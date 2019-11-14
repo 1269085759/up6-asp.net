@@ -38,16 +38,13 @@ namespace up6.filemgr
 
             string id = Request.QueryString["id"];
             string pid = Request.QueryString["pid"];
-            string pidRoot = Request.QueryString["pidRoot"];
             string uid = Request.QueryString["uid"];
             string lenLoc = Request.QueryString["lenLoc"];
             string sizeLoc = Request.QueryString["sizeLoc"];
             string pathLoc = HttpUtility.UrlDecode(Request.QueryString["pathLoc"]);
             string callback = Request.QueryString["callback"];//jsonp参数
             if (string.IsNullOrEmpty(pid)) pid = string.Empty;
-            if (string.IsNullOrEmpty(pidRoot)) pidRoot = pid;
             pid = pid.Trim();
-            pidRoot = pidRoot.Trim();
 
             if (string.IsNullOrEmpty(id)
                 || string.IsNullOrEmpty(uid)
@@ -334,7 +331,7 @@ namespace up6.filemgr
 
             DbFolder df = new DbFolder();
 
-            this.toContent(df.build_path_by_id(fd));
+            this.toContent(df.build_path(fd));
         }
 
         void file_rename()
