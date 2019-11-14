@@ -962,6 +962,7 @@ $(function () {
 
             }
             , itemDown_click: function (f) {
+                if (!this.$refs.down.check_path()) return;
                 var dt = {
                     f_id: f.f_id
                     , lenSvr: f.f_lenLoc
@@ -971,6 +972,7 @@ $(function () {
                 };
 
                 v_app.$refs.down.mgr.app.addFile(dt);
+                this.openDown_click();
             }
             , itemRename_click: function (f) { }
             , up6_loadComplete: function () {
