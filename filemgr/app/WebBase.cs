@@ -80,6 +80,13 @@ namespace up6.filemgr.app
             return query;
         }
 
+        public string reqToString(string name)
+        {
+            var v = HttpContext.Current.Request.QueryString[name];
+            if (string.IsNullOrEmpty(v)) return string.Empty;
+            return v;
+        }
+
         /// <summary>
         /// 注册页面级变量
         /// </summary>

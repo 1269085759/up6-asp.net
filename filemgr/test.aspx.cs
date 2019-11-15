@@ -9,9 +9,13 @@ namespace up6.filemgr
         protected void Page_Load(object sender, EventArgs e)
         {
             var id = Request.QueryString["id"];
-            DnFolder df = new DnFolder();
-            var data = df.files(id);
-            Response.Write(data);
+            if (string.IsNullOrEmpty(id)) return;
+            //DnFolder df = new DnFolder();
+            //var data = df.files(id);
+            //Response.Write(data);
+
+            FolderBuilder fb = new FolderBuilder();
+            this.toContent(fb.build(id));
         }
     }
 }

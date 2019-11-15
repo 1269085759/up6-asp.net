@@ -7,6 +7,7 @@ using up6.db.biz;
 using up6.db.database;
 using up6.db.model;
 using up6.db.utils;
+using up6.down2.biz;
 using up6.filemgr.app;
 
 namespace up6.filemgr
@@ -29,19 +30,20 @@ namespace up6.filemgr
             else if (op == "tree") this.load_tree();
             else if (op == "f_create") this.f_create();
             else if (op == "fd_create") this.fd_create();
+            else if (op == "fd_data") this.fd_data();
             else this.load_data(true);
         }
 
 
         void fd_create()
         {
-
             string id = Request.QueryString["id"];
             string pid = Request.QueryString["pid"];
             string uid = Request.QueryString["uid"];
             string lenLoc = Request.QueryString["lenLoc"];
             string sizeLoc = Request.QueryString["sizeLoc"];
             string pathLoc = HttpUtility.UrlDecode(Request.QueryString["pathLoc"]);
+            string pathRel = this.reqToString("pathRel");
             string callback = Request.QueryString["callback"];//jsonp参数
             if (string.IsNullOrEmpty(pid)) pid = string.Empty;
             pid = pid.Trim();
@@ -64,6 +66,7 @@ namespace up6.filemgr
             fileSvr.uid = int.Parse(uid);//将当前文件UID设置为当前用户UID
             fileSvr.nameLoc = Path.GetFileName(pathLoc);
             fileSvr.pathLoc = pathLoc;
+            fileSvr.pathRel = PathTool.combin(pathRel, fileSvr.nameLoc);
             fileSvr.lenLoc = Convert.ToInt64(lenLoc);
             fileSvr.sizeLoc = sizeLoc;
             fileSvr.deleted = false;
@@ -103,6 +106,7 @@ namespace up6.filemgr
                     ,new SqlParam("f_sizeLoc",fileSvr.sizeLoc)
                     ,new SqlParam("f_pathLoc",fileSvr.pathLoc)
                     ,new SqlParam("f_pathSvr",fileSvr.pathSvr)
+                    ,new SqlParam("f_pathRel",fileSvr.pathRel)
                     ,new SqlParam("f_uid",fileSvr.uid)
                 });
             }
@@ -115,6 +119,32 @@ namespace up6.filemgr
             var jo = new JObject { { "value", json }, { "ret", true } };
             json = callback + string.Format("({0})", JsonConvert.SerializeObject(jo));
             this.toContent(json);
+        }
+
+        /// <summary>
+        /// 获取文件夹结构（JSON）
+        /// 格式：
+        /// [
+        ///   {nameLoc,pathSvr,pathRel,lenSvr,sizeSvr}
+        ///   {nameLoc,pathSvr,pathRel,lenSvr,sizeSvr}
+        /// ]
+        /// </summary>
+        void fd_data() {
+
+            string id = Request.QueryString["id"];
+            string cbk = Request.QueryString["callback"];
+            string json = "({\"value\":null})";
+
+            if (!string.IsNullOrEmpty(id))
+            {
+                FolderBuilder fb = new FolderBuilder();
+                var data = JsonConvert.SerializeObject(fb.build(id));
+                data = this.Server.UrlEncode(data);
+                data = data.Replace("+", "%20");
+
+                json = "({\"value\":\"" + data + "\"})";
+            }
+            this.toContent(cbk + json);
         }
 
         void f_create()
@@ -130,6 +160,7 @@ namespace up6.filemgr
             string callback = Request.QueryString["callback"];//jsonp参数
             //客户端使用的是encodeURIComponent编码，
             string pathLoc = HttpUtility.UrlDecode(Request.QueryString["pathLoc"]);//utf-8解码
+            string pathRel = this.reqToString("pathRel");
 
             if (string.IsNullOrEmpty(pid)) pid = string.Empty;
             if (string.IsNullOrEmpty(pidRoot)) pidRoot = pid;
@@ -152,6 +183,7 @@ namespace up6.filemgr
             fileSvr.pidRoot = pidRoot;
             fileSvr.nameLoc = Path.GetFileName(pathLoc);
             fileSvr.pathLoc = pathLoc;
+            fileSvr.pathRel = PathTool.combin(pathRel, fileSvr.nameLoc);
             fileSvr.lenLoc = Convert.ToInt64(lenLoc);
             fileSvr.sizeLoc = sizeLoc;
             fileSvr.deleted = false;
@@ -278,6 +310,7 @@ namespace up6.filemgr
             obj["f_nameLoc"] = name;
             obj["f_pid"] = pid;
             obj["f_pidRoot"] = pidRoot;
+            obj["f_pathRel"] = PathTool.combin(obj["f_pathRel"].ToString(), name);
 
             DbFolder df = new DbFolder();
             if (df.exist_same_folder(name, pid))
@@ -301,6 +334,7 @@ namespace up6.filemgr
                     ,new SqlParam("f_nameLoc",obj["f_nameLoc"].ToString())
                     ,new SqlParam("f_complete",true)
                     ,new SqlParam("f_fdTask",true)
+                    ,new SqlParam("f_pathRel",obj["f_pathRel"].ToString())
                 });
             }//子目录
             else
@@ -313,6 +347,7 @@ namespace up6.filemgr
                     ,new SqlParam("f_pidRoot",obj["f_pidRoot"].ToString())
                     ,new SqlParam("f_nameLoc",obj["f_nameLoc"].ToString())
                     ,new SqlParam("f_complete",true)
+                    ,new SqlParam("f_pathRel",obj["f_pathRel"].ToString())
                     });
             }
 
@@ -460,7 +495,7 @@ namespace up6.filemgr
                 where = swm.to_sql();
                 folders = (JArray)DbBase.page2("up6_folders"
                     , "f_id"
-                    , "f_id,f_nameLoc,f_pid,f_sizeLoc,f_time,f_pidRoot"
+                    , "f_id,f_nameLoc,f_pid,f_sizeLoc,f_time,f_pidRoot,f_pathRel"
                     , where
                     , "f_time desc");
 
@@ -469,7 +504,6 @@ namespace up6.filemgr
                     fd["f_fdTask"] = true;
                     fd["f_fdChild"] = false;
                     fd["f_pathSvr"] = string.Empty;
-                    fd["f_pathRel"] = string.Empty;
                 }
             }
             foreach (var f in files) folders.Add(f);

@@ -731,7 +731,8 @@ $(function () {
             , count: page.items.count
             , url: {
                 f_create: page.path.root + "filemgr/vue.aspx?op=f_create",
-                fd_create: page.path.root + "filemgr/vue.aspx?op=fd_create"
+                fd_create: page.path.root + "filemgr/vue.aspx?op=fd_create",
+                fd_data: page.path.root + "filemgr/vue.aspx?op=fd_data"
             }
             , pathNav: []
             , pathCur: { f_id: "", f_pid: "", f_pidRoot: "", f_nameLoc: "根目录", f_pathRel: "/" }
@@ -789,6 +790,7 @@ $(function () {
 
                         var data = $.extend({}, newData, {
                             f_pid: v_app.pathCur.f_id
+                            ,f_pathRel:v_app.pathCur.f_pathRel
                             , f_pidRoot: pidRoot
                         });
 
@@ -796,7 +798,7 @@ $(function () {
                         $.ajax({
                             type: "GET"
                             , dataType: "json"
-                            , url: "index.aspx?op=mk-folder"
+                            , url: "vue.aspx?op=mk-folder"
                             , data: param
                             , success: function (res) {
                                 if (!res.ret) {
@@ -970,8 +972,8 @@ $(function () {
                     , nameLoc: f.f_nameLoc
                     , fileUrl: this.$refs.down.mgr.Config["UrlDown"]
                 };
-
-                v_app.$refs.down.mgr.app.addFile(dt);
+                if (f.f_fdTask) v_app.$refs.down.mgr.app.addFolder(dt);
+                else v_app.$refs.down.mgr.app.addFile(dt);
                 this.openDown_click();
             }
             , itemRename_click: function (f) { }
@@ -983,7 +985,7 @@ $(function () {
             }
             , up6_fileAppend: function (f) {
                 //为文件设置当前位置
-                $.extend(f.fields, { pid: this.pathCur.f_id, pidRoot: "" });
+                $.extend(f.fields, { pid: this.pathCur.f_id, pidRoot: "",pathRel:this.pathCur.f_pathRel });
             }
             , up6_fileComplete: function (f) {
                 this.page_changed(1, 20);

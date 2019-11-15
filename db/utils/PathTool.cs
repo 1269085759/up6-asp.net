@@ -35,5 +35,17 @@ namespace up6.filemgr.app
                 System.Diagnostics.Debug.WriteLine(folder);
             }
         }
+
+        /// <summary>
+        /// 合并路径，自动判断结尾符
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
+        public static string combin(string a,string b)
+        {
+            if (a.EndsWith("/") ) return a + b;
+            return a + "/" + b;
+        }
     }
 }

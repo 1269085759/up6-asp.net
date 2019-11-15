@@ -1,4 +1,5 @@
 ﻿Vue.component('down2', {
+    props: ['fd_data'],
     data: function () {
         return {
             mgr: null
@@ -18,6 +19,7 @@
     mounted: function () {
         var _this = this;
         this.mgr = new DownloaderMgr();
+        this.mgr.Config["UrlFdData"] = this.fd_data;
         this.mgr.event.loadComplete = function () {
             _this.pluginInited = true;
             _this.$emit('load_complete');

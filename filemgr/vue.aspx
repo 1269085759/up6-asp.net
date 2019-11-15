@@ -64,6 +64,7 @@
                     @folder_complete="up6_folderComplete"></up6>
                 <!--下载面板-->
                 <down2 id="pnl-down" ref="down" style="display: none;"
+                    :fd_data="url.fd_data"
                     @load_complete="down_loadComplete"
                     @same_file_exist="down_sameFileExist"></down2>
                 <!--路径导航-->

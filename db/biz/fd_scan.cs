@@ -6,6 +6,7 @@ using System.Text;
 using System.Web;
 using up6.db.database;
 using up6.db.model;
+using up6.filemgr.app;
 
 namespace up6.db.biz.folder
 {
@@ -133,22 +134,23 @@ namespace up6.db.biz.folder
             this.cmd_add_fd.Prepare();
         }
 
-        protected void GetAllFiles(FileInf inf, string root)
+        protected void GetAllFiles(FileInf parent, string root)
         {
-            DirectoryInfo dir = new DirectoryInfo(inf.pathSvr);
+            DirectoryInfo dir = new DirectoryInfo(parent.pathSvr);
             FileInfo[] allFile = dir.GetFiles();
             foreach (FileInfo fi in allFile)
             {
                 FileInf fl = new FileInf();
 
                 fl.id = Guid.NewGuid().ToString("N");
-                fl.pid = inf.id;
+                fl.pid = parent.id;
                 fl.pidRoot = this.root.id;
                 fl.nameSvr = fi.Name;
                 fl.nameLoc = fi.Name;
                 fl.pathSvr = fi.FullName;
                 fl.pathSvr = fl.pathSvr.Replace("\\", "/");
                 fl.pathRel = fl.pathSvr.Remove(0, root.Length + 1);
+                fl.pathRel = PathTool.combin(parent.pathRel, fl.pathRel);
                 fl.lenSvr = fi.Length;
                 fl.lenLoc = fl.lenSvr;
                 fl.perSvr = "100%";
@@ -160,13 +162,14 @@ namespace up6.db.biz.folder
             {
                 FileInf fd = new FileInf();
                 fd.id = Guid.NewGuid().ToString("N");
-                fd.pid = inf.id;
+                fd.pid = parent.id;
                 fd.pidRoot = this.root.id;
                 fd.nameSvr = d.Name;
                 fd.nameLoc = d.Name;
                 fd.pathSvr = d.FullName;
                 fd.pathSvr = fd.pathSvr.Replace("\\", "/");
                 fd.pathRel = fd.pathSvr.Remove(0, root.Length + 1);
+                fd.pathRel = PathTool.combin(parent.pathRel, fd.pathRel);
                 fd.perSvr = "100%";
                 fd.complete = true;
                 this.save_folder(fd);

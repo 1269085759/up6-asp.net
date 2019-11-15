@@ -23,12 +23,12 @@ namespace up6.db
             else
             {
                 DbFolder db = new DbFolder();
-                FileInf inf = db.read(id);
+                FileInf folder = db.read(id);
                 //根节点
                 FileInf root = new FileInf();
-                root.id = inf.pidRoot;
+                root.id = folder.pidRoot;
                 //当前节点是根节点
-                if (string.IsNullOrEmpty(root.id)) root.id = inf.id;
+                if (string.IsNullOrEmpty(root.id)) root.id = folder.id;
                 
                 //上传完毕
                 DBFile.fd_complete(id, uid);
@@ -36,7 +36,7 @@ namespace up6.db
                 //扫描文件夹结构，
                 fd_scan sa = new fd_scan();
                 sa.root = root;//
-                sa.scan(inf,inf.pathSvr);
+                sa.scan(folder,folder.pathSvr);
 
                 //更新扫描状态
                 DBFile.fd_scan(id, uid);
