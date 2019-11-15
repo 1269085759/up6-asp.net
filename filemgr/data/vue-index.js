@@ -286,8 +286,8 @@
             }
             , btnRename_ok: function (f, i) {
                 var nameNew = $("input[name='name" + i + "']").val();
-                var ret = /\w+/gi;
-                if (!nameNew.match(ret)) {
+                nameNew = nameNew.replace(/\s+/g, "");
+                if (nameNew.length<1) {
                     layer.alert('名称不能为空', { icon: 2 });
                     return;
                 }

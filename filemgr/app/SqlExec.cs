@@ -94,6 +94,13 @@ namespace up6.filemgr.app
             db.ExecuteNonQuery(cmd);
         }
 
+        public void exec(string sql)
+        {
+            DbHelper db = new DbHelper();
+            var cmd = db.GetCommand(sql);
+            db.ExecuteNonQuery(cmd);
+        }
+
         /// <summary>
         /// 
         /// </summary>

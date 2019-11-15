@@ -81,9 +81,9 @@
                         <tr>
                             <th style="width:20px"></th>
                             <th style="width:50%;"><input type="checkbox" @change="selAll_click" v-model="idSelAll" />名称</th>
+                            <th>编辑</th>
                             <th>大小</th>
                             <th>上传时间</th>
-                            <th>编辑</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -108,18 +108,18 @@
                                 <a @click="open_folder(f)" class="link m-l-xs" :name="'name'+index">{{f.f_nameLoc}}</a>
                                     </div>
                                 <div :name="'edit'+index" style="display:none;">
-                                <input class="form-control input-sm" style="width:80%;float:left;" :value="f.f_nameLoc" :name="'name'+index"/>
+                                <input class="form-control input-sm" style="width:80%;float:left;" :value="f.f_nameLoc" :name="'name'+index" @keyup.enter="btnRename_ok(f,index)"/>
                                 <a class="btn btn-default btn-sm m-l-xs" @click="btnRename_ok(f,index)"><img :src="ico.ok"/></a>
                                 <a class="btn btn-default btn-sm"  @click="btnRename_cancel(f,index)"><img :src="ico.cancel"/></a>
                                     </div>
                             </td>
-                            <td>{{f.f_sizeLoc}}</td>
-                            <td>{{tm_format(f.f_time)}}</td>
                             <td>
                                 <a class="m-r-md link" @click="itemRename_click(f,index)"><img :src="ico.btnEdit"/>重命名</a>
                                 <a class="m-r-md link" @click="itemDown_click(f)"><img :src="ico.btnDown"/>下载</a>
                                 <a class=" link" @click="btnDel_click(f)"><img :src="ico.btnDel"/>删除</a>
                             </td>
+                            <td>{{f.f_sizeLoc}}</td>
+                            <td>{{tm_format(f.f_time)}}</td>
                         </tr>
                     </tbody>
                     <tfoot>

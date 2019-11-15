@@ -382,7 +382,9 @@ namespace up6.filemgr
 
             if (fdTask)
             {
-                var s = se.read("up6_folders", "f_id", new SqlParam[] {
+                //同名目录
+                var s = se.read("up6_folders", "f_id,f_pathRel"
+                    , new SqlParam[] {
                     new SqlParam("f_pid",o["f_pid"].ToString()),
                     new SqlParam("f_nameLoc",o["f_nameLoc"].ToString()),
                 });
@@ -390,18 +392,30 @@ namespace up6.filemgr
 
                 if (!exist)
                 {
+                    s = se.read("up6_folders","f_pathRel",new SqlParam[] { new SqlParam("f_id",o["f_id"].ToString())});
+                    //更新相对路径
+                    var pathRel = s["f_pathRel"].ToString();
+                    var pathRelOld = pathRel;
+                    var index = pathRel.LastIndexOf("/");
+                    pathRel = pathRel.Substring(0, index + 1);
+                    pathRel += o["f_nameLoc"].ToString();
+                    var pathRelNew = pathRel;
+
                     se.update("up6_folders"
                         , new SqlParam[] {
-                            new SqlParam("f_nameLoc",o["f_nameLoc"].ToString())
+                            new SqlParam("f_nameLoc",o["f_nameLoc"].ToString()),
+                            new SqlParam("f_pathRel",pathRel)
                         },
                         new SqlParam[] {
                             new SqlParam("f_id",o["f_id"].ToString())
                         });
+                    //
+                    this.folder_renamed(pathRelOld, pathRelNew);
                 }
             }
             else
             {
-                var s = se.read("up6_files", "f_id", new SqlParam[] {
+                var s = se.read("up6_files", "f_id,f_pathRel", new SqlParam[] {
                     new SqlParam("f_pid",o["f_pid"].ToString()),
                     new SqlParam("f_nameLoc",o["f_nameLoc"].ToString()),
                 });
@@ -409,13 +423,25 @@ namespace up6.filemgr
 
                 if (!exist)
                 {
+                    s = se.read("up6_files","f_pathRel",new SqlParam[] { new SqlParam("f_id",o["f_id"].ToString())});
+                    //更新相对路径
+                    var pathRel = s["f_pathRel"].ToString();
+                    var pathRelOld = pathRel;
+                    var index = pathRel.LastIndexOf("/");
+                    pathRel = pathRel.Substring(0, index + 1);
+                    pathRel += o["f_nameLoc"].ToString();
+                    var pathRelNew = pathRel;
+
                     se.update("up6_files"
                         , new SqlParam[] {
-                            new SqlParam("f_nameLoc",o["f_nameLoc"].ToString())
+                            new SqlParam("f_nameLoc",o["f_nameLoc"].ToString()),
+                            new SqlParam("f_pathRel",pathRel)
                         },
                         new SqlParam[] {
                             new SqlParam("f_id",o["f_id"].ToString())
                         });
+
+                    this.folder_renamed(pathRelOld, pathRelNew);
                 }
             }
 
@@ -430,6 +456,28 @@ namespace up6.filemgr
                 var ret = new JObject { { "state", true } };
                 this.toContent(ret);
             }
+        }
+
+        /// <summary>
+        /// 目录名称更新，
+        /// 1.更新数据表中所有子级文件相对路径
+        /// 2.更新数据表中所有子级目录相对路径
+        /// </summary>
+        /// <param name=""></param>
+        void folder_renamed(string pathRelOld,string pathRelNew) {
+            SqlExec se = new SqlExec();
+            string sql = string.Format("update up6_files set f_pathRel=REPLACE(f_pathRel,'{0}/','{1}/') where CHARINDEX('{0}/',f_pathRel)>0",
+                pathRelOld,
+                pathRelNew
+                );
+            se.exec(sql);
+
+            //更新目录表
+            sql = string.Format("update up6_folders set f_pathRel=REPLACE(f_pathRel,'{0}/','{1}/') where CHARINDEX('{0}/',f_pathRel)>0",
+                pathRelOld,
+                pathRelNew
+                );
+            se.exec(sql);
         }
 
         /// <summary>

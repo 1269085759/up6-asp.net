@@ -69,6 +69,10 @@ namespace up6.filemgr.app
             this.param.Add("url", HttpContext.Current.Request.Url.AbsoluteUri);
         }
 
+        /// <summary>
+        /// 自动删除首尾空白
+        /// </summary>
+        /// <returns></returns>
         public JObject request_to_json() {
             JObject query = new JObject();
             foreach (var key in HttpContext.Current.Request.QueryString.Keys)
