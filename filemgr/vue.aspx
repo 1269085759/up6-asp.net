@@ -87,6 +87,17 @@
                         </tr>
                     </thead>
                     <tbody>
+                        <tr v-show="folderMker.edit">
+                            <td></td>
+                            <td>
+                                <input class="form-control input-sm" style="width:80%;float:left;" v-model="folderMker.name" ref="tbFdName" @keyup.enter="btnMkFdOk_click"/>
+                                <a class="btn btn-default btn-sm m-l-xs" @click="btnMkFdOk_click"><img :src="ico.ok"/></a>
+                                <a class="btn btn-default btn-sm" @click="btnMkFdCancel_click"><img :src="ico.cancel"/></a>
+                                    </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
                         <tr v-for="(f,index) in items">
                             <td>{{index+1}}</td>
                             <td>
@@ -124,7 +135,6 @@
                         window.layer = layui.layer;
                     });
 
-                    var pageApp = new PageLogic();
                     window.onbeforeunload = function (event) {  }
                     window.unload = function (event) { pageApp.page_close(); };
                 </script>
