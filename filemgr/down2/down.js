@@ -30,14 +30,14 @@ function DownloaderMgr()
 		, "FilePart"	: 5242880//文件块大小，计算器：http://www.beesky.com/newsite/bit_byte.htm
         , "FolderClear"	: true//下载前是否清空目录
         //file
-        , "UrlCreate"   : "http://localhost:8888/down2/db/f_create.aspx"
-        , "UrlDel"      : "http://localhost:8888/down2/db/f_del.aspx"
-        , "UrlList"     : "http://localhost:8888/down2/db/f_list.aspx"
-        , "UrlListCmp"  : "http://localhost:8888/down2/db/f_list_cmp.aspx"
-        , "UrlUpdate"   : "http://localhost:8888/down2/db/f_update.aspx"
-        , "UrlDown"     : "http://localhost:8888/down2/db/f_down.aspx"
+        , "UrlCreate"   : page.path.root + "down2/db/f_create.aspx"
+        , "UrlDel"      : page.path.root + "down2/db/f_del.aspx"
+        , "UrlList"     : page.path.root + "down2/db/f_list.aspx"
+        , "UrlListCmp"  : page.path.root + "down2/db/f_list_cmp.aspx"
+        , "UrlUpdate"   : page.path.root + "down2/db/f_update.aspx"
+        , "UrlDown"     : page.path.root + "down2/db/f_down.aspx"
 	    //folder
-        , "UrlFdData"   : "http://localhost:8888/down2/db/fd_data.aspx"
+        , "UrlFdData"   : page.path.root + "down2/db/fd_data.aspx"
         //x86
         , ie: {
               part: { clsid: "6528602B-7DF7-445A-8BA0-F6F996472569", name: "Xproer.DownloaderPartition" }

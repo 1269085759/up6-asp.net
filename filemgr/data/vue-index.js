@@ -9,6 +9,7 @@
                 fd_create: page.path.root + "filemgr/vue.aspx?op=fd_create",
                 fd_data: page.path.root + "filemgr/vue.aspx?op=fd_data"
             }
+            , license: {up6:"",down2:""}
             , pathNav: []
             , pathCur: { f_id: "", f_pid: "", f_pidRoot: "", f_nameLoc: "根目录", f_pathRel: "/" }
             , pathRoot: { f_id: "", f_pid: "", f_pidRoot: "", f_nameLoc: "根目录", f_pathRel: "/" }
