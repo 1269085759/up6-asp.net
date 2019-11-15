@@ -371,35 +371,61 @@ namespace up6.filemgr
 
         void file_rename()
         {
-            var data = Request.QueryString["data"];
-            data = Server.UrlDecode(data);
-            var o = JObject.Parse(data);
-
-            var db = new DbFolder();
-            var fdTask = Convert.ToBoolean(o["f_fdTask"].ToString());
-            var pid = o["f_pid"].ToString().Trim();
-            var id = o["f_id"].ToString().Trim();
-            var nameNew = o["f_nameLoc"].ToString().Trim();
-
             bool exist = false;
-            if (!fdTask || string.IsNullOrEmpty(pid)) exist = db.rename_file_check(nameNew, pid);
-            else exist = db.rename_folder_check(nameNew, pid);
+            var o = this.request_to_json();
+
+            SqlExec se = new SqlExec();
+            bool fdTask = o["f_fdTask"].ToString() == "true";
+            if (fdTask)
+            {
+                var s = se.read("up6_folders", "f_id", new SqlParam[] {
+                    new SqlParam("f_pid",o["f_pid"].ToString()),
+                    new SqlParam("f_nameLoc",o["f_nameLoc"].ToString()),
+                });
+                exist = s != null;
+
+                if (!exist)
+                {
+                    se.update("up6_folders"
+                        , new SqlParam[] {
+                            new SqlParam("f_nameLoc",o["f_nameLoc"].ToString())
+                        },
+                        new SqlParam[] {
+                            new SqlParam("f_id",o["f_id"].ToString())
+                        });
+                }
+            }
+            else
+            {
+                var s = se.read("up6_files", "f_id", new SqlParam[] {
+                    new SqlParam("f_pid",o["f_pid"].ToString()),
+                    new SqlParam("f_nameLoc",o["f_nameLoc"].ToString()),
+                });
+                exist = s != null;
+
+                if (!exist)
+                {
+                    se.update("up6_files"
+                        , new SqlParam[] {
+                            new SqlParam("f_nameLoc",o["f_nameLoc"].ToString())
+                        },
+                        new SqlParam[] {
+                            new SqlParam("f_id",o["f_id"].ToString())
+                        });
+                }
+            }
 
             //存在同名项
             if (exist)
             {
                 var res = new JObject { { "state", false }, { "msg", "存在同名项" } };
                 this.toContent(res);
-                return;
             }
-
-            //是文件或根目录
-            if (!fdTask || string.IsNullOrEmpty(pid)) db.rename_file(nameNew, id);
-            else db.rename_folder(nameNew, id, pid);
-
-            var ret = new JObject { { "state", true } };
-            this.toContent(ret);
-            return;
+            else
+            {
+                var ret = new JObject { { "state", true } };
+                this.toContent(ret);
+            }
         }
 
         /// <summary>

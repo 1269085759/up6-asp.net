@@ -74,7 +74,8 @@ namespace up6.filemgr.app
             foreach (var key in HttpContext.Current.Request.QueryString.Keys)
             {
                 var kv = HttpContext.Current.Request.QueryString[key.ToString()];
-                JObject obj = new JObject { { key.ToString(), kv } };
+                if (string.IsNullOrEmpty(kv)) kv = string.Empty;
+                kv = kv.Trim();
                 query.Add(key.ToString(), kv);
             }
             return query;

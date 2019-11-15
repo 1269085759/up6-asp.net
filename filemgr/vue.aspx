@@ -75,6 +75,7 @@
                     </li>
                 </template>
                 </ol>
+                <!--文件列表-->
                 <table class="table table-hover table-condensed">
                     <thead>
                         <tr>
@@ -88,12 +89,17 @@
                     <tbody>
                         <tr v-for="(f,index) in items">
                             <td>{{index+1}}</td>
-                            <td><input type="checkbox" :value="f.f_id" v-model="idSels" />
-                                <img :src="ico.file" v-show="!f.f_fdTask"/><img :src="ico.folder" v-show="f.f_fdTask"/>&nbsp;<a @click="open_folder(f)" class="link">{{f.f_nameLoc}}</a></td>
+                            <td>
+                                <input type="checkbox" :value="f.f_id" v-model="idSels" :name="'ckb'+index"/>
+                                <img :src="ico.file" v-show="!f.f_fdTask" :name="'name'+index"/><img :src="ico.folder" v-show="f.f_fdTask"/><a @click="open_folder(f)" class="link m-l-xs" :name="'name'+index">{{f.f_nameLoc}}</a>
+                                <input class="form-control input-sm" style="display:none;width:80%;float:left;" :name="'name'+index"/>
+                                <a class="btn btn-default btn-sm m-l-xs" :name="'rn'+index" style="display:none;"><img :src="ico.ok" @click="btnRename_ok(f,index)"/></a>
+                                <a class="btn btn-default btn-sm" :name="'rn'+index" style="display:none;"><img :src="ico.cancel" @click="btnRename_cancel(f,index)"/></a>
+                            </td>
                             <td>{{f.f_sizeLoc}}</td>
                             <td>{{tm_format(f.f_time)}}</td>
                             <td>
-                                <a class="m-r-md link" @click=""><img :src="ico.btnEdit"/>重命名</a>
+                                <a class="m-r-md link" @click="itemRename_click(f,index)"><img :src="ico.btnEdit"/>重命名</a>
                                 <a class="m-r-md link" @click="itemDown_click(f)"><img :src="ico.btnDown"/>下载</a>
                                 <a class=" link" @click="btnDel_click(f)"><img :src="ico.btnDel"/>删除</a>
                             </td>

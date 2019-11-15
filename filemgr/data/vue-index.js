@@ -750,6 +750,8 @@ $(function () {
                 , btnEdit: page.path.res + "imgs/16/edit.png"
                 , btnPnlUp: page.path.res + "imgs/16/up-panel.png"
                 , btnPnlDown: page.path.res + "imgs/16/down-panel.png"
+                , ok: page.path.res + "imgs/16/ok1.png"
+                , cancel: page.path.res + "imgs/16/cancel.png"
             }
         }
         , mounted: function () {
@@ -976,7 +978,45 @@ $(function () {
                 else v_app.$refs.down.mgr.app.addFile(dt);
                 this.openDown_click();
             }
-            , itemRename_click: function (f) { }
+            , itemRename_click: function (f, i) {
+                //$.extend(f, { edit: true });
+                var name = "name" + i;
+                $("input[name='ckb" + i + "']").hide();
+                $("input[name='" + name + "']").show().val(f.f_nameLoc);
+                $("a[name='rn" + i + "']").show();
+                $("a[name='" + name + "']").hide();
+                $("img[name='" + name + "']").hide();
+            }
+            , btnRename_ok: function (f, i) {
+                var nameNew = $("input[name='name" + i + "']").val();
+                var ret = /\w+/gi;
+                if (!nameNew.match(ret)) {
+                    layer.alert('名称不能为空', { icon: 2 });
+                    return;
+                }
+
+                var param = jQuery.extend({}, {"f_pid":f.f_pid,"f_id":f.f_id,f_nameLoc: nameNew,f_fdTask:f.f_fdTask,time: new Date().getTime() });
+                $.ajax({
+                    type: "GET"
+                    , dataType: "json"
+                    , url: "vue.aspx?op=rename"
+                    , data: param
+                    , success: function (res) {
+                        f.f_nameLoc = nameNew;
+                    }
+                    , error: function (req, txt, err) { }
+                    , complete: function (req, sta) { req = null; }
+                });
+
+            }
+            , btnRename_cancel: function (f, i) {
+                var name = "name" + i;
+                $("input[name='" + name + "']").hide();
+                $("a[name='rn" + i + "']").hide();
+                $("input[name='ckb" + i + "']").show();
+                $("a[name='" + name + "']").show();
+                $("img[name='" + name + "']").show();
+            }
             , up6_loadComplete: function () {
                 this.up6_loadTask();
             }

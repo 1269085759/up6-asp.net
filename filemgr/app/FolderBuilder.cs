@@ -36,7 +36,7 @@ namespace up6.filemgr.app
             JArray fs = new JArray();
 
             //查询文件
-            string where = string.Format("CHARINDEX('{0}',f_pathRel)>0", o["f_pathRel"]);
+            string where = string.Format("CHARINDEX('{0}',f_pathRel)>0 and f_fdTask=0", pathRoot+"/");
             var files = (JArray)se.select("up6_files", "*", where);
             int count = files.Count();//获取数组的长度
             for (int i = 0; i < count; i++)
