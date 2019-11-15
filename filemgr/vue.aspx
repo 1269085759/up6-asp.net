@@ -10,7 +10,6 @@
               , this.m_path["res"]+"filemgr.css"
               , this.m_path["bootstrap"]
               , this.m_path["layerui"]
-              , this.m_path["jstree"]
               , this.m_path["moment"]
               , this.m_path["vue"]
               , this.m_path["up6"]
@@ -18,7 +17,6 @@
               , this.m_path["root"]+"/filemgr/data/vue-up6.js"
               , this.m_path["root"]+"/filemgr/data/vue-down2.js"
               , this.m_path["root"]+"/filemgr/data/vue-index.js"
-              , this.m_path["res"]+"layer.window.js"
               ) %>
 </head>
 <body>
