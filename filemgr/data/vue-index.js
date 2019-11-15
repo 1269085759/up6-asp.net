@@ -821,6 +821,29 @@ $(function () {
             }
             , btnOpenUp: function () { }
             , btnOpenDown: function () { }
+            , btnDowns_click: function () {
+                if (!this.$refs.down.check_path()) return;
+                $.each(this.idSels, function (index, id) {
+                    var arr = $.grep(v_app.items, function (n, i) {
+                        return n.f_id == id;
+                    });
+                    var f = arr[0];
+                    var dt = {
+                        f_id: f.f_id
+                        , lenSvr: f.f_lenLoc
+                        , pathSvr: f.f_pathSvr
+                        , nameLoc: f.f_nameLoc
+                        , fileUrl: v_app.$refs.down.mgr.Config["UrlDown"]
+                    };
+                    if (f.f_fdTask) {
+                        v_app.$refs.down.mgr.app.addFolder(dt);
+                    }
+                    else {
+                        v_app.$refs.down.mgr.app.addFile(dt);
+                    }
+                });
+                this.openDown_click();
+            }
             , btnDels_click: function () { }
             , btnDel_click: function (f) {
                 layer.alert('确定要删除选中项：'+f.f_nameLoc+'？', {
@@ -845,7 +868,16 @@ $(function () {
                     }
                 });
             }
-            , selAll_click: function () { }
+            , selAll_click: function () {
+                if (this.idSelAll) {
+                    $.each(this.items, function (i, n) {
+                        v_app.idSels.push(n.f_id);
+                    });
+                }
+                else {
+                    this.idSels.length = 0;
+                }
+            }
             , openUp_click: function () {
                 layer.open({
                     type: 1
@@ -980,12 +1012,9 @@ $(function () {
             }
             , itemRename_click: function (f, i) {
                 //$.extend(f, { edit: true });
-                var name = "name" + i;
-                $("input[name='ckb" + i + "']").hide();
-                $("input[name='" + name + "']").show().val(f.f_nameLoc);
-                $("a[name='rn" + i + "']").show();
-                $("a[name='" + name + "']").hide();
-                $("img[name='" + name + "']").hide();
+                $("div[name='v" + i + "']").hide();
+                $("input[name='name" + i + "']").show().val(f.f_nameLoc);
+                $("div[name='edit" + i + "']").show();
             }
             , btnRename_ok: function (f, i) {
                 var nameNew = $("input[name='name" + i + "']").val();
@@ -1003,6 +1032,7 @@ $(function () {
                     , data: param
                     , success: function (res) {
                         f.f_nameLoc = nameNew;
+                        v_app.btnRename_cancel(f,i);
                     }
                     , error: function (req, txt, err) { }
                     , complete: function (req, sta) { req = null; }
@@ -1010,12 +1040,9 @@ $(function () {
 
             }
             , btnRename_cancel: function (f, i) {
-                var name = "name" + i;
-                $("input[name='" + name + "']").hide();
-                $("a[name='rn" + i + "']").hide();
-                $("input[name='ckb" + i + "']").show();
-                $("a[name='" + name + "']").show();
-                $("img[name='" + name + "']").show();
+                $("div[name='v" + i + "']").show();
+                //$("input[name='" + name + "']").show().val(f.f_nameLoc);
+                $("div[name='edit" + i + "']").hide();
             }
             , up6_loadComplete: function () {
                 this.up6_loadTask();

@@ -376,6 +376,9 @@ namespace up6.filemgr
 
             SqlExec se = new SqlExec();
             bool fdTask = o["f_fdTask"].ToString() == "true";
+            //根目录
+            if (string.IsNullOrEmpty(o["f_pid"].ToString())) fdTask = false;
+
             if (fdTask)
             {
                 var s = se.read("up6_folders", "f_id", new SqlParam[] {

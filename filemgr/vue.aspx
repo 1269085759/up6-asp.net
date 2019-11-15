@@ -45,9 +45,9 @@
                     <button class="btn btn-default btn-sm m-r-xs" role="button" @click="openDown_click">
                         <img :src="ico.btnPnlDown" />
                         打开下载面板</button>
-                    <button class="btn btn-default btn-sm hide m-r-xs" role="button" @click="btnUp_click">
+                    <button class="btn btn-default btn-sm m-r-xs" role="button" @click="btnDowns_click" v-show="idSels.length>0">
                         <img :src="ico.btnDown" />
-                        下载</button>
+                        批量下载</button>
                     <button class="btn btn-default btn-sm hide" role="button" @click="">
                         <img :src="ico.btnDel" />
                         删除</button>
@@ -90,11 +90,17 @@
                         <tr v-for="(f,index) in items">
                             <td>{{index+1}}</td>
                             <td>
+                                <div :name="'v'+index">
                                 <input type="checkbox" :value="f.f_id" v-model="idSels" :name="'ckb'+index"/>
-                                <img :src="ico.file" v-show="!f.f_fdTask" :name="'name'+index"/><img :src="ico.folder" v-show="f.f_fdTask"/><a @click="open_folder(f)" class="link m-l-xs" :name="'name'+index">{{f.f_nameLoc}}</a>
-                                <input class="form-control input-sm" style="display:none;width:80%;float:left;" :name="'name'+index"/>
-                                <a class="btn btn-default btn-sm m-l-xs" :name="'rn'+index" style="display:none;"><img :src="ico.ok" @click="btnRename_ok(f,index)"/></a>
-                                <a class="btn btn-default btn-sm" :name="'rn'+index" style="display:none;"><img :src="ico.cancel" @click="btnRename_cancel(f,index)"/></a>
+                                <img :src="ico.file" v-show="!f.f_fdTask" :name="'name'+index"/>
+                                <img :src="ico.folder" v-show="f.f_fdTask"/>
+                                <a @click="open_folder(f)" class="link m-l-xs" :name="'name'+index">{{f.f_nameLoc}}</a>
+                                    </div>
+                                <div :name="'edit'+index" style="display:none;">
+                                <input class="form-control input-sm" style="width:80%;float:left;" :value="f.f_nameLoc" :name="'name'+index"/>
+                                <a class="btn btn-default btn-sm m-l-xs" @click="btnRename_ok(f,index)"><img :src="ico.ok"/></a>
+                                <a class="btn btn-default btn-sm"  @click="btnRename_cancel(f,index)"><img :src="ico.cancel"/></a>
+                                    </div>
                             </td>
                             <td>{{f.f_sizeLoc}}</td>
                             <td>{{tm_format(f.f_time)}}</td>
