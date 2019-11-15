@@ -191,6 +191,8 @@
                 });
             }
             , nav_click: function (p) {
+                this.idSels.length = 0;
+                this.idSelAll = false;
                 //加载路径
                 var param = jQuery.extend({}, p,{time: new Date().getTime() });
                 $.ajax({
