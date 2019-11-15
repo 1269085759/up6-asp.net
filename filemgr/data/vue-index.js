@@ -336,7 +336,7 @@
                     , url: "vue.aspx?op=uncomp"
                     , data: param
                     , success: function (res) {
-                        if (res.length > 0) _this.open_upload_panel();
+                        if (res.length > 0) v_app.openUp_click();
 
                         $.each(res, function (i, n) {
                             if (n.fdTask) {
@@ -375,7 +375,7 @@
                     , url: "vue.aspx?op=uncmp-down"
                     , data: param
                     , success: function (files) {
-                        if (files.length > 0) { _this.open_down_panel(); }
+                        if (files.length > 0) { v_app.openDown_click(); }
                         $.each(files, function (i, n) {
                             var dt = {
                                 svrInit: true

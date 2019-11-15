@@ -285,7 +285,7 @@ namespace up6.filemgr
                 , "select f_id ,f_nameLoc ,f_pathLoc ,f_sizeLoc ,f_lenSvr ,f_perSvr ,f_fdTask ,f_md5 from up6_files where f_complete=0 and f_deleted=0"
                 , "f_id,f_nameLoc,f_pathLoc,f_sizeLoc,f_lenSvr,f_perSvr,f_fdTask,f_md5"
                 , "id,nameLoc,pathLoc,sizeLoc,lenSvr,perSvr,fdTask,md5");
-            PageTool.to_content(files);
+            this.toContent(files);
         }
 
         void load_uncmp_down()

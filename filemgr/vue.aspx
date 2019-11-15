@@ -23,6 +23,9 @@
 </head>
 <body>
     <div class="container">
+        <div class="row">
+            <div class="col-md-12">说明：使用了vue,boostrap,layer组件，支持浏览器：ie9+,firefox,chrome</div>
+            </div>
         <div class="row" id="app">
             <div class="col-md-12">
                 <div class="m-t-md row">
