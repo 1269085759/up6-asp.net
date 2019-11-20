@@ -526,7 +526,7 @@ function HttpUploaderMgr()
                 $(this).removeClass("bk-hover");
             });
 
-	    this.SafeCheck();
+	    //this.SafeCheck();
 
         $(function ()
         {

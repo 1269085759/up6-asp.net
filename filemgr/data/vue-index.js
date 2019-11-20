@@ -1,5 +1,5 @@
 ﻿$(function () {
-    var v_app = new Vue({
+    v_app = new Vue({
         el: '#app',
         data: {
             items: page.items.data
@@ -10,6 +10,7 @@
                 fd_data: page.path.root + "filemgr/vue.aspx?op=fd_data"
             }
             , license: {up6:"",down2:""}
+            , fields: {uid:0}
             , pathNav: []
             , pathCur: { f_id: "", f_pid: "", f_pidRoot: "", f_nameLoc: "根目录", f_pathRel: "/" }
             , pathRoot: { f_id: "", f_pid: "", f_pidRoot: "", f_nameLoc: "根目录", f_pathRel: "/" }
@@ -396,6 +397,15 @@
                     , error: function (req, txt, err) { alert("加载文件列表失败！" + req.responseText); }
                     , complete: function (req, sta) { req = null; }
                 });
+            }
+            , taskEmpty: function () {
+                var ept = this.$refs.up6.taskEmpty();
+                if (ept) ept = this.$refs.down2.taskEmpty();
+                return ept;
+            }
+            , taskEnd: function () {
+                this.$refs.up6.taskEnd();
+                this.$refs.down2.taskEnd();
             }
         }
     });

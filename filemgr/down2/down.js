@@ -587,7 +587,7 @@ function DownloaderMgr()
 		ui.find('span[name="btnStart"]').click(function () { _this.start_queue(); });
         ui.find('span[name="btnStop"]').click(function () { _this.stop_queue(); });
 
-        this.safeCheck();//
+        //this.safeCheck();//
 
         $(function () {
             if (!_this.edge) {

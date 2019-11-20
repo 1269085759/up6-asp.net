@@ -1,5 +1,5 @@
 ﻿Vue.component('up6', {
-    props: ['f_create','fd_create','license'],
+    props: ['f_create','fd_create','license','fields'],
     data: function () {
         return {
             mgr: null
@@ -20,7 +20,15 @@
         btnClear_click: function () {
             this.mgr.ClearComplete();
         },
-        btnSetup_click: function () { }
+        btnSetup_click: function () {
+        },//任务队列是否为空
+        taskEmpty: function () {
+            return this.mgr.QueuePost.length < 1;
+        },
+        taskEnd: function () {
+            //if (this.mgr.edge) this.mgr.edgeApp.close();
+            this.mgr.StopAll();
+        }
     },
     mounted: function () {
         var _this = this;
@@ -28,6 +36,7 @@
         this.mgr.Config["UrlCreate"] = this.f_create;
         this.mgr.Config["UrlFdCreate"] = this.fd_create;
         this.mgr.Config["License"] = this.license;
+        $.extend(this.mgr.Config.Fields, this.fields);
         this.mgr.event.loadComplete = function () {
             _this.pluginInited = true;
             

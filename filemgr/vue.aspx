@@ -28,30 +28,30 @@
             <div class="col-md-12">
                 <div class="m-t-md row">
                     <div class="col-md-12">
-                    <button class="btn btn-default btn-sm m-r-xs" role="button" @click="btnUp_click">
-                        <img :src="ico.file" />
-                        上传文件</button>
-                    <button class="btn btn-default btn-sm m-r-xs" role="button" @click="btnUpFolder_click">
-                        <img :src="ico.btnUpFd" />
-                        上传目录</button>
-                    <button class="btn btn-default btn-sm m-r-xs" role="button" @click="btnPaste_click">
-                        <img :src="ico.btnPaste" />
-                        粘贴上传</button>
-                    <button class="btn btn-default btn-sm m-r-xs" role="button" @click="btnMkFolder_click">
-                        <img :src="ico.btnEdit" />
-                        新建文件夹</button>
-                    <button class="btn btn-default btn-sm m-r-xs" role="button" @click="openUp_click">
-                        <img :src="ico.btnPnlUp" />
-                        打开上传面板</button>
-                    <button class="btn btn-default btn-sm m-r-xs" role="button" @click="openDown_click">
-                        <img :src="ico.btnPnlDown" />
-                        打开下载面板</button>
-                    <button class="btn btn-default btn-sm m-r-xs" role="button" @click="btnDowns_click" v-show="idSels.length>0">
-                        <img :src="ico.btnDown" />
-                        批量下载</button>
-                    <button class="btn btn-default btn-sm hide" role="button" @click="">
-                        <img :src="ico.btnDel" />
-                        删除</button>
+                        <button class="btn btn-default btn-sm m-r-xs" role="button" @click="btnUp_click">
+                            <img :src="ico.file" />
+                            上传文件</button>
+                        <button class="btn btn-default btn-sm m-r-xs" role="button" @click="btnUpFolder_click">
+                            <img :src="ico.btnUpFd" />
+                            上传目录</button>
+                        <button class="btn btn-default btn-sm m-r-xs" role="button" @click="btnPaste_click">
+                            <img :src="ico.btnPaste" />
+                            粘贴上传</button>
+                        <button class="btn btn-default btn-sm m-r-xs" role="button" @click="btnMkFolder_click">
+                            <img :src="ico.btnEdit" />
+                            新建文件夹</button>
+                        <button class="btn btn-default btn-sm m-r-xs" role="button" @click="openUp_click">
+                            <img :src="ico.btnPnlUp" />
+                            打开上传面板</button>
+                        <button class="btn btn-default btn-sm m-r-xs" role="button" @click="openDown_click">
+                            <img :src="ico.btnPnlDown" />
+                            打开下载面板</button>
+                        <button class="btn btn-default btn-sm m-r-xs" role="button" @click="btnDowns_click" v-show="idSels.length>0">
+                            <img :src="ico.btnDown" />
+                            批量下载</button>
+                        <button class="btn btn-default btn-sm hide" role="button" @click="">
+                            <img :src="ico.btnDel" />
+                            删除</button>
                         </div>
                 </div>
                 <!--上传面板-->
@@ -59,6 +59,7 @@
                     :fd_create="url.fd_create"
                     :f_create="url.f_create"
                     :license="license.up6"
+                    :fields="fields"
                     @load_complete="up6_loadComplete"
                     @item_selected="up6_itemSelected"
                     @file_append="up6_fileAppend"
@@ -68,15 +69,16 @@
                 <down2 id="pnl-down" ref="down" style="display: none;"
                     :fd_data="url.fd_data"
                     :license="license.down2"
+                    :fields="fields"
                     @load_complete="down_loadComplete"
                     @same_file_exist="down_sameFileExist"></down2>
                 <!--路径导航-->
                 <ol class="breadcrumb  m-t-xs" style="margin-bottom: -5px;">
                     <template v-for="p in pathNav">
-                    <li>
-                        <a class="link" @click="nav_click(p)">{{p.f_nameLoc}}</a>
-                    </li>
-                </template>
+                        <li>
+                            <a class="link" @click="nav_click(p)">{{p.f_nameLoc}}</a>
+                        </li>
+                    </template>
                 </ol>
                 <!--文件列表-->
                 <table class="table table-hover table-condensed">
@@ -134,12 +136,19 @@
                     </tfoot>
                 </table>
                 <script type="text/javascript">
+                    var v_app = null;
                     layui.use(['layer'], function () {
                         window.layer = layui.layer;
                     });
 
-                    window.onbeforeunload = function (event) {  }
-                    window.unload = function (event) { pageApp.page_close(); };
+                    window.onbeforeunload = function (event) {
+                        if (!v_app.taskEmpty()) {
+                            event.returnValue = "您还有程序正在运行，确定关闭？";
+                        }
+                    }
+                    window.unload = function (event) {
+                        v_app.taskEnd();
+                    };
                 </script>
                 </div>
         </div>
