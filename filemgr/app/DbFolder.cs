@@ -191,7 +191,8 @@ namespace up6.filemgr.app
         {
             //查询文件表目录数据
             SqlExec se = new SqlExec();
-            var files = se.select("up6_files", "f_id,f_pid,f_nameLoc,f_pathRel", new SqlParam[] { new SqlParam("f_fdTask", true) });
+            var files = se.select("up6_files", "f_id,f_pid,f_nameLoc,f_pathRel", 
+                new SqlParam[] { new SqlParam("f_fdTask", true) });
             var folders = se.select("up6_folders", "f_id,f_pid,f_nameLoc,f_pathRel",new SqlParam[] { });
             var id = fdCur["f_id"].ToString().Trim();//
 
