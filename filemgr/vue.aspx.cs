@@ -18,7 +18,7 @@ namespace up6.filemgr
         {
             string op = Request.QueryString["op"];
 
-            if (op == "data") this.load_data(false);
+                 if (op == "data") this.load_data(false);
             else if (op == "search") this.search();
             else if (op == "rename") this.file_rename();
             else if (op == "del") this.file_del();
@@ -31,7 +31,6 @@ namespace up6.filemgr
             else if (op == "f_create") this.f_create();
             else if (op == "fd_create") this.fd_create();
             else if (op == "fd_data") this.fd_data();
-            else this.load_data(true);
         }
 
 
@@ -549,6 +548,7 @@ namespace up6.filemgr
             swm.req_equal("f_pid", "pid", false);
             swm.equal("f_complete", 1);
             swm.equal("f_deleted", 0);
+            swm.equal("f_uid", this.reqToInt("uid"));
 
             var pid = Request.QueryString["pid"];
             bool isRoot = string.IsNullOrEmpty(pid);

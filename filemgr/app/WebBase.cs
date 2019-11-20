@@ -92,6 +92,12 @@ namespace up6.filemgr.app
             return v;
         }
 
+        public int reqToInt(string name) {
+            var v = this.reqToString(name);
+            if (string.IsNullOrEmpty(v)) return 0;
+            return int.Parse(v);
+        }
+
         /// <summary>
         /// 注册页面级变量
         /// </summary>

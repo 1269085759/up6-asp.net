@@ -2,8 +2,8 @@
     v_app = new Vue({
         el: '#app',
         data: {
-            items: page.items.data
-            , count: page.items.count
+            items: []
+            , count: 0
             , url: {
                 f_create: page.path.root + "filemgr/vue.aspx?op=f_create",
                 fd_create: page.path.root + "filemgr/vue.aspx?op=fd_create",
@@ -39,6 +39,22 @@
         , methods: {
             tm_format: function (v) {
                 return moment(v).format('YYYY-MM-DD HH:mm:ss');
+            }
+            , init_data: function () {
+                var param = jQuery.extend({},this.fields, { time: new Date().getTime() });
+                $.ajax({
+                    type: "GET"
+                    , dataType: "json"
+                    , url: "vue.aspx?op=data"
+                    , data: param
+                    , success: function (res) {
+                        v_app.items = res.data;
+                        v_app.count = res.count;
+
+                    }
+                    , error: function (req, txt, err) { }
+                    , complete: function (req, sta) { req = null; }
+                });
             }
             , btnUp_click: function () {
                 this.$refs.up6.btnFile_click();
@@ -409,4 +425,5 @@
             }
         }
     });
+    v_app.init_data();
 });
