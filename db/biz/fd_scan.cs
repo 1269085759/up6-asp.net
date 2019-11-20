@@ -150,7 +150,7 @@ namespace up6.db.biz.folder
                 fl.pathSvr = fi.FullName;
                 fl.pathSvr = fl.pathSvr.Replace("\\", "/");
                 fl.pathRel = fl.pathSvr.Remove(0, root.Length + 1);
-                fl.pathRel = PathTool.combin(parent.pathRel, fl.pathRel);
+                fl.pathRel = PathTool.combin(parent.pathRel, fl.nameLoc);
                 fl.lenSvr = fi.Length;
                 fl.lenLoc = fl.lenSvr;
                 fl.sizeLoc = this.BytesToString(fl.lenSvr);
@@ -170,7 +170,7 @@ namespace up6.db.biz.folder
                 fd.pathSvr = d.FullName;
                 fd.pathSvr = fd.pathSvr.Replace("\\", "/");
                 fd.pathRel = fd.pathSvr.Remove(0, root.Length + 1);
-                fd.pathRel = PathTool.combin(parent.pathRel, fd.pathRel);
+                fd.pathRel = PathTool.combin(parent.pathRel, fd.nameLoc);
                 fd.perSvr = "100%";
                 fd.complete = true;
                 this.save_folder(fd);
