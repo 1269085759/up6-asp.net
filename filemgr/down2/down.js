@@ -5,7 +5,7 @@
 控件下载：http://www.ncmem.com/webapp/down2/pack.aspx
 示例下载：http://www.ncmem.com/webapp/down2/versions.aspx
 联系邮箱：1085617561@qq.com
-版本：2.4.14
+版本：2.4.15
 更新记录：
     2009-11-05 创建
 	2014-02-27 优化版本号。
@@ -146,7 +146,8 @@ function DownloaderMgr()
 	this.firefox = browserName.indexOf("firefox") > 0;
 	this.chrome = browserName.indexOf("chrome") > 0;
 	this.chrome45 = false;
-	this.nat_load = false;
+    this.nat_load = false;
+    this.pluginInited = false;
     this.chrVer = navigator.appVersion.match(/Chrome\/(\d+)/);
     this.edge = navigator.userAgent.indexOf("Edge") > 0;
     this.edgeApp = new WebServerDown2(this);
@@ -169,6 +170,16 @@ function DownloaderMgr()
     this.working = false;
     this.allStoped = false;//
     this.ui = { file: null ,list:null,panel:null,header:null,footer:null};
+
+    //api
+    this.addFile = function (v) {
+        if (!this.pluginCheck()) return;
+        this.app.addFile(v);
+    };
+    this.addFolder = function (v) {
+        if (!this.pluginCheck()) return;
+        this.app.addFolder(v);
+    };
 
 	this.getHtml = function()
 	{ 
@@ -331,6 +342,7 @@ function DownloaderMgr()
 	    this.app.openFolder();
 	};
     this.down_file = function (json) { };
+
     //队列控制
     this.work_full = function () { return (this.queueWork.length + 1) > this.Config.ThreadCount; };
     this.add_wait = function (id) { this.queueWait.push(id); };
@@ -414,6 +426,7 @@ function DownloaderMgr()
     this.load_complete = function (json) {
         if (this.websocketInited) return;
         this.websocketInited = true;
+        this.pluginInited = true;
 
         this.btnSetup.hide();
         var needUpdate = true;
@@ -427,6 +440,7 @@ function DownloaderMgr()
         this.event.loadComplete();
     };
     this.load_complete_edge = function (json) {
+        this.pluginInited = true;
         this.edge_load = true;
         this.btnSetup.hide();
         _this.app.init();
@@ -460,6 +474,21 @@ function DownloaderMgr()
 	    else if (json.name == "load_complete_edge") { _this.load_complete_edge(json); }
     };
 
+    this.pluginLoad = function () {
+        if (!this.pluginInited) {
+            if (this.edge) {
+                this.edgeApp.connect();
+            }
+        }
+    };
+    this.pluginCheck = function () {
+        if (!this.pluginInited) {
+            alert("控件没有加载成功，请安装控件或等待加载。");
+            this.pluginLoad();
+            return false;
+        }
+        return true;
+    };
     this.checkVersion = function ()
 	{
 	    //Win64

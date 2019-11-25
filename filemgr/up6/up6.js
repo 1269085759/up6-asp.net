@@ -4,7 +4,7 @@
 	产品首页：http://www.ncmem.com/webapp/up6/index.aspx
 	联系信箱：1085617561@qq.com
 	联系QQ：1085617561
-    版本：2.3.8
+    版本：2.3.9
 	更新记录：
 		2009-11-05 创建。
 		2015-07-31 优化更新进度逻辑
@@ -191,7 +191,8 @@ function HttpUploaderMgr()
 	this.chrome = browserName.indexOf("chrome") > 0;
 	this.chrome45 = false;
 	this.nat_load = false;
-	this.edge_load = false;
+    this.edge_load = false;
+    this.pluginInited = false;
 	this.chrVer = navigator.appVersion.match(/Chrome\/(\d+)/);
 	this.ffVer = navigator.userAgent.match(/Firefox\/(\d+)/);
 	this.edge = navigator.userAgent.indexOf("Edge") > 0;
@@ -317,6 +318,7 @@ function HttpUploaderMgr()
     {
         if (this.websocketInited) return;
         this.websocketInited = true;
+        this.pluginInited = true;
 
         this.btnSetup.hide();
         var needUpdate = true;
@@ -331,6 +333,7 @@ function HttpUploaderMgr()
     };
 	this.load_complete_edge = function (json)
     {
+        this.pluginInited = true;
 	    this.edge_load = true;
         this.btnSetup.hide();
         _this.app.init();
@@ -372,6 +375,21 @@ function HttpUploaderMgr()
         }
 	};
 
+    this.pluginLoad = function () {
+        if (!this.pluginInited) {
+            if (this.edge) {
+                this.edgeApp.connect();
+            }
+        }
+    };
+    this.pluginCheck = function () {
+        if (!this.pluginInited) {
+            alert("控件没有加载成功，请安装控件或等待加载。");
+            this.pluginLoad();
+            return false;
+        }
+        return true;
+    };
 	this.checkBrowser = function ()
 	{
 	    //Win64
@@ -711,19 +729,22 @@ function HttpUploaderMgr()
 	
 	//打开文件选择对话框
 	this.openFile = function()
-	{
+    {
+        if (!this.pluginCheck()) return;
         _this.app.openFiles();
 	};
 	
 	//打开文件夹选择对话框
 	this.openFolder = function()
-	{
+    {
+        if (!this.pluginCheck()) return;
         _this.app.openFolders();
 	};
 
 	//粘贴文件
 	this.pasteFiles = function()
-	{
+    {
+        if (!this.pluginCheck()) return;
         _this.app.pasteFiles();
 	};
 

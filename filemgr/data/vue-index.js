@@ -124,10 +124,10 @@
                         , fileUrl: _this.$refs.down.mgr.Config["UrlDown"]
                     };
                     if (f.f_fdTask) {
-                        _this.$refs.down.mgr.app.addFolder(dt);
+                        _this.$refs.down.mgr.addFolder(dt);
                     }
                     else {
-                        _this.$refs.down.mgr.app.addFile(dt);
+                        _this.$refs.down.mgr.addFile(dt);
                     }
                 });
                 this.openDown_click();
@@ -301,8 +301,8 @@
                     , nameLoc: f.f_nameLoc
                     , fileUrl: this.$refs.down.mgr.Config["UrlDown"]
                 };
-                if (f.f_fdTask) _this.$refs.down.mgr.app.addFolder(dt);
-                else _this.$refs.down.mgr.app.addFile(dt);
+                if (f.f_fdTask) _this.$refs.down.mgr.addFolder(dt);
+                else _this.$refs.down.mgr.addFile(dt);
                 this.openDown_click();
             }
             , itemRename_click: function (f, i) {
