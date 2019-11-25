@@ -10,7 +10,7 @@
     methods: {
         check_path: function () {
             if (this.mgr.Config["Folder"] == "") {
-                    this.mgr.open_folder();
+                    this.mgr.setConfig();
                 return false;
             }
             return true;

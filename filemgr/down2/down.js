@@ -180,6 +180,10 @@ function DownloaderMgr()
         if (!this.pluginCheck()) return;
         this.app.addFolder(v);
     };
+    this.setConfig = function () {
+        if (!this.pluginCheck()) return;
+        this.app.openFolder();
+    };
 
 	this.getHtml = function()
 	{ 
@@ -337,10 +341,6 @@ function DownloaderMgr()
             return n == id;
         }, true);
     };
-	this.open_folder = function (json)
-	{
-	    this.app.openFolder();
-	};
     this.down_file = function (json) { };
 
     //队列控制
@@ -608,8 +608,8 @@ function DownloaderMgr()
             ui.find('img[name="' + i + '"]').attr("src", n);
         });
 
-	    //设置下载文件夹
-        btnSetFolder.click(function () { _this.open_folder(); });
+        //设置下载文件夹
+        btnSetFolder.click(function () { _this.setConfig(); });
         this.btnSetup.click(function () { window.open(_this.Config.exe.path); });
 		//清除已完成
         ui.find(this.Config.ui.btn.clear).click(function () { _this.clearComplete(); });
