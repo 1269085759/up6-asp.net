@@ -11,9 +11,9 @@ function WebServerUp6(mgr)
     {
         if (typeof navigator.msLaunchUri != 'undefined')
         {
-            console.log(mgr.Config.edge.protocol + "://" + mgr.Config.edge.port);
+            console.log(mgr.Config.edge.protocol + "://?port=" + mgr.Config.edge.port);
             //up6://9006
-            navigator.msLaunchUri(mgr.Config.edge.protocol+"://"+mgr.Config.edge.port, function ()
+            navigator.msLaunchUri(mgr.Config.edge.protocol+"://?port="+mgr.Config.edge.port, function ()
             {
                 console.log('应用打开成功');
             }, function ()
