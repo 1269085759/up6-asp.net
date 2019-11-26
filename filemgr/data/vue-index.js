@@ -212,6 +212,7 @@
                 });
             }
             , nav_click: function (p) {
+                var _this = this;
                 this.idSels.length = 0;
                 this.idSelAll = false;
                 //加载路径
