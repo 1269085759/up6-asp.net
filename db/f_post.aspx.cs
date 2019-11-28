@@ -7,7 +7,7 @@ using up6.db.utils;
 
 namespace up6.db
 {
-    public partial class f_post : System.Web.UI.Page
+    public partial class f_post : WebBase
     {
         bool safe_check(params string[] ps)
         {
@@ -39,15 +39,15 @@ namespace up6.db
         /// <param name="e"></param>
         protected void Page_Load(object sender, EventArgs e)
         {
-            string uid          = Request.Headers["uid"];
-            string f_id         = Request.Headers["id"];
-            string lenSvr       = Request.Headers["lenSvr"];//已传大小
-            string lenLoc       = Request.Headers["lenLoc"];//本地文件大小
-            string blockOffset  = Request.Headers["blockOffset"];
-            string blockSize    = Request.Headers["blockSize"];//当前块大小
-            string blockIndex   = Request.Headers["blockIndex"];//当前块索引，基于1
-            string blockMd5     = Request.Headers["blockMd5"];//块MD5
-            string complete     = Request.Headers["complete"];//true/false
+            string uid          = this.headString("uid");
+            string f_id         = this.headString("id");
+            string lenSvr       = this.headString("lenSvr");//已传大小
+            string lenLoc       = this.headString("lenLoc");//本地文件大小
+            string blockOffset  = this.headString("blockOffset");
+            string blockSize    = this.headString("blockSize");//当前块大小
+            string blockIndex   = this.headString("blockIndex");//当前块索引，基于1
+            string blockMd5     = this.headString("blockMd5");//块MD5
+            string complete     = this.headString("complete");//true/false
             string pathSvr      = Request.Form["pathSvr"];//
             pathSvr             = HttpUtility.UrlDecode(pathSvr);
 

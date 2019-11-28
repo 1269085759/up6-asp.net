@@ -7,16 +7,16 @@ namespace up6.db
     /// <summary>
     /// 更新文件或文件夹进度，百分比，
     /// </summary>
-    public partial class f_process : System.Web.UI.Page
+    public partial class f_process : WebBase
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            string id       = Request.QueryString["id"];
-            string uid      = Request.QueryString["uid"];
-            string offset   = Request.QueryString["offset"];
-            string lenSvr   = Request.QueryString["lenSvr"];
-            string perSvr   = Request.QueryString["perSvr"];
-            string callback = Request.QueryString["callback"];//jsonp参数
+            string id       = this.reqString("id");
+            string uid      = this.reqString("uid");
+            string offset   = this.reqString("offset");
+            string lenSvr   = this.reqString("lenSvr");
+            string perSvr   = this.reqString("perSvr");
+            string callback = this.reqString("callback");//jsonp参数
 
             string json = callback + "({\"state\":0})";//返回jsonp格式数据。
             if(    !string.IsNullOrEmpty(id)

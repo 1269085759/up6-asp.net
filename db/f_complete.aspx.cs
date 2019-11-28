@@ -7,20 +7,21 @@ namespace up6.db
     /// <summary>
     /// 此文件处理单文件上传
     /// </summary>
-    public partial class f_complete : System.Web.UI.Page
+    public partial class f_complete : WebBase
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            string md5 = Request.QueryString["md5"];
-            string uid = Request.QueryString["uid"];
-            string id = Request.QueryString["id"];
-            string cbk = Request.QueryString["callback"];
+            var md5 = this.reqString("md5");
+            var uid = this.reqString("uid");
+            var id = this.reqString("id");
+            var cbk = this.reqString("callback");
 
             //返回值。1表示成功
             int ret = 0;
 
-            if (   string.IsNullOrEmpty(uid)
-                || string.IsNullOrEmpty(id))
+            if (string.IsNullOrEmpty(id) ||
+                string.IsNullOrEmpty(uid)
+                )
             {
             }//参数不为空
             else

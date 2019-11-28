@@ -407,6 +407,9 @@
     <Compile Include="db\model\FileInf.cs" />
     <Compile Include="db\utils\Md5Tool.cs" />
     <Compile Include="db\utils\PathTool.cs" />
+    <Compile Include="db\WebBase.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="db\XDebug.cs" />
     <Compile Include="debug\big_file.aspx.cs">
       <DependentUpon>big_file.aspx</DependentUpon>

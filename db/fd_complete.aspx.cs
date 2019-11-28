@@ -7,17 +7,17 @@ using up6.filemgr.app;
 
 namespace up6.db
 {
-    public partial class fd_complete : System.Web.UI.Page
+    public partial class fd_complete : WebBase
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            string id = Request.QueryString["id"];
-            string uid = Request.QueryString["uid"];
-            string cak = Request.QueryString["callback"];
+            string id = this.reqString("id");
+            string uid = this.reqString("uid");
+            string cak = this.reqString("callback");
             int ret = 0;
 
-            if ( string.IsNullOrEmpty(id)
-                || uid.Length < 1)
+            if ( string.IsNullOrEmpty(id) || 
+                uid.Length < 1)
             {
             }
             else

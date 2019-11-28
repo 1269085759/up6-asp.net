@@ -15,20 +15,20 @@ namespace up6.db
     /// 更新记录：
     ///     2016-03-23 优化逻辑，分离子文件逻辑
     /// </summary>
-    public partial class f_create : System.Web.UI.Page
+    public partial class f_create : WebBase
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            string pid          = Request.QueryString["pid"];
-            string pidRoot      = Request.QueryString["pidRoot"];
-            string md5          = Request.QueryString["md5"];
-            string id           = Request.QueryString["id"];
-            string uid          = Request.QueryString["uid"];
-            string lenLoc       = Request.QueryString["lenLoc"];
-            string sizeLoc      = Request.QueryString["sizeLoc"];
-            string callback     = Request.QueryString["callback"];//jsonp参数
+            string pid          = this.reqString("pid");
+            string pidRoot      = this.reqString("pidRoot");
+            string md5          = this.reqString("md5");
+            string id           = this.reqString("id");
+            string uid          = this.reqString("uid");
+            string lenLoc       = this.reqString("lenLoc");
+            string sizeLoc      = this.reqString("sizeLoc");
+            string callback     = this.reqString("callback");//jsonp参数
             //客户端使用的是encodeURIComponent编码，
-            string pathLoc      = HttpUtility.UrlDecode(Request.QueryString["pathLoc"]);//utf-8解码
+            string pathLoc      = this.reqStringDecode("pathLoc");//utf-8解码
 
             if (string.IsNullOrEmpty(pid)) pid = string.Empty;
             if (string.IsNullOrEmpty(pidRoot)) pidRoot = pid;

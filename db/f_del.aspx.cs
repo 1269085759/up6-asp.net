@@ -4,17 +4,18 @@ using up6.db.database;
 
 namespace up6.db
 {
-    public partial class f_del : System.Web.UI.Page
+    public partial class f_del : WebBase
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            string fid = Request.QueryString["id"];
-            string uid = Request.QueryString["uid"];
-            string callback = Request.QueryString["callback"];
+            string fid = this.reqString("id");
+            string uid = this.reqString("uid");
+            string callback = this.reqString("callback");
             int ret = 0;
 
-            if (string.IsNullOrEmpty(fid)
-                || string.IsNullOrEmpty(uid))
+            if (string.IsNullOrEmpty(fid) || 
+                string.IsNullOrEmpty(uid)
+                )
             {
             }//参数不为空
             else

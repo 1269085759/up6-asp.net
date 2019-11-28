@@ -13,22 +13,20 @@ namespace up6.db
     /// <summary>
     /// 以guid模式存储文件夹，
     /// </summary>
-    public partial class fd_create : System.Web.UI.Page
+    public partial class fd_create : WebBase
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            string id       = Request.QueryString["id"];
-            string pid      = Request.QueryString["pid"];
-            string pidRoot  = Request.QueryString["pidRoot"];
-            string uid      = Request.QueryString["uid"];
-            string lenLoc   = Request.QueryString["lenLoc"];
-            string sizeLoc  = Request.QueryString["sizeLoc"];
-            string pathLoc  = HttpUtility.UrlDecode(Request.QueryString["pathLoc"]);
-            string callback = Request.QueryString["callback"];//jsonp参数
+            string id       = this.reqString("id");
+            string pid      = this.reqString("pid");
+            string pidRoot  = this.reqString("pidRoot");
+            string uid      = this.reqString("uid");
+            string lenLoc   = this.reqString("lenLoc");
+            string sizeLoc  = this.reqString("sizeLoc");
+            string pathLoc  = this.reqStringDecode("pathLoc");
+            string callback = this.reqString("callback");//jsonp参数
             if (string.IsNullOrEmpty(pid)) pid = string.Empty;
             if (string.IsNullOrEmpty(pidRoot)) pidRoot = pid;
-            pid = pid.Trim();
-            pidRoot = pidRoot.Trim();
 
             if (string.IsNullOrEmpty(id)
                 || string.IsNullOrEmpty(uid)
