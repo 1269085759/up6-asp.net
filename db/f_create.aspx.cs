@@ -34,9 +34,10 @@ namespace up6.db
             if (string.IsNullOrEmpty(pidRoot)) pidRoot = pid;
 
             //参数为空
-            if (string.IsNullOrEmpty(md5)
-                || string.IsNullOrEmpty(uid)
-                || string.IsNullOrEmpty(sizeLoc))
+            if (string.IsNullOrEmpty(md5) || 
+                string.IsNullOrEmpty(uid) || 
+                string.IsNullOrEmpty(sizeLoc)
+                )
             {
                 Response.Write(callback + "({\"value\":null})");
                 return;
