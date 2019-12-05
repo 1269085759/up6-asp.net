@@ -301,15 +301,8 @@ namespace up6.filemgr
         void mk_folder()
         {
             var obj = this.request_to_json();
-            //var data = Request.QueryString["data"];
-            //data = Server.UrlDecode(data);
-            //var obj = JObject.Parse(data);
             var name = obj["f_nameLoc"].ToString().Trim();
             var pid = obj["f_pid"].ToString().Trim();
-            //var pidRoot = obj["f_pidRoot"].ToString().Trim();
-            //obj["f_nameLoc"] = name;
-            //obj["f_pid"] = pid;
-            //obj["f_pidRoot"] = pidRoot;
             obj["f_pathRel"] = PathTool.combin(obj["f_pathRel"].ToString(), obj["f_nameLoc"].ToString());
 
             DbFolder df = new DbFolder();

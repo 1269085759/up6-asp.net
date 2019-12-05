@@ -97,9 +97,14 @@
                             layer.alert('创建失败,' + res.msg, { icon: 5 });
                         }
                         else {
+                            var fd = $.extend(param,res,
+                                {
+                                    f_nameLoc:_this.folderMker.name,
+                                    f_fdTask:true
+                                });
                             _this.folderMker.name = '';
-                            _this.page_changed(1, 20);
                             _this.folderMker.edit = false;
+                            _this.items.unshift(fd);
                         }
                     }
                     , error: function (req, txt, err) { }
