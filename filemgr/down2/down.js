@@ -133,10 +133,11 @@ function DownloaderMgr()
 	};
 
     this.event = {
-          downComplete: function (obj) { }
-        , downError: function (obj, err) { }
-        , queueComplete: function () { }
-        , loadComplete: function () { }
+        downComplete: function (obj) { },
+        downError: function (obj, err) { },
+        queueComplete: function () { },
+        loadComplete: function () { },
+        unsetup:function(html){}
 	};
 
     this.websocketInited = false;
@@ -482,8 +483,10 @@ function DownloaderMgr()
         }
     };
     this.pluginCheck = function () {
-        if (!this.pluginInited) {
-            alert("控件没有加载成功，请安装控件或等待加载。");
+        if (!this.pluginInited) {       
+            var link = "<a target='_blank' href='%url%' class='btn btn-link btn-sm'安装控件</a>".replace("%url%",this.Config.exe.path);
+            var html = '控件没有加载成功，请%link%或等待加载。'.replace("%link%",link);
+            this.event.unsetup(html);
             this.pluginLoad();
             return false;
         }

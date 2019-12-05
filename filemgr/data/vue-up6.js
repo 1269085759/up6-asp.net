@@ -53,6 +53,9 @@
         this.mgr.event.fileComplete = function (f) {
             _this.$emit('file_complete');
         };
+        this.mgr.event.unsetup = function(html){
+            _this.$emit("unsetup",html);
+        };
         this.mgr.load_to("#pnl-up");
     },
     template: '<div name="files-panel" class="post-container">\

@@ -154,15 +154,16 @@ function HttpUploaderMgr()
 
     //biz event
 	this.event = {
-	      "md5Complete": function (obj/*HttpUploader对象*/, md5) { }
-        , "scanComplete": function (obj/*文件夹扫描完毕，参考：FolderUploader*/) { }
-        , "fileComplete": function (obj/*文件上传完毕，参考：FileUploader*/) { }
-        , "itemSelected": function (/*用户选择了文件或目录*/) { }
-        , "fileAppend": function (f) { /*文件和目录添加事件*/}
-        , "fdComplete": function (obj/*文件夹上传完毕，参考：FolderUploader*/) { }
-        , "queueComplete": function () {/*队列上传完毕*/ }
-        , "loadComplete": function () {/*队列上传完毕*/ }
-        , "addFdError": function (json) {/*添加文件夹失败*/ }
+		md5Complete: function (obj/*HttpUploader对象*/, md5) { },
+		scanComplete: function (obj/*文件夹扫描完毕，参考：FolderUploader*/) { },
+		fileComplete: function (obj/*文件上传完毕，参考：FileUploader*/) { },
+		itemSelected: function (/*用户选择了文件或目录*/) { },
+		fileAppend: function (f) { /*文件和目录添加事件*/},
+		fdComplete: function (obj/*文件夹上传完毕，参考：FolderUploader*/) { },
+		queueComplete: function () {/*队列上传完毕*/ },
+		loadComplete: function () {/*队列上传完毕*/ },
+		addFdError: function (json) {/*添加文件夹失败*/ },
+		unsetup:function(html){/*控件未安装事件*/}
 	};
 
 	//http://www.ncmem.com/
@@ -384,7 +385,9 @@ function HttpUploaderMgr()
     };
     this.pluginCheck = function () {
         if (!this.pluginInited) {
-            alert("控件没有加载成功，请安装控件或等待加载。");
+            var link = "<a href='%url%' style='text-decoration:underline'>安装控件</a>".replace("%url%",this.Config.exe.path);
+            var html = '控件没有加载成功，请%link%或等待加载。'.replace("%link%",link);
+            this.event.unsetup(html);
             this.pluginLoad();
             return false;
         }

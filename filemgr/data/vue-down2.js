@@ -34,6 +34,9 @@
         this.mgr.event.sameFileExist = function (n) {
             _this.$emit('same_file_exist',n);
         };
+        this.mgr.event.unsetup = function(html){
+            _this.$emit("unsetup",html);
+        };
         this.mgr.loadTo("#pnl-down");
     },
     template: '<div>\

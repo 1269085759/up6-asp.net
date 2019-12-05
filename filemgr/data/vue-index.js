@@ -359,6 +359,12 @@
             }
             , up6_folderComplete: function (f) {
                 this.page_changed(1, 20);
+            },
+            up6_unsetup:function(html){
+                layer.open({
+                    title: '提示',
+                    content: html
+                  });
             }
             , up6_loadTask: function () {
                 var _this = this;
@@ -397,7 +403,13 @@
             , down_loadComplete: function () {
                 this.down_loadTask();
             }
-            , down_sameFileExist: function (n) { }
+            , down_sameFileExist: function (n) { },
+            down_unsetup:function(html){
+                layer.open({
+                    title: '提示',
+                    content: html
+                  });
+            }
             , down_loadTask: function () {
                 var _this = this;
                 //加载未完成的任务
