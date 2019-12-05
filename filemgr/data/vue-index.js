@@ -67,6 +67,7 @@
             }
             , btnMkFolder_click: function () {
                 this.folderMker.edit = true;
+                setTimeout(function () { }, 10);
             }
             , btnMkFdOk_click: function () {
                 var _this = this;

@@ -12,5 +12,12 @@
         <div>
         </div>
     </form>
+    <script>
+        var reg = /^\s*|\s*$/gi;
+        var str = " s b ";
+        //alert(str.replace(reg, ''));
+        str = "v s b a";
+        //alert(str.replace(reg, ''));
+    </script>
 </body>
 </html>
