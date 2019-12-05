@@ -38,7 +38,7 @@
                             <img :src="ico.btnPaste" />
                             粘贴上传</button>
                         <button class="btn btn-default btn-sm m-r-xs" role="button" @click="btnMkFolder_click">
-                            <img :src="ico.btnEdit" />
+                            <img :src="ico.folder1" />
                             新建文件夹</button>
                         <button class="btn btn-default btn-sm m-r-xs" role="button" @click="openUp_click">
                             <img :src="ico.btnPnlUp" />
@@ -107,7 +107,7 @@
                                 <div :name="'v'+index">
                                 <input type="checkbox" :value="f.f_id" v-model="idSels" :name="'ckb'+index"/>
                                 <img :src="ico.file" v-show="!f.f_fdTask" :name="'name'+index"/>
-                                <img :src="ico.folder" v-show="f.f_fdTask"/>
+                                <img :src="ico.folder1" v-show="f.f_fdTask"/>
                                 <a @click="open_folder(f)" class="link m-l-xs" :name="'name'+index">{{f.f_nameLoc}}</a>
                                     </div>
                                 <div :name="'edit'+index" style="display:none;">

@@ -19,6 +19,7 @@
             , ico: {
                 file: page.path.res + 'imgs/16/file.png'
                 , folder: page.path.res + 'imgs/16/folder.png'
+                , folder1: page.path.res + 'imgs/16/folder1.png'
                 , btnUp: page.path.res + "imgs/16/upload.png"
                 , btnUpFd: page.path.res + "imgs/16/folder.png"
                 , btnPaste: page.path.res + "imgs/16/paste.png"
@@ -66,7 +67,10 @@
             }
             , btnMkFolder_click: function () {
                 this.folderMker.edit = true;
-                setTimeout(function () { }, 10);
+                var _this = this;
+                setTimeout(function () {
+                    _this.$refs.tbFdName.focus();
+                 }, 10);
             }
             , btnMkFdOk_click: function () {
                 var _this = this;
