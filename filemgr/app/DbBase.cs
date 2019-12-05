@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using System.Web;
@@ -18,6 +17,7 @@ namespace up6.filemgr.app
             var r = db.ExecuteReader(cmd);
             return r;
         }
+
         public static DbDataReader all(string table,string fields)
         {
             string sql = string.Format("select {0} from {1}", table,fields);
@@ -25,68 +25,6 @@ namespace up6.filemgr.app
             var cmd = db.GetCommand(sql);
             var r = db.ExecuteReader(cmd);
             return r;
-        }
-
-        public static void allCompanys(ref List<string> arr)
-        {
-            string sql = "select DISTINCT  company from [bug]";
-            DbHelper db = new DbHelper();
-            var cmd = db.GetCommand(sql);
-            var r = db.ExecuteReader(cmd);
-            while (r.Read())
-            {
-                arr.Add(r.GetString(0));
-            }
-            r.Close();
-        }
-
-        public static void companys_tojstree(ref JArray arr)
-        {
-            string sql = "select DISTINCT  company from [bug]";
-            DbHelper db = new DbHelper();
-            var cmd = db.GetCommand(sql);
-            var r = db.ExecuteReader(cmd);
-            int count = 0;
-
-            while (r.Read())
-            {
-                var jo = new JObject {
-                    { "id",++count},
-                    {"parent","#" },
-                    {"text",r.GetString(0) },
-                    {"state",new JObject{
-                        {"selected",false },
-                        {"opened",false }
-                    } },
-                };
-                arr.Add(jo);
-            }
-            r.Close();
-        }
-
-        /// <summary>
-        /// 查询结果第一列为行号
-        /// </summary>
-        /// <param name="table"></param>
-        /// <param name="primaryKey"></param>
-        /// <param name="pageSize"></param>
-        /// <param name="pageIndex"></param>
-        /// <param name="where">id=1 and age=18 and qq=1</param>
-        /// <param name="sort">id desc</param>
-        /// <returns></returns>
-        public static DbDataReader page(string table,string primaryKey,string fields,int pageSize,int pageIndex,string where="",string sort="")
-        {
-            DbHelper db = new DbHelper();
-            var cmd = db.GetCommandStored("spPager");
-            db.AddString(ref cmd, "@table", table,200);
-            db.AddString(ref cmd, "@primarykey", primaryKey,50);
-            db.AddInInt32(cmd, "@pagesize", pageSize);
-            db.AddInInt32(cmd, "@pageindex", pageIndex);
-            db.AddBool(ref cmd, "@docount", false);
-            db.AddString(ref cmd, "@where", where,1000);
-            db.AddString(ref cmd, "@sort", sort,50);
-            db.AddString(ref cmd, "@fields", fields,500);
-            return db.ExecuteReader(cmd);
         }
 
         public static JToken page2(string table, string primaryKey, string fields, string where = "", string sort = "")
