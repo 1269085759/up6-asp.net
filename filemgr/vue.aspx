@@ -12,8 +12,8 @@
               , this.m_path["layerui"]
               , this.m_path["moment"]
               , this.m_path["vue"]
-              , this.m_path["up6"]
-              , this.m_path["down2"]
+              , this.m_path["fm-up6"]
+              , this.m_path["fm-down2"]
               , this.m_path["root"]+"/filemgr/data/vue-up6.js"
               , this.m_path["root"]+"/filemgr/data/vue-down2.js"
               , this.m_path["root"]+"/filemgr/data/vue-index.js"
@@ -74,7 +74,7 @@
                 <ol class="breadcrumb  m-t-xs" style="margin-bottom: -5px;">
                     <template v-for="p in pathNav">
                         <li>
-                            <a class="link" @click="nav_click(p)">{{p.f_nameLoc}}</a>
+                           <a class="link" @click="nav_click(p)">{{p.f_nameLoc}}</a>
                         </li>
                     </template>
                 </ol>
