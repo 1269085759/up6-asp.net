@@ -4,7 +4,7 @@ using up6.db.biz;
 
 namespace up6.db
 {
-    public partial class f_list : System.Web.UI.Page
+    public partial class f_list : WebBase
     {
         /// <summary>
         /// 以JSON格式列出所有文件（）
@@ -13,8 +13,8 @@ namespace up6.db
         /// </summary>
         protected void Page_Load(object sender, EventArgs e)
         {
-            string uid = Request.QueryString["uid"];
-            string cbk = Request.QueryString["callback"];//jsonp
+            string uid = this.reqString("uid");
+            string cbk = this.reqString("callback");//jsonp
 
             if (!string.IsNullOrEmpty(uid))
             {

@@ -4,7 +4,7 @@
 	产品首页：http://www.ncmem.com/webapp/up6/index.aspx
 	联系信箱：1085617561@qq.com
 	联系QQ：1085617561
-    版本：2.3.8
+    版本：2.3.9
 	更新记录：
 		2009-11-05 创建。
 		2015-07-31 优化更新进度逻辑
@@ -18,7 +18,7 @@ function HttpUploaderMgr()
 	this.Config = {
 		  "EncodeType"		: "utf-8"
 		, "Company"			: "荆门泽优软件有限公司"
-		, "Version"			: "2,7,120,5828"
+		, "Version"			: "2,7,121,6032"
 		, "License"			: ""//
 		, "Authenticate"	: ""//域验证方式：basic,ntlm
 		, "AuthName"		: ""//域帐号
@@ -157,7 +157,8 @@ function HttpUploaderMgr()
 	      "md5Complete": function (obj/*HttpUploader对象*/, md5) { }
         , "scanComplete": function (obj/*文件夹扫描完毕，参考：FolderUploader*/) { }
         , "fileComplete": function (obj/*文件上传完毕，参考：FileUploader*/) { }
-        , "fileAppend": function (/*文件和目录添加事件*/) { }
+        , "itemSelected": function (/*用户选择了文件或目录*/) { }
+        , "fileAppend": function (f) { /*文件和目录添加事件*/}
         , "fdComplete": function (obj/*文件夹上传完毕，参考：FolderUploader*/) { }
         , "queueComplete": function () {/*队列上传完毕*/ }
         , "loadComplete": function () {/*队列上传完毕*/ }
@@ -190,7 +191,8 @@ function HttpUploaderMgr()
 	this.chrome = browserName.indexOf("chrome") > 0;
 	this.chrome45 = false;
 	this.nat_load = false;
-	this.edge_load = false;
+    this.edge_load = false;
+    this.pluginInited = false;
 	this.chrVer = navigator.appVersion.match(/Chrome\/(\d+)/);
 	this.ffVer = navigator.userAgent.match(/Firefox\/(\d+)/);
 	this.edge = navigator.userAgent.indexOf("Edge") > 0;
@@ -250,7 +252,7 @@ function HttpUploaderMgr()
         {
 	        this.addFileLoc(json.files[i]);
         }
-        this.event.fileAppend();
+        this.event.itemSelected();
 	    setTimeout(function () { _this.PostFirst(); },500);
 	};
 	this.open_folders = function (json)
@@ -258,7 +260,7 @@ function HttpUploaderMgr()
         for (var i = 0, l = json.folders.length; i < l; ++i) {
             this.addFolderLoc(json.folders[i]);
         }
-        this.event.fileAppend();
+        this.event.itemSelected();
 	    setTimeout(function () { _this.PostFirst(); }, 500);
 	};
 	this.paste_files = function (json)
@@ -267,7 +269,9 @@ function HttpUploaderMgr()
 	    {
 	        this.addFileLoc(json.files[i]);
 	    }
-	};
+        this.event.itemSelected();
+	    setTimeout(function () { _this.PostFirst(); }, 500);
+    };
 	this.post_process = function (json)
     {
 	    var p = this.filesMap[json.id];
@@ -314,6 +318,7 @@ function HttpUploaderMgr()
     {
         if (this.websocketInited) return;
         this.websocketInited = true;
+        this.pluginInited = true;
 
         this.btnSetup.hide();
         var needUpdate = true;
@@ -328,6 +333,7 @@ function HttpUploaderMgr()
     };
 	this.load_complete_edge = function (json)
     {
+        this.pluginInited = true;
 	    this.edge_load = true;
         this.btnSetup.hide();
         _this.app.init();
@@ -369,6 +375,21 @@ function HttpUploaderMgr()
         }
 	};
 
+    this.pluginLoad = function () {
+        if (!this.pluginInited) {
+            if (this.edge) {
+                this.edgeApp.connect();
+            }
+        }
+    };
+    this.pluginCheck = function () {
+        if (!this.pluginInited) {
+            alert("控件没有加载成功，请安装控件或等待加载。");
+            this.pluginLoad();
+            return false;
+        }
+        return true;
+    };
 	this.checkBrowser = function ()
 	{
 	    //Win64
@@ -390,7 +411,7 @@ function HttpUploaderMgr()
         }
 	    else if (this.firefox)
 	    {
-	        if (!this.app.checkFF() || parseInt(this.ffVer[1]) >= 50)//仍然支持npapi
+	        //if (!this.app.checkFF() || parseInt(this.ffVer[1]) >= 50)//仍然支持npapi
             {
                 this.edge = true;
                 this.app.postMessage = this.app.postMessageEdge;
@@ -402,10 +423,10 @@ function HttpUploaderMgr()
             this.app.check = this.app.checkFF;
 	        jQuery.extend(this.Config.firefox, this.Config.chrome);
 	        //44+版本使用Native Message
-	        if (parseInt(this.chrVer[1]) >= 44)
+	        //if (parseInt(this.chrVer[1]) >= 44)
 	        {
-	            _this.firefox = true;
-	            if (!this.app.checkFF())//仍然支持npapi
+	            //_this.firefox = true;
+	            //if (!this.app.checkFF())//仍然支持npapi
                 {
                     this.edge = true;
                     this.app.postMessage = this.app.postMessageEdge;
@@ -523,7 +544,7 @@ function HttpUploaderMgr()
                 $(this).removeClass("bk-hover");
             });
 
-	    this.SafeCheck();
+	    //this.SafeCheck();
 
         $(function ()
         {
@@ -708,19 +729,22 @@ function HttpUploaderMgr()
 	
 	//打开文件选择对话框
 	this.openFile = function()
-	{
+    {
+        if (!this.pluginCheck()) return;
         _this.app.openFiles();
 	};
 	
 	//打开文件夹选择对话框
 	this.openFolder = function()
-	{
+    {
+        if (!this.pluginCheck()) return;
         _this.app.openFolders();
 	};
 
 	//粘贴文件
 	this.pasteFiles = function()
-	{
+    {
+        if (!this.pluginCheck()) return;
         _this.app.pasteFiles();
 	};
 
@@ -792,7 +816,8 @@ function HttpUploaderMgr()
 		ui.msg.text("");
 		ui.percent.text("(0%)");
 		
-		upFile.Ready(); //准备
+        upFile.Ready(); //准备
+        this.event.fileAppend(upFile);//触发事件
 		return upFile;
 	};
 
@@ -832,7 +857,8 @@ function HttpUploaderMgr()
 		this.filesMap[fdLoc.id] = fdTask;//添加到映射表
 		fdTask.ui = ui;
 		fdTask.Ready(); //准备
-		return fdTask;
+        this.event.fileAppend(fdTask);//触发事件
+        return fdTask;
 	};
 
 	this.ResumeFolder = function (fileSvr)

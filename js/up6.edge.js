@@ -11,16 +11,15 @@ function WebServerUp6(mgr)
     {
         if (typeof navigator.msLaunchUri != 'undefined')
         {
-            console.log(mgr.Config.edge.protocol + "://" + mgr.Config.edge.port);
+            console.log(mgr.Config.edge.protocol + "://?port=" + mgr.Config.edge.port);
             //up6://9006
-            navigator.msLaunchUri(mgr.Config.edge.protocol+"://"+mgr.Config.edge.port, function ()
+            navigator.msLaunchUri(mgr.Config.edge.protocol+"://?port="+mgr.Config.edge.port, function ()
             {
                 console.log('应用打开成功');
             }, function ()
             {
                 console.log('启动失败');
             });
-            setTimeout(function () { _this.connect() }, 1000);//启动定时器
         }
     };
     this.runChr = function () {
@@ -28,7 +27,6 @@ function WebServerUp6(mgr)
         var html = "<iframe id='up6-uri-fra' width=1 height=1 src='" + protocol + "'></iframe>";
         $("#up6-uri-fra").remove();
         $(document.body).append(html);
-        setTimeout(function () { _this.connect() }, 1000);//启动定时器
     };
     this.connect = function ()
     {
@@ -59,7 +57,6 @@ function WebServerUp6(mgr)
                     _this.tryConnect = true;
                     _this.ent.on_close();//
                     _this.run();
-                    setTimeout(function () { _this.connect() }, 3000);//启动定时器
                 }
             };
 
@@ -68,7 +65,6 @@ function WebServerUp6(mgr)
         {
             _this.run();
             console.log("连接失败");
-            setTimeout(function () { _this.connect() }, 3000);//启动定时器
         };
     };
     this.close = function ()

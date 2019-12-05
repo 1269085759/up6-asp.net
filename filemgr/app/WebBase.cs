@@ -69,15 +69,33 @@ namespace up6.filemgr.app
             this.param.Add("url", HttpContext.Current.Request.Url.AbsoluteUri);
         }
 
+        /// <summary>
+        /// 自动删除首尾空白
+        /// </summary>
+        /// <returns></returns>
         public JObject request_to_json() {
             JObject query = new JObject();
             foreach (var key in HttpContext.Current.Request.QueryString.Keys)
             {
                 var kv = HttpContext.Current.Request.QueryString[key.ToString()];
-                JObject obj = new JObject { { key.ToString(), kv } };
+                if (string.IsNullOrEmpty(kv)) kv = string.Empty;
+                kv = kv.Trim();
                 query.Add(key.ToString(), kv);
             }
             return query;
+        }
+
+        public string reqToString(string name)
+        {
+            var v = HttpContext.Current.Request.QueryString[name];
+            if (string.IsNullOrEmpty(v)) return string.Empty;
+            return v;
+        }
+
+        public int reqToInt(string name) {
+            var v = this.reqToString(name);
+            if (string.IsNullOrEmpty(v)) return 0;
+            return int.Parse(v);
         }
 
         /// <summary>

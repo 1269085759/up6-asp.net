@@ -10,6 +10,6 @@
 namespace up6.filemgr {
     
     
-    public partial class index {
+    public partial class vue {
     }
 }

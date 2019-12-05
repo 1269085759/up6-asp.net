@@ -101,9 +101,9 @@
     <Content Include="down2\js\jquery-1.4.min.js" />
     <Content Include="down2\js\json2.min.js" />
     <Content Include="filemgr\biz\form.aspx" />
-    <Content Include="filemgr\data\index.js" />
-    <Content Include="filemgr\data\ui-down.html" />
-    <Content Include="filemgr\data\ui-up.html" />
+    <Content Include="filemgr\data\vue-index.js" />
+    <Content Include="filemgr\data\vue-down2.js" />
+    <Content Include="filemgr\data\vue-up6.js" />
     <Content Include="filemgr\down2\down.app.js" />
     <Content Include="filemgr\down2\down.css" />
     <Content Include="filemgr\down2\down.edge.js" />
@@ -114,7 +114,6 @@
     <Content Include="filemgr\down2\folder.png" />
     <Content Include="filemgr\down2\jquery-1.4.min.js" />
     <Content Include="filemgr\down2\json2.min.js" />
-    <Content Include="filemgr\index.aspx" />
     <Content Include="filemgr\res\bootstrap\css\bootstrap-theme.css" />
     <Content Include="filemgr\res\bootstrap\css\bootstrap-theme.min.css" />
     <Content Include="filemgr\res\bootstrap\css\bootstrap.min.css" />
@@ -276,6 +275,7 @@
     <Content Include="filemgr\up6\up6.file.js" />
     <Content Include="filemgr\up6\up6.folder.js" />
     <Content Include="filemgr\up6\up6.js" />
+    <Content Include="filemgr\vue.aspx" />
     <Content Include="index-single.htm" />
     <Content Include="index.aspx" />
     <Content Include="js\16\clear.png" />
@@ -407,6 +407,9 @@
     <Compile Include="db\model\FileInf.cs" />
     <Compile Include="db\utils\Md5Tool.cs" />
     <Compile Include="db\utils\PathTool.cs" />
+    <Compile Include="db\WebBase.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="db\XDebug.cs" />
     <Compile Include="debug\big_file.aspx.cs">
       <DependentUpon>big_file.aspx</DependentUpon>
@@ -484,6 +487,7 @@
     <Compile Include="filemgr\app\ConfigReader.cs" />
     <Compile Include="filemgr\app\DbBase.cs" />
     <Compile Include="filemgr\app\DbFolder.cs" />
+    <Compile Include="filemgr\app\FolderBuilder.cs" />
     <Compile Include="filemgr\app\HtmlTemplater.cs" />
     <Compile Include="filemgr\app\PageTool.cs" />
     <Compile Include="filemgr\app\PathRelBuilder.cs" />
@@ -509,19 +513,19 @@
     <Compile Include="filemgr\biz\form.aspx.designer.cs">
       <DependentUpon>form.aspx</DependentUpon>
     </Compile>
-    <Compile Include="filemgr\index.aspx.cs">
-      <DependentUpon>index.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="filemgr\index.aspx.designer.cs">
-      <DependentUpon>index.aspx</DependentUpon>
-    </Compile>
     <Compile Include="filemgr\test.aspx.cs">
       <DependentUpon>test.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="filemgr\test.aspx.designer.cs">
       <DependentUpon>test.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="filemgr\vue.aspx.cs">
+      <DependentUpon>vue.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="filemgr\vue.aspx.designer.cs">
+      <DependentUpon>vue.aspx</DependentUpon>
     </Compile>
     <Compile Include="index.aspx.cs">
       <DependentUpon>index.aspx</DependentUpon>

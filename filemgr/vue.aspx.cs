@@ -7,17 +7,18 @@ using up6.db.biz;
 using up6.db.database;
 using up6.db.model;
 using up6.db.utils;
+using up6.down2.biz;
 using up6.filemgr.app;
 
 namespace up6.filemgr
 {
-    public partial class index : WebBase
+    public partial class vue : WebBase
     {
         protected void Page_Load(object sender, EventArgs e)
         {
             string op = Request.QueryString["op"];
 
-            if (op == "data") this.load_data();
+                 if (op == "data") this.load_data(false);
             else if (op == "search") this.search();
             else if (op == "rename") this.file_rename();
             else if (op == "del") this.file_del();
@@ -29,22 +30,22 @@ namespace up6.filemgr
             else if (op == "tree") this.load_tree();
             else if (op == "f_create") this.f_create();
             else if (op == "fd_create") this.fd_create();
+            else if (op == "fd_data") this.fd_data();
         }
 
-        void fd_create() {
 
-            string id       = Request.QueryString["id"];
-            string pid      = Request.QueryString["pid"];
-            string pidRoot  = Request.QueryString["pidRoot"];
-            string uid      = Request.QueryString["uid"];
-            string lenLoc   = Request.QueryString["lenLoc"];
-            string sizeLoc  = Request.QueryString["sizeLoc"];
-            string pathLoc  = HttpUtility.UrlDecode(Request.QueryString["pathLoc"]);
+        void fd_create()
+        {
+            string id = Request.QueryString["id"];
+            string pid = Request.QueryString["pid"];
+            string uid = Request.QueryString["uid"];
+            string lenLoc = Request.QueryString["lenLoc"];
+            string sizeLoc = Request.QueryString["sizeLoc"];
+            string pathLoc = HttpUtility.UrlDecode(Request.QueryString["pathLoc"]);
+            string pathRel = this.reqToString("pathRel");
             string callback = Request.QueryString["callback"];//jsonp参数
             if (string.IsNullOrEmpty(pid)) pid = string.Empty;
-            if (string.IsNullOrEmpty(pidRoot)) pidRoot = pid;
             pid = pid.Trim();
-            pidRoot = pidRoot.Trim();
 
             if (string.IsNullOrEmpty(id)
                 || string.IsNullOrEmpty(uid)
@@ -58,12 +59,13 @@ namespace up6.filemgr
             FileInf fileSvr = new FileInf();
             fileSvr.id = id;
             fileSvr.pid = pid;
-            fileSvr.pidRoot = pidRoot;
+            fileSvr.pidRoot = "";
             fileSvr.fdChild = false;
             fileSvr.fdTask = true;
             fileSvr.uid = int.Parse(uid);//将当前文件UID设置为当前用户UID
             fileSvr.nameLoc = Path.GetFileName(pathLoc);
             fileSvr.pathLoc = pathLoc;
+            fileSvr.pathRel = PathTool.combin(pathRel, fileSvr.nameLoc);
             fileSvr.lenLoc = Convert.ToInt64(lenLoc);
             fileSvr.sizeLoc = sizeLoc;
             fileSvr.deleted = false;
@@ -98,11 +100,12 @@ namespace up6.filemgr
                      new SqlParam("f_id",fileSvr.id)
                     ,new SqlParam("f_nameLoc",fileSvr.nameLoc)
                     ,new SqlParam("f_pid",fileSvr.pid)
-                    ,new SqlParam("f_pidRoot",fileSvr.pidRoot)
+                    ,new SqlParam("f_pidRoot","")
                     ,new SqlParam("f_lenLoc",fileSvr.lenLoc)
                     ,new SqlParam("f_sizeLoc",fileSvr.sizeLoc)
                     ,new SqlParam("f_pathLoc",fileSvr.pathLoc)
                     ,new SqlParam("f_pathSvr",fileSvr.pathSvr)
+                    ,new SqlParam("f_pathRel",fileSvr.pathRel)
                     ,new SqlParam("f_uid",fileSvr.uid)
                 });
             }
@@ -117,7 +120,34 @@ namespace up6.filemgr
             this.toContent(json);
         }
 
-        void f_create() {
+        /// <summary>
+        /// 获取文件夹结构（JSON）
+        /// 格式：
+        /// [
+        ///   {nameLoc,pathSvr,pathRel,lenSvr,sizeSvr}
+        ///   {nameLoc,pathSvr,pathRel,lenSvr,sizeSvr}
+        /// ]
+        /// </summary>
+        void fd_data() {
+
+            string id = Request.QueryString["id"];
+            string cbk = Request.QueryString["callback"];
+            string json = "({\"value\":null})";
+
+            if (!string.IsNullOrEmpty(id))
+            {
+                FolderBuilder fb = new FolderBuilder();
+                var data = JsonConvert.SerializeObject(fb.build(id));
+                data = this.Server.UrlEncode(data);
+                data = data.Replace("+", "%20");
+
+                json = "({\"value\":\"" + data + "\"})";
+            }
+            this.toContent(cbk + json);
+        }
+
+        void f_create()
+        {
 
             string pid = Request.QueryString["pid"];
             string pidRoot = Request.QueryString["pidRoot"];
@@ -129,6 +159,7 @@ namespace up6.filemgr
             string callback = Request.QueryString["callback"];//jsonp参数
             //客户端使用的是encodeURIComponent编码，
             string pathLoc = HttpUtility.UrlDecode(Request.QueryString["pathLoc"]);//utf-8解码
+            string pathRel = this.reqToString("pathRel");
 
             if (string.IsNullOrEmpty(pid)) pid = string.Empty;
             if (string.IsNullOrEmpty(pidRoot)) pidRoot = pid;
@@ -151,6 +182,7 @@ namespace up6.filemgr
             fileSvr.pidRoot = pidRoot;
             fileSvr.nameLoc = Path.GetFileName(pathLoc);
             fileSvr.pathLoc = pathLoc;
+            fileSvr.pathRel = PathTool.combin(pathRel, fileSvr.nameLoc);
             fileSvr.lenLoc = Convert.ToInt64(lenLoc);
             fileSvr.sizeLoc = sizeLoc;
             fileSvr.deleted = false;
@@ -203,7 +235,8 @@ namespace up6.filemgr
             this.toContent(json);
         }
 
-        void load_tree() {
+        void load_tree()
+        {
             var pid = Request.QueryString["pid"];
             var swm = new SqlWhereMerge();
             swm.equal("f_fdChild", 0);
@@ -216,7 +249,7 @@ namespace up6.filemgr
             var data = se.select("up6_files"
                 , "f_id,f_pid,f_pidRoot,f_nameLoc"
                 , swm.to_sql()
-                ,string.Empty);
+                , string.Empty);
 
             //查子目录
             if (!string.IsNullOrEmpty(pid))
@@ -251,7 +284,7 @@ namespace up6.filemgr
                 , "select f_id ,f_nameLoc ,f_pathLoc ,f_sizeLoc ,f_lenSvr ,f_perSvr ,f_fdTask ,f_md5 from up6_files where f_complete=0 and f_deleted=0"
                 , "f_id,f_nameLoc,f_pathLoc,f_sizeLoc,f_lenSvr,f_perSvr,f_fdTask,f_md5"
                 , "id,nameLoc,pathLoc,sizeLoc,lenSvr,perSvr,fdTask,md5");
-            PageTool.to_content(files);
+            this.toContent(files);
         }
 
         void load_uncmp_down()
@@ -267,15 +300,17 @@ namespace up6.filemgr
 
         void mk_folder()
         {
-            var data = Request.QueryString["data"];
-            data = Server.UrlDecode(data);
-            var obj = JObject.Parse(data);
+            var obj = this.request_to_json();
+            //var data = Request.QueryString["data"];
+            //data = Server.UrlDecode(data);
+            //var obj = JObject.Parse(data);
             var name = obj["f_nameLoc"].ToString().Trim();
             var pid = obj["f_pid"].ToString().Trim();
-            var pidRoot = obj["f_pidRoot"].ToString().Trim();
-            obj["f_nameLoc"] = name;
-            obj["f_pid"] = pid;
-            obj["f_pidRoot"] = pidRoot;
+            //var pidRoot = obj["f_pidRoot"].ToString().Trim();
+            //obj["f_nameLoc"] = name;
+            //obj["f_pid"] = pid;
+            //obj["f_pidRoot"] = pidRoot;
+            obj["f_pathRel"] = PathTool.combin(obj["f_pathRel"].ToString(), obj["f_nameLoc"].ToString());
 
             DbFolder df = new DbFolder();
             if (df.exist_same_folder(name, pid))
@@ -299,6 +334,7 @@ namespace up6.filemgr
                     ,new SqlParam("f_nameLoc",obj["f_nameLoc"].ToString())
                     ,new SqlParam("f_complete",true)
                     ,new SqlParam("f_fdTask",true)
+                    ,new SqlParam("f_pathRel",obj["f_pathRel"].ToString())
                 });
             }//子目录
             else
@@ -311,6 +347,7 @@ namespace up6.filemgr
                     ,new SqlParam("f_pidRoot",obj["f_pidRoot"].ToString())
                     ,new SqlParam("f_nameLoc",obj["f_nameLoc"].ToString())
                     ,new SqlParam("f_complete",true)
+                    ,new SqlParam("f_pathRel",obj["f_pathRel"].ToString())
                     });
             }
 
@@ -329,56 +366,137 @@ namespace up6.filemgr
 
             DbFolder df = new DbFolder();
 
-            this.toContent(df.build_path_by_id(fd));
+            this.toContent(df.build_path(fd));
         }
 
         void file_rename()
         {
-            var data = Request.QueryString["data"];
-            data = Server.UrlDecode(data);
-            var o = JObject.Parse(data);
-
-            var db = new DbFolder();
-            var fdTask = Convert.ToBoolean(o["f_fdTask"].ToString());
-            var pid = o["f_pid"].ToString().Trim();
-            var id = o["f_id"].ToString().Trim();
-            var nameNew = o["f_nameLoc"].ToString().Trim();
-
             bool exist = false;
-            if (!fdTask || string.IsNullOrEmpty(pid)) exist = db.rename_file_check(nameNew, pid);
-            else exist = db.rename_folder_check(nameNew, pid);
+            var o = this.request_to_json();
+
+            SqlExec se = new SqlExec();
+            bool fdTask = o["f_fdTask"].ToString() == "true";
+            //根目录
+            if (string.IsNullOrEmpty(o["f_pid"].ToString())) fdTask = false;
+
+            if (fdTask)
+            {
+                //同名目录
+                var s = se.read("up6_folders", "f_id,f_pathRel"
+                    , new SqlParam[] {
+                    new SqlParam("f_pid",o["f_pid"].ToString()),
+                    new SqlParam("f_nameLoc",o["f_nameLoc"].ToString()),
+                });
+                exist = s != null;
+
+                if (!exist)
+                {
+                    s = se.read("up6_folders","f_pathRel",new SqlParam[] { new SqlParam("f_id",o["f_id"].ToString())});
+                    //更新相对路径
+                    var pathRel = s["f_pathRel"].ToString();
+                    var pathRelOld = pathRel;
+                    var index = pathRel.LastIndexOf("/");
+                    pathRel = pathRel.Substring(0, index + 1);
+                    pathRel += o["f_nameLoc"].ToString();
+                    var pathRelNew = pathRel;
+
+                    se.update("up6_folders"
+                        , new SqlParam[] {
+                            new SqlParam("f_nameLoc",o["f_nameLoc"].ToString()),
+                            new SqlParam("f_pathRel",pathRel)
+                        },
+                        new SqlParam[] {
+                            new SqlParam("f_id",o["f_id"].ToString())
+                        });
+                    //
+                    this.folder_renamed(pathRelOld, pathRelNew);
+                }
+            }
+            else
+            {
+                var s = se.read("up6_files", "f_id,f_pathRel", new SqlParam[] {
+                    new SqlParam("f_pid",o["f_pid"].ToString()),
+                    new SqlParam("f_nameLoc",o["f_nameLoc"].ToString()),
+                });
+                exist = s != null;
+
+                if (!exist)
+                {
+                    s = se.read("up6_files","f_pathRel",new SqlParam[] { new SqlParam("f_id",o["f_id"].ToString())});
+                    //更新相对路径
+                    var pathRel = s["f_pathRel"].ToString();
+                    var pathRelOld = pathRel;
+                    var index = pathRel.LastIndexOf("/");
+                    pathRel = pathRel.Substring(0, index + 1);
+                    pathRel += o["f_nameLoc"].ToString();
+                    var pathRelNew = pathRel;
+
+                    se.update("up6_files"
+                        , new SqlParam[] {
+                            new SqlParam("f_nameLoc",o["f_nameLoc"].ToString()),
+                            new SqlParam("f_pathRel",pathRel)
+                        },
+                        new SqlParam[] {
+                            new SqlParam("f_id",o["f_id"].ToString())
+                        });
+
+                    this.folder_renamed(pathRelOld, pathRelNew);
+                }
+            }
 
             //存在同名项
             if (exist)
             {
                 var res = new JObject { { "state", false }, { "msg", "存在同名项" } };
                 this.toContent(res);
-                return;
             }
-
-            //是文件或根目录
-            if (!fdTask || string.IsNullOrEmpty(pid)) db.rename_file(nameNew, id);
-            else db.rename_folder(nameNew, id, pid);
-
-            var ret = new JObject { { "state", true } };
-            this.toContent(ret);
-            return;
+            else
+            {
+                var ret = new JObject { { "state", true } };
+                this.toContent(ret);
+            }
         }
 
+        /// <summary>
+        /// 目录名称更新，
+        /// 1.更新数据表中所有子级文件相对路径
+        /// 2.更新数据表中所有子级目录相对路径
+        /// </summary>
+        /// <param name=""></param>
+        void folder_renamed(string pathRelOld,string pathRelNew) {
+            SqlExec se = new SqlExec();
+            string sql = string.Format("update up6_files set f_pathRel=REPLACE(f_pathRel,'{0}/','{1}/') where CHARINDEX('{0}/',f_pathRel)>0",
+                pathRelOld,
+                pathRelNew
+                );
+            se.exec(sql);
+
+            //更新目录表
+            sql = string.Format("update up6_folders set f_pathRel=REPLACE(f_pathRel,'{0}/','{1}/') where CHARINDEX('{0}/',f_pathRel)>0",
+                pathRelOld,
+                pathRelNew
+                );
+            se.exec(sql);
+        }
+
+        /// <summary>
+        /// 删除文件
+        /// </summary>
         void file_del()
         {
             var id = Request.QueryString["id"];
 
             SqlExec se = new SqlExec();
-            //se.update("up6_folders"
-            //    , new SqlParam[] { new SqlParam("f_deleted", true) }
-            //    , new SqlParam[] {
-            //        new SqlParam("f_id",id)
-            //        ,new SqlParam("f_pid",id)
-            //        ,new SqlParam("f_pidRoot",id)
-            //    }
-            //    , "or"
-            //    );
+            se.update("up6_folders"
+                , new SqlParam[] { new SqlParam("f_deleted", true) }
+                , new SqlParam[] {
+                    new SqlParam("f_id",id)
+                    ,new SqlParam("f_pid",id)
+                    ,new SqlParam("f_pidRoot",id)
+                }
+                , "or"
+                );
+
             se.update("up6_files"
                 , new SqlParam[] { new SqlParam("f_deleted", true) }
                 , new SqlParam[] {
@@ -420,14 +538,17 @@ namespace up6.filemgr
             PageTool.to_content(obj);
         }
 
-        void load_data()
+        /// <summary>
+        /// 获取目录和文件列表
+        /// </summary>
+        /// <param name="toParam">注册到变量？</param>
+        void load_data(bool toParam)
         {
-            SqlExec se = new SqlExec();
-
             SqlWhereMerge swm = new SqlWhereMerge();
             swm.req_equal("f_pid", "pid", false);
             swm.equal("f_complete", 1);
             swm.equal("f_deleted", 0);
+            swm.equal("f_uid", this.reqToInt("uid"));
 
             var pid = Request.QueryString["pid"];
             bool isRoot = string.IsNullOrEmpty(pid);
@@ -453,7 +574,7 @@ namespace up6.filemgr
                 where = swm.to_sql();
                 folders = (JArray)DbBase.page2("up6_folders"
                     , "f_id"
-                    , "f_id,f_nameLoc,f_pid,f_sizeLoc,f_time,f_pidRoot"
+                    , "f_id,f_nameLoc,f_pid,f_sizeLoc,f_time,f_pidRoot,f_pathRel"
                     , where
                     , "f_time desc");
 
@@ -462,7 +583,6 @@ namespace up6.filemgr
                     fd["f_fdTask"] = true;
                     fd["f_fdChild"] = false;
                     fd["f_pathSvr"] = string.Empty;
-                    fd["f_pathRel"] = string.Empty;
                 }
             }
             foreach (var f in files) folders.Add(f);
@@ -475,7 +595,8 @@ namespace up6.filemgr
             o["msg"] = string.Empty;
             o["data"] = folders;
 
-            PageTool.to_content(o);
+            if (toParam) this.param.Add("items",o);
+            else this.toContent(o);
         }
 
         void search()
