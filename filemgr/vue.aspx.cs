@@ -42,7 +42,7 @@ namespace up6.filemgr
             string lenLoc = Request.QueryString["lenLoc"];
             string sizeLoc = Request.QueryString["sizeLoc"];
             string pathLoc = HttpUtility.UrlDecode(Request.QueryString["pathLoc"]);
-            string pathRel = this.reqToString("pathRel");
+            string pathRel = this.reqString("pathRel");
             string callback = Request.QueryString["callback"];//jsonp参数
             if (string.IsNullOrEmpty(pid)) pid = string.Empty;
             pid = pid.Trim();
@@ -159,7 +159,7 @@ namespace up6.filemgr
             string callback = Request.QueryString["callback"];//jsonp参数
             //客户端使用的是encodeURIComponent编码，
             string pathLoc = HttpUtility.UrlDecode(Request.QueryString["pathLoc"]);//utf-8解码
-            string pathRel = this.reqToString("pathRel");
+            string pathRel = this.reqString("pathRel");
 
             if (string.IsNullOrEmpty(pid)) pid = string.Empty;
             if (string.IsNullOrEmpty(pidRoot)) pidRoot = pid;
