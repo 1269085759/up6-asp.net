@@ -88,7 +88,7 @@
     <Content Include="down2\db\f_down.aspx" />
     <Content Include="down2\db\f_list_cmp.aspx" />
     <Content Include="down2\db\f_update.aspx" />
-    <Content Include="down2\index.htm" />
+    <Content Include="down2\index.aspx" />
     <Content Include="down2\js\down-single.js" />
     <Content Include="down2\js\down.app.js" />
     <Content Include="down2\js\down.css" />
@@ -276,7 +276,7 @@
     <Content Include="filemgr\up6\up6.folder.js" />
     <Content Include="filemgr\up6\up6.js" />
     <Content Include="filemgr\vue.aspx" />
-    <Content Include="index-single.htm" />
+    <Content Include="index-single.aspx" />
     <Content Include="index.aspx" />
     <Content Include="js\16\clear.png" />
     <Content Include="js\16\folder.png" />
@@ -440,6 +440,13 @@
     <Compile Include="down2\db\fd_data.aspx.designer.cs">
       <DependentUpon>fd_data.aspx</DependentUpon>
     </Compile>
+    <Compile Include="down2\index.aspx.cs">
+      <DependentUpon>index.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="down2\index.aspx.designer.cs">
+      <DependentUpon>index.aspx</DependentUpon>
+    </Compile>
     <Compile Include="down2\model\DnFileInf.cs" />
     <Compile Include="down2\biz\DnFolder.cs" />
     <Compile Include="down2\db\f_list.aspx.cs">
@@ -526,6 +533,13 @@
     </Compile>
     <Compile Include="filemgr\vue.aspx.designer.cs">
       <DependentUpon>vue.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="index-single.aspx.cs">
+      <DependentUpon>index-single.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="index-single.aspx.designer.cs">
+      <DependentUpon>index-single.aspx</DependentUpon>
     </Compile>
     <Compile Include="index.aspx.cs">
       <DependentUpon>index.aspx</DependentUpon>

@@ -1,5 +1,5 @@
 ﻿Vue.component('down2', {
-    props: ['fd_data','license','fields'],
+    props: ['fd_data','fields'],
     data: function () {
         return {
             mgr: null
@@ -26,7 +26,6 @@
         var _this = this;
         this.mgr = new DownloaderMgr();
         this.mgr.Config["UrlFdData"] = this.fd_data;
-        this.mgr.Config["License"] = this.license;
         $.extend(this.mgr.Config.Fields, this.fields);
         this.mgr.event.loadComplete = function () {
             _this.pluginInited = true;

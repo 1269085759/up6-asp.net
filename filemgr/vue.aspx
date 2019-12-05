@@ -58,7 +58,6 @@
                 <up6 id="pnl-up" ref="up6" style="display: none;" 
                     :fd_create="url.fd_create"
                     :f_create="url.f_create"
-                    :license="license.up6"
                     :fields="fields"
                     @load_complete="up6_loadComplete"
                     @item_selected="up6_itemSelected"
@@ -68,7 +67,6 @@
                 <!--下载面板-->
                 <down2 id="pnl-down" ref="down" style="display: none;"
                     :fd_data="url.fd_data"
-                    :license="license.down2"
                     :fields="fields"
                     @load_complete="down_loadComplete"
                     @same_file_exist="down_sameFileExist"></down2>

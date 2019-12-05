@@ -1,16 +1,13 @@
-﻿<!DOCTYPE html>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="index.aspx.cs" Inherits="up6.down2.index" %>
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>down2-sql演示页面</title>
-    <link href="js/down.css" type="text/css" rel="Stylesheet" />
+    <title>down2-演示页面</title>
+    <%=this.paramPage() %>
     <script type="text/javascript" src="js/json2.min.js"></script>
     <script type="text/javascript" src="js/jquery-1.4.min.js"></script>
-    <script type="text/javascript" src="js/down.app.js" charset="utf-8"></script>
-    <script type="text/javascript" src="js/down.edge.js" charset="utf-8"></script>
-    <script type="text/javascript" src="js/down.file.js" charset="utf-8"></script>
-    <script type="text/javascript" src="js/down.folder.js" charset="utf-8"></script>
-    <script type="text/javascript" src="js/down.js" charset="utf-8"></script>
+    <%= this.require( this.m_path["down2"] ) %>
     <script language="javascript" type="text/javascript">
         var downer = new DownloaderMgr();
         downer.Config["Folder"] = "";

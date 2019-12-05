@@ -1,9 +1,68 @@
 {
     "rootAbs": "/",
     "root": "http://localhost:8888/",
+    "license":{
+        "up6":"",
+        "down2":""
+    },
+    "plugin":{
+        "up6":{
+            "ie32":"http://www.ncmem.com/download/up6.3/up6.cab",
+            "ie64":"http://www.ncmem.com/download/up6.3/up64.cab",
+            "chr":"http://www.ncmem.com/download/up6.3/up6.crx",
+            "firefox":"http://www.ncmem.com/download/up6.3/up6.xpi",
+            "exe":"http://www.ncmem.com/download/up6.3/up6.exe",
+            "mac":"http://res2.ncmem.com/download/up6/pack/6.5.17/up6.pkg",
+            "linux":"http://res2.ncmem.com/download/up6/pack/6.5.17/setup.tar"
+        },
+        "down2":{
+            "ie32":"http://www.ncmem.com/download/down2/2.4/down2.cab",
+            "ie64":"http://www.ncmem.com/download/down2/2.4/down64.cab",
+            "chr":"http://www.ncmem.com/download/down2/2.4/down2.crx",
+            "firefox":"http://www.ncmem.com/download/down2/2.4/down2.xpi",
+            "exe":"http://www.ncmem.com/download/down2/2.4/down2.exe",
+            "mac":"http://res2.ncmem.com/download/down2/pack/2.4.19/down2.pkg",
+            "linux":"http://res2.ncmem.com/download/down2/pack/2.4.19/down2.tar"
+        }
+    },
+    "up6": [
+        "http://localhost:8888/js/up6.config.js",
+        "http://localhost:8888/js/up6.app.js",
+        "http://localhost:8888/js/up6.edge.js",
+        "http://localhost:8888/js/up6.file.js",
+        "http://localhost:8888/js/up6.folder.js",
+        "http://localhost:8888/js/up6.css",
+        "http://localhost:8888/js/up6.js"
+    ],
+    "up6-panel": [
+        "http://localhost:8888/js/up6.config.js",
+        "http://localhost:8888/js/up6.app.js",
+        "http://localhost:8888/js/up6.edge.js",
+        "http://localhost:8888/js/single-panel/up6.file.js",
+        "http://localhost:8888/js/single-panel/up6.folder.js",
+        "http://localhost:8888/js/single-panel/up6.css",
+        "http://localhost:8888/js/single-panel/up6.js"
+    ],
+    "up6-single": [
+        "http://localhost:8888/js/up6.config.js",
+        "http://localhost:8888/js/up6.app.js",
+        "http://localhost:8888/js/up6.edge.js",
+        "http://localhost:8888/js/up6.file.js",
+        "http://localhost:8888/js/up6.folder.js",
+        "http://localhost:8888/js/up6.css",
+        "http://localhost:8888/js/up6-single.js"
+    ],
+    "down2": [
+        "http://localhost:8888/down2/js/down.app.js",
+        "http://localhost:8888/down2/js/down.edge.js",
+        "http://localhost:8888/down2/js/down.file.js",
+        "http://localhost:8888/down2/js/down.folder.js",
+        "http://localhost:8888/down2/js/down.js",
+        "http://localhost:8888/down2/js/down.css"
+    ],
     "fm": "http://localhost:8888/filemgr/",
     "res": "http://localhost:8888/filemgr/res/",
-    "up6": [
+    "fm-up6": [
         "http://localhost:8888/filemgr/up6/up6.config.js",
         "http://localhost:8888/filemgr/up6/up6.app.js",
         "http://localhost:8888/filemgr/up6/up6.edge.js",
@@ -12,7 +71,7 @@
         "http://localhost:8888/filemgr/up6/up6.css",
         "http://localhost:8888/filemgr/up6/up6.js"
     ],
-    "down2": [
+    "fm-down2": [
         "http://localhost:8888/filemgr/down2/down.app.js",
         "http://localhost:8888/filemgr/down2/down.edge.js",
         "http://localhost:8888/filemgr/down2/down.file.js",

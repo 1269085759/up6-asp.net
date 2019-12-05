@@ -4,7 +4,7 @@
 	产品首页：http://www.ncmem.com/webapp/up6/index.aspx
 	联系信箱：1085617561@qq.com
 	联系QQ：1085617561
-    版本：2.3.10
+    版本：2.3.101
 	更新记录：
 		2009-11-05 创建。
 		2015-07-31 优化更新进度逻辑
@@ -39,7 +39,7 @@ function HttpUploaderMgr()
 		  "EncodeType"		: "utf-8"
 		, "Company"			: "荆门泽优软件有限公司"
 		, "Version"			: "2,7,121,6032"
-		, "License"			: ""//
+		, "License"			: page.path.license.up6//
 		, "Authenticate"	: ""//域验证方式：basic,ntlm
 		, "AuthName"		: ""//域帐号
 		, "AuthPass"		: ""//域密码
@@ -65,16 +65,16 @@ function HttpUploaderMgr()
         , "ProcSaveTm"      : 60//定时保存进度。单位：秒，默认：1分钟
         , "AutoConnect"     : {opened:false,time:3000}//启动错误自动重传
 		//文件夹操作相关
-		, "UrlFdCreate"		: "http://localhost:8888/db/fd_create.aspx"
-		, "UrlFdComplete"	: "http://localhost:8888/db/fd_complete.aspx"
-		, "UrlFdDel"	    : "http://localhost:8888/db/fd_del.aspx"
+		, "UrlFdCreate"		: page.path.root+"db/fd_create.aspx"
+		, "UrlFdComplete"	: page.path.root+"db/fd_complete.aspx"
+		, "UrlFdDel"	    : page.path.root+"db/fd_del.aspx"
 		//文件操作相关
-		, "UrlCreate"		: "http://localhost:8888/db/f_create.aspx"
-		, "UrlPost"			: "http://localhost:8888/db/f_post.aspx"
-        , "UrlProcess"		: "http://localhost:8888/db/f_process.aspx"
-		, "UrlComplete"		: "http://localhost:8888/db/f_complete.aspx"
-		, "UrlList"			: "http://localhost:8888/db/f_list.aspx"
-		, "UrlDel"			: "http://localhost:8888/db/f_del.aspx"
+		, "UrlCreate"		: page.path.root+"db/f_create.aspx"
+		, "UrlPost"			: page.path.root+"db/f_post.aspx"
+        , "UrlProcess"		: page.path.root+"db/f_process.aspx"
+		, "UrlComplete"		: page.path.root+"db/f_complete.aspx"
+		, "UrlList"			: page.path.root+"db/f_list.aspx"
+		, "UrlDel"			: page.path.root+"db/f_del.aspx"
 	    //x86
         , ie: {
               drop: { clsid: "0868BADD-C17E-4819-81DE-1D60E5E734A6", name: "Xproer.HttpDroper6" }
@@ -97,11 +97,11 @@ function HttpUploaderMgr()
         , "Fields": {"uname": "test","upass": "test","uid":"0"}
         , ui: {
             icon: {
-                file: "http://localhost:8888/js/file.png"
-                , folder: "http://localhost:8888/js/folder.png"
-                , stop: "http://localhost:8888/js/stop.png"
-                , del: "http://localhost:8888/js/del.png"
-                , post: "http://localhost:8888/js/post.png"
+                file: page.path.root+"js/file.png"
+                , folder: page.path.root+"js/folder.png"
+                , stop: page.path.root+"js/stop.png"
+                , del: page.path.root+"js/del.png"
+                , post: page.path.root+"js/post.png"
             }
         }
         , errCode: {

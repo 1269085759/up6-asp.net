@@ -4,7 +4,7 @@
 	产品首页：http://www.ncmem.com/webapp/up6/index.aspx
 	联系信箱：1085617561@qq.com
 	联系QQ：1085617561
-    版本：2.3.9
+    版本：2.3.10
 	更新记录：
 		2009-11-05 创建。
 		2015-07-31 优化更新进度逻辑
@@ -19,7 +19,7 @@ function HttpUploaderMgr()
 		  "EncodeType"		: "utf-8"
 		, "Company"			: "荆门泽优软件有限公司"
 		, "Version"			: "2,7,121,6032"
-		, "License"			: ""//
+		, "License"			: page.path.license.up6//
 		, "Authenticate"	: ""//域验证方式：basic,ntlm
 		, "AuthName"		: ""//域帐号
 		, "AuthPass"		: ""//域密码

@@ -5,7 +5,7 @@
 控件下载：http://www.ncmem.com/webapp/down2/pack.aspx
 示例下载：http://www.ncmem.com/webapp/down2/versions.aspx
 联系邮箱：1085617561@qq.com
-版本：2.4.15
+版本：2.4.16
 更新记录：
     2009-11-05 创建
 	2014-02-27 优化版本号。
@@ -22,7 +22,7 @@ function DownloaderMgr()
 		, "LogFile"		: "f:\\log.txt"//日志文件路径。
 		, "Company"		: "荆门泽优软件有限公司"
 		, "Version"		: "1,2,72,60650"
-		, "License"		: ""//
+		, "License"		: page.path.license.down2//
 		, "Cookie"		: ""//
 		, "ThreadCount"	: 3//并发数
         , "ThreadBlock"	: 3//文件块线程数，每个文件使用多少线程下载数据。3~10

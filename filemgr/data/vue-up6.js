@@ -1,5 +1,5 @@
 ﻿Vue.component('up6', {
-    props: ['f_create','fd_create','license','fields'],
+    props: ['f_create','fd_create','fields'],
     data: function () {
         return {
             mgr: null
@@ -35,7 +35,6 @@
         this.mgr = new HttpUploaderMgr();
         this.mgr.Config["UrlCreate"] = this.f_create;
         this.mgr.Config["UrlFdCreate"] = this.fd_create;
-        this.mgr.Config["License"] = this.license;
         $.extend(this.mgr.Config.Fields, this.fields);
         this.mgr.event.loadComplete = function () {
             _this.pluginInited = true;
