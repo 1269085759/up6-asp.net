@@ -197,6 +197,7 @@ function HttpUploaderMgr()
 	    p.md5_error(json);
 	};
     this.load_complete = function (json) {
+        debugger;
         this.btnSetup.hide();
         var needUpdate = true;
         if (typeof (json.version) != "undefined") {
@@ -238,28 +239,28 @@ function HttpUploaderMgr()
 	    }
 	    if (this.firefox)
 	    {
-	        if (!this.app.checkFF() || parseInt(this.ffVer[1]) >= 50)//仍然支持npapi
+	        //if (!this.app.checkFF() || parseInt(this.ffVer[1]) >= 50)//仍然支持npapi
             {
                 this.edge = true;
                 this.app.postMessage = this.app.postMessageEdge;
                 this.edgeApp.run = this.edgeApp.runChr;
             }
         }
-        else if (this.chrome) {
+        else if (this.chrome)
+        {
             this.app.check = this.app.checkFF;
             jQuery.extend(this.Config.firefox, this.Config.chrome);
             //_this.Config["XpiPath"] = _this.Config["CrxPath"];
             //_this.Config["XpiType"] = _this.Config["CrxType"];
             //44+版本使用Native Message
-            if (parseInt(this.chrVer[1]) >= 44) {
-                _this.firefox = true;
-                if (!this.app.checkFF())//仍然支持npapi
+            //if (parseInt(this.chrVer[1]) >= 44) {
+                //_this.firefox = true;
+                //if (!this.app.checkFF())//仍然支持npapi
                 {
                     this.edge = true;
                     this.app.postMessage = this.app.postMessageEdge;
                     this.edgeApp.run = this.edgeApp.runChr;
                 }
-            }
         }
         else if (this.edge) {
             this.app.postMessage = this.app.postMessageEdge;
@@ -329,12 +330,9 @@ function HttpUploaderMgr()
 
 	this.loadAuto = function ()
 	{
-	    var html 		= this.GetHtml();
-	    var dom 		= $(document.body).append(html);
-        $(function () {
-            _this.initUI(dom);
-        });
-		
+	    var html = this.GetHtml();
+        var dom = $(document.body).append(html);
+        _this.initUI(dom);
 	};
 
 	//加截容器，上传面板，文件列表面板
@@ -375,7 +373,8 @@ function HttpUploaderMgr()
 
     //oid,显示上传项的层ID
 	this.postAuto = function (oid)
-	{
+    {
+        debugger;
 		var file_free = this.fileCur != null;
 		if(file_free)
 		{

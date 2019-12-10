@@ -1,6 +1,6 @@
 div.top-space{margin:3px 0 0 0;}
 .file-item {
-    font: 12px/12px ĞÂËÎÌå;
+    font: 12px/12px æ–°å®‹ä½“;
     background-color: #FFFFFF;
     height: 65px;
     margin: 0;
@@ -9,17 +9,17 @@ div.top-space{margin:3px 0 0 0;}
     border-bottom: 1px solid #E3E6EB;
 }
 .file-item-single{width:417px;}
-.file-item .name{font:bold 12px/20px ĞÂËÎÌå;width:180px; height:20px; float:left; overflow:hidden; text-overflow: ellipsis;overflow: hidden;white-space: nowrap; vertical-align:middle;}
-/*ÎÄ¼ş´óĞ¡*/
-.file-item .size{font:12px/20px ĞÂËÎÌå;height:20px;color:#728089;float:right; text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
-/*½ø¶È°Ù·Ö±È*/
-.file-item .percent{font:12px/20px ĞÂËÎÌå;height:20px;float:right;}
-/*½ø¶ÈÌõ±ß¿ò*/
+.file-item .name{font:bold 12px/20px æ–°å®‹ä½“;width:180px; height:20px; float:left; overflow:hidden; text-overflow: ellipsis;overflow: hidden;white-space: nowrap; vertical-align:middle;}
+/*æ–‡ä»¶å¤§å°*/
+.file-item .size{font:12px/20px æ–°å®‹ä½“;height:20px;color:#728089;float:right; text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
+/*è¿›åº¦ç™¾åˆ†æ¯”*/
+.file-item .percent{font:12px/20px æ–°å®‹ä½“;height:20px;float:right;}
+/*è¿›åº¦æ¡è¾¹æ¡†*/
 .file-item .process-border{margin:0;padding: 0px;border: 1px solid #AAA;clear:both;}
 .file-item .process{ height:12px; background-color: #A5DF16;width:0;/*width:200px;*/}
-/*ÉÏ´«ĞÅÏ¢*/
+/*ä¸Šä¼ ä¿¡æ¯*/
 .file-item .msg{color: #7A8F99;margin:8px 0 0 0;}
-/*°´Å¥£ºÈ¡Ïû£¬ÔİÍ££¬Ğø´«*/
+/*æŒ‰é’®ï¼šå–æ¶ˆï¼Œæš‚åœï¼Œç»­ä¼ */
 .file-item .Btn,.file-item .Btn:hover{text-decoration: none; color:#244281; cursor:pointer;}
 .file-item .area-l {width:280px; float:left;padding:5px 10px 0 0;}
 .file-item .area-r {float:left;height:100%;}
@@ -30,9 +30,9 @@ div.top-space{margin:3px 0 0 0;}
 .file-item .btn-box-hover{background-color:#DADADA;}
 .file-item .btn-box img{ width:32px;height:32px;margin:10px 0 0 0;}
 .hide{display:none;}
-/*ÉÏ´«Ãæ°å*/
+/*ä¸Šä¼ é¢æ¿*/
 .files-panel {
-    font: 12px/12px ËÎÌå;
+    font: 12px/12px å®‹ä½“;
     width: 436px;
     height: 400px;
     border: 1px solid #CBCBCB;
@@ -57,11 +57,11 @@ div.top-space{margin:3px 0 0 0;}
 }
 .files-list{
     background-color: #FFF;
-    font: 12px/12px ËÎÌå,ĞÂËÎÌå; /*·ÀÄ¿Íâ²¿ÑùÊ½ÆÆ»µ*/
+    font: 12px/12px å®‹ä½“,æ–°å®‹ä½“; /*é˜²ç›®å¤–éƒ¨æ ·å¼ç ´å*/
     overflow-x: hidden;
     overflow-y: scroll;
 }
-/*µ¥ÎÄ¼şÉÏ´«Ãæ°å*/
+/*å•æ–‡ä»¶ä¸Šä¼ é¢æ¿*/
 #UpPanel{background:#ECF9FF; border:solid 1px #4CA5D8;width:300px;}
 #UpPanel a{color:#004477; text-decoration:none;margin:0 0 0 10px;}
 #UpPanel a.btn{ cursor:pointer;}

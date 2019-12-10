@@ -18,7 +18,7 @@
     	    fileMgr.loadAuto();
 
     		$("#btnSel").click(function()
-    		{
+            {
     		    fileMgr.postAuto("upPnl"); //
     		});
 
