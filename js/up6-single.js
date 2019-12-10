@@ -197,7 +197,6 @@ function HttpUploaderMgr()
 	    p.md5_error(json);
 	};
     this.load_complete = function (json) {
-        debugger;
         this.btnSetup.hide();
         var needUpdate = true;
         if (typeof (json.version) != "undefined") {
@@ -363,7 +362,7 @@ function HttpUploaderMgr()
             }
 
             if (_this.edge) {
-                _this.edgeApp.run();
+                _this.edgeApp.connect();
             }
             else {
                 _this.app.init();
@@ -374,7 +373,6 @@ function HttpUploaderMgr()
     //oid,显示上传项的层ID
 	this.postAuto = function (oid)
     {
-        debugger;
 		var file_free = this.fileCur != null;
 		if(file_free)
 		{
