@@ -5,9 +5,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>vue演示</title>
     <%=this.paramPage() %>
-    <script type="text/javascript" src="../js/jquery-1.4.min.js"></script>
-    <script type="text/javascript" src="../js/json2.min.js" charset="utf-8"></script>
-    <script type="text/javascript" src="../js/vue.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/jquery-1.4.min.js"></script>
+    <script type="text/javascript" src="js/json2.min.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/vue.min.js" charset="utf-8"></script>
     <%= this.require( this.m_path["up6"] ) %>
 </head>
 <body>
@@ -23,18 +23,16 @@
 </div>
     <script type="text/javascript">
         Vue.component('up6', {
-            data() {
+            data: function(){
                 return {
                     app: null
                 }
             },
-            mounted() {
-                //初始化up6
-                const _this = this;
+            mounted:function() {
                 this.app = new HttpUploaderMgr();
                 this.app.load_to("up6-div");
             },
-            destoryed() {},
+            destoryed:function() {},
             methods: {
                 open_file: function () { this.app.openFile(); }
                 , open_folder: function () { this.app.openFolder(); }
