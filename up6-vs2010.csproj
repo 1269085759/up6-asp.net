@@ -204,6 +204,12 @@
     <Compile Include="down2\db\f_update.aspx.designer.cs">
       <DependentUpon>f_update.aspx</DependentUpon>
     </Compile>
+    <Compile Include="down2\index.aspx.cs">
+      <DependentUpon>index.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="down2\index.aspx.designer.cs">
+      <DependentUpon>index.aspx</DependentUpon>
+    </Compile>
     <Compile Include="down2\model\DnFileInf.cs" />
     <Compile Include="filemgr\app\ConfigReader.cs" />
     <Compile Include="filemgr\app\DbBase.cs" />
@@ -236,12 +242,14 @@
     </Compile>
     <Compile Include="filemgr\vue.aspx.cs">
       <DependentUpon>vue.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="filemgr\vue.aspx.designer.cs">
       <DependentUpon>vue.aspx</DependentUpon>
     </Compile>
     <Compile Include="index-single.aspx.cs">
       <DependentUpon>index-single.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="index-single.aspx.designer.cs">
       <DependentUpon>index-single.aspx</DependentUpon>
@@ -263,6 +271,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="vue.aspx.cs">
       <DependentUpon>vue.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="vue.aspx.designer.cs">
       <DependentUpon>vue.aspx</DependentUpon>
@@ -290,7 +299,7 @@
     <Content Include="down2\db\f_list.aspx" />
     <Content Include="down2\db\f_list_cmp.aspx" />
     <Content Include="down2\db\f_update.aspx" />
-    <Content Include="down2\index.htm" />
+    <Content Include="down2\index.aspx" />
     <Content Include="down2\js\down-single.js" />
     <Content Include="down2\js\down.app.js" />
     <Content Include="down2\js\down.css" />
@@ -330,14 +339,18 @@
     <Content Include="filemgr\res\bootstrap\js\bootstrap.min.js" />
     <Content Include="filemgr\res\bootstrap\js\_notes\dwsync.xml" />
     <Content Include="filemgr\res\filemgr.css" />
+    <Content Include="filemgr\res\imgs\16\cancel.png" />
     <Content Include="filemgr\res\imgs\16\clear.png" />
     <Content Include="filemgr\res\imgs\16\config.png" />
     <Content Include="filemgr\res\imgs\16\del.png" />
     <Content Include="filemgr\res\imgs\16\down-panel.png" />
     <Content Include="filemgr\res\imgs\16\down.png" />
+    <Content Include="filemgr\res\imgs\16\edit.png" />
     <Content Include="filemgr\res\imgs\16\file.png" />
     <Content Include="filemgr\res\imgs\16\folder.png" />
+    <Content Include="filemgr\res\imgs\16\folder1.png" />
     <Content Include="filemgr\res\imgs\16\ok.png" />
+    <Content Include="filemgr\res\imgs\16\ok1.png" />
     <Content Include="filemgr\res\imgs\16\paste.png" />
     <Content Include="filemgr\res\imgs\16\start.png" />
     <Content Include="filemgr\res\imgs\16\stop.png" />
@@ -512,9 +525,10 @@
     <Content Include="js\up6.file.js" />
     <Content Include="js\up6.folder.js" />
     <Content Include="js\up6.js" />
+    <Content Include="js\vue.min.js" />
     <Content Include="readme.txt" />
     <Content Include="sql.down\down_files.sql" />
-    <Content Include="sql\fd_files_check.sql" />
+    <Content Include="sql\spPager.sql" />
     <Content Include="sql\up6_files.sql" />
     <Content Include="sql\up6_folders.sql" />
     <Content Include="vue.aspx" />
