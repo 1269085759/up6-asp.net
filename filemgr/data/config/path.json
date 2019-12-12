@@ -1,6 +1,8 @@
 {
     "rootAbs": "/",
     "root": "http://localhost:8888/",
+    /*文件上传路径,{root}为项目根路径*/
+    "upload-folder":"{root}upload",
     "license":{
         "up6":"",
         "down2":""

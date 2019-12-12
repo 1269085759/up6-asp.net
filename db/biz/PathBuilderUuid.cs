@@ -44,7 +44,7 @@ namespace up6.db.biz
             path = Path.Combine(path, uuid);
             path = Path.Combine(path, f.nameLoc);
 
-            return path;
+            return path.Replace("\\","/");
         }
     }
 }

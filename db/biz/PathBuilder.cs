@@ -1,5 +1,6 @@
 ﻿using System.Web;
 using up6.db.model;
+using up6.filemgr.app;
 
 namespace up6.db.biz
 {
@@ -15,7 +16,11 @@ namespace up6.db.biz
         /// <returns></returns>
         public string getRoot()
         {
-            return HttpContext.Current.Server.MapPath("/upload");
+            ConfigReader cr = new ConfigReader();
+            var uploadFolder = cr.module("path").SelectToken("upload-folder").ToString();
+            uploadFolder = uploadFolder.Replace("{root}", HttpContext.Current.Server.MapPath("/"));
+
+            return uploadFolder;
         }
 
         public virtual string genFolder(ref FileInf fd)

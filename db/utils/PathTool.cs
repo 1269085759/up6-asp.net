@@ -45,6 +45,7 @@ namespace up6.filemgr.app
         public static string combin(string a,string b)
         {
             if (a.EndsWith("/") ) return a + b;
+            if (a.EndsWith("\\") ) return a + b;
             return a + "/" + b;
         }
     }
