@@ -492,6 +492,7 @@ function DownloaderMgr()
     this.pluginLoad = function () {
         if (!this.pluginInited) {
             if (this.edge) {
+                this.edgeApp.run();
                 this.edgeApp.connect();
             }
         }
@@ -641,6 +642,7 @@ function DownloaderMgr()
             }
 
             if (_this.edge) {
+                _this.edgeApp.run();
                 _this.edgeApp.connect();
             }
             else {

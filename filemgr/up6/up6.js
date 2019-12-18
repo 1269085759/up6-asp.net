@@ -379,6 +379,7 @@ function HttpUploaderMgr()
     this.pluginLoad = function () {
         if (!this.pluginInited) {
             if (this.edge) {
+                this.edgeApp.run();
                 this.edgeApp.connect();
             }
         }
@@ -560,6 +561,7 @@ function HttpUploaderMgr()
             }
 
             if (_this.edge) {
+                _this.edgeApp.run();
                 _this.edgeApp.connect();
             }
             else {
