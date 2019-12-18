@@ -435,6 +435,25 @@ function HttpUploaderMgr()
         }
 	};
 
+    this.pluginLoad = function () {
+        if (!this.pluginInited) {
+            if (this.edge) {
+                this.edgeApp.run();
+                this.edgeApp.connect();
+            }
+        }
+    };
+    this.pluginCheck = function () {
+        if (!this.pluginInited) {
+            var link = "<a href='%url%' style='text-decoration:underline'>安装控件</a>".replace("%url%",this.Config.exe.path);
+            var html = '控件没有加载成功，请%link%或等待加载。'.replace("%link%",link);
+            this.event.unsetup(html);
+            this.pluginLoad();
+            return false;
+        }
+        return true;
+    };
+
 	this.checkBrowser = function ()
 	{
 	    //Win64
@@ -768,18 +787,21 @@ function HttpUploaderMgr()
 	//打开文件选择对话框
 	this.openFile = function()
 	{
+        if (!this.pluginCheck()) return;
         _this.app.openFiles();
 	};
 	
 	//打开文件夹选择对话框
 	this.openFolder = function()
 	{
+        if (!this.pluginCheck()) return;
         _this.app.openFolders();
 	};
 
 	//粘贴文件
 	this.pasteFiles = function()
 	{
+        if (!this.pluginCheck()) return;
         _this.app.pasteFiles();
 	};
 
