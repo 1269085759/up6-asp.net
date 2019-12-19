@@ -25,20 +25,6 @@ var up6_err_solve = {
     , errFileComplete: "请检查UrlComplete地址配置是否正确\n请检查浏览器缓存是否已更新"
 };
 
-function getRoot()
-{
-    for (var i = 0, l = document.scripts.length; i < l; ++i)
-    {
-        var src = document.scripts[i].src;
-        if (src.lastIndexOf("/up6.js")!=-1)
-        {
-            src = src.replace("/up6.js", "/");
-            return src;
-        }
-    }
-}
-var root = getRoot();
-
 function debugMsg(m) { $("#msg").append(m); }
 function HttpUploaderMgr()
 {
