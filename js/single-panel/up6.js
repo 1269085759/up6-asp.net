@@ -209,7 +209,7 @@ function HttpUploaderMgr()
 
         //文件模板
         com += '<div class="file-item" name="fileItem">\
-                    <div class="img-box"><img src="js/file.png"/></div>\
+                    <div class="img-box"><img name="file"/></div>\
 					<div class="area-l">\
 						<div class="file-head">\
 						    <div name="fileName" class="name">HttpUploader程序开发.pdf</div>\
@@ -228,7 +228,7 @@ function HttpUploaderMgr()
         com += '</div>';
         //文件夹模板
         com += '<div class="file-item" name="folderItem">\
-					<div class="img-box"><img src="js/folder.png"/></div>\
+					<div class="img-box"><img name="folder"/></div>\
 					<div class="area-l">\
 						<div class="file-head">\
 						    <div name="fileName" class="name">HttpUploader程序开发.pdf</div>\
