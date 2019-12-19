@@ -102,6 +102,19 @@ function HttpUploaderMgr()
         , linux: { path: "http://res2.ncmem.com/download/up6/pack/6.5.17/setup.tar" }
 		, "SetupPath": "http://localhost:4955/demoAccess/js/setup.htm"
         , "Fields": { "uname": "test", "upass": "test", "uid": "0" }
+        , ui: {
+            icon: {
+                upFile: page.path.root + "js/16/upload.png",
+                upFolder: page.path.root + "js/16/folder.png",
+                paste: page.path.root + "js/16/paste.png",
+                clear: page.path.root + "js/16/paste.png",
+                file: page.path.root + "js/file.png",
+                folder: page.path.root + "js/folder.png",
+                stop: page.path.root + "js/stop.png",
+                del: page.path.root + "js/del.png",
+                post: page.path.root + "js/post.png"
+            }
+        }
         , errCode: {
             "0": "发送数据错误"
             , "1": "接收数据错误"
@@ -138,12 +151,13 @@ function HttpUploaderMgr()
 
     //biz event
 	this.event = {
-	      "md5Complete": function (obj/*HttpUploader对象*/, md5) { }
-        , "scanComplete": function (obj/*文件夹扫描完毕，参考：FolderUploader*/) { }
-        , "fileComplete": function (obj/*文件上传完毕，参考：FileUploader*/) { }
-        , "fdComplete": function (obj/*文件夹上传完毕，参考：FolderUploader*/) { }
-        , "queueComplete": function () {/*队列上传完毕*/ }
-        , "addFdError": function (json) {/*添加文件夹失败*/ }
+	    md5Complete: function (obj/*HttpUploader对象*/, md5) { },
+        scanComplete: function (obj/*文件夹扫描完毕，参考：FolderUploader*/) { },
+        fileComplete: function (obj/*文件上传完毕，参考：FileUploader*/) { },
+        fdComplete: function (obj/*文件夹上传完毕，参考：FolderUploader*/) { },
+        queueComplete: function () {/*队列上传完毕*/ },
+        addFdError: function (json) {/*添加文件夹失败*/ },
+        unsetup: function (html) {/*控件未安装事件*/ }
 	};
 
 	//http://www.ncmem.com/
@@ -174,7 +188,8 @@ function HttpUploaderMgr()
 	this.chrome = browserName.indexOf("chrome") > 0;
 	this.chrome45 = false;
 	this.nat_load = false;
-	this.edge_load = false;
+    this.edge_load = false;
+    this.pluginInited = false;
 	this.chrVer = navigator.appVersion.match(/Chrome\/(\d+)/);
 	this.ffVer = navigator.userAgent.match(/Firefox\/(\d+)/);
 	this.edge = navigator.userAgent.indexOf("Edge") > 0;
@@ -219,10 +234,10 @@ function HttpUploaderMgr()
 						<div name="msg" class="msg top-space">15.3MB 20KB/S 10:02:00</div>\
 					</div>\
 					<div class="area-r">\
-                        <span class="btn-box hide" name="post" title="继续"><img src="js/post.png"/><div>继续</div></span>\
-                        <span class="btn-box" name="cancel" title="取消"><img src="js/stop.png"/><div>取消</div></span>\
-						<span class="btn-box hide" name="stop" title="停止"><img src="js/stop.png"/><div>停止</div></span>\
-						<span class="btn-box hide" name="del" title="删除"><img src="js/del.png"/><div>删除</div></span>\
+                        <span class="btn-box hide" name="post" title="继续"><img name="post"/><div>继续</div></span>\
+                        <span class="btn-box" name="cancel" title="取消"><img name="stop"/><div>取消</div></span>\
+						<span class="btn-box hide" name="stop" title="停止"><img name="stop"/><div>停止</div></span>\
+						<span class="btn-box hide" name="del" title="删除"><img name="del"/><div>删除</div></span>\
 					</div>';
         com += '</div>';
         //文件夹模板
@@ -238,25 +253,25 @@ function HttpUploaderMgr()
 						<div name="msg" class="msg top-space">15.3MB 20KB/S 10:02:00</div>\
 					</div>\
 					<div class="area-r">\
-                        <span class="btn-box hide" name="post" title="继续"><img src="js/post.png"/><div>继续</div></span>\
-                        <span class="btn-box" name="cancel" title="取消"><img src="js/stop.png"/><div>取消</div></span>\
-						<span class="btn-box hide" name="stop" title="停止"><img src="js/stop.png"/><div>停止</div></span>\
-						<span class="btn-box hide" name="del" title="删除"><img src="js/del.png"/><div>删除</div></span>\
+                        <span class="btn-box hide" name="post" title="继续"><img name="post"/><div>继续</div></span>\
+                        <span class="btn-box" name="cancel" title="取消"><img name="stop"/><div>取消</div></span>\
+						<span class="btn-box hide" name="stop" title="停止"><img name="stop"/><div>停止</div></span>\
+						<span class="btn-box hide" name="del" title="删除"><img name="del"/><div>删除</div></span>\
 					</div>';
         com += '</div>';
         //上传列表
         com += '<div name="post_panel">\
 					<div name="post_head" class="files-toolbar">\
-						<span class="tool-btn" name="btnAddFiles"><img name="up-file" src="js/16/upload.png"/>上传文件</span>\
-						<span class="tool-btn" name="btnAddFolder"><img name="up-folder" src="js/16/folder.png"/>上传文件夹</span>\
-						<span class="tool-btn" name="btnPasteFile"><img name="paste" src="js/16/paste.png"/>粘贴上传</span>\
+						<span class="tool-btn" name="btnAddFiles"><img name="upFile"/>上传文件</span>\
+						<span class="tool-btn" name="btnAddFolder"><img name="upFolder"/>上传文件夹</span>\
+						<span class="tool-btn" name="btnPasteFile"><img name="paste"/>粘贴上传</span>\
 						<span class="tool-btn" name="btnSetup">安装控件</span>\
 					</div>\
 					<div name="post_content">\
 						<div name="post_body" class="files-list"></div>\
 					</div>\
 					<div class="files-toolbar" name="post_footer">\
-						<span class="tool-btn" name="btnClear"><img name="paste" src="js/16/clear.png"/>清除已完成</span>\
+						<span class="tool-btn" name="btnClear"><img name="clear"/>清除已完成</span>\
 					</div>\
 				</div>';
         com += '</div>';
@@ -378,6 +393,7 @@ function HttpUploaderMgr()
     {
         if (this.edgeInited) return;
         this.edgeInited = true;
+        this.pluginInited = true;
 
         this.btnSetup.hide();
         var needUpdate = true;
@@ -394,7 +410,8 @@ function HttpUploaderMgr()
     };
 	this.load_complete_edge = function (json)
     {
-	    this.edge_load = true;
+        this.edge_load = true;
+        this.pluginInited = true;
         this.btnSetup.hide();
         _this.app.init();
     };
@@ -563,6 +580,11 @@ function HttpUploaderMgr()
         this.parter  = dom.find('embed[name="ffParter"]').get(0);
         this.ieParter= dom.find('object[name="parter"]').get(0);
 	    this.Droper  = dom.find('object[name="droper"]').get(0);
+
+        //更新图标
+        $.each(this.Config.ui.icon, function (i, n) {
+            panel.find("img[name=\"" + i + "\"]").attr("src", n);
+        });
 
 	    var post_body       = dom.find("div[name='post_body']");
         var post_head       = dom.find('div[name="post_head"]');
