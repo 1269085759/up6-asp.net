@@ -6,6 +6,10 @@
         "up6":"",
         "down2":""
     },
+    "version":{
+        "up6":"2,7,121,6032",
+        "down2":"1,2,72,60650"
+    },
     "plugin":{
         "up6":{
             "ie32":"http://www.ncmem.com/download/up6.3/up6.cab",

@@ -21,7 +21,7 @@ function DownloaderMgr()
 		, "Debug"		: false//调试模式
 		, "LogFile"		: "f:\\log.txt"//日志文件路径。
 		, "Company"		: "荆门泽优软件有限公司"
-		, "Version"		: "1,2,72,60650"
+		, "Version"		: page.path.version.down2,
 		, "License"		: page.path.license.down2//
 		, "Cookie"		: ""//
 		, "ThreadCount"	: 3//并发数
@@ -41,20 +41,20 @@ function DownloaderMgr()
         //x86
         , ie: {
               part: { clsid: "6528602B-7DF7-445A-8BA0-F6F996472569", name: "Xproer.DownloaderPartition" }
-            , path: "http://www.ncmem.com/download/down2/2.4/down2.cab"
+            , path: page.path.plugin.down2.ie32
         }
         //x64
         , ie64: {
             part: { clsid: "19799DD1-7357-49de-AE5D-E7A010A3172C", name: "Xproer.DownloaderPartition64" }
-            , path: "http://www.ncmem.com/download/down2/2.4/down64.cab"
+            , path: page.path.plugin.down2.ie64
         }
-        , firefox: { name: "", type: "application/npHttpDown", path: "http://www.ncmem.com/download/down2/2.4/down2.xpi" }
-        , chrome: { name: "npHttpDown", type: "application/npHttpDown", path: "http://www.ncmem.com/download/down2/2.4/down2.crx" }
+        , firefox: { name: "", type: "application/npHttpDown", path: page.path.plugin.down2.firefox }
+        , chrome: { name: "npHttpDown", type: "application/npHttpDown", path: page.path.plugin.down2.chr }
 	    //Chrome 45
         , chrome45: { name: "com.xproer.down2", path: "http://www.ncmem.com/download/down2/2.4/down2.nat.crx" }
-        , exe: { path: "http://www.ncmem.com/download/down2/2.4/down2.exe" }
-        , mac: { path: "http://res2.ncmem.com/download/down2/pack/2.4.19/down2.pkg" }
-        , linux: { path: "http://res2.ncmem.com/download/down2/pack/2.4.19/down2.tar" }
+        , exe: { path: page.path.plugin.down2.exe }
+        , mac: { path: page.path.plugin.down2.mac }
+        , linux: { path: page.path.plugin.down2.linux }
         , edge: {protocol:"down2",port:9700,visible:false}
         , "Fields": { "uname": "test", "upass": "test", "uid": "0" }
         , errCode: {
