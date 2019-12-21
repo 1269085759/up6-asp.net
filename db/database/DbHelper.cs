@@ -2,6 +2,7 @@
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
+using up6.filemgr.app;
 
 namespace up6.db.database
 {
@@ -66,14 +67,16 @@ namespace up6.db.database
         /// <returns></returns>
         public static string GetConStr()
         {
-            var str = System.Configuration.ConfigurationManager.ConnectionStrings["sql2005"];
-            return str.ConnectionString;
+            ConfigReader cr = new ConfigReader();
+            var constr = cr.m_files.SelectToken("$.database.connection.addr").ToString();
+            return constr;
         }
 
         public static string GetProvider()
         {
-            var str = System.Configuration.ConfigurationManager.ConnectionStrings["sql2005"];
-            return str.ProviderName;
+            ConfigReader cr = new ConfigReader();
+            var constr = cr.m_files.SelectToken("$.database.connection.provider").ToString();
+            return constr;
         }
 
         public DbHelper()
