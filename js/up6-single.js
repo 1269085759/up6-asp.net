@@ -97,10 +97,10 @@ function HttpUploaderMgr()
             Complete: 5,
             WaitContinueUpload: 6,
             None: 7,
-            Waiting: 8
-            , MD5Working: 9
-            , scan: 10
-        }
+            Waiting: 8,
+            MD5Working: 9,
+            scan: 10
+        },ui:{container:null}
 	};
 
     //biz event
@@ -120,7 +120,6 @@ function HttpUploaderMgr()
 	this.fileItem = null;//jquery object
 	this.fileCur = null;//当前文件上传项
 	this.btnSetup = null;
-	this.uiContainer = null;//显示上传信息的容器
 	//检查版本 Win32/Win64/Firefox/Chrome
 	var browserName = navigator.userAgent.toLowerCase();
 	this.ie = browserName.indexOf("msie") > 0;
@@ -131,6 +130,7 @@ function HttpUploaderMgr()
 	this.chrome45 = false;
 	this.nat_load = false;
 	this.edge_load = false;
+    this.pluginInited = false;
 	this.chrVer = navigator.appVersion.match(/Chrome\/(\d+)/);
 	this.ffVer = navigator.userAgent.match(/Firefox\/(\d+)/);
 	this.edge = navigator.userAgent.indexOf("Edge") > 0;
@@ -141,6 +141,21 @@ function HttpUploaderMgr()
     this.app.ins = this;
     if (this.edge) { this.ie = this.firefox = this.chrome = this.chrome45 = false; }
 
+    this.pluginLoad = function () {
+        if (!this.pluginInited) {
+            if (this.edge) {
+                this.edgeApp.connect();
+            }
+        }
+    };
+    this.pluginCheck = function () {
+        if (!this.pluginInited) {
+            alert("控件没有加载成功，请安装控件或等待加载。");
+            this.pluginLoad();
+            return false;
+        }
+        return true;
+    };
 	this.open_files = function (json)
 	{
 	    var f = null;
@@ -199,6 +214,7 @@ function HttpUploaderMgr()
     this.load_complete = function (json) {
         this.btnSetup.hide();
         var needUpdate = true;
+        this.pluginInited = true;
         if (typeof (json.version) != "undefined") {
             if (json.version == this.Config.Version) {
                 needUpdate = false;
@@ -209,6 +225,7 @@ function HttpUploaderMgr()
     };
     this.load_complete_edge = function (json) {
         this.edge_load = true;
+        this.pluginInited = true;
         this.btnSetup.hide();
         _this.app.init();
     };
@@ -331,17 +348,30 @@ function HttpUploaderMgr()
 	{
 	    var html = this.GetHtml();
         var dom = $(document.body).append(html);
-        _this.initUI(dom);
+        this.initUI(dom);
 	};
 
 	//加截容器，上传面板，文件列表面板
-	this.loadTo = function (oid)
+	this.loadTo = function (o)
 	{
-	    var html 		= this.GetHtml();
-        var dom = $("#" + oid).html(html);
-        $(function () {
+        if( typeof(o)=="string" )
+        {
+            if(o.indexOf("#") == -1)
+            {
+                this.Config.ui.container = $("#"+o);
+            }
+            else{
+                this.Config.ui.container = $(o);
+            }
+        }
+        else{
+            this.Config.ui.container = o;
+        }
+	    var html = this.GetHtml();
+        var dom = this.Config.ui.container.append(html);
+        setTimeout(function(){
             _this.initUI(dom);
-        });		
+        },100);        
 	};
 	
 	this.initUI = function (dom)
@@ -371,8 +401,9 @@ function HttpUploaderMgr()
 	};
 
     //oid,显示上传项的层ID
-	this.postAuto = function (oid)
+	this.postAuto = function ()
     {
+        if (!this.pluginCheck()) return;
 		var file_free = this.fileCur != null;
 		if(file_free)
 		{
@@ -382,14 +413,14 @@ function HttpUploaderMgr()
 		if(this.fileCur == null) file_free = true;
 		if(file_free)
 		{
-			this.uiContainer = $("#" + oid);
 			this.app.openFiles();
 		}
 	};
 	
 	//上传文件
-	this.postLoc = function (path_loc, oid)
+	this.postLoc = function (path_loc)
 	{
+        if (!this.pluginCheck()) return;
 		var file_free = this.fileCur != null;
 		if(file_free)
 		{
@@ -399,7 +430,6 @@ function HttpUploaderMgr()
 		if(this.fileCur == null) file_free = true;
 		if(file_free)
 		{
-		    this.uiContainer = $("#" + oid);
             this.app.addFile({ pathLoc: path_loc });
 		}
 	};
@@ -414,7 +444,7 @@ function HttpUploaderMgr()
 		if(ui == null)
 		{
 			ui = _this.fileItem.clone();//文件信息
-			_this.uiContainer.append(ui);//添加文件信息
+            this.Config.ui.container.append(ui);
 		}
 		ui.css("display", "block");
 

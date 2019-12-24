@@ -15,16 +15,16 @@
 
     	$(function()
     	{
-    	    fileMgr.loadAuto();
+    	    fileMgr.loadTo("upPnl");
 
     		$("#btnSel").click(function()
             {
-    		    fileMgr.postAuto("upPnl"); //
+    		    fileMgr.postAuto(); //
     		});
 
     		$("#btnPostLoc").click(function ()
     		{
-    		    fileMgr.postLoc("D:\\Soft\\QQ2015.exe", "upPnl"); //
+    		    fileMgr.postLoc("D:\\ausetup.exe"); //
     		});
 
     	});
