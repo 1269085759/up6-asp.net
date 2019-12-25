@@ -1,11 +1,12 @@
 /*
 	版权所有 2009-2019 荆门泽优软件有限公司
 	保留所有权利
-	官方网站：http://www.ncmem.com/
 	产品首页：http://www.ncmem.com/webapp/up6/index.aspx
 	联系信箱：1085617561@qq.com
 	联系QQ：1085617561
-    版本：2.3.1
+    更新记录：
+	    2009-11-05 创建
+        2015-08-01 优化
 */
 function HttpUploaderMgr()
 {
@@ -31,17 +32,17 @@ function HttpUploaderMgr()
 		, "AppPath"			: ""//网站虚拟目录名称。子文件夹 web
         , "Cookie"			: ""//服务器cookie
 		//文件夹操作相关
-		, "UrlFdCreate"		: page.path.root+"db/fd_create.aspx"
-		, "UrlFdComplete"	: page.path.root+"db/fd_complete.aspx"
-		, "UrlFdDel"	    : page.path.root+"db/fd_del.aspx"
-		, "UrlFdFile"	    : page.path.root+"db/fd_file.aspx"
+		, "UrlFdCreate"		: "http://localhost:8888/db/fd_create.aspx"
+		, "UrlFdComplete"	: "http://localhost:8888/db/fd_complete.aspx"
+		, "UrlFdDel"	    : "http://localhost:8888/db/fd_del.aspx"
+		, "UrlFdFile"	    : "http://localhost:8888/db/fd_file.aspx"
 		//文件操作相关
-		, "UrlCreate"		: page.path.root+"db/f_create.aspx"
-		, "UrlPost"			: page.path.root+"db/f_post.aspx"
-        , "UrlProcess"		: page.path.root+"db/f_process.aspx"
-        , "UrlComplete"		: page.path.root+"db/f_complete.aspx"
-		, "UrlList"			: page.path.root+"db/f_list.aspx"
-		, "UrlDel"			: page.path.root+"db/f_del.aspx"
+		, "UrlCreate"		: "http://localhost:8888/db/f_create.aspx"
+		, "UrlPost"			: "http://localhost:8888/db/f_post.aspx"
+        , "UrlProcess"		: "http://localhost:8888/db/f_process.aspx"
+        , "UrlComplete"		: "http://localhost:8888/db/f_complete.aspx"
+		, "UrlList"			: "http://localhost:8888/db/f_list.aspx"
+		, "UrlDel"			: "http://localhost:8888/db/f_del.aspx"
 	    //x86
         , ie: {
               drop: { clsid: "0868BADD-C17E-4819-81DE-1D60E5E734A6", name: "Xproer.HttpDroper6" }
@@ -93,19 +94,7 @@ function HttpUploaderMgr()
             Waiting: 8,
             MD5Working: 9,
             scan: 10
-        },ui:{
-            container:null,
-            icon: {
-                upFile: page.path.root + "js/16/upload.png",
-                upFolder: page.path.root + "js/16/folder.png",
-                paste: page.path.root + "js/16/paste.png",
-                clear: page.path.root + "js/16/paste.png",
-                file: page.path.root + "js/file.png",
-                folder: page.path.root + "js/folder.png",
-                stop: page.path.root + "js/stop.png",
-                del: page.path.root + "js/del.png",
-                post: page.path.root + "js/post.png"
-            }}
+        },ui:{container:null}
 	};
 
     //biz event
@@ -257,32 +246,31 @@ function HttpUploaderMgr()
 	    if (window.navigator.platform == "Win64")
 	    {
 	        jQuery.extend(this.Config.ie, this.Config.ie64);
-	    }//macOS
-        else if (window.navigator.platform == "MacIntel") {
-            this.edge = true;
-            this.app.postMessage = this.app.postMessageEdge;
-            this.edgeApp.run = this.edgeApp.runChr;
-            this.Config.exe.path = this.Config.mac.path;
-        }
-        else if (window.navigator.platform == "Linux x86_64") {
-            this.edge = true;
-            this.app.postMessage = this.app.postMessageEdge;
-            this.edgeApp.run = this.edgeApp.runChr;
-            this.Config.exe.path = this.Config.linux.path;
-        }
-	    else if (this.firefox)
+	    }
+	    if (this.firefox)
 	    {
-            this.edge = true;
-            this.app.postMessage = this.app.postMessageEdge;
-            this.edgeApp.run = this.edgeApp.runChr;
+	        //if (!this.app.checkFF() || parseInt(this.ffVer[1]) >= 50)//仍然支持npapi
+            {
+                this.edge = true;
+                this.app.postMessage = this.app.postMessageEdge;
+                this.edgeApp.run = this.edgeApp.runChr;
+            }
         }
         else if (this.chrome)
         {
             this.app.check = this.app.checkFF;
             jQuery.extend(this.Config.firefox, this.Config.chrome);
-            this.edge = true;
-            this.app.postMessage = this.app.postMessageEdge;
-            this.edgeApp.run = this.edgeApp.runChr;
+            //_this.Config["XpiPath"] = _this.Config["CrxPath"];
+            //_this.Config["XpiType"] = _this.Config["CrxType"];
+            //44+版本使用Native Message
+            //if (parseInt(this.chrVer[1]) >= 44) {
+                //_this.firefox = true;
+                //if (!this.app.checkFF())//仍然支持npapi
+                {
+                    this.edge = true;
+                    this.app.postMessage = this.app.postMessageEdge;
+                    this.edgeApp.run = this.edgeApp.runChr;
+                }
         }
         else if (this.edge) {
             this.app.postMessage = this.app.postMessageEdge;
@@ -332,7 +320,7 @@ function HttpUploaderMgr()
 		//
 	    //上传列表项模板
 		acx += '<div class="file-item file-item-single" name="fileItem" >\
-                    <div class="img-box"><p><img name="file"/></p></div>\
+                    <div class="img-box"><p><img src="js/file.png"/></p></div>\
 		            <div class="area-l">\
 						<div name="fileName" class="name">HttpUploader程序开发.pdf</div>\
 						<div name="percent" class="percent">(35%)</div>\
@@ -341,10 +329,10 @@ function HttpUploaderMgr()
 						<div name="msg" class="msg top-space">15.3MB 20KB/S 10:02:00</div>\
 					</div>\
 					<div class="area-r">\
-                        <a class="btn-box" name="cancel" title="取消"><img name="stop"/><div>取消</div></a>\
-                        <a class="btn-box hide" name="post" title="继续"><img name="post"/><div>继续</div></a>\
-						<a class="btn-box hide" name="stop" title="停止"><img name="stop"/><div>停止</div></a>\
-						<a class="btn-box hide" name="del" title="删除"><img name="del"/><div>删除</div></a>\
+                        <a class="btn-box" name="cancel" title="取消"><img src="js/stop.png"/><div>取消</div></a>\
+                        <a class="btn-box hide" name="post" title="继续"><img src="js/post.png"/><div>继续</div></a>\
+						<a class="btn-box hide" name="stop" title="停止"><img src="js/stop.png"/><div>停止</div></a>\
+						<a class="btn-box hide" name="del" title="删除"><img src="js/del.png"/><div>删除</div></a>\
 					</div>\
 		        </div>';
 		return acx;
@@ -386,10 +374,6 @@ function HttpUploaderMgr()
         this.btnSetup = $("#btnSetup");
         this.btnSetup.attr("href", this.Config.exe.path);
 	    this.SafeCheck();
-        //更新图标
-        $.each(this.Config.ui.icon, function (i, n) {
-            dom.find("img[name=\"" + i + "\"]").attr("src", n);
-        });
 
         $(function () {
             if (!_this.edge) {

@@ -19,12 +19,12 @@
 
     		$("#btnSel").click(function()
             {
-    		    fileMgr.postAuto(); //
+    		    fileMgr.postAuto("upPnl"); //
     		});
 
     		$("#btnPostLoc").click(function ()
     		{
-    		    fileMgr.postLoc("D:\\ausetup.exe"); //
+    		    fileMgr.postLoc("D:\\Soft\\QQ2015.exe"); //
     		});
 
     	});
