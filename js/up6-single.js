@@ -335,7 +335,7 @@ function HttpUploaderMgr()
 		//
 	    //上传列表项模板
 		acx += '<div class="file-item file-item-single" name="fileItem" >\
-                    <div class="img-box"><p><img src="js/file.png"/></p></div>\
+                    <div class="img-box"><p><img ico="file"/></p></div>\
 		            <div class="area-l">\
 						<div name="fileName" class="name">HttpUploader程序开发.pdf</div>\
 						<div name="percent" class="percent">(35%)</div>\
@@ -344,10 +344,10 @@ function HttpUploaderMgr()
 						<div name="msg" class="msg top-space">15.3MB 20KB/S 10:02:00</div>\
 					</div>\
 					<div class="area-r">\
-                        <a class="btn-box" name="cancel" title="取消"><img src="js/stop.png"/><div>取消</div></a>\
-                        <a class="btn-box hide" name="post" title="继续"><img src="js/post.png"/><div>继续</div></a>\
-						<a class="btn-box hide" name="stop" title="停止"><img src="js/stop.png"/><div>停止</div></a>\
-						<a class="btn-box hide" name="del" title="删除"><img src="js/del.png"/><div>删除</div></a>\
+                        <a class="btn-box" name="cancel" title="取消"><img ico="stop"/><div>取消</div></a>\
+                        <a class="btn-box hide" name="post" title="继续"><img ico="post"/><div>继续</div></a>\
+						<a class="btn-box hide" name="stop" title="停止"><img ico="stop"/><div>停止</div></a>\
+						<a class="btn-box hide" name="del" title="删除"><img ico="del"/><div>删除</div></a>\
 					</div>\
 		        </div>';
 		return acx;
@@ -390,7 +390,7 @@ function HttpUploaderMgr()
         this.btnSetup.attr("href", this.Config.exe.path);
 	    this.SafeCheck();
         $.each(this.Config.ui.icon, function (i, n) {
-            dom.find("img[name=\"" + i + "\"]").attr("src", n);
+            _this.fileItem.find("img[ico=\"" + i + "\"]").attr("src", n);
         });
 
         $(function () {
