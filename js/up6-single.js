@@ -94,7 +94,21 @@ function HttpUploaderMgr()
             Waiting: 8,
             MD5Working: 9,
             scan: 10
-        },ui:{container:null}
+        }
+        ,ui:{
+            container:null,
+            icon: {
+                upFile: page.path.root + "js/16/upload.png",
+                upFolder: page.path.root + "js/16/folder.png",
+                paste: page.path.root + "js/16/paste.png",
+                clear: page.path.root + "js/16/paste.png",
+                file: page.path.root + "js/file.png",
+                folder: page.path.root + "js/folder.png",
+                stop: page.path.root + "js/stop.png",
+                del: page.path.root + "js/del.png",
+                post: page.path.root + "js/post.png"
+            }
+        }
 	};
 
     //biz event
