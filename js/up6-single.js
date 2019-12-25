@@ -32,17 +32,17 @@ function HttpUploaderMgr()
 		, "AppPath"			: ""//网站虚拟目录名称。子文件夹 web
         , "Cookie"			: ""//服务器cookie
 		//文件夹操作相关
-		, "UrlFdCreate"		: "http://localhost:8888/db/fd_create.aspx"
-		, "UrlFdComplete"	: "http://localhost:8888/db/fd_complete.aspx"
-		, "UrlFdDel"	    : "http://localhost:8888/db/fd_del.aspx"
-		, "UrlFdFile"	    : "http://localhost:8888/db/fd_file.aspx"
+		, "UrlFdCreate"		: page.path.root + "db/fd_create.aspx"
+		, "UrlFdComplete"	: page.path.root + "db/fd_complete.aspx"
+		, "UrlFdDel"	    : page.path.root + "db/fd_del.aspx"
+		, "UrlFdFile"	    : page.path.root + "db/fd_file.aspx"
 		//文件操作相关
-		, "UrlCreate"		: "http://localhost:8888/db/f_create.aspx"
-		, "UrlPost"			: "http://localhost:8888/db/f_post.aspx"
-        , "UrlProcess"		: "http://localhost:8888/db/f_process.aspx"
-        , "UrlComplete"		: "http://localhost:8888/db/f_complete.aspx"
-		, "UrlList"			: "http://localhost:8888/db/f_list.aspx"
-		, "UrlDel"			: "http://localhost:8888/db/f_del.aspx"
+		, "UrlCreate"		: page.path.root + "db/f_create.aspx"
+		, "UrlPost"			: page.path.root + "db/f_post.aspx"
+        , "UrlProcess"		: page.path.root + "db/f_process.aspx"
+        , "UrlComplete"		: page.path.root + "db/f_complete.aspx"
+		, "UrlList"			: page.path.root + "db/f_list.aspx"
+		, "UrlDel"			: page.path.root + "db/f_del.aspx"
 	    //x86
         , ie: {
               drop: { clsid: "0868BADD-C17E-4819-81DE-1D60E5E734A6", name: "Xproer.HttpDroper6" }
