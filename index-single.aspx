@@ -19,7 +19,7 @@
 
     		$("#btnSel").click(function()
             {
-    		    fileMgr.postAuto("upPnl"); //
+    		    fileMgr.postAuto(); //
     		});
 
     		$("#btnPostLoc").click(function ()
