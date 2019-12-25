@@ -388,6 +388,9 @@ function HttpUploaderMgr()
         this.btnSetup = $("#btnSetup");
         this.btnSetup.attr("href", this.Config.exe.path);
 	    this.SafeCheck();
+        $.each(this.Config.ui.icon, function (i, n) {
+            dom.find("img[name=\"" + i + "\"]").attr("src", n);
+        });
 
         $(function () {
             if (!_this.edge) {
