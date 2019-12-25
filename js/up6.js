@@ -25,6 +25,7 @@ function HttpUploaderMgr()
 		, "Company"			: "荆门泽优软件有限公司"
 		, "Version"			: page.path.version.up6
 		, "License"			: page.path.license.up6//
+		, "License2"		: page.path.license2.up6
 		, "Authenticate"	: ""//域验证方式：basic,ntlm
 		, "AuthName"		: ""//域帐号
 		, "AuthPass"		: ""//域密码

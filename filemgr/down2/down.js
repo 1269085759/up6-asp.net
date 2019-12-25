@@ -21,8 +21,9 @@ function DownloaderMgr()
 		, "Debug"		: false//调试模式
 		, "LogFile"		: "f:\\log.txt"//日志文件路径。
 		, "Company"		: "荆门泽优软件有限公司"
-		, "Version"		: page.path.version.down2,
-		, "License"		: page.path.license.down2//
+		, "Version"		: page.path.version.down2
+		, "License"		: page.path.license.down2
+		, "License2"	: page.path.license2.down2
 		, "Cookie"		: ""//
 		, "ThreadCount"	: 3//并发数
         , "ThreadBlock"	: 3//文件块线程数，每个文件使用多少线程下载数据。3~10
