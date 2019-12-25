@@ -2,20 +2,10 @@
 	版权所有 2009-2019 荆门泽优软件有限公司
 	保留所有权利
 	官方网站：http://www.ncmem.com/
-	产品首页：http://www.ncmem.com/webplug/http-uploader6/
-	产品介绍：http://www.cnblogs.com/xproer/archive/2012/05/29/2523757.html
-	开发文档-ASP：http://www.cnblogs.com/xproer/archive/2012/02/17/2355458.html
-	开发文档-PHP：http://www.cnblogs.com/xproer/archive/2012/02/17/2355467.html
-	开发文档-JSP：http://www.cnblogs.com/xproer/archive/2012/02/17/2355462.html
-	开发文档-ASP.NET：http://www.cnblogs.com/xproer/archive/2012/02/17/2355469.html
-	升级日志：http://www.cnblogs.com/xproer/archive/2012/02/17/2355449.html
-	证书补丁：http://www.ncmem.com/download/WoSignRootUpdate.rar
-	VC运行库：http://www.microsoft.com/en-us/download/details.aspx?id=29
+	产品首页：http://www.ncmem.com/webapp/up6/index.aspx
 	联系信箱：1085617561@qq.com
 	联系QQ：1085617561
-    更新记录：
-	    2009-11-05 创建
-        2015-08-01 优化
+    版本：2.3.1
 */
 function HttpUploaderMgr()
 {
@@ -40,33 +30,35 @@ function HttpUploaderMgr()
 		, "AppPath"			: ""//网站虚拟目录名称。子文件夹 web
         , "Cookie"			: ""//服务器cookie
 		//文件夹操作相关
-		, "UrlFdCreate"		: "http://localhost:8888/db/fd_create.aspx"
-		, "UrlFdComplete"	: "http://localhost:8888/db/fd_complete.aspx"
-		, "UrlFdDel"	    : "http://localhost:8888/db/fd_del.aspx"
-		, "UrlFdFile"	    : "http://localhost:8888/db/fd_file.aspx"
+		, "UrlFdCreate"		: page.path.root+"db/fd_create.aspx"
+		, "UrlFdComplete"	: page.path.root+"db/fd_complete.aspx"
+		, "UrlFdDel"	    : page.path.root+"db/fd_del.aspx"
+		, "UrlFdFile"	    : page.path.root+"db/fd_file.aspx"
 		//文件操作相关
-		, "UrlCreate"		: "http://localhost:8888/db/f_create.aspx"
-		, "UrlPost"			: "http://localhost:8888/db/f_post.aspx"
-        , "UrlProcess"		: "http://localhost:8888/db/f_process.aspx"
-        , "UrlComplete"		: "http://localhost:8888/db/f_complete.aspx"
-		, "UrlList"			: "http://localhost:8888/db/f_list.aspx"
-		, "UrlDel"			: "http://localhost:8888/db/f_del.aspx"
+		, "UrlCreate"		: page.path.root+"db/f_create.aspx"
+		, "UrlPost"			: page.path.root+"db/f_post.aspx"
+        , "UrlProcess"		: page.path.root+"db/f_process.aspx"
+        , "UrlComplete"		: page.path.root+"db/f_complete.aspx"
+		, "UrlList"			: page.path.root+"db/f_list.aspx"
+		, "UrlDel"			: page.path.root+"db/f_del.aspx"
 	    //x86
         , ie: {
               drop: { clsid: "0868BADD-C17E-4819-81DE-1D60E5E734A6", name: "Xproer.HttpDroper6" }
             , part: { clsid: "BA0B719E-F4B7-464b-A664-6FC02126B652", name: "Xproer.HttpPartition6" }
-            , path: "http://www.ncmem.com/download/up6.3/up6.cab"
+            , path: page.path.plugin.up6.ie32
         }
 	    //x64
         , ie64: {
               drop: { clsid: "7B9F1B50-A7B9-4665-A6D1-0406E643A856", name: "Xproer.HttpDroper6x64" }
             , part: { clsid: "307DE0A1-5384-4CD0-8FA8-500F0FFEA388", name: "Xproer.HttpPartition6x64" }
-            , path: "http://www.ncmem.com/download/up6.3/up64.cab"
+            , path: page.path.plugin.up6.ie64
         }
-        , firefox: { name: "", type: "application/npHttpUploader6", path: "http://www.ncmem.com/download/up6.3/up6.xpi" }
-        , chrome: { name: "npHttpUploader6", type: "application/npHttpUploader6", path: "http://www.ncmem.com/download/up6.3/up6.crx" }
+        , firefox: { name: "", type: "application/npHttpUploader6", path: page.path.plugin.up6.firefox }
+        , chrome: { name: "npHttpUploader6", type: "application/npHttpUploader6", path: page.path.plugin.up6.chr }
         , edge: {protocol:"up6",port:9100,visible:false}
-        , exe: { path: "http://www.ncmem.com/download/up6.3/up6.exe" }
+        , exe: { path: page.path.plugin.up6.exe }
+        , mac: { path: page.path.plugin.up6.mac }
+        , linux: { path: page.path.plugin.up6.linux }
 		, "SetupPath": "http://localhost:4955/demoAccess/js/setup.htm"
         , "Fields": { "uname": "test", "upass": "test", "uid": "0", "fid": "0" }
         , errCode: {
@@ -100,7 +92,19 @@ function HttpUploaderMgr()
             Waiting: 8,
             MD5Working: 9,
             scan: 10
-        },ui:{container:null}
+        },ui:{
+            container:null,
+            icon: {
+                upFile: page.path.root + "js/16/upload.png",
+                upFolder: page.path.root + "js/16/folder.png",
+                paste: page.path.root + "js/16/paste.png",
+                clear: page.path.root + "js/16/paste.png",
+                file: page.path.root + "js/file.png",
+                folder: page.path.root + "js/folder.png",
+                stop: page.path.root + "js/stop.png",
+                del: page.path.root + "js/del.png",
+                post: page.path.root + "js/post.png"
+            }}
 	};
 
     //biz event
@@ -315,7 +319,7 @@ function HttpUploaderMgr()
 		//
 	    //上传列表项模板
 		acx += '<div class="file-item file-item-single" name="fileItem" >\
-                    <div class="img-box"><p><img src="js/file.png"/></p></div>\
+                    <div class="img-box"><p><img name="file"/></p></div>\
 		            <div class="area-l">\
 						<div name="fileName" class="name">HttpUploader程序开发.pdf</div>\
 						<div name="percent" class="percent">(35%)</div>\
@@ -324,10 +328,10 @@ function HttpUploaderMgr()
 						<div name="msg" class="msg top-space">15.3MB 20KB/S 10:02:00</div>\
 					</div>\
 					<div class="area-r">\
-                        <a class="btn-box" name="cancel" title="取消"><img src="js/stop.png"/><div>取消</div></a>\
-                        <a class="btn-box hide" name="post" title="继续"><img src="js/post.png"/><div>继续</div></a>\
-						<a class="btn-box hide" name="stop" title="停止"><img src="js/stop.png"/><div>停止</div></a>\
-						<a class="btn-box hide" name="del" title="删除"><img src="js/del.png"/><div>删除</div></a>\
+                        <a class="btn-box" name="cancel" title="取消"><img name="stop"/><div>取消</div></a>\
+                        <a class="btn-box hide" name="post" title="继续"><img name="post"/><div>继续</div></a>\
+						<a class="btn-box hide" name="stop" title="停止"><img name="stop"/><div>停止</div></a>\
+						<a class="btn-box hide" name="del" title="删除"><img name="del"/><div>删除</div></a>\
 					</div>\
 		        </div>';
 		return acx;
@@ -358,9 +362,7 @@ function HttpUploaderMgr()
         }
 	    var html = this.GetHtml();
         var dom = this.Config.ui.container.append(html);
-        setTimeout(function(){
-            _this.initUI(dom);
-        },100);        
+        this.initUI(dom);
 	};
 	
 	this.initUI = function (dom)
@@ -371,6 +373,10 @@ function HttpUploaderMgr()
         this.btnSetup = $("#btnSetup");
         this.btnSetup.attr("href", this.Config.exe.path);
 	    this.SafeCheck();
+        //更新图标
+        $.each(this.Config.ui.icon, function (i, n) {
+            dom.find("img[name=\"" + i + "\"]").attr("src", n);
+        });
 
         $(function () {
             if (!_this.edge) {
