@@ -51,8 +51,7 @@ function DownloaderMgr()
         }
         , firefox: { name: "", type: "application/npHttpDown", path: page.path.plugin.down2.firefox }
         , chrome: { name: "npHttpDown", type: "application/npHttpDown", path: page.path.plugin.down2.chr }
-	    //Chrome 45
-        , chrome45: { name: "com.xproer.down2", path: "http://www.ncmem.com/download/down2/2.4/down2.nat.crx" }
+        , chrome45: { name: "com.xproer.down2", path: page.path.plugin.down2.chr }
         , exe: { path: page.path.plugin.down2.exe }
         , mac: { path: page.path.plugin.down2.mac }
         , linux: { path: page.path.plugin.down2.linux }
@@ -190,14 +189,7 @@ function DownloaderMgr()
 	this.getHtml = function()
 	{ 
 	    //自动安装CAB
-        var html = '<embed name="ffParter" type="' + this.Config.firefox.type + '" pluginspage="' + this.Config.firefox.path + '" width="1" height="1"/>';
-        if (this.chrome45) html = "";
-		//var acx = '<div style="display:none">';
-		/*
-			IE静态加载代码：
-			<object id="objDownloader" classid="clsid:E94D2BA0-37F4-4978-B9B9-A4F548300E48" codebase="http://www.qq.com/HttpDownloader.cab#version=1,2,22,65068" width="1" height="1" ></object>
-			<object id="objPartition" classid="clsid:6528602B-7DF7-445A-8BA0-F6F996472569" codebase="http://www.qq.com/HttpDownloader.cab#version=1,2,22,65068" width="1" height="1" ></object>
-		*/
+        var html = "";
         html += '<object name="parter" classid="clsid:' + this.Config.ie.part.clsid + '"';
         html += ' codebase="' + this.Config.ie.path + '#version=' + _this.Config["Version"] + '" width="1" height="1" ></object>';
         if (this.edge) html = '';
@@ -493,7 +485,7 @@ function DownloaderMgr()
         }
         return true;
     };
-    this.checkVersion = function ()
+    this.checkBrowser = function ()
 	{
 	    //Win64
 	    if (window.navigator.platform == "Win64")
@@ -514,34 +506,23 @@ function DownloaderMgr()
         }
 	    else if (this.firefox)
         {
-            //if (!this.app.checkFF())//仍然支持npapi
-            {
-                this.edge = true;
-                this.app.postMessage = this.app.postMessageEdge;
-                this.edgeApp.run = this.edgeApp.runChr;
-            }
+            this.edge = true;
+            this.app.postMessage = this.app.postMessageEdge;
+            this.edgeApp.run = this.edgeApp.runChr;
 	    }
 	    else if (this.chrome)
 	    {
 	        this.app.check = this.app.checkFF;
 	        jQuery.extend(this.Config.firefox, this.Config.chrome);
-	        //44+版本使用Native Message
-	        //if (parseInt(this.chrVer[1]) >= 44)
-	        {
-                //_this.firefox = true;
-                //if (!this.app.checkFF())//仍然支持npapi
-                {
-                    this.edge = true;
-                    this.app.postMessage = this.app.postMessageEdge;
-                    this.edgeApp.run = this.edgeApp.runChr;
-                }
-	        }
+            this.edge = true;
+            this.app.postMessage = this.app.postMessageEdge;
+            this.edgeApp.run = this.edgeApp.runChr;
         }
         else if (this.edge) {
             this.app.postMessage = this.app.postMessageEdge;
         }
 	};
-    this.checkVersion();
+    this.checkBrowser();
 
     //升级通知
     this.update_notice = function () {

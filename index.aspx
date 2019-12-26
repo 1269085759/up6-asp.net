@@ -24,12 +24,12 @@
             //上传指定文件
             $("#btnUpF").click(function () {
                 var path = $("#filePath").val();
-                cbMgr.app.addFile({ pathLoc: path });
+                cbMgr.addFile(path);
             });
             //上传指定目录
             $("#btnUpFd").click(function () {
                 var path = $("#folderPath").val();
-                cbMgr.app.addFolder({ pathLoc: path });
+                cbMgr.addFolder( path );
             });
         });
     </script>

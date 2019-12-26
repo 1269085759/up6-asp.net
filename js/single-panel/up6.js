@@ -14,10 +14,6 @@
 	联系信箱：1085617561@qq.com
 	联系QQ：1085617561
     版本：2.3.9
-	更新记录：
-		2009-11-05 创建。
-		2015-07-31 优化更新进度逻辑
-        2019-03-18 完善文件夹粘帖功能，完善文件夹初始化逻辑。
 */
 var up6_err_solve = {
     errFolderCreate: "请检查UrlFdCreate地址配置是否正确\n请检查浏览器缓存是否已更新\n请检查数据库是否创建\n请检查数据库连接配置是否正确"
@@ -83,10 +79,10 @@ function HttpUploaderMgr()
         }
         , firefox: { name: "", type: "application/npHttpUploader6", path: page.path.plugin.up6.firefox }
         , chrome: { name: "npHttpUploader6", type: "application/npHttpUploader6", path: page.path.plugin.up6.chr }
-        , edge: {protocol:"up6",port:9100,visible:false}
         , exe: { path: page.path.plugin.up6.exe }
         , mac: { path: page.path.plugin.up6.mac }
         , linux: { path: page.path.plugin.up6.linux }
+        , edge: {protocol:"up6",port:9100,visible:false}
 		, "SetupPath": "http://localhost:4955/demoAccess/js/setup.htm"
         , "Fields": { "uname": "test", "upass": "test", "uid": "0" }
         , ui: {
@@ -192,8 +188,7 @@ function HttpUploaderMgr()
 	this.GetHtmlContainer = function()
 	{
 	    //npapi
-	    var com = '<embed name="ffParter" type="' + this.Config.firefox.type + '" pluginspage="' + this.Config.firefox.path + '" width="1" height="1"/>';
-	    if (this.chrome45) com = "";
+	    var com = "";
 	    if (this.ie)
 	    {
 	        //拖拽组件
@@ -264,6 +259,28 @@ function HttpUploaderMgr()
         com += '</div>';
 	    return com;
 	};
+	
+	//api
+	//打开文件选择对话框
+	this.openFile = function()
+	{
+        if (!this.pluginCheck()) return;
+        _this.app.openFiles();
+	};
+	
+	//打开文件夹选择对话框
+	this.openFolder = function()
+	{
+        if (!this.pluginCheck()) return;
+        _this.app.openFolders();
+	};
+
+	//粘贴文件
+	this.pasteFiles = function()
+	{
+        if (!this.pluginCheck()) return;
+        _this.app.pasteFiles();
+	};
 
     //加载未完成列表
     this.load_files = function () {
@@ -312,6 +329,8 @@ function HttpUploaderMgr()
         this.filesMap[id].fileSvr.pathLoc = "";
     };
 	this.set_config = function (v) { jQuery.extend(this.Config, v);};
+
+	//msg
 	this.open_files = function (json)
 	{
 	    for (var i = 0, l = json.files.length; i < l; ++i)
@@ -778,27 +797,6 @@ function HttpUploaderMgr()
             if (allowExt[i].toLowerCase() == ext) return false;
         }
         return true;
-	};
-	
-	//打开文件选择对话框
-	this.openFile = function()
-	{
-        if (!this.pluginCheck()) return;
-        _this.app.openFiles();
-	};
-	
-	//打开文件夹选择对话框
-	this.openFolder = function()
-	{
-        if (!this.pluginCheck()) return;
-        _this.app.openFolders();
-	};
-
-	//粘贴文件
-	this.pasteFiles = function()
-	{
-        if (!this.pluginCheck()) return;
-        _this.app.pasteFiles();
 	};
 
 	this.ResumeFile = function (fileSvr)

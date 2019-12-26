@@ -6,12 +6,6 @@
 示例下载：http://www.ncmem.com/webapp/down2/versions.aspx
 联系邮箱：1085617561@qq.com
 版本：2.4.15
-更新记录：
-    2009-11-05 创建
-	2014-02-27 优化版本号。
-    2015-08-13 优化
-    2017-06-08 增加对edge的支持，完善逻辑。
-    2017-07-22 优化文件夹下载，优化文件下载。
 */
 function debug_msg(v) { $(document.body).append("<div>"+v+"</div>");}
 
@@ -53,7 +47,6 @@ function DownloaderMgr()
         }
         , firefox: { name: "", type: "application/npHttpDown", path: page.path.plugin.down2.firefox }
         , chrome: { name: "npHttpDown", type: "application/npHttpDown", path: page.path.plugin.down2.chr }
-	    //Chrome 45
         , chrome45: { name: "com.xproer.down2", path: page.path.plugin.down2.chr }
         , exe: { path: page.path.plugin.down2.exe }
         , mac: { path: page.path.plugin.down2.mac }
@@ -505,7 +498,7 @@ function DownloaderMgr()
         }
         return true;
     };
-    this.checkVersion = function ()
+    this.checkBrowser = function ()
 	{
 	    //Win64
 	    if (window.navigator.platform == "Win64")
@@ -526,34 +519,23 @@ function DownloaderMgr()
         }
 	    else if (this.firefox)
         {
-            if (!this.app.checkFF())//仍然支持npapi
-            {
-                this.edge = true;
-                this.app.postMessage = this.app.postMessageEdge;
-                this.edgeApp.run = this.edgeApp.runChr;
-            }
+            this.edge = true;
+            this.app.postMessage = this.app.postMessageEdge;
+            this.edgeApp.run = this.edgeApp.runChr;
         }
 	    else if (this.chrome)
 	    {
 	        this.app.check = this.app.checkFF;
 	        jQuery.extend(this.Config.firefox, this.Config.chrome);
-	        //44+版本使用Native Message
-	        if (parseInt(this.chrVer[1]) >= 44)
-	        {
-                _this.firefox = true;
-                if (!this.app.checkFF())//仍然支持npapi
-                {
-                    this.edge = true;
-                    this.app.postMessage = this.app.postMessageEdge;
-                    this.edgeApp.run = this.edgeApp.runChr;
-                }
-	        }
+            this.edge = true;
+            this.app.postMessage = this.app.postMessageEdge;
+            this.edgeApp.run = this.edgeApp.runChr;
         }
         else if (this.edge) {
             this.app.postMessage = this.app.postMessageEdge;
         }
 	};
-    this.checkVersion();
+    this.checkBrowser();
 
     //升级通知
     this.update_notice = function () {

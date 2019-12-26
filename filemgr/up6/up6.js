@@ -69,10 +69,10 @@ function HttpUploaderMgr()
         }
         , firefox: { name: "", type: "application/npHttpUploader6", path: page.path.plugin.up6.firefox }
         , chrome: { name: "npHttpUploader6", type: "application/npHttpUploader6", path: page.path.plugin.up6.chr }
-        , edge: {protocol:"up6",port:9100,visible:false}
         , exe: { path: page.path.plugin.up6.exe }
         , mac: { path: page.path.plugin.up6.mac }
         , linux: { path: page.path.plugin.up6.linux }
+        , edge: {protocol:"up6",port:9100,visible:false}
 		, "SetupPath": "http://localhost:4955/demoAccess/js/setup.htm"
         , "Fields": { "uname": "test", "upass": "test", "uid": "0" }
         , bizData: {pid:"",pidRoot:""}
@@ -107,17 +107,17 @@ function HttpUploaderMgr()
             Complete: 5,
             WaitContinueUpload: 6,
             None: 7,
-            Waiting: 8
-            , MD5Working: 9
-            , scan: 10
+			Waiting: 8,
+			MD5Working: 9,
+			scan: 10
         }
         , ui: {
-            file: "div[name='file']"
-            ,folder: "div[name='folder']"
-            , panel:"div[name='post_panel']"
-            ,header:"div[name='post_head']"
-            , list:"div[name='post_body']"
-            ,icon: {
+			file: "div[name='file']",
+			folder: "div[name='folder']",
+			panel:"div[name='post_panel']",
+			header:"div[name='post_head']",
+			list:"div[name='post_body']",
+			icon: {
                 file: page.path.res +"imgs/32/file.png"
                 , folder: page.path.res +"imgs/32/folder.png"
                 , stop: page.path.res +"imgs/32/stop.png"
@@ -215,8 +215,7 @@ function HttpUploaderMgr()
 	this.getHtml = function()
 	{
 	    //npapi
-	    var com = '<embed name="ffParter" type="' + this.Config.firefox.type + '" pluginspage="' + this.Config.firefox.path + '" width="1" height="1"/>';
-	    if (this.chrome45) com = "";
+	    var com = "";
 	    if (this.ie)
 	    {
 	        //拖拽组件
@@ -248,6 +247,8 @@ function HttpUploaderMgr()
     	this.filesMap[id].fileSvr.pathLoc="";
     };
 	this.set_config = function (v) { jQuery.extend(this.Config, v);};
+
+	//msg
 	this.open_files = function (json)
 	{
 	    for (var i = 0, l = json.files.length; i < l; ++i)
@@ -415,28 +416,17 @@ function HttpUploaderMgr()
         }
 	    else if (this.firefox)
 	    {
-	        //if (!this.app.checkFF() || parseInt(this.ffVer[1]) >= 50)//仍然支持npapi
-            {
-                this.edge = true;
-                this.app.postMessage = this.app.postMessageEdge;
-                this.edgeApp.run = this.edgeApp.runChr;
-            }
+			this.edge = true;
+			this.app.postMessage = this.app.postMessageEdge;
+			this.edgeApp.run = this.edgeApp.runChr;
         }
 	    else if (this.chrome)
 	    {
             this.app.check = this.app.checkFF;
 	        jQuery.extend(this.Config.firefox, this.Config.chrome);
-	        //44+版本使用Native Message
-	        //if (parseInt(this.chrVer[1]) >= 44)
-	        {
-	            //_this.firefox = true;
-	            //if (!this.app.checkFF())//仍然支持npapi
-                {
-                    this.edge = true;
-                    this.app.postMessage = this.app.postMessageEdge;
-                    this.edgeApp.run = this.edgeApp.runChr;
-	            }
-	        }
+			this.edge = true;
+			this.app.postMessage = this.app.postMessageEdge;
+			this.edgeApp.run = this.edgeApp.runChr;
 	    }
 	    else if (this.edge)
 	    {
