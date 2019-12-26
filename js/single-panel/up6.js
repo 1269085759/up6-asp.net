@@ -261,30 +261,40 @@ function HttpUploaderMgr()
 	};
 	
 	//api
+	this.addFile = function(f){
+        if (!this.pluginCheck()) return;
+		this.app.addFile({ pathLoc: f });		
+	};
+
+	this.addFolder = function(f){
+        if (!this.pluginCheck()) return;
+		this.app.addFolder({ pathLoc: f });		
+	};
+
 	//打开文件选择对话框
 	this.openFile = function()
 	{
         if (!this.pluginCheck()) return;
-        _this.app.openFiles();
+        this.app.openFiles();
 	};
 	
 	//打开文件夹选择对话框
 	this.openFolder = function()
 	{
         if (!this.pluginCheck()) return;
-        _this.app.openFolders();
+        this.app.openFolders();
 	};
 
 	//粘贴文件
 	this.pasteFiles = function()
 	{
         if (!this.pluginCheck()) return;
-        _this.app.pasteFiles();
+        this.app.pasteFiles();
 	};
 
     //加载未完成列表
     this.load_files = function () {
-        var param = jQuery.extend({}, this.Config.Fields, { time: new Date().getTime() });
+        var param = $.extend({}, this.Config.Fields, { time: new Date().getTime() });
         $.ajax({
             type: "GET"
             , dataType: 'jsonp'
