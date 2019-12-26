@@ -480,6 +480,7 @@ function HttpUploaderMgr()
             var link = "<a href='%url%' style='text-decoration:underline'>安装控件</a>".replace("%url%",this.Config.exe.path);
             var html = '控件没有加载成功，请%link%或等待加载。'.replace("%link%",link);
             this.event.unsetup(html);
+            alert("控件没有加载成功，请安装控件或等待加载。");
             this.pluginLoad();
             return false;
         }
