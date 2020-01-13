@@ -6,6 +6,7 @@ using Newtonsoft.Json.Linq;
 using up6.db.biz;
 using up6.db.database;
 using up6.db.model;
+using up6.db.utils;
 using up6.filemgr.app;
 
 namespace up6.db
@@ -76,6 +77,15 @@ namespace up6.db
                     ,new SqlParam("f_pathSvr",fileSvr.pathSvr)
                     ,new SqlParam("f_uid",fileSvr.uid)
                 });
+            }
+
+            //加密
+            ConfigReader cr = new ConfigReader();
+            var sec = cr.module("path");
+            var encrypt = (bool)sec.SelectToken("$.security.encrypt");
+            if (encrypt)
+            {
+                fileSvr.pathSvr = CryptoTool.encode(fileSvr.pathSvr);
             }
 
             up6_biz_event.folder_create(fileSvr);

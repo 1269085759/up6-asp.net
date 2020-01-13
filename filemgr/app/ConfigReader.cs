@@ -48,14 +48,14 @@ namespace up6.filemgr.app
             return o;
         }
 
-        public string data(string name)
+        public string readFile(string name)
         {
             string file = (string)this.m_files.SelectToken(name);
             file = HttpContext.Current.Server.MapPath(file);
             return File.ReadAllText(file);
         }
 
-        public JToken to_json(string name)
+        public JToken readJson(string name)
         {
             string file = (string)this.m_files.SelectToken(name);
             file = HttpContext.Current.Server.MapPath(file);
@@ -63,11 +63,16 @@ namespace up6.filemgr.app
             return o;
         }
 
-        public string to_string(string name)
+        public string readString(string name)
         {
-            string file = (string)this.m_files.SelectToken(name);
-            file = HttpContext.Current.Server.MapPath(file);
-            return File.ReadAllText(file);
+            string v = (string)this.m_files.SelectToken(name);
+            return v;
+        }
+
+        public bool readBool(string name)
+        {
+            var v = (bool)this.m_files.SelectToken(name);
+            return v;
         }
 
         /// <summary>

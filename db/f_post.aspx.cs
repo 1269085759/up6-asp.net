@@ -54,6 +54,15 @@ namespace up6.db
 
             if( !this.safe_check(lenLoc,uid,f_id,blockOffset,pathSvr)) return;
 
+            //加密
+            ConfigReader cr = new ConfigReader();
+            var sec = cr.module("path");
+            var encrypt = (bool)sec.SelectToken("$.security.encrypt");
+            if (encrypt)
+            {
+                pathSvr = CryptoTool.decode(pathSvr);
+            }
+
             //有文件块数据
             if (Request.Files.Count > 0)
             {

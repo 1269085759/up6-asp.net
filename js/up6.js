@@ -25,7 +25,11 @@ function HttpUploaderMgr()
 		, "Authenticate"	: ""//域验证方式：basic,ntlm
 		, "AuthName"		: ""//域帐号
 		, "AuthPass"		: ""//域密码
-        , "CryptoType"      : "md5"//验证方式：md5,sha1,crc
+		, "CryptoType"      : "md5"//验证方式：md5,sha1,crc
+		, "security":{
+			"encrypt":page.path.security.encrypt,
+			"key":page.path.security.key
+		}
 		, "FileFilter"		: "*"//文件类型。所有类型：*。自定义类型：jpg,bmp,png,gif,rar,zip,7z,doc
 		, "FileSizeLimit"	: "0"//自定义允许上传的文件大小，以字节为单位。0表示不限制。字节计算工具：http://www.beesky.com/newsite/bit_byte.htm
 		, "FilesLimit"		: "0"//文件选择数限制。0表示不限制

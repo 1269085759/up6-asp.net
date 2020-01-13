@@ -89,6 +89,16 @@ namespace up6.db
                 FileBlockWriter fr = new FileBlockWriter();
                 fr.make(fileSvr.pathSvr,fileSvr.lenLoc);
             }
+
+            //加密
+            ConfigReader cr = new ConfigReader();
+            var sec = cr.module("path");
+            var encrypt = (bool)sec.SelectToken("$.security.encrypt");
+            if (encrypt)
+            {
+                fileSvr.pathSvr = CryptoTool.encode(fileSvr.pathSvr);
+            }
+
             string jv = JsonConvert.SerializeObject(fileSvr);
             jv = HttpUtility.UrlEncode(jv);
             jv = jv.Replace("+", "%20");

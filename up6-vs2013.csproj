@@ -376,6 +376,7 @@
     <Compile Include="db\f_process.aspx.designer.cs">
       <DependentUpon>f_process.aspx</DependentUpon>
     </Compile>
+    <Compile Include="db\utils\CryptoTool.cs" />
     <Compile Include="db\utils\FileBlockWriter.cs" />
     <Compile Include="db\f_complete.aspx.cs">
       <DependentUpon>f_complete.aspx</DependentUpon>
