@@ -269,7 +269,7 @@ function FolderUploader(fdLoc, mgr)
         if(json.errors > 0 ) str += " 失败：" + json.errors
         this.ui.msg.text(str);
 
-        var param = jQuery.extend({}, this.fields, { id: this.fileSvr.id, time: new Date().getTime() });
+        var param = jQuery.extend({}, this.fields, { id: this.fileSvr.id, cover:1, time: new Date().getTime() });
 
         $.ajax({
             type: "GET"
