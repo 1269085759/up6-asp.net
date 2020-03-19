@@ -72,14 +72,14 @@ namespace up6.filemgr
             fileSvr.nameSvr = fileSvr.nameLoc;
 
             //检查同名目录
-            DbFolder df = new DbFolder();
-            if (df.exist_same_folder(fileSvr.nameLoc, pid))
-            {
-                var o = new JObject { { "value", null }, { "ret", false }, { "code", "102" } };
-                var js = callback + string.Format("({0})", JsonConvert.SerializeObject(o));
-                this.toContent(js);
-                return;
-            }
+            //DbFolder df = new DbFolder();
+            //if (df.exist_same_folder(fileSvr.nameLoc, pid))
+            //{
+            //    var o = new JObject { { "value", null }, { "ret", false }, { "code", "102" } };
+            //    var js = callback + string.Format("({0})", JsonConvert.SerializeObject(o));
+            //    this.toContent(js);
+            //    return;
+            //}
 
             //生成存储路径
             PathBuilderUuid pb = new PathBuilderUuid();
