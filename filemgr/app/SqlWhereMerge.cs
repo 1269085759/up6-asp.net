@@ -41,6 +41,11 @@ namespace up6.filemgr.app
             this.m_cds[n] = string.Format("{0}='{1}'", n, v);
         }
 
+        public void equalNot(string n, string v)
+        {
+            this.m_cds[n] = string.Format("{0}!='{1}'", n, v);
+        }
+
         /// <summary>
         /// 相等条件，a=b
         /// </summary>

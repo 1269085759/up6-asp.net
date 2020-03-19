@@ -418,6 +418,18 @@ namespace up6.filemgr.app
             db.ExecuteNonQuery(cmd);
         }
 
+        public void delete(string table, string where)
+        {
+            JObject o = new JObject();
+            string sql = string.Format("delete from [{0}] where {1}"
+                , table
+                , where);
+
+            DbHelper db = new DbHelper();
+            var cmd = db.GetCommand(sql);
+            db.ExecuteNonQuery(cmd);
+        }
+
         /// <summary>
         /// 批量删除
         /// </summary>
