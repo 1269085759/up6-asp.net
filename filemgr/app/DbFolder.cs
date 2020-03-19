@@ -13,7 +13,7 @@ namespace up6.filemgr.app
     public class DbFolder
     {
         //根节点
-        JObject root = new JObject { { "f_id", "" }, { "f_nameLoc", "根目录" }, { "f_pid", "" }, { "f_pidRoot", "" } };
+        JObject root = new JObject { { "f_id", "" }, { "f_nameLoc", "根目录" }, { "f_pid", "" }, { "f_pidRoot", "" },{ "f_pathRel",""} };
 
         public DbFolder()
         {
@@ -313,6 +313,34 @@ namespace up6.filemgr.app
 
             FileInf file = new FileInf();
             file.id = id;
+            file.pid = o["f_pid"].ToString().Trim();
+            file.pidRoot = o["f_pidRoot"].ToString().Trim();
+            file.pathSvr = o["f_pathSvr"].ToString().Trim();
+            file.pathRel = o["f_pathRel"].ToString().Trim();
+            return file;
+        }
+
+        /// <summary>
+        /// 取同名目录信息
+        /// </summary>
+        /// <param name="pathRel"></param>
+        /// <param name="pid"></param>
+        /// <returns></returns>
+        public FileInf read(string pathRel, string pid,string id)
+        {
+            SqlExec se = new SqlExec();
+            string sql = string.Format(@"select f_id,f_pid,f_pidRoot,f_pathSvr,f_pathRel 
+from up6_files 
+where f_pid='{0}' and f_pathRel='{1}' and f_id!='{2}'
+union select f_id,f_pid,f_pidRoot,f_pathSvr,f_pathRel 
+    from up6_folders where f_pid='{0}' and f_pathRel='{1}' and f_id!='{2}'", pid,pathRel,id);
+            var data = (JArray)se.exec("up6_files", sql, "f_id,f_pid,f_pidRoot,f_pathSvr,f_pathRel");
+            if (data.Count < 1) return null;
+
+            var o = JObject.FromObject(data[0]);
+
+            FileInf file = new FileInf();
+            file.id = o["f_id"].ToString().Trim();
             file.pid = o["f_pid"].ToString().Trim();
             file.pidRoot = o["f_pidRoot"].ToString().Trim();
             file.pathSvr = o["f_pathSvr"].ToString().Trim();
