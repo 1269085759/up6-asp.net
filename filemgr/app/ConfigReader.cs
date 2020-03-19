@@ -20,7 +20,7 @@ namespace up6.filemgr.app
         /// </summary>
         public ConfigReader()
         {
-            string file = HttpContext.Current.Server.MapPath("/filemgr/data/config/config.json");
+            string file = HttpRuntime.AppDomainAppPath + "/filemgr/data/config/config.json";
             this.m_files = JToken.Parse(File.ReadAllText(file));
         }
 
@@ -31,7 +31,7 @@ namespace up6.filemgr.app
         /// <returns></returns>
         public string loclFile(string f)
         {
-            f = HttpContext.Current.Server.MapPath(f);
+            f = HttpRuntime.AppDomainAppPath + f;
             return File.ReadAllText(f);
         }
 
@@ -43,7 +43,7 @@ namespace up6.filemgr.app
         public JToken module(string name)
         {
             string file = (string)this.m_files.SelectToken(name);
-            file = HttpContext.Current.Server.MapPath(file);
+            file = HttpRuntime.AppDomainAppPath + file;
             var o = JToken.Parse( File.ReadAllText(file ));
             return o;
         }
@@ -51,14 +51,14 @@ namespace up6.filemgr.app
         public string readFile(string name)
         {
             string file = (string)this.m_files.SelectToken(name);
-            file = HttpContext.Current.Server.MapPath(file);
+            file = HttpRuntime.AppDomainAppPath + file;
             return File.ReadAllText(file);
         }
 
         public JToken readJson(string name)
         {
             string file = (string)this.m_files.SelectToken(name);
-            file = HttpContext.Current.Server.MapPath(file);
+            file = HttpRuntime.AppDomainAppPath + file;
             var o = JToken.Parse(File.ReadAllText(file));
             return o;
         }
@@ -82,7 +82,7 @@ namespace up6.filemgr.app
         /// <returns></returns>
         public Dictionary<string,object> read(string fileName)
         {
-            string ps = HttpContext.Current.Server.MapPath("/data/config/"+fileName);
+            string ps = HttpRuntime.AppDomainAppPath + "/data/config/"+fileName;
             string data = File.ReadAllText(ps);
             var m = JsonConvert.DeserializeObject<Dictionary<string, object>>(data);
             return m;
@@ -95,7 +95,7 @@ namespace up6.filemgr.app
         /// <returns></returns>
         public JToken configFile(string fileName)
         {
-            string ps = HttpContext.Current.Server.MapPath("/data/config/" + fileName);
+            string ps = HttpRuntime.AppDomainAppPath + "/data/config/" + fileName;
             string data = File.ReadAllText(ps);
             var m = JToken.Parse(data);
             return m;

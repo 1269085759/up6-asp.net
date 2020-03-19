@@ -14,6 +14,12 @@ Install-Package Microsoft.Experimental.IO
 
 ========================================================================
 更新记录：
+2020-03-19
+	更新项目路径的写法，
+	  HttpContext.Current.Server.MapPath改为HttpRuntime.AppDomainAppPath
+	文件管理器：
+	  1.增加同名文件上传功能。以覆盖模式上传，替换旧的同名文件。
+	  2.增加同名目录上传功能。以合并模式上传，替换同名子文件。
 2019-01-02
 	增加加密配置
 2019-12-21
