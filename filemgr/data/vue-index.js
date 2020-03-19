@@ -447,12 +447,12 @@
             }
             , taskEmpty: function () {
                 var ept = this.$refs.up6.taskEmpty();
-                if (ept) ept = this.$refs.down2.taskEmpty();
+                if (ept) ept = this.$refs.down.taskEmpty();
                 return ept;
             }
             , taskEnd: function () {
                 this.$refs.up6.taskEnd();
-                this.$refs.down2.taskEnd();
+                this.$refs.down.taskEnd();
             }
         }
     });

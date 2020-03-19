@@ -66,7 +66,7 @@
                     @folder_complete="up6_folderComplete"
                     @unsetup="up6_unsetup"></up6>
                 <!--下载面板-->
-                <down2 id="pnl-down" ref="down2" style="display: none;"
+                <down2 id="pnl-down" ref="down" style="display: none;"
                     :fd_data="url.fd_data"
                     :fields="fields"
                     @load_complete="down_loadComplete"
