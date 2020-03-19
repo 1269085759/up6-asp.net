@@ -18,12 +18,31 @@ namespace up6.db.biz.folder
         protected DbHelper db;
         protected DbCommand cmd_add_f = null;
         protected DbCommand cmd_add_fd = null;
+        protected DbCommand cmd_cover = null;
         public FileInf root = null;//根节点
 
         public fd_scan()
         {
             this.db = new DbHelper();
         }
+
+        protected void makeCmdCover()
+        {
+            string sql = "update up6_files set f_deleted=1 where f_pathRel=@pathRel";
+
+            this.cmd_cover = this.db.connection.CreateCommand();
+            this.cmd_cover.CommandText = sql;
+            this.cmd_cover.CommandType = System.Data.CommandType.Text;
+
+            this.db.AddString(ref cmd_cover, "@pathRel", string.Empty, 512);
+            this.cmd_cover.Prepare();
+        }
+
+        protected void cover_file(string pathRel) {
+            this.cmd_cover.Parameters["@pathRel"].Value = pathRel;
+            this.cmd_cover.ExecuteNonQuery();
+        }
+
         public void makeCmdF()
         {
             StringBuilder sb = new StringBuilder();
@@ -179,6 +198,50 @@ namespace up6.db.biz.folder
             }
         }
 
+        protected void getAllFiles(FileInf parent,string root,ref List<string> files)
+        {
+            DirectoryInfo dir = new DirectoryInfo(parent.pathSvr);
+            FileInfo[] allFile = dir.GetFiles();
+            foreach (FileInfo fi in allFile)
+            {
+                FileInf fl = new FileInf();
+
+                //fl.id = Guid.NewGuid().ToString("N");
+                //fl.pid = parent.id;
+                //fl.pidRoot = this.root.id;
+                fl.nameSvr = fi.Name;
+                fl.nameLoc = fi.Name;
+                fl.pathSvr = fi.FullName;
+                fl.pathSvr = fl.pathSvr.Replace("\\", "/");
+                fl.pathRel = fl.pathSvr.Remove(0, root.Length + 1);
+                fl.pathRel = PathTool.combin(parent.pathRel, fl.nameLoc);
+                //fl.lenSvr = fi.Length;
+                //fl.lenLoc = fl.lenSvr;
+                //fl.sizeLoc = this.BytesToString(fl.lenSvr);
+                //fl.perSvr = "100%";
+                //fl.complete = true;
+                files.Add(fl.pathRel);
+            }
+            DirectoryInfo[] allDir = dir.GetDirectories();
+            foreach (DirectoryInfo d in allDir)
+            {
+                FileInf fd = new FileInf();
+                //fd.id = Guid.NewGuid().ToString("N");
+                //fd.pid = parent.id;
+                //fd.pidRoot = this.root.id;
+                fd.nameSvr = d.Name;
+                fd.nameLoc = d.Name;
+                fd.pathSvr = d.FullName;
+                fd.pathSvr = fd.pathSvr.Replace("\\", "/");
+                fd.pathRel = fd.pathSvr.Remove(0, root.Length + 1);
+                fd.pathRel = PathTool.combin(parent.pathRel, fd.nameLoc);
+                //fd.perSvr = "100%";
+                //fd.complete = true;
+
+                this.getAllFiles(fd, root,ref files);
+            }
+        }
+
         protected void save_file(FileInf f)
         {
             this.cmd_add_f.Parameters["@f_id"].Value = f.id;
@@ -228,6 +291,24 @@ namespace up6.db.biz.folder
             return (Math.Sign(byteCount) * num).ToString() + suf[place];
         }
 
+        /// <summary>
+        /// 覆盖同名文件
+        /// </summary>
+        /// <param name="inf"></param>
+        /// <param name="pathParent"></param>
+        public void cover(FileInf inf,string pathParent)
+        {
+            List<string> files = new List<string>();
+            this.getAllFiles(inf, pathParent, ref files);
+
+            this.db.connection.Open();
+            this.makeCmdCover();
+            foreach(string f in files)
+            {
+                this.cover_file(f);
+            }
+            this.db.connection.Close();
+        }
 
         public void scan(FileInf inf, string root)
         {
