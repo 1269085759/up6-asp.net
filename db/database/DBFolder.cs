@@ -1,5 +1,6 @@
 ﻿using System.Data.Common;
 using System.Text;
+using up6.filemgr.app;
 
 namespace up6.db.database
 {
@@ -17,6 +18,28 @@ namespace up6.db.database
             db.AddString(ref cmd, "@id", id,32);
             db.AddInt(ref cmd, "@uid", uid);
             db.ExecuteNonQuery(cmd);
+        }
+
+        static public void del(string id,int uid)
+        {
+            SqlExec se = new SqlExec();
+            se.update("up6_files",
+                new SqlParam[] {
+                    new SqlParam("f_deleted",true)
+                },
+                new SqlParam[] {
+                    new SqlParam("f_id", id),
+                    new SqlParam("f_uid",uid)
+                });
+            se.update("up6_folders",
+                new SqlParam[] {
+                    new SqlParam("f_deleted",true)
+                },
+                new SqlParam[] 
+                {
+                    new SqlParam("f_id", id) ,
+                    new SqlParam("f_uid",uid)
+                });
         }
 
         static public void Clear()
