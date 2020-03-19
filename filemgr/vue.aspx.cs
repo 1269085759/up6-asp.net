@@ -190,13 +190,13 @@ namespace up6.filemgr
             fileSvr.nameSvr = fileSvr.nameLoc;
 
             //同名文件检测
-            DbFolder df = new DbFolder();
-            if (df.exist_same_file(fileSvr.nameLoc, pid))
-            {
-                var data = callback + "({'value':'','ret':false,'code':'101'})";
-                this.toContent(data);
-                return;
-            }
+            //DbFolder df = new DbFolder();
+            //if (df.exist_same_file(fileSvr.nameLoc, pid))
+            //{
+            //    var data = callback + "({'value':'','ret':false,'code':'101'})";
+            //    this.toContent(data);
+            //    return;
+            //}
 
             //所有单个文件均以uuid/file方式存储
             PathBuilderUuid pb = new PathBuilderUuid();

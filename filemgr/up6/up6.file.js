@@ -147,12 +147,10 @@ function FileUploader(fileLoc, mgr)
         var str = json.lenPost + " " + json.speed + " " + json.time;
         this.ui.msg.text(str);
     };
-    this.post_complete = function (json)
-    {
+    this.post_complete = function (json) {
         this.fileSvr.perSvr = "100%";
         this.fileSvr.complete = true;
-        $.each(this.ui.btn, function (i, n)
-        {
+        $.each(this.ui.btn, function (i, n) {
             n.hide();
         });
         this.ui.process.css("width", "100%");
@@ -165,7 +163,14 @@ function FileUploader(fileLoc, mgr)
         //从未上传列表中删除
         this.Manager.RemoveQueueWait(this.fileSvr.id);
 
-        var param = { md5: this.fileSvr.md5, uid: this.uid, id: this.fileSvr.id, time: new Date().getTime() };
+        var param = $.extend({}, this.fields, {
+            md5: this.fileSvr.md5,
+            cover:1,
+            nameLoc: encodeURIComponent(this.fileSvr.nameLoc),
+            uid: this.uid,
+            id: this.fileSvr.id,
+            time: new Date().getTime()
+        });
 
         $.ajax({
             type: "GET"
@@ -196,9 +201,29 @@ function FileUploader(fileLoc, mgr)
         this.Manager.RemoveQueuePost(this.fileSvr.id);
         //从未上传列表中删除
         this.Manager.RemoveQueueWait(this.fileSvr.id);
-        //添加到文件列表
-        this.post_next();
-        this.event.fileComplete(this);//触发事件
+
+        var param = $.extend({}, this.fields, {
+            md5: this.fileSvr.md5,
+            cover: 1,
+            nameLoc: encodeURIComponent(this.fileSvr.nameLoc),
+            uid: this.uid,
+            id: this.fileSvr.id,
+            time: new Date().getTime()
+        });
+
+        $.ajax({
+            type: "GET"
+            , dataType: 'jsonp'
+            , jsonp: "callback"
+            , url: _this.Config["UrlComplete"]
+            , data: param
+            , success: function (msg) {
+                _this.event.fileComplete(_this);//触发事件
+                _this.post_next();
+            }
+            , error: function (req, txt, err) { alert("文件-向服务器发送Complete信息错误！" + req.responseText); }
+            , complete: function (req, sta) { req = null; }
+        });
     };
     this.post_stoped = function (json)
     {
@@ -250,7 +275,7 @@ function FileUploader(fileLoc, mgr)
         var loc_path = encodeURIComponent(this.fileSvr.pathLoc);
         var loc_len = this.fileSvr.lenLoc;
         var loc_size = this.fileSvr.sizeLoc;
-        var param = jQuery.extend({}, this.fields, { md5: json.md5, id: this.fileSvr.id, lenLoc: loc_len, sizeLoc: loc_size, pathLoc: loc_path, time: new Date().getTime() });
+        var param = jQuery.extend({}, this.fields, { md5: json.md5, id: this.fileSvr.id, cover:1, lenLoc: loc_len, sizeLoc: loc_size, pathLoc: loc_path, time: new Date().getTime() });
 
         $.ajax({
             type: "GET"

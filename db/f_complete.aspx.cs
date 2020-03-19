@@ -13,22 +13,27 @@ namespace up6.db
         protected void Page_Load(object sender, EventArgs e)
         {
             var md5 = this.reqString("md5");
-            var uid = this.reqString("uid");
+            var uid = this.reqToInt("uid");
             var id = this.reqString("id");
+            var pid = this.reqString("pid");
             var cbk = this.reqString("callback");
+            var cover = this.reqToInt("cover");//是否覆盖
+            var nameLoc = this.reqStringDecode("nameLoc");//文件名称
 
             //返回值。1表示成功
             int ret = 0;
 
-            if (string.IsNullOrEmpty(id) ||
-                string.IsNullOrEmpty(uid)
-                )
+            if (string.IsNullOrEmpty(id) )
             {
             }//参数不为空
             else
             {
                 DBFile db = new DBFile();
                 db.complete(id);
+
+                //覆盖同名文件-更新同名文件状态
+                if (cover==1) db.delete(pid, nameLoc, uid,id);
+
                 up6_biz_event.file_post_complete(id);
                 ret = 1;
             }

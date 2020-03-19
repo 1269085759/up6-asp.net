@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Text;
 using up6.db.model;
+using up6.filemgr.app;
 
 namespace up6.db.database
 {
@@ -319,6 +320,19 @@ namespace up6.db.database
 
             db.AddInt(ref cmd, "@f_uid", f_uid);
             db.AddString(ref cmd, "@f_id", f_id,32);
+            db.ExecuteNonQuery(cmd);
+        }
+
+        public void delete(string pid,string name,int uid,string id)
+        {
+            string sql = "update up6_files set f_deleted=1 where f_pid=@pid and f_nameLoc=@nameLoc and f_uid=@uid and f_id!=@f_id";
+            DbHelper db = new DbHelper();
+            DbCommand cmd = db.GetCommand(sql);
+
+            db.AddString(ref cmd, "@pid",pid,32);
+            db.AddString(ref cmd, "@nameLoc", name, 255);
+            db.AddInt(ref cmd, "@uid", uid);
+            db.AddString(ref cmd, "@f_id",id,32);
             db.ExecuteNonQuery(cmd);
         }
 
