@@ -84,7 +84,7 @@ namespace up6.filemgr.app
         string[] all_files(string id)
         {
             SqlExec se = new SqlExec();
-            var obj = se.read("up7_folders", "f_id,f_pid,f_pidRoot", new SqlParam[] {
+            var obj = se.read("up6_folders", "f_id,f_pid,f_pidRoot", new SqlParam[] {
                 new SqlParam("f_id",id)
             });
 
@@ -105,11 +105,11 @@ namespace up6.filemgr.app
         string[] all_folders(string id)
         {
             SqlExec se = new SqlExec();
-            var obj = se.read("up7_folders", "f_id,f_pid,f_pidRoot", new SqlParam[] {
+            var obj = se.read("up6_folders", "f_id,f_pid,f_pidRoot", new SqlParam[] {
                 new SqlParam("f_id",id)
             });
 
-            var list = se.select("up7_folders", "f_id,f_pid", new SqlParam[] {
+            var list = se.select("up6_folders", "f_id,f_pid", new SqlParam[] {
                 new SqlParam("f_pidRoot",obj["f_pidRoot"].ToString())
             });
 
