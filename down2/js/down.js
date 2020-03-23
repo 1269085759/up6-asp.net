@@ -607,7 +607,7 @@ function DownloaderMgr()
 
         this.safeCheck();//
 
-        $(function () {
+        setTimeout(function () {
             if (!_this.edge) {
                 if (_this.ie) {
                     _this.parter = _this.ieParter;
@@ -621,7 +621,7 @@ function DownloaderMgr()
             else {
                 _this.app.init();
             }
-        });
+        }, 500);
 	};
 
     //加载未未完成列表

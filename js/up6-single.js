@@ -393,7 +393,7 @@ function HttpUploaderMgr()
             dom.find("img[ico=\"" + i + "\"]").attr("src", n);
         });
 
-        $(function () {
+        setTimeout(function () {
             if (!_this.edge) {
                 if (_this.ie) {
                     _this.parter = _this.ieParter;
@@ -407,7 +407,7 @@ function HttpUploaderMgr()
             else {
                 _this.app.init();
             }
-        });
+        }, 500);
 	};
 
     //oid,显示上传项的层ID

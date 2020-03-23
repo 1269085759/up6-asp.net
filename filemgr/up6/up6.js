@@ -540,8 +540,7 @@ function HttpUploaderMgr()
 
 	    //this.SafeCheck();
 
-        $(function ()
-        {
+        setTimeout(function () {
             if (!_this.edge) {
                 if (_this.ie) {
                     _this.parter = _this.ieParter;
@@ -556,7 +555,7 @@ function HttpUploaderMgr()
             else {
                 _this.app.init();
             }
-        });
+        }, 500);
 	};
 	
     //清除已完成文件

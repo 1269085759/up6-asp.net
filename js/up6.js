@@ -799,8 +799,7 @@ function HttpUploaderMgr()
 
         this.InitContainer();
 
-        $(function ()
-        {
+        setTimeout(function () {
             if (!_this.edge) {
                 if (_this.ie) {
                     _this.parter = _this.ieParter;
@@ -815,7 +814,7 @@ function HttpUploaderMgr()
             else {
                 _this.app.init();
             }
-        });
+        }, 500);
 	};
 	
 	//初始化容器
