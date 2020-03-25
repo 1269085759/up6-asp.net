@@ -14,6 +14,8 @@ Install-Package Microsoft.Experimental.IO
 
 ========================================================================
 更新记录：
+2020-03-25
+	文件初始化(f_create.aspx)新增快速生成服务器路径逻辑。
 2020-03-19
 	更新项目路径的写法，
 	  HttpContext.Current.Server.MapPath改为HttpRuntime.AppDomainAppPath

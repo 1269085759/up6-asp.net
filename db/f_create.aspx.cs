@@ -7,6 +7,7 @@ using up6.db.model;
 using up6.db.utils;
 using up6.db.database;
 using up6.filemgr.app;
+using Newtonsoft.Json.Linq;
 
 namespace up6.db
 {
@@ -18,8 +19,37 @@ namespace up6.db
     /// </summary>
     public partial class f_create : WebBase
     {
+        void mkpath()
+        {
+            var id = this.reqString("id");
+            var pathLoc = this.reqStringDecode("pathLoc");
+
+            FileInf fileSvr = new FileInf();
+            fileSvr.id = id;
+            fileSvr.nameLoc = Path.GetFileName(pathLoc);
+            fileSvr.nameSvr = fileSvr.nameLoc;
+            fileSvr.pathLoc = pathLoc;
+
+            PathBuilderUuid pb = new PathBuilderUuid();
+            fileSvr.pathSvr = pb.genFile(id, fileSvr.nameLoc);
+            fileSvr.pathSvr = fileSvr.pathSvr.Replace("\\", "/");
+
+            //数据库存在相同文件
+            DBFile db = new DBFile();
+            FileInf fileExist = new FileInf();
+            db.Add(ref fileSvr);
+            //触发事件
+            up6_biz_event.file_create(fileSvr);
+            
+            //
+            JObject o = new JObject();
+            o["pathSvr"] = fileSvr.pathSvr;
+            this.toContent(o);
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
+            string op          = this.reqString("op");
             string pid          = this.reqString("pid");
             string pidRoot      = this.reqString("pidRoot");
             string md5          = this.reqString("md5");
@@ -30,6 +60,8 @@ namespace up6.db
             string callback     = this.reqString("callback");//jsonp参数
             //客户端使用的是encodeURIComponent编码，
             string pathLoc      = this.reqStringDecode("pathLoc");//utf-8解码
+
+            if (op == "mkpath") this.mkpath();
 
             if (string.IsNullOrEmpty(pid)) pid = string.Empty;
             if (string.IsNullOrEmpty(pidRoot)) pidRoot = pid;

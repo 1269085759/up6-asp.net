@@ -46,5 +46,27 @@ namespace up6.db.biz
 
             return path.Replace("\\","/");
         }
+
+        /// <summary>
+        /// 保留原始文件名称
+        /// 文件存在重复
+        /// 格式：
+        ///     upload/uid/年/月/日/uuid/file_name
+        /// </summary>
+        /// <param name="uid"></param>
+        /// <param name="f"></param>
+        /// <returns></returns>
+        public string genFile(string id,string nameLoc)
+        {
+            var uuid = id;//取消生成ID，使用自已的ID
+            DateTime timeCur = DateTime.Now;
+            string path = Path.Combine(this.getRoot(), timeCur.ToString("yyyy"));
+            path = Path.Combine(path, timeCur.ToString("MM"));
+            path = Path.Combine(path, timeCur.ToString("dd"));
+            path = Path.Combine(path, uuid);
+            path = Path.Combine(path, nameLoc);
+
+            return path.Replace("\\", "/");
+        }
     }
 }
