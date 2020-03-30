@@ -69,8 +69,6 @@ function FolderUploader(fdLoc, mgr)
         this.ui.btn.del.hide();
         this.fileSvr.pathSvr = fdSvr.pathSvr;
         this.update_fd();
-        this.folderInit = true;
-        this.post_fd();
     };
     this.svr_update = function ()
     {
@@ -191,6 +189,12 @@ function FolderUploader(fdLoc, mgr)
     this.update_fd = function () {
         var fd = jQuery.extend({}, { id: this.id, pathSvr: this.fileSvr.pathSvr});
         this.app.updateFolder(fd);
+    };
+    this.update_folder_complete = function (json) {
+        setTimeout(function () {
+            _this.folderInit = true;
+            _this.post_fd();
+        }, 100);
     };
     this.post_stoped = function (json)
     {
