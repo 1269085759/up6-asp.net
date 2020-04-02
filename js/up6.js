@@ -4,7 +4,7 @@
 	产品首页：http://www.ncmem.com/webapp/up6/index.aspx
 	联系信箱：1085617561@qq.com
 	联系QQ：1085617561
-    版本：2.3.102
+    版本：2.3.103
 */
 var up6_err_solve = {
     errFolderCreate: "请检查UrlFdCreate地址配置是否正确\n请检查浏览器缓存是否已更新\n请检查数据库是否创建\n请检查数据库连接配置是否正确"
