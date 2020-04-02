@@ -331,9 +331,9 @@ namespace up6.filemgr.app
             SqlExec se = new SqlExec();
             string sql = string.Format(@"select f_id,f_pid,f_pidRoot,f_pathSvr,f_pathRel 
 from up6_files 
-where f_pid='{0}' and f_pathRel='{1}' and f_id!='{2}'
+where f_pid='{0}' and f_pathRel='{1}' and f_deleted=0 and f_id!='{2}'
 union select f_id,f_pid,f_pidRoot,f_pathSvr,f_pathRel 
-    from up6_folders where f_pid='{0}' and f_pathRel='{1}' and f_id!='{2}'", pid,pathRel,id);
+    from up6_folders where f_pid='{0}' and f_pathRel='{1}' and f_deleted=0 and f_id!='{2}'", pid,pathRel,id);
             var data = (JArray)se.exec("up6_files", sql, "f_id,f_pid,f_pidRoot,f_pathSvr,f_pathRel");
             if (data.Count < 1) return null;
 
