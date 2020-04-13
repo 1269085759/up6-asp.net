@@ -51,6 +51,7 @@ namespace up6.db
             string blockMd5     = this.headString("blockMd5");//块MD5
             string complete     = this.headString("complete");//true/false
             string pathSvr      = Request.Form["pathSvr"];//
+            pathSvr = Server.UrlDecode(pathSvr);
 
             if( !this.safe_check(lenLoc,uid,f_id,blockOffset,pathSvr)) return;
 
