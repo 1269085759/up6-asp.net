@@ -85,7 +85,8 @@ namespace up6.db
             var encrypt = (bool)sec.SelectToken("$.security.encrypt");
             if (encrypt)
             {
-                fileSvr.pathSvr = CryptoTool.encode(fileSvr.pathSvr);
+                CryptoTool ct = new CryptoTool();
+                fileSvr.pathSvr = ct.encode(fileSvr.pathSvr);
             }
 
             up6_biz_event.folder_create(fileSvr);

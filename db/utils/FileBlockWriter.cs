@@ -67,5 +67,23 @@ namespace up6.db.utils
 			fs.Flush();
 			fs.Close();
 		}
+
+		/// <summary>
+		/// 续传文件
+		/// </summary>
+		/// <param name="fileRange">文件块</param>
+		/// <param name="path">远程文件完整路径。d:\www\web\upload\201204\10\md5.exe</param>
+		public void write(string path, long offset, Stream fileStm)
+		{
+			//文件已存在，写入数据
+			FileStream fs = LongPathFile.Open(path, FileMode.Open, FileAccess.Write, FileShare.Write);
+			fs.Seek(offset, SeekOrigin.Begin);
+			byte[] ByteArray = new byte[fileStm.Length];
+			fileStm.Seek(0, SeekOrigin.Begin);
+			fileStm.Read(ByteArray, 0, (int)fileStm.Length);
+			fs.Write(ByteArray, 0, (int)fileStm.Length);
+			fs.Flush();
+			fs.Close();
+		}
 	}
 }
