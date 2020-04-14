@@ -103,7 +103,7 @@ namespace up6.db.utils
             ICryptoTransform cTransform = rDel.CreateEncryptor();
             byte[] resultArray = cTransform.TransformFinalBlock(ms.ToArray(), 0, (int)ms.Length);
 
-            return Convert.ToBase64String(resultArray);
+            return Convert.ToBase64String(resultArray,Base64FormattingOptions.None);
         }
 
         public string cbc_encode(string key, string iv, string v)
