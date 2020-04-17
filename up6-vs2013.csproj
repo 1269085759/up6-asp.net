@@ -327,7 +327,6 @@
     <Content Include="js\setup.htm" />
     <Content Include="sql\spPager.sql" />
     <Content Include="sql\up6_folders.sql" />
-    <Content Include="test.aspx" />
     <Content Include="vue.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -561,13 +560,6 @@
     </Compile>
     <Compile Include="index2.aspx.designer.cs">
       <DependentUpon>index2.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="test.aspx.cs">
-      <DependentUpon>test.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="test.aspx.designer.cs">
-      <DependentUpon>test.aspx</DependentUpon>
     </Compile>
     <Compile Include="vue.aspx.cs">
       <DependentUpon>vue.aspx</DependentUpon>
