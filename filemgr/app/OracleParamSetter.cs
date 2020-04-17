@@ -8,39 +8,16 @@ using System.Web;
 
 namespace up6.filemgr.app
 {
-    public class SqlParamSetter
+    public class OracleParamSetter : SqlParamSetter
     {
-        /// <summary>
-        /// Command变量创建器
-        /// </summary>
-        public delegate void dbParamSetDelegate(DbCommand cmd, SqlParam param, JToken field);
-        protected Dictionary<string, dbParamSetDelegate> m_map;
-
-        public dbParamSetDelegate this[string index]
-        {
-            get { return this.m_map[index]; }
-        }
-
-        public void setVal(DbCommand cmd, JToken fields, SqlParam[] sp)
-        {
-            if (sp == null) return;
-            if (sp.Length < 1) return;
-            int i = 0;
-            foreach (var f in fields)
-            {
-                var type = f["type"].ToString().ToLower();
-                this.m_map[type](cmd, sp[i++],f);
-            }
-        }
-
-        public SqlParamSetter()
+        public OracleParamSetter()
         {
             //初始化mcd变量创建映射
             this.m_map = new Dictionary<string, dbParamSetDelegate>() {
                 { "string",(DbCommand cmd,SqlParam param,JToken field)=>{
                     var p = cmd.CreateParameter();
                     p.Direction = ParameterDirection.Input;
-                    p.ParameterName = "@" + param.Name;
+                    p.ParameterName = ":" + param.Name;
                     p.DbType = DbType.String;
                     p.Size = Convert.ToInt32(field["length"]);
                     p.Value = param.m_valStr;
@@ -49,7 +26,7 @@ namespace up6.filemgr.app
                 ,{ "int",(DbCommand cmd,SqlParam param,JToken field)=>{
                     var p = cmd.CreateParameter();
                     p.Direction = ParameterDirection.Input;
-                    p.ParameterName = "@" + param.Name;
+                    p.ParameterName = ":" + param.Name;
                     p.DbType = DbType.Int32;
                     p.Value = param.m_valInt;
                     cmd.Parameters.Add(p);
@@ -57,7 +34,7 @@ namespace up6.filemgr.app
                 ,{ "datetime",(DbCommand cmd,SqlParam param,JToken field)=>{
                     var p = cmd.CreateParameter();
                     p.Direction = ParameterDirection.Input;
-                    p.ParameterName = "@" + param.Name;
+                    p.ParameterName = ":" + param.Name;
                     p.DbType = DbType.DateTime;
                     p.Value = param.m_valTm;
                     cmd.Parameters.Add(p);
@@ -65,7 +42,7 @@ namespace up6.filemgr.app
                 ,{ "long",(DbCommand cmd,SqlParam param,JToken field)=>{
                     var p = cmd.CreateParameter();
                     p.Direction = ParameterDirection.Input;
-                    p.ParameterName = "@" + param.Name;
+                    p.ParameterName = ":" + param.Name;
                     p.DbType = DbType.Int64;
                     p.Value = param.m_valLong;
                     cmd.Parameters.Add(p);
@@ -73,7 +50,7 @@ namespace up6.filemgr.app
                 ,{ "smallint",(DbCommand cmd,SqlParam param,JToken field)=>{
                     var p = cmd.CreateParameter();
                     p.Direction = ParameterDirection.Input;
-                    p.ParameterName = "@" + param.Name;
+                    p.ParameterName = ":" + param.Name;
                     p.DbType = DbType.Int16;
                     p.Value = param.m_valInt;
                     cmd.Parameters.Add(p);
@@ -81,7 +58,7 @@ namespace up6.filemgr.app
                 ,{ "tinyint",(DbCommand cmd,SqlParam param,JToken field)=>{
                     var p = cmd.CreateParameter();
                     p.Direction = ParameterDirection.Input;
-                    p.ParameterName = "@" + param.Name;
+                    p.ParameterName = ":" + param.Name;
                     p.DbType = DbType.Byte;
                     p.Value = param.m_valInt;
                     cmd.Parameters.Add(p);
@@ -89,7 +66,7 @@ namespace up6.filemgr.app
                 ,{ "bool",(DbCommand cmd,SqlParam param,JToken field)=>{
                     var p = cmd.CreateParameter();
                     p.Direction = ParameterDirection.Input;
-                    p.ParameterName = "@" + param.Name;
+                    p.ParameterName = ":" + param.Name;
                     p.DbType = DbType.Boolean;
                     p.Value = param.m_valBool;
                     cmd.Parameters.Add(p);

@@ -90,12 +90,14 @@ namespace up6.filemgr
             //添加成根目录
             if (string.IsNullOrEmpty(pid))
             {
-                DBFile db = new DBFile();
+                DBConfig cfg = new DBConfig();
+                DBFile db = cfg.db();
                 db.Add(ref fileSvr);
             }//添加成子目录
             else
             {
-                SqlExec se = new SqlExec();
+                DBConfig cfg = new DBConfig();
+                SqlExec se = cfg.ec();
                 se.insert("up6_folders", new SqlParam[] {
                      new SqlParam("f_id",fileSvr.id)
                     ,new SqlParam("f_nameLoc",fileSvr.nameLoc)
@@ -204,7 +206,8 @@ namespace up6.filemgr
             fileSvr.pathSvr = fileSvr.pathSvr.Replace("\\", "/");
 
             //数据库存在相同文件
-            DBFile db = new DBFile();
+            DBConfig cfg = new DBConfig();
+            DBFile db = cfg.db();
             FileInf fileExist = new FileInf();
             if (db.exist_file(md5, ref fileExist))
             {
@@ -244,7 +247,8 @@ namespace up6.filemgr
             swm.equal("f_deleted", 0);
             if (!string.IsNullOrEmpty(pid)) swm.equal("f_pid", pid);
 
-            SqlExec se = new SqlExec();
+            DBConfig cfg = new DBConfig();
+            SqlExec se = cfg.ec();
             JArray arr = new JArray();
             var data = se.select("up6_files"
                 , "f_id,f_pid,f_pidRoot,f_nameLoc"
@@ -279,7 +283,8 @@ namespace up6.filemgr
         /// </summary>
         void load_uncomplete()
         {
-            SqlExec se = new SqlExec();
+            DBConfig cfg = new DBConfig();
+            SqlExec se = cfg.ec();
             var files = se.exec("up6_files"
                 , "select f_id ,f_nameLoc ,f_pathLoc ,f_sizeLoc ,f_lenSvr ,f_perSvr ,f_fdTask ,f_md5 from up6_files where f_complete=0 and f_deleted=0"
                 , "f_id,f_nameLoc,f_pathLoc,f_sizeLoc,f_lenSvr,f_perSvr,f_fdTask,f_md5"
@@ -290,7 +295,8 @@ namespace up6.filemgr
         void load_uncmp_down()
         {
             string uid = Request.QueryString["uid"];
-            SqlExec se = new SqlExec();
+            DBConfig cfg = new DBConfig();
+            SqlExec se = cfg.ec();
             var files = se.select("down_files"
                 , "f_id,f_nameLoc,f_pathLoc,f_perLoc,f_sizeSvr,f_fdTask"
                 , new SqlParam[] { new SqlParam("f_uid", int.Parse(uid)) });
@@ -313,7 +319,8 @@ namespace up6.filemgr
                 return;
             }
 
-            SqlExec se = new SqlExec();
+            DBConfig cfg = new DBConfig();
+            SqlExec se = cfg.ec();
 
             //根目录
             if (string.IsNullOrEmpty(pid))
@@ -367,7 +374,8 @@ namespace up6.filemgr
             bool exist = false;
             var o = this.request_to_json();
 
-            SqlExec se = new SqlExec();
+            DBConfig cfg = new DBConfig();
+            SqlExec se = cfg.ec();
             bool fdTask = o["f_fdTask"].ToString() == "true";
             //根目录
             if (string.IsNullOrEmpty(o["f_pid"].ToString())) fdTask = false;
@@ -457,7 +465,8 @@ namespace up6.filemgr
         /// </summary>
         /// <param name=""></param>
         void folder_renamed(string pathRelOld,string pathRelNew) {
-            SqlExec se = new SqlExec();
+            DBConfig cfg = new DBConfig();
+            SqlExec se = cfg.ec();
             string sql = string.Format("update up6_files set f_pathRel=REPLACE(f_pathRel,'{0}/','{1}/') where CHARINDEX('{0}/',f_pathRel)>0",
                 pathRelOld,
                 pathRelNew
@@ -479,7 +488,8 @@ namespace up6.filemgr
         {
             var id = Request.QueryString["id"];
 
-            SqlExec se = new SqlExec();
+            DBConfig cfg = new DBConfig();
+            SqlExec se = cfg.ec();
             se.update("up6_folders"
                 , new SqlParam[] { new SqlParam("f_deleted", true) }
                 , new SqlParam[] {
@@ -512,7 +522,8 @@ namespace up6.filemgr
             par = Server.UrlDecode(par);
             var obj = JToken.Parse(par);
 
-            SqlExec se = new SqlExec();
+            DBConfig cfg = new DBConfig();
+            SqlExec se = cfg.ec();
 
             //更新文件
             se.exec_batch("up6_files"
@@ -537,13 +548,13 @@ namespace up6.filemgr
         /// <param name="toParam">注册到变量？</param>
         void load_data(bool toParam)
         {
+            var pid = Request.QueryString["pid"];
             SqlWhereMerge swm = new SqlWhereMerge();
-            swm.req_equal("f_pid", "pid", false);
+            if (!string.IsNullOrEmpty(pid)) swm.equal("f_pid", pid);
             swm.equal("f_complete", 1);
             swm.equal("f_deleted", 0);
             swm.equal("f_uid", this.reqToInt("uid"));
 
-            var pid = Request.QueryString["pid"];
             bool isRoot = string.IsNullOrEmpty(pid);
             if (isRoot) swm.equal("f_fdChild", 0);
             else swm.equal("f_fdChild", 1);
@@ -551,8 +562,10 @@ namespace up6.filemgr
             swm.req_like("f_nameLoc", "key");
             string where = swm.to_sql();
 
+            DBConfig cfg = new DBConfig();
+            DbBase bs = cfg.bs();
             //文件表
-            var files = (JArray)DbBase.page2("up6_files"
+            var files = (JArray)bs.page2("up6_files"
                 , "f_id"
                 , "f_id,f_pid,f_nameLoc,f_sizeLoc,f_lenLoc,f_time,f_pidRoot,f_fdTask,f_pathSvr,f_pathRel"
                 , where
@@ -565,7 +578,7 @@ namespace up6.filemgr
                 //目录表
                 swm.del("f_fdChild");
                 where = swm.to_sql();
-                folders = (JArray)DbBase.page2("up6_folders"
+                folders = (JArray)bs.page2("up6_folders"
                     , "f_id"
                     , "f_id,f_nameLoc,f_pid,f_sizeLoc,f_time,f_pidRoot,f_pathRel"
                     , where
@@ -580,7 +593,7 @@ namespace up6.filemgr
             }
             foreach (var f in files) folders.Add(f);
 
-            int count = DbBase.count("up6_files", "f_id", where);
+            int count = bs.count("up6_files", "f_id", where);
 
             JObject o = new JObject();
             o["count"] = count;
@@ -605,8 +618,10 @@ namespace up6.filemgr
 
             string where = ssc.union(swm);
 
+            DBConfig cfg = new DBConfig();
+            DbBase bs = cfg.bs();
             //文件表
-            var files = (JArray)DbBase.page2("up6_files"
+            var files = (JArray)bs.page2("up6_files"
                 , "f_id"
                 , "f_id,f_pid,f_nameLoc,f_sizeLoc,f_time,f_pidRoot,f_fdTask"
                 , where
@@ -618,7 +633,7 @@ namespace up6.filemgr
                 swm.del("f_pid");
                 where = swm.to_sql();
             }
-            var folders = (JArray)DbBase.page2("up6_folders"
+            var folders = (JArray)bs.page2("up6_folders"
                 , "f_id"
                 , "f_id,f_nameLoc,f_pid,f_pidRoot,f_time"
                 , where
@@ -638,7 +653,7 @@ namespace up6.filemgr
                 });
             }
 
-            int count = DbBase.count("up6_files", "f_id", where);
+            int count = bs.count("up6_files", "f_id", where);
 
             JObject o = new JObject();
             o["count"] = count;

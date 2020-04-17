@@ -28,7 +28,8 @@ namespace up6.db
             }//参数不为空
             else
             {
-                DBFile db = new DBFile();
+                DBConfig cfg = new DBConfig();
+                DBFile db = cfg.db();
                 db.complete(id);
 
                 //覆盖同名文件-更新同名文件状态

@@ -20,7 +20,6 @@ namespace up6.db
             }//参数不为空
             else
             {
-                DBFile db = new DBFile();
                 DBFolder.Remove(fid, int.Parse(uid));
                 ret = 1;
             }

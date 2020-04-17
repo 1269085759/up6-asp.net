@@ -49,12 +49,12 @@ namespace up6.filemgr.app
     /// </summary>
     public class SqlExec
     {
-        JToken m_table;
+        protected JToken m_table;
 
-        SqlParamCreater m_pc;
-        SqlParValSetter m_pvSetter;
-        SqlParamSetter m_parSetter;
-        SqlCmdReader m_cmdRd;
+        protected SqlParamCreater m_pc;
+        protected SqlParValSetter m_pvSetter;
+        protected SqlParamSetter m_parSetter;
+        protected SqlCmdReader m_cmdRd;
 
         public SqlExec()
         {
@@ -79,7 +79,7 @@ namespace up6.filemgr.app
         /// <param name="fields"></param>
         /// <param name="where"></param>
         /// <param name="o"></param>
-        public void exec(string table, string sql, string fields, string where, JObject o)
+        public virtual void exec(string table, string sql, string fields, string where, JObject o)
         {
             //加载结构
             this.m_table = this.table(table);
@@ -109,7 +109,7 @@ namespace up6.filemgr.app
         /// <param name="fields">字段名称</param>
         /// <param name="newNames">重新命名的字段名称</param>
         /// <returns></returns>
-        public JToken exec(string table, string sql, string fields, string newNames = "")
+        public virtual JToken exec(string table, string sql, string fields, string newNames = "")
         {
             //加载结构
             this.m_table = this.table(table);
@@ -151,7 +151,7 @@ namespace up6.filemgr.app
         /// <param name="fields"></param>
         /// <param name="where"></param>
         /// <param name="values">字段值列表</param>
-        public void exec_batch(string table, string sql, string fields, string where, JToken values)
+        public virtual void exec_batch(string table, string sql, string fields, string where, JToken values)
         {
             //加载结构
             this.m_table = this.table(table);
@@ -186,7 +186,7 @@ namespace up6.filemgr.app
         /// <param name="table"></param>
         /// <param name="fields"></param>
         /// <param name="o">json字段名称必须和fields对应</param>
-        public int insert(string table, string fields, JObject o)
+        public virtual void insert(string table, string fields, JObject o)
         {
             //加载结构
             this.m_table = this.table(table);
@@ -208,7 +208,7 @@ namespace up6.filemgr.app
             var cmd = db.GetCommand(sql);
             this.m_pvSetter.setVal(cmd, field_sel, o);
             var id = db.ExecuteScalar(cmd);
-            return Convert.ToInt32(id);
+            //return Convert.ToInt32(id);
         }
 
         /// <summary>
@@ -216,7 +216,7 @@ namespace up6.filemgr.app
         /// </summary>
         /// <param name="table">表名</param>
         /// <param name="pars">字段键值对</param>
-        public int insert(string table, SqlParam[] pars)
+        public virtual void insert(string table, SqlParam[] pars)
         {
             //加载结构
             this.m_table = this.table(table);
@@ -239,10 +239,10 @@ namespace up6.filemgr.app
             var cmd = db.GetCommand(sql);
             this.m_parSetter.setVal(cmd, field_sel, pars);
             var id = db.ExecuteScalar(cmd);
-            return Convert.ToInt32(id);
+            //return Convert.ToInt32(id);
         }
 
-        public JObject read(string table, string fields, SqlParam[] where)
+        public virtual JObject read(string table, string fields, SqlParam[] where)
         {
             //加载结构
             this.m_table = this.table(table);
@@ -270,7 +270,7 @@ namespace up6.filemgr.app
             return o;
         }
 
-        public JObject read(string table, string fields, string where)
+        public virtual JObject read(string table, string fields, string where)
         {
             //加载结构
             this.m_table = this.table(table);
@@ -297,7 +297,7 @@ namespace up6.filemgr.app
             return o;
         }
 
-        public void update(string table, SqlParam[] fields, SqlParam[] where, string predicate = "and")
+        public virtual void update(string table, SqlParam[] fields, SqlParam[] where, string predicate = "and")
         {
             //加载结构
             this.m_table = this.table(table);
@@ -318,7 +318,7 @@ namespace up6.filemgr.app
             db.ExecuteNonQuery(cmd);
         }
 
-        public void update(string table, string fields, string where, JObject obj)
+        public virtual void update(string table, string fields, string where, JObject obj)
         {
             //加载结构
             this.m_table = this.table(table);
@@ -347,7 +347,7 @@ namespace up6.filemgr.app
         /// <param name="ws">条件</param>
         /// <param name="values">值，[{id:1},{id,2}]</param>
         /// <param name="predicate"></param>
-        public void update_batch(string table, string fields, SqlParam[] ws, JToken values, string predicate = "and")
+        public virtual void update_batch(string table, string fields, SqlParam[] ws, JToken values, string predicate = "and")
         {
             //加载结构
             this.m_table = this.table(table);
@@ -386,7 +386,7 @@ namespace up6.filemgr.app
         /// </summary>
         /// <param name="fields">字段列表</param>
         /// <returns></returns>
-        string toSqlSeter(string fields)
+        public virtual string toSqlSeter(string fields)
         {
             var lst = fields.Split(',').ToList();
             var arr = from t in lst
@@ -400,7 +400,7 @@ namespace up6.filemgr.app
         /// <param name="table"></param>
         /// <param name="where"></param>
         /// <param name="predicate">连接词：and,or</param>
-        public void delete(string table, SqlParam[] where, string predicate = "and")
+        public virtual void delete(string table, SqlParam[] where, string predicate = "and")
         {
             //加载结构
             this.m_table = this.table(table);
@@ -437,7 +437,7 @@ namespace up6.filemgr.app
         /// <param name="ws">条件</param>
         /// <param name="values">值，[{id:1},{id,2}]</param>
         /// <param name="predicate"></param>
-        public void delete_batch(string table, SqlParam[] ws, JToken values, string predicate = "and")
+        public virtual void delete_batch(string table, SqlParam[] ws, JToken values, string predicate = "and")
         {
             //加载结构
             this.m_table = this.table(table);
@@ -466,7 +466,7 @@ namespace up6.filemgr.app
             cmd.Connection.Close();
         }
 
-        public int count(string table, SqlParam[] where)
+        public virtual int count(string table, SqlParam[] where)
         {
             this.m_table = this.table(table);
             var field_all = this.m_table.SelectToken("fields");
@@ -490,7 +490,7 @@ namespace up6.filemgr.app
         /// </summary>
         /// <param name="ps"></param>
         /// <returns></returns>
-        public string toSqlFields(SqlParam[] ps)
+        public virtual string toSqlFields(SqlParam[] ps)
         {
             var arr = from t in ps
                       select string.Format("[{0}]", t.Name);
@@ -504,7 +504,7 @@ namespace up6.filemgr.app
         /// <param name="o"></param>
         /// <param name="field">JSON中的字段名称</param>
         /// <returns></returns>
-        public string selFieldNames(JToken o, string field = "name")
+        public virtual string selFieldNames(JToken o, string field = "name")
         {
             var arr = from t in o
                       select string.Format("[{0}]", t[field]);
@@ -518,7 +518,7 @@ namespace up6.filemgr.app
         /// </summary>
         /// <param name="ps"></param>
         /// <returns></returns>
-        public string toSqlParam(SqlParam[] ps)
+        public virtual string toSqlParam(SqlParam[] ps)
         {
             var names = from t in ps
                         select "@" + t.Name;
@@ -532,7 +532,7 @@ namespace up6.filemgr.app
         /// </summary>
         /// <param name="ps"></param>
         /// <returns></returns>
-        public string toSqlParam(string fields)
+        public virtual string toSqlParam(string fields)
         {
             var arr = fields.Split(',').ToList();
             var names = from a in arr
@@ -548,7 +548,7 @@ namespace up6.filemgr.app
         /// <param name="ps"></param>
         /// <param name="p">谓词</param>
         /// <returns></returns>
-        public string toSqlCondition(SqlParam[] ps, string pre = ",")
+        public virtual string toSqlCondition(SqlParam[] ps, string pre = ",")
         {
             if (ps == null) return "1=1";
 
@@ -566,7 +566,7 @@ namespace up6.filemgr.app
         /// <param name="where"></param>
         /// <param name="sort">排序。示例：time desc</param>
         /// <returns></returns>
-        public JToken select(string table, string fields, SqlParam[] where, string sort = "")
+        public virtual JToken select(string table, string fields, SqlParam[] where, string sort = "")
         {
             //加载结构
             this.m_table = this.table(table);
@@ -613,7 +613,7 @@ namespace up6.filemgr.app
         /// <param name="where"></param>
         /// <param name="sort">排序。示例：time desc</param>
         /// <returns></returns>
-        public JToken select(string table, string fields, string where, string sort = "")
+        public virtual JToken select(string table, string fields, string where, string sort = "")
         {
             //加载结构
             this.m_table = this.table(table);
@@ -647,7 +647,7 @@ namespace up6.filemgr.app
             return JToken.FromObject(a);
         }
 
-        public JToken selectUnion(string[] tables, string fields, string where)
+        public virtual JToken selectUnion(string[] tables, string fields, string where)
         {
             this.m_table = this.table(tables[0]);
             var field_all = this.m_table.SelectToken("fields");
@@ -675,7 +675,7 @@ namespace up6.filemgr.app
             return JToken.FromObject(arr);
         }
 
-        public JToken selectUnion(string[] tables, string fields, SqlParam[] where)
+        public virtual JToken selectUnion(string[] tables, string fields, SqlParam[] where)
         {
             this.m_table = this.table(tables[0]);
             var field_all = this.m_table.SelectToken("fields");
@@ -711,7 +711,7 @@ namespace up6.filemgr.app
         /// <param name="names">字段名称列表</param>
         /// <param name="field_all"></param>
         /// <returns></returns>
-        JToken selFields(string names, JToken field_all)
+        protected JToken selFields(string names, JToken field_all)
         {
             if (names == "*") return field_all;
 
@@ -721,7 +721,7 @@ namespace up6.filemgr.app
                        select f;
             return JToken.FromObject(data);
         }
-        JToken selFields(SqlParam[] sp, JToken field_all)
+        protected JToken selFields(SqlParam[] sp, JToken field_all)
         {
             if (sp.Length < 1) return null;
             var data = from n in sp

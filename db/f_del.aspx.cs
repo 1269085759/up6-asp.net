@@ -21,7 +21,8 @@ namespace up6.db
             }//参数不为空
             else
             {
-                DBFile db = new DBFile();
+                DBConfig cfg = new DBConfig();
+                DBFile db = cfg.db();
                 db.Delete(Convert.ToInt32(uid), fid);
                 up6_biz_event.file_del(fid,Convert.ToInt32(uid));
                 ret = 1;

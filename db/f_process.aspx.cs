@@ -24,7 +24,8 @@ namespace up6.db
                 && !string.IsNullOrEmpty(lenSvr)
                 && !string.IsNullOrEmpty(perSvr))
             {
-                DBFile db = new DBFile();
+                DBConfig cfg = new DBConfig();
+                DBFile db = cfg.db();
                 db.f_process(int.Parse(uid), id, long.Parse(offset), long.Parse(lenSvr), perSvr);
                 up6_biz_event.file_post_process(id);
                 json = callback + "({\"state\":1})";//返回jsonp格式数据。

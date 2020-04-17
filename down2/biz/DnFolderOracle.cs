@@ -8,15 +8,12 @@ using up6.filemgr.app;
 
 namespace up6.down2.biz
 {
-    public class DnFolder
+    public class DnFolderOracle : DnFolder
     {
-        /// <summary>
-        /// 清空数据库
-        /// </summary>
-        public virtual void Clear()
+        public override void Clear()
         {
             DbHelper db = new DbHelper();
-            DbCommand cmd = db.GetCommand("delete from down_folders");
+            DbCommand cmd = db.GetCommand("TRUNCATE TABLE down_folders");
             db.ExecuteNonQuery(ref cmd);
         }
 
@@ -25,9 +22,10 @@ namespace up6.down2.biz
         /// </summary>
         /// <param name="id">文件夹id</param>
         /// <returns></returns>
-        public virtual string files(string id)
+        public override string files(string id)
         {
-            var se = new SqlExec();
+            DBConfig cfg = new DBConfig();
+            SqlExec se = cfg.ec();
             var fd = se.read("up6_folders", "f_pidRoot", new SqlParam[] { new SqlParam("f_id", id) });
             string pidRoot = string.Empty;
             //子目录表中不存在，表示当前目录是根目录
@@ -37,22 +35,8 @@ namespace up6.down2.biz
                 //子目录表中存在，表示当前目录是子目录
                 pidRoot = fd["f_pidRoot"].ToString().Trim();
             }
-            
-            return this.filesChild(id,pidRoot);
-        }
 
-        /// <summary>
-        /// 取子目录所有文件
-        /// </summary>
-        /// <returns></returns>
-        public string filesChild(string id,string pidRoot)
-        {
-            //构建子目录路径
-            PathRelBuilder prb = new PathRelBuilder();
-            var fs = prb.build(id,pidRoot);
-            
-
-            return JsonConvert.SerializeObject(fs);
+            return this.filesChild(id, pidRoot);
         }
     }
 }

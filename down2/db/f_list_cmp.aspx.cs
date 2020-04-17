@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Web;
+using up6.db.database;
 using up6.down2.biz;
 
 namespace up6.down2.db
@@ -23,7 +24,8 @@ namespace up6.down2.db
 
             if (!string.IsNullOrEmpty(uid))
             {
-                DnFile db = new DnFile();
+                DBConfig cfg = new DBConfig();
+                DnFile db = cfg.dn();
                 string json = db.all_complete(int.Parse(uid));
                 if (!string.IsNullOrEmpty(json))
                 {

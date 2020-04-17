@@ -97,7 +97,8 @@ namespace up6.db
             fileSvr.pathSvr = fileSvr.pathSvr.Replace("\\","/");
 
             //数据库存在相同文件
-            DBFile db = new DBFile();
+            DBConfig cfg = new DBConfig();
+            DBFile db = cfg.db();
             FileInf fileExist = new FileInf();
             if (db.exist_file(md5, ref fileExist))
             {

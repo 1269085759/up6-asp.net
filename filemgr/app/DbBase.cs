@@ -27,16 +27,16 @@ namespace up6.filemgr.app
             return r;
         }
 
-        public static JToken page2(string table, string primaryKey, string fields, string where = "", string sort = "")
+        public virtual JToken page2(string table, string primaryKey, string fields, string where = "", string sort = "")
         {
             var pageSize = HttpContext.Current.Request.QueryString["limit"];
             var pageIndex = HttpContext.Current.Request.QueryString["page"];
             if (string.IsNullOrEmpty(pageSize)) pageSize = "20";
             if (string.IsNullOrEmpty(pageIndex)) pageIndex = "1";
-            return page2(table, primaryKey, fields, int.Parse(pageSize), int.Parse(pageIndex), where, sort);
+            return this.page2(table, primaryKey, fields, int.Parse(pageSize), int.Parse(pageIndex), where, sort);
         }
 
-        public static JToken page2(string table, string primaryKey, string fields, int pageSize, int pageIndex, string where = "", string sort = "")
+        public virtual JToken page2(string table, string primaryKey, string fields, int pageSize, int pageIndex, string where = "", string sort = "")
         {
             ConfigReader cr = new ConfigReader();
             var database = cr.module(string.Format("database.{0}",table));
@@ -96,14 +96,14 @@ namespace up6.filemgr.app
         /// <param name="where"></param>
         /// <param name="sort"></param>
         /// <returns></returns>
-        public static JToken page_to_layer_table(string table, string primaryKey, string fields, string where = "", string sort = "")
+        public JToken page_to_layer_table(string table, string primaryKey, string fields, string where = "", string sort = "")
         {
             var pageSize = HttpContext.Current.Request.QueryString["limit"];
             var pageIndex = HttpContext.Current.Request.QueryString["page"];
             if (string.IsNullOrEmpty(pageSize)) pageSize = "20";
             if (string.IsNullOrEmpty(pageIndex)) pageIndex = "1";
-            var data = page2(table, primaryKey, fields, int.Parse(pageSize), int.Parse(pageIndex), where, sort);
-            int count = DbBase.count(table, primaryKey, where);
+            var data = this.page2(table, primaryKey, fields, int.Parse(pageSize), int.Parse(pageIndex), where, sort);
+            int count = this.count(table, primaryKey, where);
 
             JObject o = new JObject();
             o["count"] = count;
@@ -121,7 +121,7 @@ namespace up6.filemgr.app
         /// <param name="primaryKey"></param>
         /// <param name="where">name=1</param>
         /// <returns></returns>
-        public static int count(string table ,string primaryKey,string where="")
+        public virtual int count(string table ,string primaryKey,string where="")
         {
             DbHelper db = new DbHelper();
             var cmd = db.GetCommandStored("spPager");
@@ -137,7 +137,7 @@ namespace up6.filemgr.app
             return Convert.ToInt32(obj);
         }
 
-        public static bool exist(string un)
+        public virtual bool exist(string un)
         {
             DbHelper db = new DbHelper();
             var cmd = db.GetCommand("select id from users where name=@name");
@@ -146,7 +146,7 @@ namespace up6.filemgr.app
             return Convert.ToInt32(obj) != 0;
         }
 
-        public static bool exist_email(string email)
+        public virtual bool exist_email(string email)
         {
             DbHelper db = new DbHelper();
             var cmd = db.GetCommand("select id from users where email=@email");

@@ -2,6 +2,7 @@
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
+using System.Data.OracleClient;
 using up6.filemgr.app;
 
 namespace up6.db.database
@@ -68,15 +69,29 @@ namespace up6.db.database
         public static string GetConStr()
         {
             ConfigReader cr = new ConfigReader();
-            var constr = cr.m_files.SelectToken("$.database.connection.addr").ToString();
+            DBConfig cfg = new DBConfig();
+            var constr = cr.m_files.SelectToken("$.database.connection.sql.addr").ToString();
+            if(string.Compare(cfg.m_db,"oracle") == 0) constr = cr.m_files.SelectToken("$.database.connection.oracle.addr").ToString();
             return constr;
         }
 
         public static string GetProvider()
         {
             ConfigReader cr = new ConfigReader();
-            var constr = cr.m_files.SelectToken("$.database.connection.provider").ToString();
+            DBConfig cfg = new DBConfig();
+            var constr = cr.m_files.SelectToken("$.database.connection.sql.provider").ToString();
+            if(string.Compare(cfg.m_db,"oracle") == 0) constr = cr.m_files.SelectToken("$.database.connection.oracle.provider").ToString();
             return constr;
+        }
+
+        public bool isOracle()
+        {
+            return string.Compare(GetProvider(), "System.Data.OracleClient") == 0;
+        }
+
+        public bool isSql()
+        {
+            return string.Compare(GetProvider(), "System.Data.SqlClient") == 0;
         }
 
         public DbHelper()
@@ -91,8 +106,8 @@ namespace up6.db.database
 
         public static DbConnection CreateConnection()
         {
-            //DbProviderFactory dbfactory = DbProviderFactories.GetFactory(DbHelper.GetProvider());
-            DbConnection con = SqlClientFactory.Instance.CreateConnection();
+            DbProviderFactory dbfactory = DbProviderFactories.GetFactory(DbHelper.GetProvider());
+            DbConnection con = dbfactory.CreateConnection();
             con.ConnectionString = GetConStr();
 
             return con;
@@ -100,8 +115,8 @@ namespace up6.db.database
 
         public static DbConnection CreateConnection(string connectionString)
         {
-            //DbProviderFactory dbfactory = DbProviderFactories.GetFactory(DbHelper.GetProvider());
-            DbConnection con = SqlClientFactory.Instance.CreateConnection();
+            DbProviderFactory dbfactory = DbProviderFactories.GetFactory(DbHelper.GetProvider());
+            DbConnection con = dbfactory.CreateConnection();
             con.ConnectionString = GetConStr();
             return con;
         }
