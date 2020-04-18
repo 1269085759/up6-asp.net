@@ -49,7 +49,7 @@ namespace up6.filemgr.app
             string sql = string.Format("select f_id,f_nameLoc,f_pid,f_pidRoot from up6_folders where f_pidRoot='{0}'", pidRoot);
 
             DBConfig cfg = new DBConfig();
-            SqlExec se = cfg.ec();
+            SqlExec se = cfg.se();
             var folders = se.exec("up6_folders", sql, "f_id,f_nameLoc,f_pid,f_pidRoot");
             return this.toDic(ref folders);
         }
@@ -86,7 +86,7 @@ namespace up6.filemgr.app
         string[] all_files(string id)
         {
             DBConfig cfg = new DBConfig();
-            SqlExec se = cfg.ec();
+            SqlExec se = cfg.se();
             var obj = se.read("up6_folders", "f_id,f_pid,f_pidRoot", new SqlParam[] {
                 new SqlParam("f_id",id)
             });
@@ -108,7 +108,7 @@ namespace up6.filemgr.app
         string[] all_folders(string id)
         {
             DBConfig cfg = new DBConfig();
-            SqlExec se = cfg.ec();
+            SqlExec se = cfg.se();
             var obj = se.read("up6_folders", "f_id,f_pid,f_pidRoot", new SqlParam[] {
                 new SqlParam("f_id",id)
             });
@@ -160,7 +160,7 @@ namespace up6.filemgr.app
 
             //当前目录是子目录
             DBConfig cfg = new DBConfig();
-            SqlExec se = cfg.ec();
+            SqlExec se = cfg.se();
             var data = (JArray)se.selectUnion(new string[] { "up6_files", "up6_folders" }, "f_pidRoot"
                 , new SqlParam[] { new SqlParam("f_id", id) });
             if (data.Count > 0) pidRoot = data[0]["f_pidRoot"].ToString().Trim();
@@ -196,7 +196,7 @@ namespace up6.filemgr.app
         {
             //查询文件表目录数据
             DBConfig cfg = new DBConfig();
-            SqlExec se = cfg.ec();
+            SqlExec se = cfg.se();
             var files = se.select("up6_files", "f_id,f_pid,f_nameLoc,f_pathRel", 
                 new SqlParam[] { new SqlParam("f_fdTask", true) });
             var folders = se.select("up6_folders", "f_id,f_pid,f_nameLoc,f_pathRel",new SqlParam[] { });
@@ -235,7 +235,7 @@ namespace up6.filemgr.app
         {
 
             DBConfig cfg = new DBConfig();
-            SqlExec se = cfg.ec();
+            SqlExec se = cfg.se();
 
             var folders = se.select("up6_folders", "f_id,f_pid", string.Empty);
 
@@ -288,7 +288,7 @@ namespace up6.filemgr.app
             string sql = string.Format("select f_id from up6_files where {0} ", swm.to_sql());
 
             DBConfig cfg = new DBConfig();
-            SqlExec se = cfg.ec();
+            SqlExec se = cfg.se();
             var arr = (JArray)se.exec("up6_files", sql, "f_id", string.Empty);
             return arr.Count > 0;
         }
@@ -304,7 +304,7 @@ namespace up6.filemgr.app
                                         " union select f_id from up6_folders where {0}", swm.to_sql());
 
             DBConfig cfg = new DBConfig();
-            SqlExec se = cfg.ec();
+            SqlExec se = cfg.se();
             var fid = (JArray)se.exec("up6_files", sql, "f_id", string.Empty);
             return fid.Count > 0;
         }
@@ -316,7 +316,7 @@ namespace up6.filemgr.app
         /// <returns></returns>
         public FileInf read(string id) {
             DBConfig cfg = new DBConfig();
-            SqlExec se = cfg.ec();
+            SqlExec se = cfg.se();
             string sql = string.Format("select f_pid,f_pidRoot,f_pathSvr,f_pathRel from up6_files where f_id='{0}' union select f_pid,f_pidRoot,f_pathSvr,f_pathRel from up6_folders where f_id='{0}'", id);
             var data = (JArray)se.exec("up6_files", sql, "f_pid,f_pidRoot,f_pathSvr,f_pathRel");
             var o = JObject.FromObject(data[0]);
@@ -339,7 +339,7 @@ namespace up6.filemgr.app
         public FileInf read(string pathRel, string pid,string id)
         {
             DBConfig cfg = new DBConfig();
-            SqlExec se = cfg.ec();
+            SqlExec se = cfg.se();
             string sql = string.Format(@"select f_id,f_pid,f_pidRoot,f_pathSvr,f_pathRel 
 from up6_files 
 where f_pid='{0}' and f_pathRel='{1}' and f_deleted=0 and f_id!='{2}'
@@ -368,7 +368,7 @@ union select f_id,f_pid,f_pidRoot,f_pathSvr,f_pathRel
         public bool rename_file_check(string newName,string pid)
         {
             DBConfig cfg = new DBConfig();
-            SqlExec se = cfg.ec();
+            SqlExec se = cfg.se();
             var res = (JArray)se.select("up6_files"
                 , "f_id"
                 ,new SqlParam[] {
@@ -387,7 +387,7 @@ union select f_id,f_pid,f_pidRoot,f_pathSvr,f_pathRel
         public bool rename_folder_check(string newName, string pid)
         {
             DBConfig cfg = new DBConfig();
-            SqlExec se = cfg.ec();
+            SqlExec se = cfg.se();
             var res = (JArray)se.select("up6_folders"
                 , "f_id"
                 , new SqlParam[] {
@@ -399,14 +399,14 @@ union select f_id,f_pid,f_pidRoot,f_pathSvr,f_pathRel
 
         public void rename_file(string name,string id) {
             DBConfig cfg = new DBConfig();
-            SqlExec se = cfg.ec();
+            SqlExec se = cfg.se();
             se.update("up6_files"
                 , new SqlParam[] { new SqlParam("f_nameLoc", name) }
                 , new SqlParam[] { new SqlParam("f_id", id) });
         }
         public void rename_folder(string name, string id, string pid) {
             DBConfig cfg = new DBConfig();
-            SqlExec se = cfg.ec();
+            SqlExec se = cfg.se();
             se.update("up6_folders"
                 , new SqlParam[] { new SqlParam("f_nameLoc", name) }
                 , new SqlParam[] { new SqlParam("f_id", id) });

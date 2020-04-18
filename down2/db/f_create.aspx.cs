@@ -40,7 +40,7 @@ namespace up6.down2.db
             inf.sizeSvr = sizeSvr;
             inf.fdTask = fdTask == "1";
             DBConfig cfg = new DBConfig();
-            DnFile db = cfg.dn();
+            DnFile db = cfg.downF();
             db.Add(ref inf);
 
             string json = JsonConvert.SerializeObject(inf);

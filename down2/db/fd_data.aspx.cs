@@ -19,7 +19,7 @@ namespace up6.down2.db
             if (!string.IsNullOrEmpty(id))
             {
                 DBConfig cfg = new DBConfig();
-                DnFolder df = cfg.dnf();
+                DnFolder df = cfg.downFd();
                 string data = HttpUtility.UrlEncode(df.files(id));
                 data = data.Replace("+", "%20");
 

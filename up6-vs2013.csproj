@@ -351,6 +351,7 @@
     <Compile Include="db\database\DBFileOracle.cs" />
     <Compile Include="db\database\DBFileSQL.cs" />
     <Compile Include="db\database\DBFolder.cs" />
+    <Compile Include="db\database\DBFolderOracle.cs" />
     <Compile Include="db\database\DbHelper.cs" />
     <Compile Include="db\fd_complete.aspx.cs">
       <DependentUpon>fd_complete.aspx</DependentUpon>

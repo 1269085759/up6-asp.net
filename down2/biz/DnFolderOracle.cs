@@ -25,7 +25,7 @@ namespace up6.down2.biz
         public override string files(string id)
         {
             DBConfig cfg = new DBConfig();
-            SqlExec se = cfg.ec();
+            SqlExec se = cfg.se();
             var fd = se.read("up6_folders", "f_pidRoot", new SqlParam[] { new SqlParam("f_id", id) });
             string pidRoot = string.Empty;
             //子目录表中不存在，表示当前目录是根目录

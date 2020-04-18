@@ -97,7 +97,7 @@ namespace up6.filemgr
             else
             {
                 DBConfig cfg = new DBConfig();
-                SqlExec se = cfg.ec();
+                SqlExec se = cfg.se();
                 se.insert("up6_folders", new SqlParam[] {
                      new SqlParam("f_id",fileSvr.id)
                     ,new SqlParam("f_nameLoc",fileSvr.nameLoc)
@@ -248,7 +248,7 @@ namespace up6.filemgr
             if (!string.IsNullOrEmpty(pid)) swm.equal("f_pid", pid);
 
             DBConfig cfg = new DBConfig();
-            SqlExec se = cfg.ec();
+            SqlExec se = cfg.se();
             JArray arr = new JArray();
             var data = se.select("up6_files"
                 , "f_id,f_pid,f_pidRoot,f_nameLoc"
@@ -284,7 +284,7 @@ namespace up6.filemgr
         void load_uncomplete()
         {
             DBConfig cfg = new DBConfig();
-            SqlExec se = cfg.ec();
+            SqlExec se = cfg.se();
             var files = se.exec("up6_files"
                 , "select f_id ,f_nameLoc ,f_pathLoc ,f_sizeLoc ,f_lenSvr ,f_perSvr ,f_fdTask ,f_md5 from up6_files where f_complete=0 and f_deleted=0"
                 , "f_id,f_nameLoc,f_pathLoc,f_sizeLoc,f_lenSvr,f_perSvr,f_fdTask,f_md5"
@@ -296,7 +296,7 @@ namespace up6.filemgr
         {
             string uid = Request.QueryString["uid"];
             DBConfig cfg = new DBConfig();
-            SqlExec se = cfg.ec();
+            SqlExec se = cfg.se();
             var files = se.select("down_files"
                 , "f_id,f_nameLoc,f_pathLoc,f_perLoc,f_sizeSvr,f_fdTask"
                 , new SqlParam[] { new SqlParam("f_uid", int.Parse(uid)) });
@@ -320,7 +320,7 @@ namespace up6.filemgr
             }
 
             DBConfig cfg = new DBConfig();
-            SqlExec se = cfg.ec();
+            SqlExec se = cfg.se();
 
             //根目录
             if (string.IsNullOrEmpty(pid))
@@ -375,7 +375,7 @@ namespace up6.filemgr
             var o = this.request_to_json();
 
             DBConfig cfg = new DBConfig();
-            SqlExec se = cfg.ec();
+            SqlExec se = cfg.se();
             bool fdTask = o["f_fdTask"].ToString() == "true";
             //根目录
             if (string.IsNullOrEmpty(o["f_pid"].ToString())) fdTask = false;
@@ -466,7 +466,7 @@ namespace up6.filemgr
         /// <param name=""></param>
         void folder_renamed(string pathRelOld,string pathRelNew) {
             DBConfig cfg = new DBConfig();
-            SqlExec se = cfg.ec();
+            SqlExec se = cfg.se();
             string sql = string.Format("update up6_files set f_pathRel=REPLACE(f_pathRel,'{0}/','{1}/') where CHARINDEX('{0}/',f_pathRel)>0",
                 pathRelOld,
                 pathRelNew
@@ -489,7 +489,7 @@ namespace up6.filemgr
             var id = Request.QueryString["id"];
 
             DBConfig cfg = new DBConfig();
-            SqlExec se = cfg.ec();
+            SqlExec se = cfg.se();
             se.update("up6_folders"
                 , new SqlParam[] { new SqlParam("f_deleted", true) }
                 , new SqlParam[] {
@@ -523,7 +523,7 @@ namespace up6.filemgr
             var obj = JToken.Parse(par);
 
             DBConfig cfg = new DBConfig();
-            SqlExec se = cfg.ec();
+            SqlExec se = cfg.se();
 
             //更新文件
             se.exec_batch("up6_files"

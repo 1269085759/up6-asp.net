@@ -69,18 +69,16 @@ namespace up6.db.database
         public static string GetConStr()
         {
             ConfigReader cr = new ConfigReader();
-            DBConfig cfg = new DBConfig();
-            var constr = cr.m_files.SelectToken("$.database.connection.sql.addr").ToString();
-            if(string.Compare(cfg.m_db,"oracle") == 0) constr = cr.m_files.SelectToken("$.database.connection.oracle.addr").ToString();
+            var m_db = cr.m_files.SelectToken("$.database.connection.type").ToString();
+            var constr = cr.m_files.SelectToken(string.Format("$.database.connection.{0}.addr",m_db)).ToString();
             return constr;
         }
 
         public static string GetProvider()
         {
             ConfigReader cr = new ConfigReader();
-            DBConfig cfg = new DBConfig();
-            var constr = cr.m_files.SelectToken("$.database.connection.sql.provider").ToString();
-            if(string.Compare(cfg.m_db,"oracle") == 0) constr = cr.m_files.SelectToken("$.database.connection.oracle.provider").ToString();
+            var m_db = cr.m_files.SelectToken("$.database.connection.type").ToString();
+            var constr = cr.m_files.SelectToken(string.Format("$.database.connection.{0}.provider",m_db)).ToString();
             return constr;
         }
 

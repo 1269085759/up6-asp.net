@@ -20,7 +20,7 @@ namespace up6.down2.db
             }
 
             DBConfig cfg = new DBConfig();
-            DnFile db = cfg.dn();
+            DnFile db = cfg.downF();
             db.Delete(fid, int.Parse(uid));
 
             Response.Write(cbk + "({\"value\":1})");

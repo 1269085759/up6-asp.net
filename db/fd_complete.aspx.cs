@@ -66,7 +66,7 @@ namespace up6.db
                 //删除当前目录
                 if (1 == cover && fdExist != null)
                 {
-                    DBFolder.del(id, int.Parse(uid));
+                    cfg.folder().del(id, int.Parse(uid));
                 }
 
                 ret = 1;

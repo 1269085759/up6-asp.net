@@ -26,7 +26,7 @@ namespace up6.down2.db
             }
 
             DBConfig cfg = new DBConfig();
-            DnFile db = cfg.dn();
+            DnFile db = cfg.downF();
             string json = db.all_uncmp(int.Parse(uid));
             if (!string.IsNullOrEmpty(json))
             {

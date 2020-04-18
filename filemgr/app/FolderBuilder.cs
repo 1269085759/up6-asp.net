@@ -24,7 +24,7 @@ namespace up6.filemgr.app
         /// <returns></returns>
         public JToken build(string id) {
             DBConfig cfg = new DBConfig();
-            SqlExec se = cfg.ec();
+            SqlExec se = cfg.se();
             var o = se.read("up6_files", "*", new SqlParam[] { new SqlParam("f_id", id) });
             //子目录
             if(o==null)
