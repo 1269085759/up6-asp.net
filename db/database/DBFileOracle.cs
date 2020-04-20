@@ -42,7 +42,7 @@ namespace up6.db.database
 
             DbHelper db = new DbHelper();
             DbCommand cmd = db.GetCommand(sb.ToString());
-            db.AddString(ref cmd, "f_md5", md5, 40);
+            db.AddString(ref cmd, ":f_md5", md5, 40);
             DbDataReader r = db.ExecuteReader(cmd);
             if (r.Read())
             {
@@ -125,26 +125,26 @@ namespace up6.db.database
             DbHelper db = new DbHelper();
             DbCommand cmd = db.GetCommand(sql);
 
-            db.AddString(ref cmd, "f_id", model.id, 32);
-            db.AddString(ref cmd, "f_pid", model.pid, 32);
-            db.AddString(ref cmd, "f_pidRoot", model.pidRoot, 32);
-            db.AddString(ref cmd, "f_sizeLoc", model.sizeLoc, 10);
-            db.AddInt64(ref cmd, "f_pos", model.offset);
-            db.AddInt64(ref cmd, "f_lenSvr", model.lenSvr);
-            db.AddString(ref cmd, "f_perSvr", model.perSvr, 6);
-            db.AddInBool(cmd, "f_complete", model.complete);
-            db.AddDate(ref cmd, "f_time", model.time);
-            db.AddInBool(cmd, "f_deleted", false);
-            db.AddInBool(cmd, "f_fdTask", model.fdTask);
-            db.AddInBool(cmd, "f_fdChild", model.fdChild);
-            db.AddInt(ref cmd, "f_uid", model.uid);
-            db.AddString(ref cmd, "f_nameLoc", model.nameLoc, 255);
-            db.AddString(ref cmd, "f_nameSvr", model.nameSvr, 255);
-            db.AddString(ref cmd, "f_pathLoc", model.pathLoc, 255);
-            db.AddString(ref cmd, "f_pathSvr", model.pathSvr, 255);
-            db.AddString(ref cmd, "f_pathRel", model.pathRel, 255);
-            db.AddString(ref cmd, "f_md5", model.md5, 40);
-            db.AddInt64(ref cmd, "f_lenLoc", model.lenLoc);
+            db.AddString(ref cmd, ":f_id", model.id, 32);
+            db.AddString(ref cmd, ":f_pid", model.pid, 32);
+            db.AddString(ref cmd, ":f_pidRoot", model.pidRoot, 32);
+            db.AddString(ref cmd, ":f_sizeLoc", model.sizeLoc, 10);
+            db.AddInt64 (ref cmd, ":f_pos", model.offset);
+            db.AddInt64 (ref cmd, ":f_lenSvr", model.lenSvr);
+            db.AddString(ref cmd, ":f_perSvr", model.perSvr, 6);
+            db.AddInBool(cmd, ":f_complete", model.complete);
+            db.AddDate  (ref cmd, ":f_time", model.time);
+            db.AddInBool(cmd, ":f_deleted", false);
+            db.AddInBool(cmd, ":f_fdTask", model.fdTask);
+            db.AddInBool(cmd, ":f_fdChild", model.fdChild);
+            db.AddInt   (ref cmd, ":f_uid", model.uid);
+            db.AddString(ref cmd, ":f_nameLoc", model.nameLoc, 255);
+            db.AddString(ref cmd, ":f_nameSvr", model.nameSvr, 255);
+            db.AddString(ref cmd, ":f_pathLoc", model.pathLoc, 255);
+            db.AddString(ref cmd, ":f_pathSvr", model.pathSvr, 255);
+            db.AddString(ref cmd, ":f_pathRel", model.pathRel, 255);
+            db.AddString(ref cmd, ":f_md5", model.md5, 40);
+            db.AddInt64 (ref cmd, ":f_lenLoc", model.lenLoc);
 
             db.ExecuteNonQuery(cmd);
         }
@@ -173,8 +173,8 @@ namespace up6.db.database
 
             DbHelper db = new DbHelper();
             DbCommand cmd = db.GetCommand(sql);
-            db.AddString(ref cmd, "f_id", f_id, 32);
-            db.AddInt(ref cmd, "f_uid", int.Parse(uid));
+            db.AddString(ref cmd, ":f_id", f_id, 32);
+            db.AddInt(ref cmd, ":f_uid", int.Parse(uid));
             db.ExecuteNonQuery(cmd);
         }
 
@@ -214,11 +214,11 @@ namespace up6.db.database
             DbHelper db = new DbHelper();
             DbCommand cmd = db.GetCommand(sb.ToString());
 
-            db.AddInt64(ref cmd, "f_pos", offset);
-            db.AddInt64(ref cmd, "f_lenSvr", f_lenSvr);
-            db.AddString(ref cmd, "f_perSvr", f_perSvr, 6);
-            db.AddInt(ref cmd, "f_uid", f_uid);
-            db.AddString(ref cmd, "f_id", f_id, 32);
+            db.AddInt64(ref cmd, ":f_pos", offset);
+            db.AddInt64(ref cmd, ":f_lenSvr", f_lenSvr);
+            db.AddString(ref cmd, ":f_perSvr", f_perSvr, 6);
+            db.AddInt(ref cmd, ":f_uid", f_uid);
+            db.AddString(ref cmd, ":f_id", f_id, 32);
 
             db.ExecuteNonQuery(cmd);
             return true;
@@ -230,7 +230,7 @@ namespace up6.db.database
             DbHelper db = new DbHelper();
             DbCommand cmd = db.GetCommand(sql);
 
-            db.AddString(ref cmd, "f_id", id, 32);
+            db.AddString(ref cmd, ":f_id", id, 32);
             db.ExecuteNonQuery(cmd);
         }
 
@@ -245,21 +245,22 @@ namespace up6.db.database
             DbHelper db = new DbHelper();
             DbCommand cmd = db.GetCommand(sql);
 
-            db.AddInt(ref cmd, "f_uid", f_uid);
-            db.AddString(ref cmd, "f_id", f_id, 32);
+            db.AddInt(ref cmd, ":f_uid", f_uid);
+            db.AddString(ref cmd, ":f_id", f_id, 32);
             db.ExecuteNonQuery(cmd);
         }
 
         public override void delete(string pid, string name, int uid, string id)
         {
-            string sql = "update up6_files set f_deleted=1 where f_pid=:pid and f_nameLoc=:nameLoc and f_uid=:f_uid and f_id!=:f_id";
+            string sql = "update up6_files set f_deleted=1 where nvl(f_pid,' ')=:pid and f_nameLoc=:nameLoc and f_uid=:f_uid and f_id!=:f_id";
             DbHelper db = new DbHelper();
             DbCommand cmd = db.GetCommand(sql);
 
-            db.AddString(ref cmd, "pid", pid, 32);
-            db.AddString(ref cmd, "nameLoc", name, 255);
-            db.AddInt(ref cmd, "f_uid", uid);
-            db.AddString(ref cmd, "f_id", id, 32);
+            if (string.IsNullOrEmpty(pid)) pid = " ";
+            db.AddString(ref cmd, ":pid", pid, 32);
+            db.AddString(ref cmd, ":nameLoc", name, 255);
+            db.AddInt(ref cmd, ":f_uid", uid);
+            db.AddString(ref cmd, ":f_id", id, 32);
             db.ExecuteNonQuery(cmd);
         }
     }

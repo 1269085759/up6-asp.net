@@ -349,7 +349,6 @@
     <Compile Include="db\database\DBConfig.cs" />
     <Compile Include="db\database\DBFile.cs" />
     <Compile Include="db\database\DBFileOracle.cs" />
-    <Compile Include="db\database\DBFileSQL.cs" />
     <Compile Include="db\database\DBFolder.cs" />
     <Compile Include="db\database\DBFolderOracle.cs" />
     <Compile Include="db\database\DbHelper.cs" />
@@ -639,7 +638,7 @@
           <IISUrl>http://localhost:4959/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>True</UseCustomServer>
-          <CustomServerUrl>http://localhost:8888/filemgr/vue.aspx</CustomServerUrl>
+          <CustomServerUrl>http://localhost:8888/index.aspx</CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
