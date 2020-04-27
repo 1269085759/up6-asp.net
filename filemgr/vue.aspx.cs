@@ -110,6 +110,16 @@ namespace up6.filemgr
                 });
             }
 
+            //加密
+            ConfigReader cr = new ConfigReader();
+            var sec = cr.module("path");
+            var encrypt = (bool)sec.SelectToken("$.security.encrypt");
+            if (encrypt)
+            {
+                CryptoTool ct = new CryptoTool();
+                fileSvr.pathSvr = ct.encode(fileSvr.pathSvr);
+            }
+
             up6_biz_event.folder_create(fileSvr);
 
             string json = JsonConvert.SerializeObject(fileSvr);
@@ -228,6 +238,17 @@ namespace up6.filemgr
                 FileBlockWriter fr = new FileBlockWriter();
                 fr.make(fileSvr.pathSvr, fileSvr.lenLoc);
             }
+
+            //加密
+            ConfigReader cr = new ConfigReader();
+            var sec = cr.module("path");
+            var encrypt = (bool)sec.SelectToken("$.security.encrypt");
+            if (encrypt)
+            {
+                CryptoTool ct = new CryptoTool();
+                fileSvr.pathSvr = ct.encode(fileSvr.pathSvr);
+            }
+
             string jv = JsonConvert.SerializeObject(fileSvr);
             jv = HttpUtility.UrlEncode(jv);
             jv = jv.Replace("+", "%20");
