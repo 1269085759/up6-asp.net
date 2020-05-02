@@ -376,7 +376,7 @@ namespace up6.filemgr
 
             DBConfig cfg = new DBConfig();
             SqlExec se = cfg.se();
-            bool fdTask = o["f_fdTask"].ToString() == "true";
+            bool fdTask = o["f_fdTask"].ToString() == "true" || o["f_fdTask"].ToString() == "1";
             //根目录
             if (string.IsNullOrEmpty(o["f_pid"].ToString())) fdTask = false;
 
@@ -415,10 +415,8 @@ namespace up6.filemgr
             }
             else
             {
-                var s = se.read("up6_files", "f_id,f_pathRel", new SqlParam[] {
-                    new SqlParam("f_pid",o["f_pid"].ToString()),
-                    new SqlParam("f_nameLoc",o["f_nameLoc"].ToString()),
-                });
+                DbFolder db = new DbFolder();
+                var s = db.read(o["f_pid"].ToString(), o["f_nameLoc"].ToString());
                 exist = s != null;
 
                 if (!exist)
@@ -471,6 +469,13 @@ namespace up6.filemgr
                 pathRelOld,
                 pathRelNew
                 );
+            if (cfg.m_isOracle)
+            {
+                sql = string.Format("update up6_files set f_pathRel=REPLACE(f_pathRel,'{0}/','{1}/') where instr(f_pathRel,'{0}/')>0",
+                pathRelOld,
+                pathRelNew
+                );
+            }
             se.exec(sql);
 
             //更新目录表
@@ -478,6 +483,13 @@ namespace up6.filemgr
                 pathRelOld,
                 pathRelNew
                 );
+            if (cfg.m_isOracle)
+            {
+                sql = string.Format("update up6_folders set f_pathRel=REPLACE(f_pathRel,'{0}/','{1}/') where instr(f_pathRel,'{0}/')>0",
+                pathRelOld,
+                pathRelNew
+                );
+            }
             se.exec(sql);
         }
 

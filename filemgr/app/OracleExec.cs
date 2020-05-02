@@ -250,7 +250,7 @@ namespace up6.filemgr.app
             var field_all = this.m_table.SelectToken("fields");
             var field_sel = this.selFields(fields, field_all);
 
-            string sql = string.Format("insert into {0} ( {1} ) values( {2} );"
+            string sql = string.Format("insert into {0} ( {1} ) values( {2} )"
                 , table
                 , fields
                 , this.toSqlParam(fields));
@@ -273,7 +273,7 @@ namespace up6.filemgr.app
             var field_all = this.m_table.SelectToken("fields");
             var field_sel = this.selFields(pars, field_all);
 
-            string sql = string.Format("insert into {0} ( {1} ) values( {2} );"
+            string sql = string.Format("insert into {0} ( {1} ) values( {2} )"
                 , table
                 , this.toSqlFields(pars)
                 , this.toSqlParam(pars));

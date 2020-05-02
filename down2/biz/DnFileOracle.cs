@@ -68,7 +68,7 @@ namespace up6.down2.biz
             sb.Append(" f_lenLoc =:lenLoc");
             sb.Append(",f_perLoc=:f_perLoc");
             sb.Append(" where");
-            sb.Append(" f_id =:f_id and f_uid=:f_uid;");
+            sb.Append(" f_id =:f_id and f_uid=:f_uid");
 
             DbHelper db = new DbHelper();
             DbCommand cmd = db.GetCommand(sb.ToString());

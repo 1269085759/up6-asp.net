@@ -336,8 +336,14 @@
                     , url: "vue.aspx?op=rename"
                     , data: param
                     , success: function (res) {
-                        f.f_nameLoc = nameNew;
-                        _this.btnRename_cancel(f,i);
+                        if (!res.state) {
+                            layer.alert('重命名失败,' + res.msg, { icon: 5 });
+                        }
+                        else
+                        {
+                            f.f_nameLoc = nameNew;
+                            _this.btnRename_cancel(f, i);
+                        }
                     }
                     , error: function (req, txt, err) { }
                     , complete: function (req, sta) { req = null; }

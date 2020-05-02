@@ -295,15 +295,23 @@ namespace up6.filemgr.app
 
         public bool exist_same_folder(string name,string pid)
         {
+            DBConfig cfg = new DBConfig();
             SqlWhereMerge swm = new SqlWhereMerge();
             swm.equal("f_nameLoc", name.Trim());
             swm.equal("f_deleted", 0);
-            swm.equal("LTRIM (f_pid)", pid.Trim());
+            if (cfg.m_isOracle)
+            {
+                if (string.IsNullOrEmpty(pid)) pid = " ";
+                swm.equal("nvl(f_pid,' ')", pid);
+            } 
+            else
+            {
+                swm.equal("LTRIM (f_pid)", pid.Trim());
+            }
 
             string sql = string.Format("select f_id from up6_files where {0} " +
                                         " union select f_id from up6_folders where {0}", swm.to_sql());
 
-            DBConfig cfg = new DBConfig();
             SqlExec se = cfg.se();
             var fid = (JArray)se.exec("up6_files", sql, "f_id", string.Empty);
             return fid.Count > 0;
@@ -365,6 +373,28 @@ union select f_id,f_pid,f_pidRoot,f_pathSvr,f_pathRel
             file.pathSvr = o["f_pathSvr"].ToString().Trim();
             file.pathRel = o["f_pathRel"].ToString().Trim();
             return file;
+        }
+
+        /// <summary>
+        /// 取同名目录信息
+        /// </summary>
+        /// <param name="pid"></param>
+        /// <param name="nameLoc"></param>
+        /// <returns></returns>
+        public JObject read(string pid, string nameLoc)
+        {
+            DBConfig cfg = new DBConfig();
+            SqlExec se = cfg.se();
+            string sql = string.Format(@"select f_id,f_pathRel from up6_files where f_pid='{0}' and f_nameLoc='{1}'", pid, nameLoc);
+
+            if (string.IsNullOrEmpty(pid)) pid = " ";
+            if (cfg.m_isOracle) sql = string.Format(@"select f_id,f_pathRel from up6_files where nvl(f_pid,' ')='{0}' and f_nameLoc='{1}'", pid, nameLoc);
+
+            var data = (JArray)se.exec("up6_files", sql, "f_id,f_pathRel");
+            if (data.Count < 1) return null;
+
+            var o = JObject.FromObject(data[0]);
+            return o;
         }
 
         /// <summary>
