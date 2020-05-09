@@ -34,23 +34,23 @@
         }
         , mounted: function () {
             this.pathNav.push(this.pathRoot);
-            this.page_init();
         }
         , methods: {
             tm_format: function (v) {
                 return moment(v).format('YYYY-MM-DD HH:mm:ss');
             }
             , init_data: function () {
-                var param = jQuery.extend({},this.fields, { time: new Date().getTime() });
+                var _this = this;
+                var param = jQuery.extend({}, this.fields, { time: new Date().getTime() });
                 $.ajax({
                     type: "GET"
                     , dataType: "json"
                     , url: "vue.aspx?op=data"
                     , data: param
                     , success: function (res) {
-                        v_app.items = res.data;
-                        v_app.count = res.count;
-
+                        _this.items = res.data;
+                        _this.count = res.count;
+                        _this.page_init();
                     }
                     , error: function (req, txt, err) { }
                     , complete: function (req, sta) { req = null; }
