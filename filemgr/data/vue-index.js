@@ -167,9 +167,10 @@
                 });
             }
             , selAll_click: function () {
+                var _this = this;
                 if (this.idSelAll) {
                     $.each(this.items, function (i, n) {
-                        v_app.idSels.push(n.f_id);
+                        _this.idSels.push(n.f_id);
                     });
                 }
                 else {
@@ -177,6 +178,7 @@
                 }
             }
             , openUp_click: function () {
+                var _this = this;
                 layer.open({
                     type: 1
                     , maxmin: true
@@ -187,18 +189,19 @@
                     , content: $("#pnl-up")
                     , area: ['452px', '562px']
                     , success: function (layero, index) {
-                        $(v_app.$refs.up6).show();
+                        $(_this.$refs.up6).show();
                     }
                     , btn1: function (index, layero) {
                         layer.close(index);//关闭窗口
-                        $(v_app.$refs.up6).hide();
+                        $(_this.$refs.up6).hide();
                     }
                     , btn2: function (index, layero) {
-                        $(v_app.$refs.up6).hide();
+                        $(_this.$refs.up6).hide();
                     }
                 });
             }
             , openDown_click: function () {
+                var _this = this;
                 layer.open({
                     type: 1
                     , maxmin: true
@@ -209,14 +212,14 @@
                     , content: $("#pnl-down")
                     , area: ['452px', '562px']
                     , success: function (layero, index) {
-                        $(v_app.$refs.down2).show();                        
+                        $(_this.$refs.down2).show();                        
                     }
                     , btn1: function (index, layero) {
                         layer.close(index);
-                        $(v_app.$refs.down2).hide();                        
+                        $(_this.$refs.down2).hide();                        
                     }
                     , btn2: function (index, layero) {
-                        $(v_app.$refs.down2).hide();                        
+                        $(_this.$refs.down2).hide();                        
                     }
                 });
             }
