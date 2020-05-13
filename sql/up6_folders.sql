@@ -1,120 +1,55 @@
 ﻿USE [up6]
-GO
 
 /****** Object:  Table [dbo].[up6_folders]    Script Date: 05/19/2019 14:22:05 ******/
 SET ANSI_NULLS ON
-GO
 
 SET QUOTED_IDENTIFIER ON
-GO
 
 SET ANSI_PADDING OFF
-GO
 
 CREATE TABLE [dbo].[up6_folders](
 	[f_id] [char](32) NOT NULL,
-	[f_nameLoc] [nvarchar](255) NULL,
-	[f_pid] [char](32) NULL,
-	[f_uid] [int] NULL,
-	[f_lenLoc] [bigint] NULL,
-	[f_sizeLoc] [nvarchar](50) NULL,
-	[f_pathLoc] [nvarchar](255) NULL,
-	[f_pathSvr] [nvarchar](255) NULL,
-	[f_folders] [int] NULL,
-	[f_fileCount] [int] NULL,
-	[f_filesComplete] [int] NULL,
-	[f_complete] [bit] NULL,
-	[f_deleted] [bit] NULL,
-	[f_time] [datetime] NULL,
-	[f_pidRoot] [char](32) NULL,
-	[f_pathRel] [nvarchar](255) NULL
+	[f_nameLoc] [nvarchar](255) NULL CONSTRAINT [DF_up6_folders_f_nameLoc]  DEFAULT (''),
+	[f_pid] [char](32) NULL CONSTRAINT [DF_up6_folders_f_pid]  DEFAULT (''),
+	[f_uid] [int] NULL CONSTRAINT [DF_up6_folders_f_uid]  DEFAULT ((0)),
+	[f_lenLoc] [bigint] NULL CONSTRAINT [DF_up6_folders_f_lenLoc]  DEFAULT ((0)),
+	[f_sizeLoc] [nvarchar](50) NULL CONSTRAINT [DF_up6_folders_f_sizeLoc]  DEFAULT (''),
+	[f_pathLoc] [nvarchar](255) NULL CONSTRAINT [DF_up6_folders_f_pathLoc]  DEFAULT (''),
+	[f_pathSvr] [nvarchar](255) NULL CONSTRAINT [DF_up6_folders_f_pathSvr]  DEFAULT (''),
+	[f_folders] [int] NULL CONSTRAINT [DF_up6_folders_f_folders]  DEFAULT ((0)),
+	[f_fileCount] [int] NULL CONSTRAINT [DF_up6_folders_f_fileCount]  DEFAULT ((0)),
+	[f_filesComplete] [int] NULL CONSTRAINT [DF_up6_folders_f_filesComplete]  DEFAULT ((0)),
+	[f_complete] [bit] NULL CONSTRAINT [DF_up6_folders_f_complete]  DEFAULT ((0)),
+	[f_deleted] [bit] NULL CONSTRAINT [DF_up6_folders_f_deleted]  DEFAULT ((0)),
+	[f_time] [datetime] NULL CONSTRAINT [DF_up6_folders_f_time]  DEFAULT (getdate()),
+	[f_pidRoot] [char](32) NULL CONSTRAINT [DF_up6_folders_f_pidRoot]  DEFAULT (''),
+	[f_pathRel] [nvarchar](255) NULL CONSTRAINT [DF_up6_folders_f_pathRel]  DEFAULT ('')
 ) ON [PRIMARY]
 
-GO
-
 SET ANSI_PADDING OFF
-GO
 
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'文件夹名称' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'up6_folders', @level2type=N'COLUMN',@level2name=N'f_nameLoc'
-GO
 
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'父级ID' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'up6_folders', @level2type=N'COLUMN',@level2name=N'f_pid'
-GO
 
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'用户ID。' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'up6_folders', @level2type=N'COLUMN',@level2name=N'f_uid'
-GO
 
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'数字化的大小。以字节为单位。示例：1023652' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'up6_folders', @level2type=N'COLUMN',@level2name=N'f_lenLoc'
-GO
 
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'格式化的大小。示例：10G' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'up6_folders', @level2type=N'COLUMN',@level2name=N'f_sizeLoc'
-GO
 
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'文件夹在客户端的路径' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'up6_folders', @level2type=N'COLUMN',@level2name=N'f_pathLoc'
-GO
 
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'文件夹在服务端的路径' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'up6_folders', @level2type=N'COLUMN',@level2name=N'f_pathSvr'
-GO
 
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'文件夹数' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'up6_folders', @level2type=N'COLUMN',@level2name=N'f_folders'
-GO
 
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'文件数' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'up6_folders', @level2type=N'COLUMN',@level2name=N'f_fileCount'
-GO
 
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'已上传完的文件数' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'up6_folders', @level2type=N'COLUMN',@level2name=N'f_filesComplete'
-GO
 
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'是否已上传完毕' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'up6_folders', @level2type=N'COLUMN',@level2name=N'f_complete'
-GO
 
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'是否已删除' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'up6_folders', @level2type=N'COLUMN',@level2name=N'f_deleted'
-GO
 
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'上传时间' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'up6_folders', @level2type=N'COLUMN',@level2name=N'f_time'
-GO
-
-ALTER TABLE [dbo].[up6_folders] ADD  CONSTRAINT [DF_up6_folders_f_nameLoc]  DEFAULT ('') FOR [f_nameLoc]
-GO
-
-ALTER TABLE [dbo].[up6_folders] ADD  CONSTRAINT [DF_up6_folders_f_pid]  DEFAULT ((0)) FOR [f_pid]
-GO
-
-ALTER TABLE [dbo].[up6_folders] ADD  CONSTRAINT [DF_up6_folders_f_uid]  DEFAULT ((0)) FOR [f_uid]
-GO
-
-ALTER TABLE [dbo].[up6_folders] ADD  CONSTRAINT [DF_up6_folders_f_lenLoc]  DEFAULT ((0)) FOR [f_lenLoc]
-GO
-
-ALTER TABLE [dbo].[up6_folders] ADD  CONSTRAINT [DF_up6_folders_f_sizeLoc]  DEFAULT ('') FOR [f_sizeLoc]
-GO
-
-ALTER TABLE [dbo].[up6_folders] ADD  CONSTRAINT [DF_up6_folders_f_pathLoc]  DEFAULT ('') FOR [f_pathLoc]
-GO
-
-ALTER TABLE [dbo].[up6_folders] ADD  CONSTRAINT [DF_up6_folders_f_pathSvr]  DEFAULT ('') FOR [f_pathSvr]
-GO
-
-ALTER TABLE [dbo].[up6_folders] ADD  CONSTRAINT [DF_up6_folders_f_folders]  DEFAULT ((0)) FOR [f_folders]
-GO
-
-ALTER TABLE [dbo].[up6_folders] ADD  CONSTRAINT [DF_up6_folders_f_fileCount]  DEFAULT ((0)) FOR [f_fileCount]
-GO
-
-ALTER TABLE [dbo].[up6_folders] ADD  CONSTRAINT [DF_up6_folders_f_filesComplete]  DEFAULT ((0)) FOR [f_filesComplete]
-GO
-
-ALTER TABLE [dbo].[up6_folders] ADD  CONSTRAINT [DF_up6_folders_f_complete]  DEFAULT ((0)) FOR [f_complete]
-GO
-
-ALTER TABLE [dbo].[up6_folders] ADD  CONSTRAINT [DF_up6_folders_f_deleted]  DEFAULT ((0)) FOR [f_deleted]
-GO
-
-ALTER TABLE [dbo].[up6_folders] ADD  CONSTRAINT [DF_up6_folders_f_time]  DEFAULT (getdate()) FOR [f_time]
-GO
-
-ALTER TABLE [dbo].[up6_folders] ADD  CONSTRAINT [DF_up6_folders_f_pidRoot]  DEFAULT ((0)) FOR [f_pidRoot]
-GO
-
-ALTER TABLE [dbo].[up6_folders] ADD  CONSTRAINT [DF_up6_folders_f_pathRel]  DEFAULT ('') FOR [f_pathRel]
-GO
