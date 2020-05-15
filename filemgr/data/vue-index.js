@@ -80,7 +80,7 @@
                     return;
                 }
 
-                var param = $.extend({}, {
+                var param = $.extend({},this.fields, {
                     f_pid: this.pathCur.f_id
                     , f_pathRel: this.pathCur.f_pathRel
                     , f_pidRoot: ""
@@ -228,7 +228,7 @@
                 this.idSels.length = 0;
                 this.idSelAll = false;
                 //加载路径
-                var param = jQuery.extend({}, p,{time: new Date().getTime() });
+                var param = jQuery.extend({},this.fields, p,{time: new Date().getTime() });
                 $.ajax({
                     type: "GET"
                     , dataType: "json"
@@ -253,7 +253,7 @@
                 var _this = this;
                 $.extend(this.pathCur, d);
                 //加载文件列表
-                var param = jQuery.extend({}, { pid: d.f_id, time: new Date().getTime() });
+                var param = jQuery.extend({},this.fields, { pid: d.f_id, time: new Date().getTime() });
                 $.ajax({
                     type: "GET"
                     , dataType: "json"
@@ -290,7 +290,7 @@
             }
             , page_changed: function (page,size) {
                 var _this = this;
-                var param = jQuery.extend({}, { "page": page, limit: size,pid:this.pathCur.f_id, time: new Date().getTime() });
+                var param = jQuery.extend({},this.fields, { "page": page, limit: size,pid:this.pathCur.f_id, time: new Date().getTime() });
                 $.ajax({
                     type: "GET"
                     , dataType: "json"

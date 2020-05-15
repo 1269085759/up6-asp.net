@@ -344,6 +344,7 @@ namespace up6.filemgr
                 se.insert("up6_files", new SqlParam[] {
                     new SqlParam("f_id",obj["f_id"].ToString())
                     ,new SqlParam("f_pid",obj["f_pid"].ToString())
+                    ,new SqlParam("f_uid",int.Parse(obj["uid"].ToString()))
                     ,new SqlParam("f_pidRoot",obj["f_pidRoot"].ToString())
                     ,new SqlParam("f_nameLoc",obj["f_nameLoc"].ToString())
                     ,new SqlParam("f_complete",true)
@@ -358,6 +359,7 @@ namespace up6.filemgr
                     , new SqlParam[] {
                     new SqlParam("f_id",obj["f_id"].ToString())
                     ,new SqlParam("f_pid",obj["f_pid"].ToString())
+                    ,new SqlParam("f_uid",int.Parse(obj["uid"].ToString()))
                     ,new SqlParam("f_pidRoot",obj["f_pidRoot"].ToString())
                     ,new SqlParam("f_nameLoc",obj["f_nameLoc"].ToString())
                     ,new SqlParam("f_complete",true)

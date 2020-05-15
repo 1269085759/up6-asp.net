@@ -25,6 +25,7 @@ namespace up6.db
             {
                 DbFolder db = new DbFolder();
                 FileInf folder = db.read(id);
+                folder.uid = int.Parse(uid);
                 FileInf fdExist = db.read(folder.pathRel, folder.pid,id);                
                 if(1==cover && fdExist !=null)
                 {
@@ -36,6 +37,7 @@ namespace up6.db
                 //根节点
                 FileInf root = new FileInf();
                 root.id = folder.pidRoot;
+                root.uid = folder.uid;
                 //当前节点是根节点
                 if (string.IsNullOrEmpty(root.id)) root.id = folder.id;
                 

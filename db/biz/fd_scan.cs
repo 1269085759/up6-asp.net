@@ -163,6 +163,7 @@ namespace up6.db.biz.folder
 
                 fl.id = Guid.NewGuid().ToString("N");
                 fl.pid = parent.id;
+                fl.uid = parent.uid;
                 fl.pidRoot = this.root.id;
                 fl.nameSvr = fi.Name;
                 fl.nameLoc = fi.Name;
@@ -183,6 +184,7 @@ namespace up6.db.biz.folder
                 FileInf fd = new FileInf();
                 fd.id = Guid.NewGuid().ToString("N");
                 fd.pid = parent.id;
+                fd.uid = parent.uid;
                 fd.pidRoot = this.root.id;
                 fd.nameSvr = d.Name;
                 fd.nameLoc = d.Name;
