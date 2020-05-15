@@ -31,6 +31,7 @@
                 , ok: page.path.res + "imgs/16/ok1.png"
                 , cancel: page.path.res + "imgs/16/cancel.png"
             }
+            , cookie: svrCookie
         }
         , mounted: function () {
             this.pathNav.push(this.pathRoot);

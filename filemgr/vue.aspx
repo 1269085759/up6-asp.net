@@ -59,6 +59,7 @@
                     :fd_create="url.fd_create"
                     :f_create="url.f_create"
                     :fields="fields"
+                    :cookie="cookie"
                     @load_complete="up6_loadComplete"
                     @item_selected="up6_itemSelected"
                     @file_append="up6_fileAppend"
@@ -137,6 +138,7 @@
                 </table>
                 <script type="text/javascript">
                     var v_app = null;
+                    var svrCookie = 'ASP.NET_SessionId=<%=Session.SessionID%>';
                     layui.use(['layer'], function () {
                         window.layer = layui.layer;
                     });
