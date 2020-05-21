@@ -322,11 +322,18 @@
     <Content Include="js\vue.min.js" />
     <Content Include="readme.txt" />
     <Content Include="index2.aspx" />
-    <Content Include="sql.down\down_files.sql" />
+    <Content Include="sql\oracle\1.up6_files.sql" />
+    <Content Include="sql\oracle\2.up6_files_key.sql" />
+    <Content Include="sql\oracle\3.up6_folders.sql" />
+    <Content Include="sql\oracle\4.up6_folders_key.sql" />
+    <Content Include="sql\oracle\5.down_files.sql" />
+    <Content Include="sql\oracle\6.down_files_key.sql" />
+    <Content Include="sql\oracle\spPage.sql" />
+    <Content Include="sql\sqlserver\down_files.sql" />
     <Content Include="js\up6.js" />
     <Content Include="js\setup.htm" />
-    <Content Include="sql\spPager.sql" />
-    <Content Include="sql\up6_folders.sql" />
+    <Content Include="sql\sqlserver\spPager.sql" />
+    <Content Include="sql\sqlserver\up6_folders.sql" />
     <Content Include="vue.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -587,7 +594,7 @@
     <Content Include="filemgr\res\layui\font\iconfont.ttf" />
     <Content Include="filemgr\res\layui\font\iconfont.woff" />
     <None Include="packages.config" />
-    <None Include="sql\up6_files.sql" />
+    <None Include="sql\sqlserver\up6_files.sql" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -638,7 +645,7 @@
           <IISUrl>http://localhost:4959/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>True</UseCustomServer>
-          <CustomServerUrl>http://localhost:8888/index.aspx</CustomServerUrl>
+          <CustomServerUrl>http://localhost:8888</CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
