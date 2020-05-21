@@ -7,8 +7,9 @@ namespace up6.db
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            DBFile.Clear();
-            DBFolder.Clear();
+            DBConfig cfg = new DBConfig();
+            DBFile db = cfg.db();
+            db.Clear();
         }
     }
 }

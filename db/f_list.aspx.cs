@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Web;
 using up6.db.biz;
+using up6.db.database;
 using up6.filemgr.app;
 
 namespace up6.db
@@ -19,8 +20,8 @@ namespace up6.db
 
             if (!string.IsNullOrEmpty(uid))
             {
-                un_builder ub = new un_builder();
-                string json = ub.read(uid);
+                DBConfig cfg = new DBConfig();
+                string json = cfg.ub().read(uid);
                 if (!string.IsNullOrEmpty(json))
                 {
                     System.Diagnostics.Debug.WriteLine(json);

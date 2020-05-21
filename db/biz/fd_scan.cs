@@ -26,7 +26,7 @@ namespace up6.db.biz.folder
             this.db = new DbHelper();
         }
 
-        protected void makeCmdCover()
+        protected virtual void makeCmdCover()
         {
             string sql = "update up6_files set f_deleted=1 where f_pathRel=@pathRel";
 
@@ -38,12 +38,12 @@ namespace up6.db.biz.folder
             this.cmd_cover.Prepare();
         }
 
-        protected void cover_file(string pathRel) {
+        protected virtual void cover_file(string pathRel) {
             this.cmd_cover.Parameters["@pathRel"].Value = pathRel;
             this.cmd_cover.ExecuteNonQuery();
         }
 
-        public void makeCmdF()
+        public virtual void makeCmdF()
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("insert into up6_files(");
@@ -110,7 +110,7 @@ namespace up6.db.biz.folder
             this.cmd_add_f.Prepare();
         }
 
-        public void makeCmdFD() {
+        public virtual void makeCmdFD() {
 
             StringBuilder sb = new StringBuilder();
             sb.Append("insert into up6_folders(");
@@ -244,7 +244,7 @@ namespace up6.db.biz.folder
             }
         }
 
-        protected void save_file(FileInf f)
+        protected virtual void save_file(FileInf f)
         {
             this.cmd_add_f.Parameters["@f_id"].Value = f.id;
             this.cmd_add_f.Parameters["@f_pid"].Value = f.pid;
@@ -267,7 +267,7 @@ namespace up6.db.biz.folder
             cmd_add_f.ExecuteNonQuery();
         }
 
-        protected void save_folder(FileInf f)
+        protected virtual void save_folder(FileInf f)
         {
             this.cmd_add_fd.Parameters["@f_id"].Value = f.id;
             this.cmd_add_fd.Parameters["@f_pid"].Value = f.pid;

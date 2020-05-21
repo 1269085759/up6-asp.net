@@ -40,12 +40,14 @@ namespace up6.db
                 root.uid = folder.uid;
                 //当前节点是根节点
                 if (string.IsNullOrEmpty(root.id)) root.id = folder.id;
-                
+
                 //上传完毕
-                DBFile.fd_complete(id, uid);
+                DBConfig cfg = new DBConfig();
+                DBFile dbf = cfg.db();
+                dbf.fd_complete(id, uid);
 
                 //扫描文件夹结构，
-                fd_scan sa = new fd_scan();
+                fd_scan sa = cfg.sa();
                 sa.root = root;//
 
                 //清理同名子文件
@@ -59,14 +61,14 @@ namespace up6.db
                 sa.scan(folder,folder.pathSvr);
 
                 //更新扫描状态
-                DBFile.fd_scan(id, uid);
+                dbf.fd_scan(id, uid);
 
                 up6_biz_event.folder_post_complete(id);
 
                 //删除当前目录
                 if (1 == cover && fdExist != null)
                 {
-                    DBFolder.del(id, int.Parse(uid));
+                    cfg.folder().del(id, int.Parse(uid));
                 }
 
                 ret = 1;

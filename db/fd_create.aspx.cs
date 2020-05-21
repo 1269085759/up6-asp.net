@@ -61,7 +61,8 @@ namespace up6.db
             //添加成根目录
             if (string.IsNullOrEmpty(pid))
             {
-                DBFile db = new DBFile();
+                DBConfig cfg = new DBConfig();
+                DBFile db = cfg.db();
                 db.Add(ref fileSvr);
             }//添加成子目录
             else {

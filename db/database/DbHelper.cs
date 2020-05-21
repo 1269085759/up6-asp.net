@@ -2,6 +2,7 @@
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
+using System.Data.OracleClient;
 using up6.filemgr.app;
 
 namespace up6.db.database
@@ -68,15 +69,27 @@ namespace up6.db.database
         public static string GetConStr()
         {
             ConfigReader cr = new ConfigReader();
-            var constr = cr.m_files.SelectToken("$.database.connection.addr").ToString();
+            var m_db = cr.m_files.SelectToken("$.database.connection.type").ToString();
+            var constr = cr.m_files.SelectToken(string.Format("$.database.connection.{0}.addr",m_db)).ToString();
             return constr;
         }
 
         public static string GetProvider()
         {
             ConfigReader cr = new ConfigReader();
-            var constr = cr.m_files.SelectToken("$.database.connection.provider").ToString();
+            var m_db = cr.m_files.SelectToken("$.database.connection.type").ToString();
+            var constr = cr.m_files.SelectToken(string.Format("$.database.connection.{0}.provider",m_db)).ToString();
             return constr;
+        }
+
+        public bool isOracle()
+        {
+            return string.Compare(GetProvider(), "System.Data.OracleClient") == 0;
+        }
+
+        public bool isSql()
+        {
+            return string.Compare(GetProvider(), "System.Data.SqlClient") == 0;
         }
 
         public DbHelper()
@@ -91,8 +104,8 @@ namespace up6.db.database
 
         public static DbConnection CreateConnection()
         {
-            //DbProviderFactory dbfactory = DbProviderFactories.GetFactory(DbHelper.GetProvider());
-            DbConnection con = SqlClientFactory.Instance.CreateConnection();
+            DbProviderFactory dbfactory = DbProviderFactories.GetFactory(DbHelper.GetProvider());
+            DbConnection con = dbfactory.CreateConnection();
             con.ConnectionString = GetConStr();
 
             return con;
@@ -100,8 +113,8 @@ namespace up6.db.database
 
         public static DbConnection CreateConnection(string connectionString)
         {
-            //DbProviderFactory dbfactory = DbProviderFactories.GetFactory(DbHelper.GetProvider());
-            DbConnection con = SqlClientFactory.Instance.CreateConnection();
+            DbProviderFactory dbfactory = DbProviderFactories.GetFactory(DbHelper.GetProvider());
+            DbConnection con = dbfactory.CreateConnection();
             con.ConnectionString = GetConStr();
             return con;
         }

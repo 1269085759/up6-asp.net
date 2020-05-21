@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Web;
 using Newtonsoft.Json;
+using up6.db.database;
 using up6.down2.biz;
 
 namespace up6.down2.db
@@ -38,7 +39,8 @@ namespace up6.down2.db
             inf.lenSvr = long.Parse(lenSvr);
             inf.sizeSvr = sizeSvr;
             inf.fdTask = fdTask == "1";
-            DnFile db = new DnFile();
+            DBConfig cfg = new DBConfig();
+            DnFile db = cfg.downF();
             db.Add(ref inf);
 
             string json = JsonConvert.SerializeObject(inf);

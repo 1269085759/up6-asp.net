@@ -7,17 +7,9 @@ using up6.db.database;
 
 namespace up6.db.biz
 {
-    public class un_builder
+    public class un_builder_oracle : un_builder
     {
-        /// <summary>
-        /// 加载未上传完的文件和文件夹列表
-        /// </summary>
-        protected List<FileInf> files = new List<FileInf>();
-        public un_builder()
-        {
-        }
-
-        public virtual string read(string uid)
+        public override string read(string uid)
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("select ");
@@ -37,24 +29,25 @@ namespace up6.db.biz
             //
             sb.Append(" from up6_files");
             //
-            sb.Append(" where f_uid=@f_uid and f_complete=0 and f_deleted=0 and f_fdChild=0 and f_scan=0");
+            sb.Append(" where f_uid=:f_uid and f_complete=0 and f_deleted=0 and f_fdChild=0 and f_scan=0");
 
             DbHelper db = new DbHelper();
             DbCommand cmd = db.GetCommand(sb.ToString());
-            db.AddInt(ref cmd, "@f_uid", int.Parse(uid));
+            db.AddInt(ref cmd, ":f_uid", int.Parse(uid));
             DbDataReader r = db.ExecuteReader(cmd);
 
             while (r.Read())
             {
                 var f = new FileInf();
                 f.id = r.GetString(0);
-                f.fdTask = r.GetBoolean(1);
+                int fdTask = r.GetInt32(1);
+                if(fdTask == 1) f.fdTask = true;
                 f.nameLoc = r.GetString(2);
                 f.nameSvr = r.GetString(3);
                 f.pathLoc = r.GetString(4);
                 f.pathSvr = r.GetString(5);
-                f.pathRel = r.GetString(6);
-                f.md5 = r.GetString(7);
+                f.pathRel = r.IsDBNull(6) ? string.Empty : r.GetString(6);
+                f.md5 = r.IsDBNull(7) ? string.Empty : r.GetString(7);
                 f.lenLoc = r.GetInt64(8);
                 f.sizeLoc = r.GetString(9);
                 f.offset = r.GetInt64(10);
@@ -65,15 +58,6 @@ namespace up6.db.biz
             r.Close();
 
             return this.to_json();//
-        }
-
-        protected string to_json()
-        {
-            if (this.files.Count > 0)
-            {
-                return JsonConvert.SerializeObject(this.files);
-            }
-            return null;
         }
     }
 }

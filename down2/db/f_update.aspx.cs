@@ -1,4 +1,5 @@
 ﻿using System;
+using up6.db.database;
 using up6.down2.biz;
 
 namespace up6.down2.db
@@ -27,7 +28,8 @@ namespace up6.down2.db
                 return;
             }
 
-            DnFile db = new DnFile();
+            DBConfig cfg = new DBConfig();
+            DnFile db = cfg.downF();
             db.process( fid, int.Parse(uid), lenLoc, per);
             
             Response.Write(cbk + "({\"value\":1})");

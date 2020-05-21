@@ -20,8 +20,8 @@ namespace up6.db
             }//参数不为空
             else
             {
-                DBFile db = new DBFile();
-                DBFolder.Remove(fid, int.Parse(uid));
+                DBConfig cfg = new DBConfig();
+                cfg.folder().Remove(fid, int.Parse(uid));
                 ret = 1;
             }
             Response.Write(cbk + "({\"value\":" + ret + "})");//返回jsonp格式数据

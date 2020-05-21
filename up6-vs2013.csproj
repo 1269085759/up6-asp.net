@@ -56,6 +56,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.OracleClient" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Configuration" />
@@ -68,8 +69,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="db\f_process.aspx" />
-    <Content Include="debug\big_file.aspx" />
-    <Content Include="debug\check_config.aspx" />
     <Content Include="debug\complete.html" />
     <Content Include="debug\create.html" />
     <Content Include="debug\del.html" />
@@ -333,10 +332,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="db\biz\fd_scan.cs" />
+    <Compile Include="db\biz\fd_scan_oracle.cs" />
     <Compile Include="db\biz\PathBuilder.cs" />
     <Compile Include="db\biz\PathBuilderMd5.cs" />
     <Compile Include="db\biz\PathBuilderUuid.cs" />
     <Compile Include="db\biz\un_builder.cs" />
+    <Compile Include="db\biz\un_builder_oracle.cs" />
     <Compile Include="db\biz\up6_biz_event.cs" />
     <Compile Include="db\clear.aspx.cs">
       <DependentUpon>clear.aspx</DependentUpon>
@@ -345,8 +346,11 @@
     <Compile Include="db\clear.aspx.designer.cs">
       <DependentUpon>clear.aspx</DependentUpon>
     </Compile>
+    <Compile Include="db\database\DBConfig.cs" />
     <Compile Include="db\database\DBFile.cs" />
+    <Compile Include="db\database\DBFileOracle.cs" />
     <Compile Include="db\database\DBFolder.cs" />
+    <Compile Include="db\database\DBFolderOracle.cs" />
     <Compile Include="db\database\DbHelper.cs" />
     <Compile Include="db\fd_complete.aspx.cs">
       <DependentUpon>fd_complete.aspx</DependentUpon>
@@ -417,20 +421,8 @@
     <Compile Include="db\utils\Md5Tool.cs" />
     <Compile Include="db\utils\PathTool.cs" />
     <Compile Include="db\XDebug.cs" />
-    <Compile Include="debug\big_file.aspx.cs">
-      <DependentUpon>big_file.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="debug\big_file.aspx.designer.cs">
-      <DependentUpon>big_file.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="debug\check_config.aspx.cs">
-      <DependentUpon>check_config.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="debug\check_config.aspx.designer.cs">
-      <DependentUpon>check_config.aspx</DependentUpon>
-    </Compile>
+    <Compile Include="down2\biz\DnFileOracle.cs" />
+    <Compile Include="down2\biz\DnFolderOracle.cs" />
     <Compile Include="down2\db\clear.aspx.cs">
       <DependentUpon>clear.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -502,6 +494,13 @@
     <Compile Include="filemgr\app\DbFolder.cs" />
     <Compile Include="filemgr\app\FolderBuilder.cs" />
     <Compile Include="filemgr\app\HtmlTemplater.cs" />
+    <Compile Include="filemgr\app\OracleCmdReader.cs" />
+    <Compile Include="filemgr\app\OracleDbBase.cs" />
+    <Compile Include="filemgr\app\OracleExec.cs" />
+    <Compile Include="filemgr\app\OracleParamCreater.cs" />
+    <Compile Include="filemgr\app\OracleParamSetter.cs" />
+    <Compile Include="filemgr\app\OracleParValSetter.cs" />
+    <Compile Include="filemgr\app\OracleValueSetter.cs" />
     <Compile Include="filemgr\app\PageTool.cs" />
     <Compile Include="filemgr\app\PathRelBuilder.cs" />
     <Compile Include="filemgr\app\SqlBuilder.cs" />
@@ -600,6 +599,24 @@
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
@@ -621,7 +638,7 @@
           <IISUrl>http://localhost:4959/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>True</UseCustomServer>
-          <CustomServerUrl>http://localhost:8888</CustomServerUrl>
+          <CustomServerUrl>http://localhost:8888/index.aspx</CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
