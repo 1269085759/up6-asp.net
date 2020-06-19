@@ -66,7 +66,8 @@ namespace up6.db
                 db.Add(ref fileSvr);
             }//添加成子目录
             else {
-                SqlExec se = new SqlExec();
+                DBConfig cfg = new DBConfig();
+                SqlExec se = cfg.se();
                 se.insert("up6_folders", new SqlParam[] {
                      new SqlParam("f_id",fileSvr.id)
                     ,new SqlParam("f_nameLoc",fileSvr.nameLoc)
