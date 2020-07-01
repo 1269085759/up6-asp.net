@@ -20,8 +20,7 @@ namespace up6.down2.db
 
             if (    string.IsNullOrEmpty(uid)
                 ||  string.IsNullOrEmpty(fid)
-                ||  string.IsNullOrEmpty(cbk)
-                ||  string.IsNullOrEmpty(lenLoc))
+                ||  string.IsNullOrEmpty(cbk))
             {
                 Response.Write(cbk+"({\"value\":0})");
                 Response.End();
