@@ -113,6 +113,23 @@ function FileUploader(fileLoc, mgr)
             , complete: function (req, sta) { req = null; }
         });
     };
+    this.svr_remove = function ()
+    {
+        debugger;
+        var param = $.extend(this.fields, { time: new Date().getTime() });
+        $.ajax({
+            type: "GET"
+            , dataType: 'jsonp'
+            , jsonp: "callback" //自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名
+            , url: this.Config["UrlDel"]
+            , data: param
+            , success: function (msg) { 
+
+            }
+            , error: function (req, txt, err) { alert("删除文件失败！" + req.responseText); }
+            , complete: function (req, sta) { req = null; }
+        });
+    };
     this.post_process = function (json)
     {
         this.fileSvr.lenSvr = json.lenSvr;//保存上传进度
@@ -328,6 +345,7 @@ function FileUploader(fileLoc, mgr)
     //删除，一般在用户点击"删除"按钮时调用
     this.remove = function ()
     {
+        //this.svr_remove();
         this.Manager.del_file(this.fileSvr.id);
         this.app.delFile(this.fileSvr);
         this.ui.div.remove();
