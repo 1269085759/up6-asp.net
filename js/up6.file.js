@@ -229,6 +229,13 @@ function FileUploader(fileLoc, mgr)
         //添加到未上传列表
         this.Manager.AppendQueueWait(this.fileSvr.id);
         this.post_next();
+
+        if (this.Config.AutoConnect.opened) {
+            setTimeout(function () {
+                if (_this.State == _this.Config.state.Posting) return;
+                _this.post();
+            }, this.Config.AutoConnect.time);
+        }
     };
     this.md5_process = function (json)
     {

@@ -130,6 +130,7 @@ function HttpUploaderMgr()
 	      "md5Complete": function (obj/*HttpUploader对象*/, md5) { }
         , "scanComplete": function (obj/*文件夹扫描完毕，参考：FolderUploader*/) { }
         , "fileComplete": function (obj/*文件上传完毕，参考：FileUploader*/) { }
+        , "fileAppend": function (obj/*添加文件，参考：FileUploader*/) { }
         , "fdComplete": function (obj/*文件夹上传完毕，参考：FolderUploader*/) { }
         , "queueComplete": function () {/*队列上传完毕*/ }
         , "loadComplete": function () {/*控件初始化完毕*/ }
@@ -1070,7 +1071,8 @@ function HttpUploaderMgr()
 		uiMsg.text("");
 		uiPercent.text("(0%)");
 		
-		upFile.Ready(); //准备
+        upFile.Ready(); //准备
+        this.event.fileAppend(upFile);
 		return upFile;
 	};
 
