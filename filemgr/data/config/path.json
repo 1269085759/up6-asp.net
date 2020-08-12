@@ -19,22 +19,22 @@
     },
     "plugin": {
         "up6": {
-            "ie32": "http://res2.ncmem.com/download/up6/pack/6.5.24/up6.cab",
-            "ie64": "http://res2.ncmem.com/download/up6/pack/6.5.24/up64.cab",
-            "chr": "http://res2.ncmem.com/download/up6/pack/6.5.24/up6.crx",
-            "firefox": "http://res2.ncmem.com/download/up6/pack/6.5.24/up6.xpi",
-            "exe": "http://res2.ncmem.com/download/up6/pack/6.5.24/up6.exe",
-            "mac": "http://res2.ncmem.com/download/up6/pack/6.5.24/up6.pkg",
-            "linux": "http://res2.ncmem.com/download/up6/pack/6.5.24/up6.tar"
+            "ie32": "http://res2.ncmem.com/download/up6/pack/6.5.25/up6.cab",
+            "ie64": "http://res2.ncmem.com/download/up6/pack/6.5.25/up64.cab",
+            "chr": "http://res2.ncmem.com/download/up6/pack/6.5.25/up6.crx",
+            "firefox": "http://res2.ncmem.com/download/up6/pack/6.5.25/up6.xpi",
+            "exe": "http://res2.ncmem.com/download/up6/pack/6.5.25/up6.exe",
+            "mac": "https://ncmem2.oss-cn-shanghai.aliyuncs.com/download/up6/mac/1.0.9/up6.pkg",
+            "linux": "https://ncmem2.oss-cn-shanghai.aliyuncs.com/download/up6/linux/1.0.9/up6.deb"
         },
         "down2": {
-            "ie32": "http://res2.ncmem.com/download/down2/pack/2.4.20/down2.cab",
-            "ie64": "http://res2.ncmem.com/download/down2/pack/2.4.20/down64.cab",
-            "chr": "http://res2.ncmem.com/download/down2/pack/2.4.20/down2.crx",
-            "firefox": "http://res2.ncmem.com/download/down2/pack/2.4.20/down2.xpi",
-            "exe": "http://res2.ncmem.com/download/down2/pack/2.4.20/down2.exe",
-            "mac": "http://res2.ncmem.com/download/down2/pack/2.4.20/down2.pkg",
-            "linux": "http://res2.ncmem.com/download/down2/pack/2.4.20/down2.tar"
+            "ie32": "http://res2.ncmem.com/download/down2/pack/2.4.22/down2.cab",
+            "ie64": "http://res2.ncmem.com/download/down2/pack/2.4.22/down64.cab",
+            "chr": "http://res2.ncmem.com/download/down2/pack/2.4.22/down2.crx",
+            "firefox": "http://res2.ncmem.com/download/down2/pack/2.4.22/down2.xpi",
+            "exe": "http://res2.ncmem.com/download/down2/pack/2.4.22/down2.exe",
+            "mac": "http://res2.ncmem.com/download/down2/pack/2.4.22/down2.pkg",
+            "linux": "https://ncmem2.oss-cn-shanghai.aliyuncs.com/download/down2/linux/1.0.5/down2.deb"
         }
     },
     "up6": [
