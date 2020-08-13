@@ -11,6 +11,7 @@
     <script language="javascript" type="text/javascript">
         var downer = new DownloaderMgr();
         downer.Config["Folder"] = "";
+        var svrFiles = new Object();
 
         function loadAllComplete()
         {
@@ -30,13 +31,18 @@
 
                     var files = JSON.parse( decodeURIComponent(msg.value) );
                     var tb = $("#tbCmp");
-                    tb.find('a[name="btnSelAll"]').click(function () { });
-                    tb.find('a[name="btnUnSelAll"]').click(function () { });
+                    tb.find('input[name="btnSelAll"]').click(function () {
+                        var ck = $(this).attr("checked");
+                        $("input[name='cbSel']").each(function (i,n) {
+                            $(n).attr("checked", ck);
+                        });
+                    });
 
                     $.each(files, function (i, item)
                     {
                         var tmp = $("#tbHead").clone();
-                        var tdSel = tmp.find('td[name="sel"]').append('<input type="checkbox" name="cbSel" />');
+                        var tdSel = tmp.find('td[name="sel"]').html('<input type="checkbox" name="cbSel" />');
+                        tdSel.find("input").attr("fid", item.id);
                         var tdType = tmp.find('td[name="type"]');
                         var tdName = tmp.find('td[name="name"]');
                         var tdSize = tmp.find('td[name="size"]');
@@ -49,19 +55,19 @@
                         tdSize.text(f.sizeSvr);
                         tdOp.text("下载").css("cursor", "pointer").click(function ()
                         {
-
-                            if (downer.Config["Folder"] == "") { downer.app.openFolder();return; }
+                            if (downer.Config["Folder"] == "") { downer.app.openFolder(); return; }
                             //文件夹
-                            if ( f.fdTask )
+                            if (f.fdTask)
                             {
                                 downer.addFolder(f);
                             }
                             else
                             {
-                                downer.addFile(f);
-                            }
+                                downer.addFile( f);
+                            }                            
                         });
                         tb.append(tmp);
+                        svrFiles[f.id] = f;//
                     });
                     tb.show();
                     $("#msg_load").hide();
@@ -77,7 +83,22 @@
     	    downer.loadTo("downDiv");
 
     	    //加载HttpUploader6上传的文件列表
-    	    loadAllComplete();
+            loadAllComplete();
+
+            $("#btnDownSel").click(function () {
+                if (downer.Config["Folder"] == "") { downer.openConfig(); return; }
+                var count = 0;
+                $("input[name='cbSel']").each(function (i, n) {
+                    if ($(n).attr("checked")) {
+                        var f = svrFiles[$(n).attr("fid")];
+                        if (f.fdTask) downer.addFolder(f);
+                        else downer.addFile(f);
+                        count++;
+                    }
+                });
+                if (count) 
+                setTimeout(function () { downer.down_next();}, 500);
+            });
     	});
     </script>
 </head>
@@ -90,7 +111,7 @@
     </ul>    
     <table id="tbCmp" cellpadding="0" cellspacing="0" border="1" class="files-svr">
         <tr id="tbHead">
-            <td name="sel" align="center"></td>
+            <td name="sel" align="center"><input type="checkbox" name="btnSelAll" /></td>
             <td name="type">类型</td>
             <td name="name">名称</td>
             <td name="size">文件大小</td>
@@ -98,11 +119,9 @@
         </tr>
         <tfoot>
             <tr>
-                <td><a name="btnSelAll">全选</a>/<a name="btnUnSelAll">反选</a></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td colspan="5">
+                    <a id="btnDownSel">批量下载</a>
+                </td>
             </tr>
         </tfoot>
     </table>
