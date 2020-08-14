@@ -116,6 +116,7 @@ function DownloaderMgr()
           downComplete: function (obj) { }
         , downError: function (obj, err) { }
         , queueComplete: function () { }
+        , folderSel: function (path) { }
         , ready: function () { }
 	};
 
@@ -390,6 +391,7 @@ function DownloaderMgr()
         //用户选择的路径
         //json.path
         this.Config["Folder"] = json.path;
+        this.event.folderSel(json.path);
     };
 	this.down_recv_size = function (json)
 	{
