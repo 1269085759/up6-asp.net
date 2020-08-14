@@ -11,9 +11,12 @@
     <script language="javascript" type="text/javascript">
         var downer = new DownloaderMgr();
         downer.Config["Folder"] = "";
+        downer.event.ready = function () {
+            load_files();
+        };
         var svrFiles = new Object();
 
-        function loadAllComplete()
+        function load_files()
         {
             $.ajax({
                 type: "GET"
@@ -83,7 +86,7 @@
     	    downer.loadTo("downDiv");
 
     	    //加载HttpUploader6上传的文件列表
-            loadAllComplete();
+            load_files();
 
             $("#btnDownSel").click(function () {
                 if (downer.Config["Folder"] == "") { downer.openConfig(); return; }

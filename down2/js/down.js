@@ -116,6 +116,7 @@ function DownloaderMgr()
           downComplete: function (obj) { }
         , downError: function (obj, err) { }
         , queueComplete: function () { }
+        , ready: function () { }
 	};
 
     this.websocketInited = false;
@@ -428,6 +429,7 @@ function DownloaderMgr()
         if (this.websocketInited) return;
         this.websocketInited = true;
         this.pluginInited = true;
+        setTimeout(function () { _this.event.ready(); }, 300);
 
         this.btnSetup.hide();
         var needUpdate = true;
