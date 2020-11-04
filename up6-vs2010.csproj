@@ -61,10 +61,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="db\biz\fd_scan.cs" />
+    <Compile Include="db\biz\fd_scan_oracle.cs" />
     <Compile Include="db\biz\PathBuilder.cs" />
     <Compile Include="db\biz\PathBuilderMd5.cs" />
     <Compile Include="db\biz\PathBuilderUuid.cs" />
     <Compile Include="db\biz\un_builder.cs" />
+    <Compile Include="db\biz\un_builder_oracle.cs" />
     <Compile Include="db\biz\up6_biz_event.cs" />
     <Compile Include="db\clear.aspx.cs">
       <DependentUpon>clear.aspx</DependentUpon>
@@ -73,8 +75,11 @@
     <Compile Include="db\clear.aspx.designer.cs">
       <DependentUpon>clear.aspx</DependentUpon>
     </Compile>
+    <Compile Include="db\database\DBConfig.cs" />
     <Compile Include="db\database\DBFile.cs" />
+    <Compile Include="db\database\DBFileOracle.cs" />
     <Compile Include="db\database\DBFolder.cs" />
+    <Compile Include="db\database\DBFolderOracle.cs" />
     <Compile Include="db\database\DbHelper.cs" />
     <Compile Include="db\fd_complete.aspx.cs">
       <DependentUpon>fd_complete.aspx</DependentUpon>
@@ -140,6 +145,7 @@
       <DependentUpon>f_process.aspx</DependentUpon>
     </Compile>
     <Compile Include="db\model\FileInf.cs" />
+    <Compile Include="db\utils\CryptoTool.cs" />
     <Compile Include="db\utils\FileBlockWriter.cs" />
     <Compile Include="db\utils\Md5Tool.cs" />
     <Compile Include="db\utils\PathTool.cs" />
@@ -147,7 +153,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="down2\biz\DnFile.cs" />
+    <Compile Include="down2\biz\DnFileOracle.cs" />
     <Compile Include="down2\biz\DnFolder.cs" />
+    <Compile Include="down2\biz\DnFolderOracle.cs" />
     <Compile Include="down2\db\clear.aspx.cs">
       <DependentUpon>clear.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -206,6 +214,7 @@
     </Compile>
     <Compile Include="down2\index.aspx.cs">
       <DependentUpon>index.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="down2\index.aspx.designer.cs">
       <DependentUpon>index.aspx</DependentUpon>
@@ -216,6 +225,13 @@
     <Compile Include="filemgr\app\DbFolder.cs" />
     <Compile Include="filemgr\app\FolderBuilder.cs" />
     <Compile Include="filemgr\app\HtmlTemplater.cs" />
+    <Compile Include="filemgr\app\OracleCmdReader.cs" />
+    <Compile Include="filemgr\app\OracleDbBase.cs" />
+    <Compile Include="filemgr\app\OracleExec.cs" />
+    <Compile Include="filemgr\app\OracleParamCreater.cs" />
+    <Compile Include="filemgr\app\OracleParamSetter.cs" />
+    <Compile Include="filemgr\app\OracleParValSetter.cs" />
+    <Compile Include="filemgr\app\OracleValueSetter.cs" />
     <Compile Include="filemgr\app\PageTool.cs" />
     <Compile Include="filemgr\app\PathRelBuilder.cs" />
     <Compile Include="filemgr\app\SqlBuilder.cs" />
