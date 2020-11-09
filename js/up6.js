@@ -444,16 +444,14 @@ function HttpUploaderMgr()
 		//上传列表
 		acx += '<div class="files-panel" name="post_panel">\
 					<div name="post_head" class="toolbar">\
-						<span class="btn" name="btnAddFiles">选择多个文件</span>\
-						<span class="btn" name="btnAddFolder">选择文件夹</span>\
-						<span class="btn" name="btnPasteFile">粘贴文件和目录</span>\
+						<span class="btn" name="btnAddFiles">选择文件</span>\
+						<span class="btn" name="btnAddFolder">选择目录</span>\
+						<span class="btn" name="btnPasteFile">粘贴</span>\
 						<span class="btn" name="btnSetup">安装控件</span>\
+						<span class="btn" name="btnClear">清除已完成</span>\
 					</div>\
 					<div class="content" name="post_content">\
 						<div name="post_body" class="file-post-view"></div>\
-					</div>\
-					<div class="footer" name="post_footer">\
-						<span class="btn-footer" name="btnClear">清除已完成文件</span>\
 					</div>\
 				</div>';
 		return acx;
@@ -761,9 +759,8 @@ function HttpUploaderMgr()
         });
         var post_panel      = dom.find("div[name='tab-body']");
 	    var post_body       = dom.find("div[name='post_body']");
-        var post_head       = dom.find('div[name="post_head"]');
-        var post_foot       = dom.find('div[name="post_footer"]');
-        post_body.height(post_panel.height() - post_head.height() - post_foot.outerHeight());
+        var post_head       = dom.find('div[name="post_head"]');        
+        post_body.height(post_panel.height() - post_head.height());
 
 	    this.filesUI        = post_body;
 	    this.tmpFile        = panel.find('div[name="fileItem"]');

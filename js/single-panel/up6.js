@@ -94,7 +94,7 @@ function HttpUploaderMgr()
                 upFile: page.path.root + "js/16/upload.png",
                 upFolder: page.path.root + "js/16/folder.png",
                 paste: page.path.root + "js/16/paste.png",
-                clear: page.path.root + "js/16/paste.png",
+                clear: page.path.root + "js/16/clear.png",
                 file: page.path.root + "js/file.png",
                 folder: page.path.root + "js/folder.png",
                 stop: page.path.root + "js/stop.png",
@@ -249,15 +249,13 @@ function HttpUploaderMgr()
         com += '<div name="post_panel">\
 					<div name="post_head" class="files-toolbar">\
 						<span class="tool-btn" name="btnAddFiles"><img name="upFile"/>上传文件</span>\
-						<span class="tool-btn" name="btnAddFolder"><img name="upFolder"/>上传文件夹</span>\
-						<span class="tool-btn" name="btnPasteFile"><img name="paste"/>粘贴上传</span>\
+						<span class="tool-btn" name="btnAddFolder"><img name="upFolder"/>上传目录</span>\
+						<span class="tool-btn" name="btnPasteFile"><img name="paste"/>粘贴</span>\
 						<span class="tool-btn" name="btnSetup">安装控件</span>\
+						<span class="tool-btn" name="btnClear"><img name="clear"/>清除已完成</span>\
 					</div>\
 					<div name="post_content">\
 						<div name="post_body" class="files-list"></div>\
-					</div>\
-					<div class="files-toolbar" name="post_footer">\
-						<span class="tool-btn" name="btnClear"><img name="clear"/>清除已完成</span>\
 					</div>\
 				</div>';
         com += '</div>';
@@ -597,9 +595,8 @@ function HttpUploaderMgr()
         });
 
 	    var post_body       = dom.find("div[name='post_body']");
-        var post_head       = dom.find('div[name="post_head"]');
-        var post_foot       = dom.find('div[name="post_footer"]');
-        post_body.height(panel.height() - post_head.height() - post_foot.outerHeight());
+        var post_head       = dom.find('div[name="post_head"]');        
+        post_body.height(panel.height() - post_head.height());
 
 	    this.filesUI        = post_body;
 	    this.tmpFile        = panel.find('div[name="fileItem"]');
