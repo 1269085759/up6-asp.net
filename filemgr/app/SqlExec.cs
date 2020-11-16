@@ -94,11 +94,11 @@ namespace up6.filemgr.app
             db.ExecuteNonQuery(cmd);
         }
 
-        public void exec(string sql)
+        public object exec(string sql)
         {
             DbHelper db = new DbHelper();
             var cmd = db.GetCommand(sql);
-            db.ExecuteNonQuery(cmd);
+            return db.ExecuteScalar(cmd);
         }
 
         /// <summary>
@@ -116,7 +116,12 @@ namespace up6.filemgr.app
             var field_all = this.m_table.SelectToken("fields");
             var field_sel = this.selFields(fields, field_all);
             var names = newNames.Split(',');
-            if (string.IsNullOrEmpty(newNames)) names = fields.Split(',');
+            if (string.IsNullOrEmpty(newNames))
+            {
+                var ns = from t in field_sel
+                         select t["name"].ToString();
+                names = ns.ToArray();
+            }
 
             DbHelper db = new DbHelper();
             var cmd = db.GetCommand(sql);

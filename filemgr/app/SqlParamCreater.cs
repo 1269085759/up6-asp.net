@@ -68,6 +68,20 @@ namespace up6.filemgr.app
                     p.DbType = DbType.Int64;
                     cmd.Parameters.Add(p);
                 } }
+                ,{ "double",(DbCommand cmd,JToken field)=>{
+                    var p = cmd.CreateParameter();
+                    p.Direction = ParameterDirection.Input;
+                    p.ParameterName = "@" + field["name"].ToString();
+                    p.DbType = DbType.Double;
+                    cmd.Parameters.Add(p);
+                } }
+                ,{ "decimal",(DbCommand cmd,JToken field)=>{
+                    var p = cmd.CreateParameter();
+                    p.Direction = ParameterDirection.Input;
+                    p.ParameterName = "@" + field["name"].ToString();
+                    p.DbType = DbType.Decimal;
+                    cmd.Parameters.Add(p);
+                } }
                 ,{ "smallint",(DbCommand cmd,JToken field)=>{
                     var p = cmd.CreateParameter();
                     p.Direction = ParameterDirection.Input;

@@ -70,6 +70,20 @@ namespace up6.filemgr.app
                     p.DbType = DbType.Int64;
                     p.Value = val[pn];
                 } }
+                ,{ "double",(DbCommand cmd,JToken field, JToken val)=>{
+                    var pn = field["name"].ToString();
+                    var p = cmd.Parameters["@"+pn];
+                    p.Direction = ParameterDirection.Input;
+                    p.DbType = DbType.Double;
+                    p.Value = val[pn];
+                } }
+                ,{ "decimal",(DbCommand cmd,JToken field, JToken val)=>{
+                    var pn = field["name"].ToString();
+                    var p = cmd.Parameters["@"+pn];
+                    p.Direction = ParameterDirection.Input;
+                    p.DbType = DbType.Decimal;
+                    p.Value = val[pn];
+                } }
                 ,{ "smallint",(DbCommand cmd,JToken field, JToken val)=>{
                     var pn = field["name"].ToString();
                     var p = cmd.Parameters["@"+pn];

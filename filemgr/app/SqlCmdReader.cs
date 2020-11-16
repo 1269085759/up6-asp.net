@@ -49,6 +49,12 @@ namespace up6.filemgr.app
                 ,{ "long",(DbDataReader r,int index)=>{
                     return r.IsDBNull(index) ? 0:r.GetInt64(index);
                 } }
+                ,{ "double",(DbDataReader r,int index)=>{
+                    return r.IsDBNull(index) ? 0:r.GetFloat(index);
+                } }
+                ,{ "decimal",(DbDataReader r,int index)=>{
+                    return r.IsDBNull(index) ? 0:r.GetDecimal(index);
+                } }
                 ,{ "smallint",(DbDataReader r,int index)=>{
                     return r.IsDBNull(index) ? 0:r.GetInt16(index);
                 } }
