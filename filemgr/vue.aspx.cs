@@ -586,13 +586,13 @@ namespace up6.filemgr
             var pid = Request.QueryString["pid"];
             SqlWhereMerge swm = new SqlWhereMerge();
             if (!string.IsNullOrEmpty(pid)) swm.equal("f_pid", pid);
-            swm.equal("f_complete", 1);
-            swm.equal("f_deleted", 0);
+            swm.equal("f_complete", true);
+            swm.equal("f_deleted", false);
             swm.equal("f_uid", this.reqToInt("uid"));
 
             bool isRoot = string.IsNullOrEmpty(pid);
-            if (isRoot) swm.equal("f_fdChild", 0);
-            else swm.equal("f_fdChild", 1);
+            if (isRoot) swm.equal("f_fdChild", false);
+            else swm.equal("f_fdChild", true);
 
             swm.req_like("f_nameLoc", "key");
             string where = swm.to_sql();

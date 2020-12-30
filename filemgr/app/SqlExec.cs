@@ -257,7 +257,7 @@ namespace up6.filemgr.app
             var field_cdt = this.selFields(where, field_all);
 
             JObject o = null;
-            string sql = string.Format("select {0} from [{1}] where {2}"
+            string sql = string.Format("select {0} from {1} where {2}"
                 , this.selFieldNames(field_sel)
                 , table
                 , this.toSqlCondition(where, "and"));
@@ -424,7 +424,7 @@ namespace up6.filemgr.app
             db.ExecuteNonQuery(cmd);
         }
 
-        public void delete(string table, string where)
+        public virtual void delete(string table, string where)
         {
             JObject o = new JObject();
             string sql = string.Format("delete from [{0}] where {1}"
@@ -587,14 +587,18 @@ namespace up6.filemgr.app
             var field_sel = this.selFields(fields, field_all);
             var field_cdt = this.selFields(where, field_all);
 
-            //防止字段名称冲突
-            var fns_sql = from f in field_sel
-                          select "[" + f["name"].ToString() + "]";
+            //odbc字段标识符需要用引号
+            string fieldSymbolL = "[";
+            string fieldSymbolR = "]";
             if(this.m_cfg.m_isOdbc)
             {
-                fns_sql = from f in field_sel
-                          select "\"" + f["name"].ToString() + "\"";
+                fieldSymbolR = fieldSymbolL = "\"";
             }
+
+            //防止字段名称冲突
+            var fns_sql = from f in field_sel
+                          select fieldSymbolL + f["name"].ToString() + fieldSymbolR;
+            
             fields = string.Join(",", fns_sql.ToArray());
 
             string sql_where = "";

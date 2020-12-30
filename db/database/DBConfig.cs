@@ -44,6 +44,7 @@ namespace up6.db.database
         public DnFile downF()
         {
             if (this.m_isOracle) return new DnFileOracle();
+            if (this.m_isOdbc) return new DnFileOdbc();
             else return new DnFile();
         }
 
@@ -63,6 +64,7 @@ namespace up6.db.database
         {
             var exec = new SqlExec();
             if (this.m_isOracle) exec = new OracleExec();
+            if (this.m_isOdbc) exec = new OdbcExec();
             exec.m_cfg = this;
             return exec;
         }

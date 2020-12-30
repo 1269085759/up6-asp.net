@@ -68,7 +68,10 @@ namespace up6.filemgr.app
                     return r.IsDBNull(index) ? 0:r.GetByte(index);
                 } }
                 ,{ "bool",(DbDataReader r,int index)=>{
-                    return r.IsDBNull(index) ? false:r.GetBoolean(index);
+                    if(r.IsDBNull(index)) return false;
+                    string v = r.GetValue(index).ToString().ToLower();
+                    if(v=="1"||v=="true") return true;
+                    return false;
                 } }
             };
         }
