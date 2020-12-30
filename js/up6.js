@@ -24,6 +24,7 @@ function HttpUploaderMgr()
 		, "Authenticate"	: ""//域验证方式：basic,ntlm
 		, "AuthName"		: ""//域帐号
 		, "AuthPass"		: ""//域密码
+        , "Proxy"           : {url: ""/**http://192.168.0.1:8888 */,pwd: ""/**admin:123456 */}//代理
 		, "CryptoType"      : "md5"//验证方式：md5,sha1,crc
 		, "security":{
 			"encrypt":page.path.security.encrypt,

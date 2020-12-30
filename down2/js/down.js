@@ -25,6 +25,7 @@ function DownloaderMgr()
         , "ThreadChild" : 3//子文件线程数，提供给文件夹使用。3~10
 		, "FilePart"	: 5242880//文件块大小，计算器：http://www.beesky.com/newsite/bit_byte.htm
         , "FolderClear"	: true//下载前是否清空目录
+        , "Proxy"       : {url: ""/**http://192.168.0.1:8888 */,pwd: ""/**admin:123456 */}//代理
         //file
         , "UrlCreate"   : page.path.root+"down2/db/f_create.aspx"
         , "UrlDel"      : page.path.root+"down2/db/f_del.aspx"
