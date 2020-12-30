@@ -55,6 +55,7 @@ namespace up6.filemgr.app
         protected SqlParValSetter m_pvSetter;
         protected SqlParamSetter m_parSetter;
         protected SqlCmdReader m_cmdRd;
+        public DBConfig m_cfg = null;
 
         public SqlExec()
         {
@@ -559,6 +560,13 @@ namespace up6.filemgr.app
 
             var arr = from t in ps
                       select string.Format("{0}=@{0}", t.Name);
+
+            if(this.m_cfg.m_isOdbc)
+            {
+                arr = from t in ps
+                      select string.Format("{0}=?", t.Name);
+            }
+
             var name = string.Join(" " + pre + " ", arr.ToArray());
             return name;
         }
@@ -582,6 +590,11 @@ namespace up6.filemgr.app
             //防止字段名称冲突
             var fns_sql = from f in field_sel
                           select "[" + f["name"].ToString() + "]";
+            if(this.m_cfg.m_isOdbc)
+            {
+                fns_sql = from f in field_sel
+                          select "\"" + f["name"].ToString() + "\"";
+            }
             fields = string.Join(",", fns_sql.ToArray());
 
             string sql_where = "";

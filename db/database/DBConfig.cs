@@ -12,22 +12,26 @@ namespace up6.db.database
     public class DBConfig
     {
         public bool m_isOracle = false;
+        public bool m_isOdbc = false;
 
         public DBConfig()
         {
             DbHelper db = new DbHelper();
             this.m_isOracle = db.isOracle();
+            this.m_isOdbc = db.isOdbc();
         }
 
         public un_builder ub()
         {
             if (this.m_isOracle) return new un_builder_oracle();
+            if (this.m_isOdbc) return new un_builder_odbc();
             else return new un_builder();
         }
 
         public DBFile db()
         {
             if (this.m_isOracle) return new DBFileOracle();
+            if (this.m_isOdbc) return new DbFileOdbc();
             else return new DBFile();
         }
 
@@ -57,13 +61,16 @@ namespace up6.db.database
 
         public SqlExec se()
         {
-            if (this.m_isOracle) return new OracleExec();
-            else return new SqlExec();
+            var exec = new SqlExec();
+            if (this.m_isOracle) exec = new OracleExec();
+            exec.m_cfg = this;
+            return exec;
         }
 
         public DbBase bs()
         {
             if (this.m_isOracle) return new OracleDbBase();
+            if (this.m_isOdbc) return new OdbcDbBase();
             else return new DbBase();
         }
 

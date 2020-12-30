@@ -344,6 +344,7 @@
     <Compile Include="db\biz\PathBuilderMd5.cs" />
     <Compile Include="db\biz\PathBuilderUuid.cs" />
     <Compile Include="db\biz\un_builder.cs" />
+    <Compile Include="db\biz\un_builder_odbc.cs" />
     <Compile Include="db\biz\un_builder_oracle.cs" />
     <Compile Include="db\biz\up6_biz_event.cs" />
     <Compile Include="db\clear.aspx.cs">
@@ -355,8 +356,10 @@
     </Compile>
     <Compile Include="db\database\DBConfig.cs" />
     <Compile Include="db\database\DBFile.cs" />
+    <Compile Include="db\database\DbFileOdbc.cs" />
     <Compile Include="db\database\DBFileOracle.cs" />
     <Compile Include="db\database\DBFolder.cs" />
+    <Compile Include="db\database\DBFolderOdbc.cs" />
     <Compile Include="db\database\DBFolderOracle.cs" />
     <Compile Include="db\database\DbHelper.cs" />
     <Compile Include="db\fd_complete.aspx.cs">
@@ -501,6 +504,7 @@
     <Compile Include="filemgr\app\DbFolder.cs" />
     <Compile Include="filemgr\app\FolderBuilder.cs" />
     <Compile Include="filemgr\app\HtmlTemplater.cs" />
+    <Compile Include="filemgr\app\OdbcDbBase.cs" />
     <Compile Include="filemgr\app\OracleCmdReader.cs" />
     <Compile Include="filemgr\app\OracleDbBase.cs" />
     <Compile Include="filemgr\app\OracleExec.cs" />

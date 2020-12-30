@@ -60,6 +60,9 @@ namespace up6.db.database
     public class DbHelper
     {
         public DbConnection connection;
+        private bool m_isSql = true;
+        private bool m_isOracle = false;
+        private bool m_isOdbc = false;
 
         /// <summary>
         /// 获取数据库连接字符串
@@ -82,24 +85,27 @@ namespace up6.db.database
             return constr;
         }
 
+        public DbHelper()
+        {
+            this.connection = CreateConnection(GetConStr());
+            this.m_isOracle = string.Compare(GetProvider(), "System.Data.OracleClient") == 0;
+            this.m_isSql = string.Compare(GetProvider(), "System.Data.SqlClient") == 0;
+            this.m_isOdbc = string.Compare(GetProvider(), "System.Data.Odbc") == 0;
+        }
+
         public bool isOracle()
         {
-            return string.Compare(GetProvider(), "System.Data.OracleClient") == 0;
+            return this.m_isOracle;
+        }
+
+        public bool isOdbc()
+        {
+            return this.m_isOdbc;
         }
 
         public bool isSql()
         {
-            return string.Compare(GetProvider(), "System.Data.SqlClient") == 0;
-        }
-
-        public DbHelper()
-        {
-            this.connection = CreateConnection(GetConStr());
-        }
-
-        public DbHelper(string connectionString)
-        {
-            this.connection = CreateConnection(GetConStr());
+            return this.m_isSql;
         }
 
         public static DbConnection CreateConnection()
