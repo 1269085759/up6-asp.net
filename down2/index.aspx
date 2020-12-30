@@ -12,7 +12,7 @@
         var downer = new DownloaderMgr();
         downer.Config["Folder"] = "";
         downer.event.ready = function () {
-            load_files();
+            load_files();//加载未完成列表
         };
         var svrFiles = new Object();
 
@@ -84,9 +84,6 @@
         {
             $("#tbCmp").hide().after("<p id='msg_load'>正在加载数据<p>");
     	    downer.loadTo("downDiv");
-
-    	    //加载HttpUploader6上传的文件列表
-            load_files();
 
             $("#btnDownSel").click(function () {
                 if (downer.Config["Folder"] == "") { downer.openConfig(); return; }
