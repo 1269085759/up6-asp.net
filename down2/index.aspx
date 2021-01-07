@@ -12,7 +12,7 @@
         var downer = new DownloaderMgr();
         downer.Config["Folder"] = "";
         downer.event.ready = function () {
-            load_files();
+            load_files();//加载未完成列表
         };
         var svrFiles = new Object();
 
