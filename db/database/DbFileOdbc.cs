@@ -38,7 +38,7 @@ namespace up6.db.database
             sb.Append(",f_complete");
             sb.Append(",f_time");
             sb.Append(",f_deleted");
-            sb.Append(" from up6_files where f_md5=? and f_complete=1 and rownum<=1 order by f_perSvr DESC");
+            sb.Append(" from up6_files where f_md5=? and f_complete=True and rownum<=1 order by f_perSvr DESC");
 
             DbHelper db = new DbHelper();
             DbCommand cmd = db.GetCommand(sb.ToString());
@@ -166,9 +166,9 @@ namespace up6.db.database
         public override void fd_complete(string f_id, string uid)
         {
             string sql = "begin ";
-            sql += "update up6_files set f_perSvr='100%',f_lenSvr=f_lenLoc,f_complete=1 where f_id=? and f_uid=?;";
-            sql += "update up6_folders set f_complete=1 where f_id=? and f_uid=?;";
-            sql += "update up6_files set f_perSvr='100%',f_lenSvr=f_lenLoc,f_complete=1 where f_pidRoot=?;";
+            sql += "update up6_files set f_perSvr='100%',f_lenSvr=f_lenLoc,f_complete=True where f_id=? and f_uid=?;";
+            sql += "update up6_folders set f_complete=True where f_id=? and f_uid=?;";
+            sql += "update up6_files set f_perSvr='100%',f_lenSvr=f_lenLoc,f_complete=True where f_pidRoot=?;";
             sql += "end;";
 
             DbHelper db = new DbHelper();
@@ -185,7 +185,7 @@ namespace up6.db.database
         /// <param name="uid"></param>
         public override void fd_scan(string id, string uid)
         {
-            string sql = "update up6_files set f_scan=1 where f_id=? and f_uid=?";
+            string sql = "update up6_files set f_scan=True where f_id=? and f_uid=?";
 
             DbHelper db = new DbHelper();
             DbCommand cmd = db.GetCommand(sql);
@@ -226,7 +226,7 @@ namespace up6.db.database
 
         public override void complete(string id)
         {
-            string sql = "update up6_files set f_lenSvr=f_lenLoc,f_perSvr='100%',f_complete=1,f_scan=1 where f_id=?";
+            string sql = "update up6_files set f_lenSvr=f_lenLoc,f_perSvr='100%',f_complete=True,f_scan=True where f_id=?";
             DbHelper db = new DbHelper();
             DbCommand cmd = db.GetCommand(sql);
 
@@ -241,7 +241,7 @@ namespace up6.db.database
         /// <param name="f_id"></param>
         public override void Delete(int f_uid, string f_id)
         {
-            string sql = "update up6_files set f_deleted=1 where f_uid=? and f_id=?";
+            string sql = "update up6_files set f_deleted=True where f_uid=? and f_id=?";
             DbHelper db = new DbHelper();
             DbCommand cmd = db.GetCommand(sql);
 
@@ -252,7 +252,7 @@ namespace up6.db.database
 
         public override void delete(string pid, string name, int uid, string id)
         {
-            string sql = "update up6_files set f_deleted=1 where nvl(f_pid,' ')=? and f_nameLoc=? and f_uid=? and f_id!=?";
+            string sql = "update up6_files set f_deleted=True where nvl(f_pid,' ')=? and f_nameLoc=? and f_uid=? and f_id!=?";
             DbHelper db = new DbHelper();
             DbCommand cmd = db.GetCommand(sql);
 

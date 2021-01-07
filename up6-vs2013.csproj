@@ -608,6 +608,7 @@
     <Folder Include="filemgr\res\bootstrap\css\_notes\" />
     <Folder Include="filemgr\res\bootstrap\fonts\_notes\" />
     <Folder Include="filemgr\res\bootstrap\js\_notes\" />
+    <Folder Include="sql\kingbase\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
