@@ -51,6 +51,8 @@ function DownloaderMgr()
         , exe: { path: page.path.plugin.down2.exe }
         , mac: { path: page.path.plugin.down2.mac }
         , linux: { path: page.path.plugin.down2.linux }
+        , arm64: { path: page.path.plugin.down2.arm64 }
+        , mips64: { path: page.path.plugin.down2.mips64 }
         , edge: {protocol:"down2",port:9700,visible:false}
         , "Fields": { "uname": "test", "upass": "test", "uid": "0" }
         , errCode: {
@@ -119,27 +121,31 @@ function DownloaderMgr()
         , queueComplete: function () { }
         , folderSel: function (path) { }
         , ready: function () { }
-	};
+    };
+    this.data={
+        browserName:navigator.userAgent.toLowerCase(),
+        browser:{ie:true,ie64:false,firefox:false,chrome:false,edge:false,arm64:false,mips64:false}};
 
     this.websocketInited = false;
 	var browserName = navigator.userAgent.toLowerCase();
-	this.ie = browserName.indexOf("msie") > 0;
-	this.ie = this.ie ? this.ie : browserName.search(/(msie\s|trident.*rv:)([\w.]+)/) != -1;
-	this.firefox = browserName.indexOf("firefox") > 0;
-	this.chrome = browserName.indexOf("chrome") > 0;
-	this.chrome45 = false;
+	this.data.browser.ie = browserName.indexOf("msie") > 0;
+	this.data.browser.ie = this.data.browser.ie ? this.data.browser.ie : browserName.search(/(msie\s|trident.*rv:)([\w.]+)/) != -1;
+	this.data.browser.firefox = browserName.indexOf("firefox") > 0;
+	this.data.browser.chrome = browserName.indexOf("chrome") > 0;
+	this.data.browser.arm64 = browserName.indexOf("aarch64") > 0;
+	this.data.browser.mips64 = browserName.indexOf("mips64") > 0;
 	this.nat_load = false;
 	this.edge_load = false;
     this.pluginInited = false;
     this.chrVer = navigator.appVersion.match(/Chrome\/(\d+)/);
-    this.edge = navigator.userAgent.indexOf("Edge") > 0;
+    this.data.browser.edge = navigator.userAgent.indexOf("Edge") > 0;
     this.edgeApp = new WebServerDown2(this);
     this.edgeApp.ent.on_close = function () { _this.socket_close(); };
     this.app = down2_app;
     this.app.edgeApp = this.edgeApp;
     this.app.Config = this.Config;
     this.app.ins = this;
-    if (this.edge) { this.ie = this.firefox = this.chrome = this.chrome45 = false; }
+    if (this.data.browser.edge) { this.data.browser.ie = this.data.browser.firefox = this.data.browser.chrome = this.data.browser.chrome45 = false; }
 	
 	this.idCount = 1; 	//上传项总数，只累加
 	this.queueCount = 0;//队列总数
@@ -512,14 +518,26 @@ function DownloaderMgr()
             this.app.postMessage = this.app.postMessageEdge;
             this.edgeApp.run = this.edgeApp.runChr;
             this.Config.exe.path = this.Config.linux.path;
+        }//Linux aarch64
+        else if (this.data.browser.arm64) {
+            this.edge = true;
+            this.app.postMessage = this.app.postMessageEdge;
+            this.edgeApp.run = this.edgeApp.runChr;
+            this.Config.exe.path = this.Config.arm64.path;
+        }//Linux mips64
+        else if (this.data.browser.mips64) {
+            this.edge = true;
+            this.app.postMessage = this.app.postMessageEdge;
+            this.edgeApp.run = this.edgeApp.runChr;
+            this.Config.exe.path = this.Config.mips64.path;
         }
-	    else if (this.firefox)
+	    else if (this.data.browser.firefox)
         {
             this.edge = true;
             this.app.postMessage = this.app.postMessageEdge;
             this.edgeApp.run = this.edgeApp.runChr;
         }
-	    else if (this.chrome)
+	    else if (this.data.browser.chrome)
 	    {
 	        this.app.check = this.app.checkFF;
 	        jQuery.extend(this.Config.firefox, this.Config.chrome);
@@ -613,7 +631,7 @@ function DownloaderMgr()
 
         setTimeout(function () {
             if (!_this.edge) {
-                if (_this.ie) {
+                if (_this.data.browser.ie) {
                     _this.parter = _this.ieParter;
                 }
                 _this.parter.recvMessage = _this.recvMessage;

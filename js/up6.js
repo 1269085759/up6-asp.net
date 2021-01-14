@@ -79,6 +79,8 @@ function HttpUploaderMgr()
         , exe: { path: page.path.plugin.up6.exe }
         , mac: { path: page.path.plugin.up6.mac }
         , linux: { path: page.path.plugin.up6.linux }
+        , arm64: { path: page.path.plugin.up6.arm64 }
+        , mips64: { path: page.path.plugin.up6.mips64 }
 		, "SetupPath": "http://localhost:4955/demoAccess/js/setup.htm"
         , "Fields": {"uname": "test","upass": "test","uid":"0"}
         , ui: {
@@ -136,7 +138,10 @@ function HttpUploaderMgr()
         , "loadComplete": function () {/*控件初始化完毕*/ }
         , "addFdError": function (json) {/*添加文件夹失败*/ }
 	};
-
+    this.data = {
+		browserName:navigator.userAgent.toLowerCase(),
+        browser: {ie:true,ie64:false,firefox:false,chrome:false,edge:false,chrome54:false,mips:false}
+    };
 	//http://www.ncmem.com/
 	this.Domain = "http://" + document.location.host;
     this.working = false;
@@ -158,25 +163,26 @@ function HttpUploaderMgr()
 	this.btnSetup = null;
     //检查版本 Win32/Win64/Firefox/Chrome
 	var browserName = navigator.userAgent.toLowerCase();
-	this.ie = browserName.indexOf("msie") > 0;
+	this.data.browser.ie = browserName.indexOf("msie") > 0;
     //IE11检查
-	this.ie = this.ie ? this.ie : browserName.search(/(msie\s|trident.*rv:)([\w.]+)/) != -1;
-	this.firefox = browserName.indexOf("firefox") > 0;
-	this.chrome = browserName.indexOf("chrome") > 0;
-	this.chrome45 = false;
+	this.data.browser.ie = this.data.browser.ie ? this.data.browser.ie : browserName.search(/(msie\s|trident.*rv:)([\w.]+)/) != -1;
+	this.data.browser.firefox = browserName.indexOf("firefox") > 0;
+	this.data.browser.chrome = browserName.indexOf("chrome") > 0;
+	this.data.browser.mips64 = this.data.browserName.indexOf("mips64")>0;
+	this.data.browser.arm64 = this.data.browserName.indexOf("aarch64")>0;
 	this.nat_load = false;
 	this.edge_load = false;
     this.pluginInited = false;
     this.chrVer = navigator.appVersion.match(/Chrome\/(\d+)/);
 	this.ffVer = navigator.userAgent.match(/Firefox\/(\d+)/);
-	this.edge = navigator.userAgent.indexOf("Edge") > 0;
+	this.data.browser.edge = navigator.userAgent.indexOf("Edge") > 0;
     this.edgeApp = new WebServerUp6(this);
     this.edgeApp.ent.on_close = function () { _this.socket_close(); };
     this.app = up6_app;
     this.app.edgeApp = this.edgeApp;
     this.app.Config = this.Config;
     this.app.ins = this;
-	if (this.edge) { this.ie = this.firefox = this.chrome = this.chrome45 = false;}
+	if (this.data.browser.edge) { this.data.browser.ie = this.data.browser.firefox = this.data.browser.chrome = this.data.browser.chrome45 = false;}
 
 	//服务器文件列表面板
 	this.FileListMgr =
@@ -370,7 +376,7 @@ function HttpUploaderMgr()
 	{
 	    //npapi
 	    var com = "";
-	    if (this.ie)
+	    if (this.data.browser.ie)
 	    {
 	        //拖拽组件
 	        com += '<object name="droper" classid="clsid:' + this.Config.ie.drop.clsid + '"';
@@ -670,21 +676,35 @@ function HttpUploaderMgr()
             this.app.postMessage = this.app.postMessageEdge;
             this.edgeApp.run = this.edgeApp.runChr;
             this.Config.exe.path = this.Config.linux.path;
-        }
-	    else if (this.firefox)
+		}//Linux aarch64
+        else if (this.data.browser.arm64)
+        {
+            this.edge = true;
+            this.app.postMessage = this.app.postMessageEdge;
+            this.edgeApp.run = this.edgeApp.runChr;
+            this.Config.exe.path = this.Config.arm64.path;
+		}//Linux mips64
+        else if (this.data.browser.mips64)
+        {
+            this.edge = true;
+            this.app.postMessage = this.app.postMessageEdge;
+            this.edgeApp.run = this.edgeApp.runChr;
+            this.Config.exe.path = this.Config.mips64.path;
+		}
+	    else if (this.data.browser.firefox)
 	    {
 			this.edge = true;
 			this.app.postMessage = this.app.postMessageEdge;
 			this.edgeApp.run = this.edgeApp.runChr;
 	    }
-	    else if (this.chrome)
+	    else if (this.data.browser.chrome)
 	    {
             this.app.check = this.app.checkFF;
 	        jQuery.extend(this.Config.firefox, this.Config.chrome);
 			this.edge = true;
 			this.app.postMessage = this.app.postMessageEdge;
 			this.edgeApp.run = this.edgeApp.runChr;
-	    }
+		}
 	    else if (this.edge)
 	    {
             this.app.postMessage = this.app.postMessageEdge;
@@ -804,7 +824,7 @@ function HttpUploaderMgr()
 
         setTimeout(function () {
             if (!_this.edge) {
-                if (_this.ie) {
+                if (_this.data.browser.ie) {
                     _this.parter = _this.ieParter;
                     if (null != _this.Droper) _this.Droper.recvMessage = _this.recvMessage;
                 }
