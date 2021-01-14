@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using up6.db.database;
 
 namespace up6.filemgr.app
 {
@@ -27,10 +28,19 @@ namespace up6.filemgr.app
         /// 字段名称，表达式
         /// </summary>
         Dictionary<string, string> m_cds;
+        DBConfig m_dbCfg;
+        string m_boolTrue = "1";
+        string m_boolFalse = "0";
 
         public SqlWhereMerge()
         {
             this.m_cds = new Dictionary<string, string>();
+            this.m_dbCfg = new DBConfig();
+            if(this.m_dbCfg.m_isOdbc)
+            {
+                this.m_boolTrue = "True";
+                this.m_boolFalse = "False";
+            }
         }
 
         /// <summary>
@@ -58,7 +68,8 @@ namespace up6.filemgr.app
 
         public void equal(string n, bool v)
         {
-            this.m_cds[n] = string.Format("{0}={1}", n, v);
+            string bv = v ? m_boolTrue : m_boolFalse;
+            this.m_cds[n] = string.Format("{0}={1}", n, bv);
         }
 
         /// <summary>
