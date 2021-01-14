@@ -22,7 +22,8 @@ namespace up6.db.database
 
         public virtual void del(string id,int uid)
         {
-            SqlExec se = new SqlExec();
+            DBConfig cfg = new DBConfig();
+            SqlExec se = cfg.se();
             se.update("up6_files",
                 new SqlParam[] {
                     new SqlParam("f_deleted",true)

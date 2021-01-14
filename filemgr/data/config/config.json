@@ -1,7 +1,7 @@
 ﻿{
     "database": {
       "connection": {
-        "type": "kingbase",
+        "type": "sql",
         "sql": {
           "addr": "Data Source=(local)\\SQL2005;Initial Catalog=up6;User Id=sa;Password=123456;",
           "provider": "System.Data.SqlClient"
