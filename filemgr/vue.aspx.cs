@@ -304,10 +304,12 @@ namespace up6.filemgr
         /// </summary>
         void load_uncomplete()
         {
+            string uid = this.reqString("uid");
             DBConfig cfg = new DBConfig();
             SqlExec se = cfg.se();
+            string sql = string.Format("select f_id ,f_nameLoc ,f_pathLoc ,f_sizeLoc ,f_lenSvr ,f_perSvr ,f_fdTask ,f_md5 from up6_files where f_complete=0 and f_deleted=0 and f_uid={0}", int.Parse(uid));
             var files = se.exec("up6_files"
-                , "select f_id ,f_nameLoc ,f_pathLoc ,f_sizeLoc ,f_lenSvr ,f_perSvr ,f_fdTask ,f_md5 from up6_files where f_complete=0 and f_deleted=0"
+                , sql
                 , "f_id,f_nameLoc,f_pathLoc,f_sizeLoc,f_lenSvr,f_perSvr,f_fdTask,f_md5"
                 , "id,nameLoc,pathLoc,sizeLoc,lenSvr,perSvr,fdTask,md5");
             this.toContent(files);
