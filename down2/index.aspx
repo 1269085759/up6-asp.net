@@ -119,6 +119,7 @@
             };
             //批量下载
             this.btnDownBat_click = function(){
+                _this.data.sels([]);
                 $.each(_this.data.filesSvr(),function(i,n){
                     if(n.sel)
                     {
