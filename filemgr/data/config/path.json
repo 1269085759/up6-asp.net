@@ -74,7 +74,8 @@
         "http://localhost:8888/down2/js/down.file.js",
         "http://localhost:8888/down2/js/down.folder.js",
         "http://localhost:8888/down2/js/down.js",
-        "http://localhost:8888/down2/js/down.css"
+        "http://localhost:8888/down2/js/down.css",
+        "http://localhost:8888/down2/js/knockout.js"
     ],
     "fm": "http://localhost:8888/filemgr/",
     "res": "http://localhost:8888/filemgr/res/",

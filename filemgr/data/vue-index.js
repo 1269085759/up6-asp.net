@@ -14,6 +14,7 @@
             , pathCur: { f_id: "", f_pid: "", f_pidRoot: "", f_nameLoc: "根目录", f_pathRel: "/" }
             , pathRoot: { f_id: "", f_pid: "", f_pidRoot: "", f_nameLoc: "根目录", f_pathRel: "/" }
             , idSels: []
+            , fileCur:null
             , idSelAll: false
             , folderMker: {name:'',edit:false}
             , ico: {
@@ -306,6 +307,7 @@
 
             }
             , itemDown_click: function (f) {
+                this.fileCur=f;
                 if (!this.$refs.down.check_path()) return;
                 var _this = this;
                 var dt = {
@@ -454,6 +456,15 @@
                     , error: function (req, txt, err) { alert("加载文件列表失败！" + req.responseText); }
                     , complete: function (req, sta) { req = null; }
                 });
+            }
+            , down_folderSel : function(){                
+                var _this = this;
+                setTimeout(function(){
+                    if(_this.fileCur!=null) _this.itemDown_click(_this.fileCur);
+                    _this.btnDowns_click();
+                    _this.fileCur = null;
+                },1000);
+                this.openDown_click();
             }
             , taskEmpty: function () {
                 var ept = this.$refs.up6.taskEmpty();

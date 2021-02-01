@@ -9,7 +9,7 @@
 */
 function debug_msg(v) { $(document.body).append("<div>"+v+"</div>");}
 
-function DownloaderMgr()
+function DownloaderMgr(cfg)
 {
 	var _this = this;
 	this.Config = {
@@ -87,11 +87,9 @@ function DownloaderMgr()
             ,list: 'div[name="down_body"]'
             , header: 'div[name="down_header"]'
             , toolbar: 'div[name="down_toolbar"]'
-            , footer: 'div[name="down_footer"]'
             , btn: {
                 setup: 'span[name="btnSetup"]'
                 , setFolder: "span[name='btnSetFolder']"
-                , clear: 'span[name="btnClear"]'
             }
             , ele: {
                 ico: {
@@ -112,16 +110,21 @@ function DownloaderMgr()
                     ,openFd:'span[name="open-fd"]'
                 }
             }
-        }
-	};
+        },
+        event:{}
+    };
+    $.extend(this.Config,cfg);
 
     this.event = {
-          downComplete: function (obj) { }
-        , downError: function (obj, err) { }
-        , queueComplete: function () { }
-        , folderSel: function (path) { }
-        , ready: function () { }
+          downComplete: function (obj) { },
+          downError: function (obj, err) { },
+          queueComplete: function () { },
+          folderSel: function (path) { },
+          ready: function () { },
+          fileAppend : function(obj){}/**添加任务 */
     };
+    $.extend(this.event,this.Config.event);
+
     this.data={
         browserName:navigator.userAgent.toLowerCase(),
         browser:{ie:true,ie64:false,firefox:false,chrome:false,edge:false,arm64:false,mips64:false}};
@@ -158,16 +161,21 @@ function DownloaderMgr()
 	this.btnSetup = null;//安装控件的按钮
     this.working = false;
     this.allStoped = false;//
-    this.ui = { file: null ,list:null,panel:null,header:null,footer:null};
+    this.ui = { file: null ,list:null,panel:null,header:null};
 
     //api
-    this.addFile = function (v) {
+    this.addFile = function (f) {
         if (!this.pluginCheck()) return;
-        this.app.addFile(v);
+        var pv = $.extend({},f,{fileUrl:this.Config["UrlDown"]});
+        this.app.addFile(pv);
     };
     this.addFolder = function (v) {
         if (!this.pluginCheck()) return;
         this.app.addFolder(v);
+    };
+    this.addTask = function(v){
+        if(v.fdTask) this.addFolder(v);
+        else this.addFile(v);
     };
     this.openConfig = function () {
         if (!this.pluginCheck()) return;
@@ -207,12 +215,10 @@ function DownloaderMgr()
 						<span class="toolbar-btn" name="btnStart">全部下载</span>\
 						<span class="toolbar-btn" name="btnStop">全部停止</span>\
 						<span class="toolbar-btn" name="btnSetup">安装控件</span>\
+						<span class="toolbar-btn" name="btnClear">清除已完成文件</span>\
 					</div>\
 					<div class="content" name="down_content">\
 						<div name="down_body" class="file-post-view"></div>\
-					</div>\
-					<div class="footer" name="down_footer">\
-						<span class="btn-footer" name="btnClear">清除已完成文件</span>\
 					</div>\
 				</div>';
 	    return html;
@@ -235,7 +241,8 @@ function DownloaderMgr()
 	{
 	    $.each(this.filesCmp, function (i,n)
 	    {
-	        n.remove();
+            n.remove();
+            _this.remove_url(n.fileSvr.nameLoc);
 	    });
 	    this.filesCmp.length = 0;
     };
@@ -296,6 +303,7 @@ function DownloaderMgr()
         ui.process.width(f.perLoc);
 
         downer.ready(); //准备
+        this.event.fileAppend(downer);
     };
 	this.resume_folder = function (fdSvr)
     {
@@ -438,7 +446,9 @@ function DownloaderMgr()
         if (this.websocketInited) return;
         this.websocketInited = true;
         this.pluginInited = true;
-        setTimeout(function () { _this.event.ready(); }, 300);
+        setTimeout(function () { 
+            _this.loadFiles();//
+            _this.event.ready(); }, 300);
 
         this.btnSetup.hide();
         var needUpdate = true;
@@ -584,7 +594,6 @@ function DownloaderMgr()
 	    var html = this.getHtml();
 	    var ui = $(document.body).append(html);
 	    this.initUI(ui);
-	    this.loadFiles();
 	};
 	//加截到指定dom
 	this.loadTo = function(id)
@@ -593,7 +602,6 @@ function DownloaderMgr()
 	    var html = this.getHtml();
 	    var ui = obj.append(html);
 	    this.initUI(ui);
-	    this.loadFiles();
 	};
 	this.initUI = function (ui/*jquery obj*/)
 	{
@@ -606,8 +614,7 @@ function DownloaderMgr()
 	    var down_body = ui.find(this.Config.ui.list);
 	    var down_head = ui.find(this.Config.ui.header);
 	    var post_bar = ui.find(this.Config.ui.toolbar);
-	    var post_foot = ui.find(this.Config.ui.footer);
-	    down_body.height(this.down_panel.height() - post_bar.height() - down_head.height() - post_foot.outerHeight() - 1);
+	    down_body.height(this.down_panel.height() - post_bar.height() - down_head.height() - 1);
 
 	    var btnSetFolder = ui.find(this.Config.ui.btn.setFolder);
 	    this.ui.list = down_body;
@@ -616,11 +623,7 @@ function DownloaderMgr()
         btnSetFolder.click(function () { _this.openConfig(); });
         this.btnSetup.click(function () { window.open(_this.Config.exe.path); });
 		//清除已完成
-        ui.find(this.Config.ui.btn.clear).click(function () { _this.clearComplete(); }).hover(function () {
-            $(this).addClass("btn-footer-hover");
-        }, function () {
-            $(this).removeClass("btn-footer-hover");
-        });
+        ui.find('span[name="btnClear"]').click(function () { _this.clearComplete(); });
 		ui.find('span[name="btnStart"]').click(function () { _this.start_queue(); });
         ui.find('span[name="btnStop"]').click(function () { _this.stop_queue(); });
         ui.find('span[class="toolbar-btn"]').hover(function () {

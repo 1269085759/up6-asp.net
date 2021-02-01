@@ -137,7 +137,8 @@ function DownloaderMgr()
         downError: function (obj, err) { },
         queueComplete: function () { },
         loadComplete: function () { },
-        unsetup:function(html){}
+        unsetup:function(html){},
+        folderSel: function (path) { }
 	};
 
     this.websocketInited = false;
@@ -380,6 +381,7 @@ function DownloaderMgr()
         //用户选择的路径
         //json.path
         this.Config["Folder"] = json.path;
+        this.event.folderSel(json.path);
     };
 	this.down_recv_size = function (json)
 	{

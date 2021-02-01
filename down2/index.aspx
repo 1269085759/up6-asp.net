@@ -9,96 +9,111 @@
     <script type="text/javascript" src="js/jquery-1.4.min.js"></script>
     <%= this.require( this.m_path["down2"] ) %>
     <script language="javascript" type="text/javascript">
-        var downer = new DownloaderMgr();
-        downer.Config["Folder"] = "";
-        downer.event.ready = function () {
-            load_files();//加载未完成列表
-        };
-        var svrFiles = new Object();
-
-        function load_files()
-        {
-            $.ajax({
-                type: "GET"
-                , dataType: 'jsonp'
-                , jsonp: "callback" //自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名
-                , url: downer.Config["UrlListCmp"]
-                , data: { uid: downer.Config.Fields["uid"], time: new Date().getTime() }
-                , success: function (msg)
-                {
-                    if (msg.value == null)
-                    {
-                        $("#msg_load").hide();
-                        return;
-                    }
-
-                    var files = JSON.parse( decodeURIComponent(msg.value) );
-                    var tb = $("#tbCmp");
-                    tb.find('input[name="btnSelAll"]').click(function () {
-                        var ck = $(this).attr("checked");
-                        $("input[name='cbSel']").each(function (i,n) {
-                            $(n).attr("checked", ck);
-                        });
-                    });
-
-                    $.each(files, function (i, item)
-                    {
-                        var tmp = $("#tbHead").clone();
-                        var tdSel = tmp.find('td[name="sel"]').html('<input type="checkbox" name="cbSel" />');
-                        tdSel.find("input").attr("fid", item.id);
-                        var tdType = tmp.find('td[name="type"]');
-                        var tdName = tmp.find('td[name="name"]');
-                        var tdSize = tmp.find('td[name="size"]');
-                        var tdOp = tmp.find('td[name="op"]');
-                        var f = item;
-                        f.fileUrl = downer.Config.UrlDown;
-                        if (f.fdTask ) { tdType.text("文件夹"); }
-                        else { tdType.text("文件"); }
-                        tdName.text(f.nameLoc);
-                        tdSize.text(f.sizeSvr);
-                        tdOp.text("下载").css("cursor", "pointer").click(function ()
+        function PageApp() {
+            var _this = this;
+            this.data = {
+                filesSvr:ko.observableArray([]),
+                downer:new DownloaderMgr({
+                    event:{
+                        ready:function()
                         {
-                            if (downer.Config["Folder"] == "") { downer.app.openFolder(); return; }
-                            //文件夹
-                            if (f.fdTask)
-                            {
-                                downer.addFolder(f);
-                            }
-                            else
-                            {
-                                downer.addFile( f);
-                            }                            
+                            _this.load_files();
+                        },
+                        folderSel:function(dir){
+                            _this.down_folderSel(dir);
+                        },
+                        fileAppend:function(f){
+                            _this.down_fileAppend(f);
+                        }
+                    }
+                }),
+                downCur:null,
+                sels:[]
+            };
+            this.ui = {
+                tip:null
+            };
+
+            //api
+            this.load_files = function () {
+                $.ajax({
+                    type: "GET"
+                    , dataType: 'jsonp'
+                    , jsonp: "callback" //自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名
+                    , url: _this.data.downer.Config["UrlListCmp"]
+                    , data: { uid: _this.data.downer.Config.Fields["uid"], time: new Date().getTime() }
+                    , success: function (msg) {
+                        _this.ui.tip.hide();
+                        if (msg.value == null) {
+                            $("#msg_load").hide();
+                            return;
+                        }
+
+                        var files = JSON.parse(decodeURIComponent(msg.value));
+                        _this.load_files_cmp(files);
+                    }
+                    , error: function (req, txt, err) { alert("加载上传数据失败！" + req.responseText); }
+                    , complete: function (req, sta) { req = null; }
+                });
+            };
+            this.load_files_cmp = function (files) { 
+                this.data.filesSvr.length=0;
+                $.each(files,function(i,n){
+                    _this.data.filesSvr.push(n);
+                });
+                this.ui.tip.hide();
+            };
+            this.down_folderSel = function(dir){
+                setTimeout(function(){
+                    if(_this.data.downCur!=null)
+                    {
+                        _this.data.downer.addTask(_this.data.downCur);
+                        _this.data.downCur = null;
+                    }
+                    if(_this.data.sels.length>0)
+                    {
+                        $.each(_this.data.sels,function(i,n){
+                            _this.data.downer.addTask(_this.data.downCur);
                         });
-                        tb.append(tmp);
-                        svrFiles[f.id] = f;//
-                    });
-                    tb.show();
-                    $("#msg_load").hide();
+                        _this.data.sels.length = 0;
+                    }
+                },100);
+            };
+            this.down_fileAppend = function(f){
+                setTimeout(function(){
+                    _this.data.downer.start_queue();
+                },100);
+            };
+            //event
+            this.mouse_over = function(data,e){
+                $(e.srcElement).parent().addClass("bk-hover");
+            };
+            this.mouse_out = function(data,e){
+                $(e.srcElement).parent().removeClass("bk-hover");
+            };
+            this.btnDown_click = function(d,e)
+            {
+                if (_this.data.downer.Config["Folder"] == "") 
+                { 
+                    _this.data.downCur = d;
+                    _this.data.downer.app.openFolder(); 
+                    return; 
                 }
-                , error: function (req, txt, err) { alert("加载上传数据失败！" + req.responseText); }
-                , complete: function (req, sta) { req = null; }
-            });
+
+                _this.data.downer.addFile(d);
+            };
+            //
+            this.ready = function(){
+                this.ui.tip = $("#tip").show();
+                this.data.downer.loadTo("downDiv");
+                ko.applyBindings(_this);//
+            };
         }
 
     	$(function ()
         {
-            $("#tbCmp").hide().after("<p id='msg_load'>正在加载数据<p>");
-    	    downer.loadTo("downDiv");
-
-            $("#btnDownSel").click(function () {
-                if (downer.Config["Folder"] == "") { downer.openConfig(); return; }
-                var count = 0;
-                $("input[name='cbSel']").each(function (i, n) {
-                    if ($(n).attr("checked")) {
-                        var f = svrFiles[$(n).attr("fid")];
-                        if (f.fdTask) downer.addFolder(f);
-                        else downer.addFile(f);
-                        count++;
-                    }
-                });
-                if (count) 
-                setTimeout(function () { downer.down_next();}, 500);
-            });
+            var app = new PageApp();
+            app.ready();
     	});
     </script>
 </head>
@@ -108,7 +123,8 @@
         <li><p><a target="_blank" href="../index.htm">打开上传页面</a></p></li>
         <li><p><a target="_blank" href="../db/clear.aspx">清空上传数据库</a></p></li>
         <li><p><a target="_blank" href="db/clear.aspx">清空下载数据库</a></p></li>
-    </ul>    
+    </ul>
+    <p id="tip">正在加载数据</p>
     <table id="tbCmp" cellpadding="0" cellspacing="0" border="1" class="files-svr">
         <tr id="tbHead">
             <td name="sel" align="center"><input type="checkbox" name="btnSelAll" /></td>
@@ -117,10 +133,19 @@
             <td name="size">文件大小</td>
             <td name="op">操作</td>
         </tr>
+        <tbody data-bind="foreach:data.filesSvr">
+            <tr data-bind="event:{ mouseover:$parent.mouse_over,mouseout:$parent.mouse_out}">
+                <td name="sel" align="center"><input type="checkbox"/></td>
+                <td name="type"><img src="js/file1.png" data-bind="visible:!fdTask"/><img src="js/folder1.png" data-bind="visible:fdTask"/></td>
+                <td name="name" data-bind="text:nameLoc"></td>
+                <td name="size" data-bind="text:sizeSvr"></td>
+                <td name="op"><a data-bind="click:$parent.btnDown_click"><img src="js/down.png" title='下载'/></a></td>
+            </tr>
+        </tbody>
         <tfoot>
             <tr>
                 <td colspan="5">
-                    <a id="btnDownSel">批量下载</a>
+                    <a id="btnDownSel">批量下载(<span data-bind="text:data.sels.length"></span>)</a>
                 </td>
             </tr>
         </tfoot>
