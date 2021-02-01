@@ -12,7 +12,7 @@
         function PageApp() {
             var _this = this;
             this.data = {
-                filesSvr:ko.observableArray([]),
+                filesSvr:ko.observableArray(),
                 downer:new DownloaderMgr({
                     event:{
                         ready:function()
@@ -28,11 +28,23 @@
                     }
                 }),
                 downCur:null,
-                sels:[]
+                selAll:ko.observable(false),
+                sels:ko.observableArray()
             };
             this.ui = {
                 tip:null
             };
+            
+            this.data.selAll.subscribe(function(nvalue){
+                var s = _this.data.filesSvr();
+                _this.data.filesSvr([]);
+                for(var i = 0 ;i<s.length;i++)
+                {
+                    s[i].sel = nvalue;
+                }
+                _this.data.filesSvr(s);
+                _this.data.sels(s);
+            });
 
             //api
             this.load_files = function () {
@@ -45,7 +57,6 @@
                     , success: function (msg) {
                         _this.ui.tip.hide();
                         if (msg.value == null) {
-                            $("#msg_load").hide();
                             return;
                         }
 
@@ -57,9 +68,10 @@
                 });
             };
             this.load_files_cmp = function (files) { 
-                this.data.filesSvr.length=0;
+                _this.data.filesSvr.removeAll();
                 $.each(files,function(i,n){
-                    _this.data.filesSvr.push(n);
+                    var pv = $.extend({},n,{sel:false});
+                    _this.data.filesSvr.push(pv);
                 });
                 this.ui.tip.hide();
             };
@@ -70,12 +82,12 @@
                         _this.data.downer.addTask(_this.data.downCur);
                         _this.data.downCur = null;
                     }
-                    if(_this.data.sels.length>0)
+                    if(_this.data.sels().length>0)
                     {
-                        $.each(_this.data.sels,function(i,n){
-                            _this.data.downer.addTask(_this.data.downCur);
+                        $.each(_this.data.sels(),function(i,n){
+                            _this.data.downer.addTask(n);
                         });
-                        _this.data.sels.length = 0;
+                        _this.data.sels([]);
                     }
                 },100);
             };
@@ -91,6 +103,9 @@
             this.mouse_out = function(data,e){
                 $(e.srcElement).parent().removeClass("bk-hover");
             };
+            this.btnCbk_click = function(d,e){
+                _this.data.sels.push(d);
+            };
             this.btnDown_click = function(d,e)
             {
                 if (_this.data.downer.Config["Folder"] == "") 
@@ -101,6 +116,22 @@
                 }
 
                 _this.data.downer.addFile(d);
+            };
+            //批量下载
+            this.btnDownBat_click = function(){
+                $.each(_this.data.filesSvr(),function(i,n){
+                    if(n.sel)
+                    {
+                        _this.data.sels.push(n);
+                    }
+                });
+                
+                if (_this.data.downer.Config["Folder"] == "") 
+                { 
+                    _this.data.downer.app.openFolder(); 
+                    return; 
+                }
+                _this.down_folderSel();
             };
             //
             this.ready = function(){
@@ -126,8 +157,15 @@
     </ul>
     <p id="tip">正在加载数据</p>
     <table id="tbCmp" cellpadding="0" cellspacing="0" border="1" class="files-svr">
+        <thead>
+            <tr>
+                <td colspan="5">
+                    <a data-bind="click:btnDownBat_click"><img src="js/down.png"/>批量下载</a>
+                </td>
+            </tr>            
+        </thead>
         <tr id="tbHead">
-            <td name="sel" align="center"><input type="checkbox" name="btnSelAll" /></td>
+            <td name="sel" align="center"><input type="checkbox" data-bind="checked:data.selAll" /></td>
             <td name="type">类型</td>
             <td name="name">名称</td>
             <td name="size">文件大小</td>
@@ -135,20 +173,13 @@
         </tr>
         <tbody data-bind="foreach:data.filesSvr">
             <tr data-bind="event:{ mouseover:$parent.mouse_over,mouseout:$parent.mouse_out}">
-                <td name="sel" align="center"><input type="checkbox"/></td>
+                <td name="sel" align="center"><input type="checkbox" data-bind="checked:sel"/></td>
                 <td name="type"><img src="js/file1.png" data-bind="visible:!fdTask"/><img src="js/folder1.png" data-bind="visible:fdTask"/></td>
                 <td name="name" data-bind="text:nameLoc"></td>
                 <td name="size" data-bind="text:sizeSvr"></td>
                 <td name="op"><a data-bind="click:$parent.btnDown_click"><img src="js/down.png" title='下载'/></a></td>
             </tr>
         </tbody>
-        <tfoot>
-            <tr>
-                <td colspan="5">
-                    <a id="btnDownSel">批量下载(<span data-bind="text:data.sels.length"></span>)</a>
-                </td>
-            </tr>
-        </tfoot>
     </table>
     <div id="downDiv"></div>
     <div id="msg"></div>

@@ -99,6 +99,7 @@
     <Content Include="down2\js\folder.png" />
     <Content Include="down2\js\jquery-1.4.min.js" />
     <Content Include="down2\js\json2.min.js" />
+    <Content Include="down2\js\knockout.js" />
     <Content Include="filemgr\biz\form.aspx" />
     <Content Include="filemgr\data\vue-index.js" />
     <Content Include="filemgr\data\vue-down2.js" />

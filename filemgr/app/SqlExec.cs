@@ -64,6 +64,7 @@ namespace up6.filemgr.app
             this.m_parSetter = new SqlParamSetter();
             this.m_pc = new SqlParamCreater();
             this.m_cmdRd = new SqlCmdReader();
+            this.m_cfg = new DBConfig();
         }
 
         public JToken table(string tableName) {
