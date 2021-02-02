@@ -236,7 +236,7 @@ function DownloaderMgr(cfg)
         }
         return paramStr.substr(1);
     };
-	this.set_config = function (v) { jQuery.extend(this.Config, v); };
+	this.set_config = function (v) { $.extend(this.Config, v); };
 	this.clearComplete = function ()
 	{
 	    $.each(this.filesCmp, function (i,n)
@@ -307,7 +307,7 @@ function DownloaderMgr(cfg)
     };
 	this.resume_folder = function (fdSvr)
     {
-        var fd = jQuery.extend({}, fdSvr, { svrInit: true });
+        var fd = $.extend({}, fdSvr, { svrInit: true });
 	    this.add_ui(fd);
 	    //if (null == obj) return;
         //obj.svr_inited = true;
@@ -315,7 +315,7 @@ function DownloaderMgr(cfg)
 	    //return obj;
     };
     this.resume_file = function (fSvr) {
-        var f = jQuery.extend({}, fSvr, { svrInit: true });
+        var f = $.extend({}, fSvr, { svrInit: true });
         this.add_ui(f);
         //if (null == obj) return;
         //obj.svr_inited = true;
@@ -327,7 +327,7 @@ function DownloaderMgr(cfg)
         this.app.initFile(f);
     };
     this.init_folder = function (f) {
-        this.app.initFolder(jQuery.extend({},this.Config,f));
+        this.app.initFolder($.extend({},this.Config,f));
     };
     this.init_file_cmp = function (json)
     {
@@ -515,7 +515,7 @@ function DownloaderMgr(cfg)
 	    //Win64
 	    if (window.navigator.platform == "Win64")
 	    {
-	        jQuery.extend(this.Config.ie, this.Config.ie64);
+	        $.extend(this.Config.ie, this.Config.ie64);
         }//macOS
         else if (window.navigator.platform == "MacIntel") {
             this.data.browser.edge = true;
@@ -550,7 +550,7 @@ function DownloaderMgr(cfg)
 	    else if (this.data.browser.chrome)
 	    {
 	        this.app.check = this.app.checkFF;
-	        jQuery.extend(this.Config.firefox, this.Config.chrome);
+	        $.extend(this.Config.firefox, this.Config.chrome);
             this.data.browser.edge = true;
             this.app.postMessage = this.app.postMessageEdge;
             this.edgeApp.run = this.edgeApp.runChr;
@@ -652,7 +652,7 @@ function DownloaderMgr(cfg)
     //加载未未完成列表
 	this.loadFiles = function ()
 	{
-	    var param = jQuery.extend({}, this.Config.Fields, { time: new Date().getTime()});
+	    var param = $.extend({}, this.Config.Fields, { time: new Date().getTime()});
 	    $.ajax({
 	        type: "GET"
             , dataType: 'jsonp'
