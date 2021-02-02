@@ -140,7 +140,7 @@ function HttpUploaderMgr()
 	};
     this.data = {
 		browserName:navigator.userAgent.toLowerCase(),
-        browser: {ie:true,ie64:false,firefox:false,chrome:false,edge:false,chrome54:false,mips:false}
+        browser: {ie:true,ie64:false,firefox:false,chrome:false,edge:false,arm64:false,mips64:false}
     };
 	//http://www.ncmem.com/
 	this.Domain = "http://" + document.location.host;
@@ -383,7 +383,7 @@ function HttpUploaderMgr()
 	        com += ' codebase="' + this.Config.ie.path + '#version=' + this.Config.Version + '" width="192" height="192" >';
 	        com += '</object>';
 	    }
-	    if (this.edge) com = '';
+        if (this.data.browser.edge) com = '';
 	    //文件夹选择控件
 	    com += '<object name="parter" classid="clsid:' + this.Config.ie.part.clsid + '"';
 	    com += ' codebase="' + this.Config.ie.path + '#version=' + this.Config.Version + '" width="1" height="1" ></object>';
@@ -645,7 +645,7 @@ function HttpUploaderMgr()
 
     this.pluginLoad = function () {
         if (!this.pluginInited) {
-            if (this.edge) {
+            if (this.data.browser.edge) {
                 this.edgeApp.connect();
             }
         }
@@ -665,35 +665,35 @@ function HttpUploaderMgr()
             jQuery.extend(this.Config.ie, this.Config.ie64);
         }//macOS
         else if (window.navigator.platform == "MacIntel") {
-            this.edge = true;
+            this.data.browser.edge = true;
             this.app.postMessage = this.app.postMessageEdge;
             this.edgeApp.run = this.edgeApp.runChr;
             this.Config.exe.path = this.Config.mac.path;
         }
         else if (window.navigator.platform == "Linux x86_64")
         {
-            this.edge = true;
+            this.data.browser.edge = true;
             this.app.postMessage = this.app.postMessageEdge;
             this.edgeApp.run = this.edgeApp.runChr;
             this.Config.exe.path = this.Config.linux.path;
 		}//Linux aarch64
         else if (this.data.browser.arm64)
         {
-            this.edge = true;
+            this.data.browser.edge = true;
             this.app.postMessage = this.app.postMessageEdge;
             this.edgeApp.run = this.edgeApp.runChr;
             this.Config.exe.path = this.Config.arm64.path;
 		}//Linux mips64
         else if (this.data.browser.mips64)
         {
-            this.edge = true;
+            this.data.browser.edge = true;
             this.app.postMessage = this.app.postMessageEdge;
             this.edgeApp.run = this.edgeApp.runChr;
             this.Config.exe.path = this.Config.mips64.path;
 		}
 	    else if (this.data.browser.firefox)
 	    {
-			this.edge = true;
+            this.data.browser.edge = true;
 			this.app.postMessage = this.app.postMessageEdge;
 			this.edgeApp.run = this.edgeApp.runChr;
 	    }
@@ -701,11 +701,11 @@ function HttpUploaderMgr()
 	    {
             this.app.check = this.app.checkFF;
 	        jQuery.extend(this.Config.firefox, this.Config.chrome);
-			this.edge = true;
+            this.data.browser.edge = true;
 			this.app.postMessage = this.app.postMessageEdge;
 			this.edgeApp.run = this.edgeApp.runChr;
 		}
-	    else if (this.edge)
+        else if (this.data.browser.edge)
 	    {
             this.app.postMessage = this.app.postMessageEdge;
 	    }
@@ -744,7 +744,7 @@ function HttpUploaderMgr()
 
 		$(window).bind("unload", function()
 		{
-            if(this.edge) _this.edgeApp.close();
+            if (this.data.browser.edge) _this.edgeApp.close();
 			if (_this.QueuePost.length > 0)
             {
 				_this.StopAll();
@@ -823,7 +823,7 @@ function HttpUploaderMgr()
         this.InitContainer();
 
         setTimeout(function () {
-            if (!_this.edge) {
+            if (!_this.data.browser.edge) {
                 if (_this.data.browser.ie) {
                     _this.parter = _this.ieParter;
                     if (null != _this.Droper) _this.Droper.recvMessage = _this.recvMessage;
@@ -831,7 +831,7 @@ function HttpUploaderMgr()
                 _this.parter.recvMessage = _this.recvMessage;
             }
 
-            if (_this.edge) {
+            if (_this.data.browser.edge) {
                 _this.edgeApp.connect();
             }
             else {

@@ -4,6 +4,8 @@
         data: {
             items: []
             , count: 0
+            , pageCurr: 1
+            , pageLimit: 20
             , url: {
                 f_create: page.path.root + "filemgr/vue.aspx?op=f_create",
                 fd_create: page.path.root + "filemgr/vue.aspx?op=fd_create",
@@ -280,10 +282,13 @@
                         elem: 'pager' //
                         , count: _this.count//
                         , layout: ['prev', 'page', 'next', 'limit', 'count', 'skip']
-                        , limit: 20
+                        , limit: _this.pageLimit
+                        , curr: _this.pageCurr
                         , jump: function (obj, first) {
                             //首次不执行
                             if (!first) {
+                                _this.pageLimit = obj.limit;
+                                _this.pageCurr = obj.curr;
                                 _this.page_changed(obj.curr, obj.limit);
                             }
                         }
@@ -300,6 +305,8 @@
                     , data: param
                     , success: function (res) {
                         _this.items = res.data;
+                        _this.count = res.count;
+                        _this.page_init();
                     }
                     , error: function (req, txt, err) { }
                     , complete: function (req, sta) { req = null; }
@@ -385,7 +392,7 @@
             }
             , up6_loadTask: function () {
                 var _this = this;
-                var param = jQuery.extend({}, { time: new Date().getTime() });
+                var param = jQuery.extend({}, this.fields, { time: new Date().getTime() });
                 $.ajax({
                     type: "GET"
                     , dataType: "json"

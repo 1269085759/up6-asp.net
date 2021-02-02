@@ -187,7 +187,7 @@ function DownloaderMgr(cfg)
         var html = "";
         html += '<object name="parter" classid="clsid:' + this.Config.ie.part.clsid + '"';
         html += ' codebase="' + this.Config.ie.path + '#version=' + _this.Config["Version"] + '" width="1" height="1" ></object>';
-        if (this.edge) html = '';
+        if (this.data.browser.edge) html = '';
 	    //上传列表项模板
 	    html += '<div class="file-item file-item-single" name="file">\
                     <div class="img-box"><img name="file" src="js/file.png"/><img class="d-hide" name="folder" src="js/folder.png"/></div>\
@@ -497,7 +497,7 @@ function DownloaderMgr(cfg)
 
     this.pluginLoad = function () {
         if (!this.pluginInited) {
-            if (this.edge) {
+            if (this.data.browser.edge) {
                 this.edgeApp.connect();
             }
         }
@@ -518,32 +518,32 @@ function DownloaderMgr(cfg)
 	        jQuery.extend(this.Config.ie, this.Config.ie64);
         }//macOS
         else if (window.navigator.platform == "MacIntel") {
-            this.edge = true;
+            this.data.browser.edge = true;
             this.app.postMessage = this.app.postMessageEdge;
             this.edgeApp.run = this.edgeApp.runChr;
             this.Config.exe.path = this.Config.mac.path;
         }//linux
         else if (window.navigator.platform == "Linux x86_64") {
-            this.edge = true;
+            this.data.browser.edge = true;
             this.app.postMessage = this.app.postMessageEdge;
             this.edgeApp.run = this.edgeApp.runChr;
             this.Config.exe.path = this.Config.linux.path;
         }//Linux aarch64
         else if (this.data.browser.arm64) {
-            this.edge = true;
+            this.data.browser.edge = true;
             this.app.postMessage = this.app.postMessageEdge;
             this.edgeApp.run = this.edgeApp.runChr;
             this.Config.exe.path = this.Config.arm64.path;
         }//Linux mips64
         else if (this.data.browser.mips64) {
-            this.edge = true;
+            this.data.browser.edge = true;
             this.app.postMessage = this.app.postMessageEdge;
             this.edgeApp.run = this.edgeApp.runChr;
             this.Config.exe.path = this.Config.mips64.path;
         }
 	    else if (this.data.browser.firefox)
         {
-            this.edge = true;
+            this.data.browser.edge = true;
             this.app.postMessage = this.app.postMessageEdge;
             this.edgeApp.run = this.edgeApp.runChr;
         }
@@ -551,11 +551,11 @@ function DownloaderMgr(cfg)
 	    {
 	        this.app.check = this.app.checkFF;
 	        jQuery.extend(this.Config.firefox, this.Config.chrome);
-            this.edge = true;
+            this.data.browser.edge = true;
             this.app.postMessage = this.app.postMessageEdge;
             this.edgeApp.run = this.edgeApp.runChr;
         }
-        else if (this.edge) {
+        else if (this.data.browser.edge) {
             this.app.postMessage = this.app.postMessageEdge;
         }
 	};
@@ -581,7 +581,7 @@ function DownloaderMgr(cfg)
         
 		$(window).bind("unload", function()
         {
-            if(this.edge) _this.edgeApp.close();
+            if (this.data.browser.edge) _this.edgeApp.close();
             if (_this.queueWork.length > 0)
             {
                 _this.stop_queue();
@@ -633,14 +633,14 @@ function DownloaderMgr(cfg)
         this.safeCheck();//
 
         setTimeout(function () {
-            if (!_this.edge) {
+            if (!_this.data.browser.edge) {
                 if (_this.data.browser.ie) {
                     _this.parter = _this.ieParter;
                 }
                 _this.parter.recvMessage = _this.recvMessage;
             }
 
-            if (_this.edge) {
+            if (_this.data.browser.edge) {
                 _this.edgeApp.connect();
             }
             else {
