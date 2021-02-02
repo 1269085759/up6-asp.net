@@ -15,6 +15,8 @@ Install-Package Microsoft.Experimental.IO
 ========================================================================
 更新记录：
 2021-02-01
+	jquery.extend写法优化
+	  jQuery.extend改为$.extend
 	down2界面更新，清除按钮移到工具栏中
 	down2构造函数增加配置参数
 	down2完善自动下载逻辑

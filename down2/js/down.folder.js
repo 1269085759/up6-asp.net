@@ -5,7 +5,7 @@
     this.app = mgr.app;
     this.Manager = mgr;
     this.Config = mgr.Config;
-    this.fields = jQuery.extend({},mgr.Config.Fields);//每一个对象自带一个fields幅本
+    this.fields = $.extend({},mgr.Config.Fields);//每一个对象自带一个fields幅本
     this.State = this.Config.state.None;
     this.event = mgr.event;
     this.fileSvr = {
@@ -28,7 +28,7 @@
         , svrInit: false//服务器已经记录信息
     };
     var url = this.Config["UrlDown"] + "?" + this.Manager.to_params(this.fields);
-    jQuery.extend(this.fileSvr, fileLoc, {fileUrl:url});//覆盖配置
+    $.extend(this.fileSvr, fileLoc, {fileUrl:url});//覆盖配置
 
     this.hideBtns = function ()
     {
@@ -59,10 +59,10 @@
     //自定义配置,
     this.reset_fields = function (v) {
         if (v == null) return;
-        jQuery.extend(this.fields, v);
+        $.extend(this.fields, v);
         //单独拼接url
         var url = this.Config["UrlDown"] + "?" + this.Manager.to_params(this.fields);
-        jQuery.extend(this.fileSvr, { fileUrl: url });//覆盖配置
+        $.extend(this.fileSvr, { fileUrl: url });//覆盖配置
     };
 
     //加载文件列表
@@ -72,8 +72,8 @@
         if (this.fileSvr.svrInit) return;
         this.ui.btn.down.hide();
         this.ui.msg.text("开始加载文件列表...");
-        var param = jQuery.extend({}, this.fields, { time: new Date().getTime() });
-        jQuery.extend(param, { id: this.fileSvr.f_id});
+        var param = $.extend({}, this.fields, { time: new Date().getTime() });
+        $.extend(param, { id: this.fileSvr.f_id});
         $.ajax({
             type: "GET"
             , dataType: 'jsonp'
@@ -82,10 +82,10 @@
             , data: param
             , success: function (msg) {
                 var json = JSON.parse(decodeURIComponent(msg.value));
-                jQuery.extend(true, _this.fileSvr, { files: json });
+                $.extend(true, _this.fileSvr, { files: json });
                 _this.ui.msg.text("正在初始文件夹...");
                 setTimeout(function () {
-                    _this.app.initFolder(jQuery.extend({},_this.Config,_this.fileSvr));
+                    _this.app.initFolder($.extend({},_this.Config,_this.fileSvr));
                 }, 300);
                 
             }
@@ -143,15 +143,15 @@
 
     this.init_complete = function (json)
     {
-        jQuery.extend(this.fileSvr, json, { files: null });
+        $.extend(this.fileSvr, json, { files: null });
         setTimeout(function () { _this.svr_create(); }, 200);
     };
 
     //在出错，停止中调用
     this.svr_update = function (json)
     {
-        var param = jQuery.extend({}, this.fields, { time: new Date().getTime() });
-        jQuery.extend(param, { id: this.fileSvr.id, lenLoc: this.fileSvr.lenLoc, perLoc: this.fileSvr.perLoc });
+        var param = $.extend({}, this.fields, { time: new Date().getTime() });
+        $.extend(param, { id: this.fileSvr.id, lenLoc: this.fileSvr.lenLoc, perLoc: this.fileSvr.perLoc });
 
         $.ajax({
             type: "GET"
@@ -172,8 +172,8 @@
         if (this.fileSvr.svrInit) return;
         this.ui.btn.down.hide();
         this.ui.msg.text("正在创建任务...");
-        var param = jQuery.extend({}, this.fields, {time: new Date().getTime() });
-        jQuery.extend(param, {
+        var param = $.extend({}, this.fields, {time: new Date().getTime() });
+        $.extend(param, {
               id: this.fileSvr.id
             , uid: this.fileSvr.uid
             , nameLoc: encodeURIComponent(this.fileSvr.nameLoc)
@@ -207,7 +207,7 @@
     this.isComplete = function () { return this.State == this.Config.state.Complete; };
     this.svr_delete = function ()
     {
-        var param = jQuery.extend({}, this.fields,{id:this.fileSvr.id,time:new Date().getTime()});
+        var param = $.extend({}, this.fields,{id:this.fileSvr.id,time:new Date().getTime()});
         $.ajax({
             type: "GET"
             , dataType: 'jsonp'
@@ -222,7 +222,7 @@
 
     this.svr_delete_file = function (f_id)
     {
-        var param = jQuery.extend({}, this.fields, {idSvr:f_id, time: new Date().getTime() });
+        var param = $.extend({}, this.fields, {idSvr:f_id, time: new Date().getTime() });
 
         $.ajax({
             type: "GET"
