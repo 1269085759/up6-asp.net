@@ -232,7 +232,7 @@ function HttpUploaderMgr()
 		}
 		, "LoadData": function ()//从服务器加载数据
         {
-            var param = jQuery.extend({}, this.Fields, { time: new Date().getTime() });
+            var param = $.extend({}, this.Fields, { time: new Date().getTime() });
 			var ref = this;
 			$.ajax({
 				type: "GET"
@@ -510,7 +510,7 @@ function HttpUploaderMgr()
     this.del_file = function (id) {
         this.filesMap[id].fileSvr.pathLoc = "";
     };
-	this.set_config = function (v) { jQuery.extend(this.Config, v);};
+	this.set_config = function (v) { $.extend(this.Config, v);};
 
 	//msg
 	this.open_files = function (json)
@@ -662,7 +662,7 @@ function HttpUploaderMgr()
 	{
 	    //Win64
         if (window.navigator.platform == "Win64") {
-            jQuery.extend(this.Config.ie, this.Config.ie64);
+            $.extend(this.Config.ie, this.Config.ie64);
         }//macOS
         else if (window.navigator.platform == "MacIntel") {
             this.data.browser.edge = true;
@@ -700,7 +700,7 @@ function HttpUploaderMgr()
 	    else if (this.data.browser.chrome)
 	    {
             this.app.check = this.app.checkFF;
-	        jQuery.extend(this.Config.firefox, this.Config.chrome);
+	        $.extend(this.Config.firefox, this.Config.chrome);
             this.data.browser.edge = true;
 			this.app.postMessage = this.app.postMessageEdge;
 			this.edgeApp.run = this.edgeApp.runChr;
@@ -1103,7 +1103,7 @@ function HttpUploaderMgr()
             return;
         }
         //针对空文件夹的处理
-	    if (json.files == null) jQuery.extend(fdLoc,{files:[]});
+	    if (json.files == null) $.extend(fdLoc,{files:[]});
 	    //if (json.lenLoc == 0) return;
 
 		this.AppendQueue(json.id);//添加到队列

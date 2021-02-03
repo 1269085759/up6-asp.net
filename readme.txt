@@ -15,6 +15,12 @@ Install-Package Microsoft.Experimental.IO
 ========================================================================
 更新记录：
 2021-02-01
+2021-02-03
+	arrFilesComplete更名为data.cmps
+	data.browserName优化成 data.browser.name
+	删除this.nat_load
+	删除this.chrVer
+	删除this.ffVer
 	jquery.extend写法优化
 	  jQuery.extend改为$.extend
 	down2界面更新，清除按钮移到工具栏中

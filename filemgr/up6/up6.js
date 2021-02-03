@@ -173,8 +173,13 @@ function HttpUploaderMgr()
 		unsetup:function(html){/*控件未安装事件*/}
 	};
     this.data = {
-		browserName:navigator.userAgent.toLowerCase(),
-        browser: {ie:true,ie64:false,firefox:false,chrome:false,edge:false,arm64:false,mips64:false}
+		browser: {name:navigator.userAgent.toLowerCase(),ie:true,ie64:false,firefox:false,chrome:false,edge:false,arm64:false,mips64:false},
+		cmps:[]/**已上传完的文件对象列表 */
+	};
+	this.ui = {
+        list: null
+        , file: null
+        , folder: null
     };
 	//http://www.ncmem.com/
 	this.Domain = "http://" + document.location.host;
@@ -186,7 +191,6 @@ function HttpUploaderMgr()
 	this.QueueFiles = new Array();//文件队列，数据:id1,id2,id3
 	this.QueueWait = new Array(); //等待队列，数据:id1,id2,id3
 	this.QueuePost = new Array(); //上传队列，数据:id1,id2,id3
-	this.arrFilesComplete = new Array(); //已上传完的文件列表
     this.filesUI = null;//上传列表面板
     this.ieParter = null;
 	this.parter = null;
@@ -194,20 +198,15 @@ function HttpUploaderMgr()
 	this.uiSetupTip = null;
 	this.btnSetup = null;
     //检查版本 Win32/Win64/Firefox/Chrome
-	var browserName = navigator.userAgent.toLowerCase();
-	this.data.browser.ie = browserName.indexOf("msie") > 0;
+	this.data.browser.ie = this.data.browser.name.indexOf("msie") > 0;
     //IE11检查
-	this.data.browser.ie = this.data.browser.ie ? this.data.browser.ie : browserName.search(/(msie\s|trident.*rv:)([\w.]+)/) != -1;
-	this.data.browser.firefox = browserName.indexOf("firefox") > 0;
-	this.data.browser.chrome = browserName.indexOf("chrome") > 0;
-	this.data.browser.mips64 = this.data.browserName.indexOf("mips64")>0;
-	this.data.browser.arm64 = this.data.browserName.indexOf("aarch64")>0;
-	this.nat_load = false;
-    this.edge_load = false;
+	this.data.browser.ie = this.data.browser.ie ? this.data.browser.ie : this.data.browser.name.search(/(msie\s|trident.*rv:)([\w.]+)/) != -1;
+	this.data.browser.firefox = this.data.browser.name.indexOf("firefox") > 0;
+	this.data.browser.chrome = this.data.browser.name.indexOf("chrome") > 0;
+	this.data.browser.mips64 = this.data.this.data.browser.name.indexOf("mips64")>0;
+	this.data.browser.arm64 = this.data.this.data.browser.name.indexOf("aarch64")>0;
+	this.data.browser.edge = navigator.userAgent.indexOf("edge") > 0;
     this.pluginInited = false;
-	this.chrVer = navigator.appVersion.match(/Chrome\/(\d+)/);
-	this.ffVer = navigator.userAgent.match(/Firefox\/(\d+)/);
-	this.data.browser.edge = navigator.userAgent.indexOf("Edge") > 0;
     this.edgeApp = new WebServerUp6(this);
     this.edgeApp.ent.on_close = function () { _this.socket_close(); };
     this.app = up6_app;
@@ -215,11 +214,6 @@ function HttpUploaderMgr()
     this.app.Config = this.Config;
     this.app.ins = this;
 	if (this.data.browser.edge) { this.data.browser.ie = this.data.browser.firefox = this.data.browser.chrome = this.data.browser.chrome45 = false;}
-    this.ui = {
-        list: null
-        , file: null
-        , folder: null
-    };
 
 	//容器的HTML代码
 	this.getHtml = function()
@@ -256,7 +250,7 @@ function HttpUploaderMgr()
     this.del_file = function (id) {
     	this.filesMap[id].fileSvr.pathLoc="";
     };
-	this.set_config = function (v) { jQuery.extend(this.Config, v);};
+	this.set_config = function (v) { $.extend(this.Config, v);};
 
 	//msg
 	this.open_files = function (json)
@@ -347,7 +341,6 @@ function HttpUploaderMgr()
 	this.load_complete_edge = function (json)
     {
         this.pluginInited = true;
-	    this.edge_load = true;
         this.btnSetup.hide();
         _this.app.init();
     };
@@ -410,7 +403,7 @@ function HttpUploaderMgr()
 	    //Win64
 	    if (window.navigator.platform == "Win64")
 	    {
-	        jQuery.extend(this.Config.ie, this.Config.ie64);
+	        $.extend(this.Config.ie, this.Config.ie64);
         }//macOS
         else if (window.navigator.platform == "MacIntel") {
             this.data.browser.edge = true;
@@ -447,7 +440,7 @@ function HttpUploaderMgr()
 	    else if (this.data.browser.chrome)
 	    {
             this.app.check = this.app.checkFF;
-	        jQuery.extend(this.Config.firefox, this.Config.chrome);
+	        $.extend(this.Config.firefox, this.Config.chrome);
             this.data.browser.edge = true;
 			this.app.postMessage = this.app.postMessageEdge;
 			this.edgeApp.run = this.edgeApp.runChr;
@@ -585,8 +578,8 @@ function HttpUploaderMgr()
     //清除已完成文件
 	this.ClearComplete = function()
 	{
-	    $.each(this.arrFilesComplete, function (i, n) { n.remove(); });
-	    this.arrFilesComplete.length = 0;
+	    $.each(this.data.cmps, function (i, n) { n.remove(); });
+	    this.data.cmps.length = 0;
 	};
 
 	//上传队列是否已满
@@ -848,7 +841,7 @@ function HttpUploaderMgr()
             return;
         }
         //针对空文件夹的处理
-	    if (json.files == null) jQuery.extend(fdLoc,{files:[]});
+	    if (json.files == null) $.extend(fdLoc,{files:[]});
 	    //if (json.lenLoc == 0) return;
 
 		this.AppendQueue(json.id);//添加到队列

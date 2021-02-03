@@ -10,7 +10,7 @@ function FileUploader(fileLoc, mgr)
     this.event = mgr.event;
     this.FileListMgr = mgr.FileListMgr;//文件列表管理器
     this.Config = mgr.Config;
-    this.fields = jQuery.extend({}, mgr.Config.Fields, fileLoc.fields);//每一个对象自带一个fields幅本
+    this.fields = $.extend({}, mgr.Config.Fields, fileLoc.fields);//每一个对象自带一个fields幅本
     this.State = this.Config.state.None;
     this.uid = this.fields.uid;
     this.fileSvr = {
@@ -34,7 +34,7 @@ function FileUploader(fileLoc, mgr)
         , complete: false
         , deleted: false
     };//json obj，服务器文件信息
-    this.fileSvr = jQuery.extend(this.fileSvr, fileLoc);
+    this.fileSvr = $.extend(this.fileSvr, fileLoc);
 
     //准备
     this.Ready = function ()
@@ -251,7 +251,7 @@ function FileUploader(fileLoc, mgr)
         var loc_path = encodeURIComponent(this.fileSvr.pathLoc);
         var loc_len = this.fileSvr.lenLoc;
         var loc_size = this.fileSvr.sizeLoc;
-        var param = jQuery.extend({}, this.fields, { md5: json.md5, id: this.fileSvr.id, lenLoc: loc_len, sizeLoc: loc_size, pathLoc: loc_path, time: new Date().getTime() });
+        var param = $.extend({}, this.fields, { md5: json.md5, id: this.fileSvr.id, lenLoc: loc_len, sizeLoc: loc_size, pathLoc: loc_path, time: new Date().getTime() });
 
         $.ajax({
             type: "GET"

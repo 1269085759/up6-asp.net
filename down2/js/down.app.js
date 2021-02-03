@@ -66,77 +66,77 @@ var down2_app = {
         this.postMessage(param);
     }
     , openPath: function (f) {
-        var param = jQuery.extend({},f,{ name: "open_path" });
+        var param = $.extend({},f,{ name: "open_path" });
         this.postMessage(param);
     }
     , openFile: function (f) {
-        var param = jQuery.extend(param, f, { name: "open_file" });
+        var param = $.extend(param, f, { name: "open_file" });
         this.postMessage(param);
     }
     , openChild: function (f) {
-        var param = jQuery.extend(param, f, { name: "open_child" });
+        var param = $.extend(param, f, { name: "open_child" });
         this.postMessage(param);
     }
     , addUrl: function (f) {
         this.queueCount++;
-        var param = jQuery.extend(param, f, { name: "add_url" });
+        var param = $.extend(param, f, { name: "add_url" });
         this.postMessage(param);
     }
     , addUrls: function (f) {
         this.queueCount++;
-        var param = jQuery.extend(param, { name: "add_urls", urls: f });
+        var param = $.extend(param, { name: "add_urls", urls: f });
         this.postMessage(param);
     }
     , addJson: function (f) {
         this.queueCount++;
         var param = { name: "add_json" };
-        jQuery.extend(param, f);
+        $.extend(param, f);
         this.postMessage(param);
     }
     , downFile: function (f) {
         this.queueCount++;
-        var param = jQuery.extend({}, f, { name: "down_file" });
+        var param = $.extend({}, f, { name: "down_file" });
         this.postMessage(param);
     }
     , downFolder: function (f) {
         this.queueCount++;
-        var param = jQuery.extend({}, f, { name: "down_folder" });
+        var param = $.extend({}, f, { name: "down_folder" });
         this.postMessage(param);
     }
     , downUrl: function (f) {
         this.queueCount++;
-        var param = jQuery.extend({}, f, { name: "down_url" });
+        var param = $.extend({}, f, { name: "down_url" });
         this.postMessage(param);
     }
     , downUrls: function (f) {
         this.queueCount++;
-        var param = jQuery.extend({}, f, { name: "down_urls" });
+        var param = $.extend({}, f, { name: "down_urls" });
         this.postMessage(param);
     }
     , downJson: function (f) {
         this.queueCount++;
-        var param = jQuery.extend({}, f, { name: "down_json" });
+        var param = $.extend({}, f, { name: "down_json" });
         this.postMessage(param);
     }
     , initFile: function (f) {
         this.queueCount++;
-        var param = jQuery.extend({}, f, { name: "init_file" });
+        var param = $.extend({}, f, { name: "init_file" });
         this.postMessage(param);
     }
     , initFolder: function (f) {
         this.queueCount++;
-        var param = jQuery.extend({}, f, { name: "init_folder" });
+        var param = $.extend({}, f, { name: "init_folder" });
         this.postMessage(param);
     }
     , addFile: function (f) {
         this.queueCount++;
-        var param = jQuery.extend({}, f, { name: "add_file" });
+        var param = $.extend({}, f, { name: "add_file" });
         this.postMessage(param);
     }
     , addFolder: function (f) {
         this.queueCount++;
         var param = { name: "add_folder"};
-        jQuery.extend(param, f, { name: "add_folder" });
+        $.extend(param, f, { name: "add_folder" });
         this.postMessage(param);
     }
     , stopFile: function (f) {

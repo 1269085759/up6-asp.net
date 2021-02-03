@@ -12,12 +12,12 @@ function FolderUploader(fdLoc, mgr)
     this.folderInit = false;//文件夹已初始化
     this.Scaned = false;//是否已经扫描
     this.fileSvr = { nameLoc: "",nameSvr:"",lenLoc:0,sizeLoc: "0byte", lenSvr: 0,perSvr:"0%", id:"",uid: mgr.Config.Fields["uid"], foldersCount: 0, filesCount: 0, filesComplete: 0, pathLoc: "", pathSvr: "", pathRel: "", pidRoot: "", complete: false };
-    jQuery.extend(true,this.fileSvr, fdLoc);//续传信息
+    $.extend(true,this.fileSvr, fdLoc);//续传信息
     this.manager = mgr;
     this.event = mgr.event;
     this.arrFiles = new Array(); //子文件列表(未上传文件列表)，存HttpUploader对象
     this.Config = mgr.Config;
-    this.fields = jQuery.extend({}, mgr.Config.Fields,fdLoc.fields);//每一个对象自带一个fields幅本
+    this.fields = $.extend({}, mgr.Config.Fields,fdLoc.fields);//每一个对象自带一个fields幅本
     this.app = mgr.app;
     this.LocalFile = ""; //判断是否存在相同项
     this.FileName = "";
@@ -56,7 +56,7 @@ function FolderUploader(fdLoc, mgr)
     };
     this.svr_create = function (fdSvr)
     {
-		//jQuery.extend(this.fileSvr,fdSvr);
+		//$.extend(this.fileSvr,fdSvr);
         if (fdSvr.complete)
         {
             this.all_complete();
@@ -185,17 +185,17 @@ function FolderUploader(fdLoc, mgr)
         this.ui.btn.stop.show();
         this.ui.btn.post.hide();
         this.State = this.Config.state.MD5Working;
-        var par = jQuery.extend(this.fileSvr, { id: this.id});
+        var par = $.extend(this.fileSvr, { id: this.id});
         this.app.checkFolder(par);
     };
     this.post_fd = function ()
     {
         this.State = this.Config.state.Posting;
-        var fd = jQuery.extend({}, { id: this.id, pathLoc: this.fileSvr.pathLoc, fields: this.fields });
+        var fd = $.extend({}, { id: this.id, pathLoc: this.fileSvr.pathLoc, fields: this.fields });
         this.app.postFolder(fd);
     };
     this.update_fd = function () {
-        var fd = jQuery.extend({}, { id: this.id, pathSvr: this.fileSvr.pathSvr});
+        var fd = $.extend({}, { id: this.id, pathSvr: this.fileSvr.pathSvr});
         this.app.updateFolder(fd);
     };
     this.post_stoped = function (json)
@@ -257,7 +257,7 @@ function FolderUploader(fdLoc, mgr)
         this.ui.process.css("width", "100%");
         this.ui.percent.text("(100%)");
         //obj.pMsg.text("上传完成");
-        this.manager.arrFilesComplete.push(this);
+        this.manager.data.cmps.push(this);
         this.State = this.Config.state.Complete;
         this.fileSvr.complete = true;
         this.fileSvr.perSvr = "100%";
@@ -269,7 +269,7 @@ function FolderUploader(fdLoc, mgr)
         if(json.errors > 0 ) str += " 失败：" + json.errors
         this.ui.msg.text(str);
 
-        var param = jQuery.extend({}, this.fields, { id: this.fileSvr.id, cover:1, time: new Date().getTime() });
+        var param = $.extend({}, this.fields, { id: this.fileSvr.id, cover:1, time: new Date().getTime() });
 
         $.ajax({
             type: "GET"
@@ -292,7 +292,7 @@ function FolderUploader(fdLoc, mgr)
         });
         this.ui.process.css("width", "100%");
         this.ui.percent.text("(100%)");
-        this.manager.arrFilesComplete.push(this);
+        this.manager.data.cmps.push(this);
         this.State = this.Config.state.Complete;
         this.fileSvr.complete = true;
         this.fileSvr.perSvr = "100%";
@@ -302,7 +302,7 @@ function FolderUploader(fdLoc, mgr)
         this.manager.RemoveQueueWait(this.id);
         this.ui.msg.text("上传完毕");
 
-        var param = jQuery.extend({}, this.fields, { id: this.fileSvr.id, time: new Date().getTime() });
+        var param = $.extend({}, this.fields, { id: this.fileSvr.id, time: new Date().getTime() });
 
         $.ajax({
             type: "GET"
@@ -332,16 +332,16 @@ function FolderUploader(fdLoc, mgr)
     {
         if (this.Config["Md5Folder"])
         {
-            jQuery.extend(this.fileSvr, json.data);
+            $.extend(this.fileSvr, json.data);
         }
         else
         {
-            jQuery.extend(this.fileSvr, json);
+            $.extend(this.fileSvr, json);
         }
         //在此处增加服务器验证代码。
         this.ui.msg.text("初始化...");
         //$.extend(this.fileSvr, this.Config.bizData);
-        var param = jQuery.extend({}, this.fields, {
+        var param = $.extend({}, this.fields, {
             id: this.fileSvr.id,
             lenLoc: this.fileSvr.lenLoc,
             sizeLoc: this.fileSvr.sizeLoc,
@@ -392,7 +392,7 @@ function FolderUploader(fdLoc, mgr)
         });
         this.ui.process.css("width", "100%");
         this.ui.percent.text("(100%)");
-        this.manager.arrFilesComplete.push(this);
+        this.manager.data.cmps.push(this);
         this.State = this.Config.state.Complete;
         this.fileSvr.complete = true;
         this.fileSvr.perSvr = "100%";

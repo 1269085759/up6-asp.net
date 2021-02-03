@@ -143,21 +143,20 @@ function DownloaderMgr()
         folderSel: function (path) { }
 	};
     this.data={
-        browserName:navigator.userAgent.toLowerCase(),
-        browser:{ie:true,ie64:false,firefox:false,chrome:false,edge:false,arm64:false,mips64:false}};
+        browser:{name:navigator.userAgent.toLowerCase(),ie:true,ie64:false,firefox:false,chrome:false,edge:false,arm64:false,mips64:false}
+    };
+    this.ui = { file: null ,list:null,panel:null,header:null,footer:null};
 
     this.websocketInited = false;
-	var browserName = navigator.userAgent.toLowerCase();
-	this.data.browser.ie = browserName.indexOf("msie") > 0;
-	this.data.browser.ie = this.data.browser.ie ? this.data.browser.ie : browserName.search(/(msie\s|trident.*rv:)([\w.]+)/) != -1;
-	this.data.browser.firefox = browserName.indexOf("firefox") > 0;
-	this.data.browser.chrome = browserName.indexOf("chrome") > 0;
-	this.data.browser.arm64 = browserName.indexOf("aarch64") > 0;
-	this.data.browser.mips64 = browserName.indexOf("mips64") > 0;
-    this.nat_load = false;
+	this.data.browser.ie = this.data.browser.name.indexOf("msie") > 0;
+	this.data.browser.ie = this.data.browser.ie ? this.data.browser.ie : this.data.browser.name.search(/(msie\s|trident.*rv:)([\w.]+)/) != -1;
+	this.data.browser.firefox = this.data.browser.name.indexOf("firefox") > 0;
+	this.data.browser.chrome = this.data.browser.name.indexOf("chrome") > 0;
+	this.data.browser.arm64 = this.data.browser.name.indexOf("aarch64") > 0;
+	this.data.browser.mips64 = this.data.browser.name.indexOf("mips64") > 0;
+    this.data.browser.edge = this.data.browser.name.indexOf("edge") > 0;
     this.pluginInited = false;
     this.chrVer = navigator.appVersion.match(/Chrome\/(\d+)/);
-    this.data.browser.edge = navigator.userAgent.indexOf("Edge") > 0;
     this.edgeApp = new WebServerDown2(this);
     this.edgeApp.ent.on_close = function () { _this.socket_close(); };
     this.app = down2_app;
@@ -177,7 +176,6 @@ function DownloaderMgr()
 	this.btnSetup = null;//安装控件的按钮
     this.working = false;
     this.allStoped = false;//
-    this.ui = { file: null ,list:null,panel:null,header:null,footer:null};
 
     //api
     this.addFile = function (v) {
@@ -215,7 +213,7 @@ function DownloaderMgr()
         }
         return paramStr.substr(1);
     };
-	this.set_config = function (v) { jQuery.extend(this.Config, v); };
+	this.set_config = function (v) { $.extend(this.Config, v); };
 	this.clearComplete = function ()
 	{
 	    $.each(this.filesCmp, function (i,n)
@@ -287,7 +285,7 @@ function DownloaderMgr()
     };
 	this.resume_folder = function (fdSvr)
     {
-        var fd = jQuery.extend({}, fdSvr, { svrInit: true });
+        var fd = $.extend({}, fdSvr, { svrInit: true });
 	    this.add_ui(fd);
 	    //if (null == obj) return;
         //obj.svr_inited = true;
@@ -295,7 +293,7 @@ function DownloaderMgr()
 	    //return obj;
     };
     this.resume_file = function (fSvr) {
-        var f = jQuery.extend({}, fSvr, { svrInit: true });
+        var f = $.extend({}, fSvr, { svrInit: true });
         this.add_ui(f);
         //if (null == obj) return;
         //obj.svr_inited = true;
@@ -307,7 +305,7 @@ function DownloaderMgr()
         this.app.initFile(f);
     };
     this.init_folder = function (f) {
-        this.app.initFolder(jQuery.extend({},this.Config,f));
+        this.app.initFolder($.extend({},this.Config,f));
     };
     this.init_file_cmp = function (json)
     {
@@ -498,7 +496,7 @@ function DownloaderMgr()
 	    //Win64
 	    if (window.navigator.platform == "Win64")
 	    {
-	        jQuery.extend(this.Config.ie, this.Config.ie64);
+	        $.extend(this.Config.ie, this.Config.ie64);
         }//macOS
         else if (window.navigator.platform == "MacIntel") {
             this.data.browser.edge = true;
@@ -533,7 +531,7 @@ function DownloaderMgr()
 	    else if (this.data.browser.chrome)
 	    {
 	        this.app.check = this.app.checkFF;
-	        jQuery.extend(this.Config.firefox, this.Config.chrome);
+	        $.extend(this.Config.firefox, this.Config.chrome);
             this.data.browser.edge = true;
             this.app.postMessage = this.app.postMessageEdge;
             this.edgeApp.run = this.edgeApp.runChr;
@@ -643,7 +641,7 @@ function DownloaderMgr()
     //加载未未完成列表
 	this.loadFiles = function ()
 	{
-	    //var param = jQuery.extend({}, this.Config.Fields, { time: new Date().getTime()});
+	    //var param = $.extend({}, this.Config.Fields, { time: new Date().getTime()});
 	    //$.ajax({
 	    //    type: "GET"
      //       , dataType: 'jsonp'
