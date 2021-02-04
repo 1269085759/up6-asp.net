@@ -177,6 +177,18 @@ function DownloaderMgr(cfg)
         if(v.fdTask) this.addFolder(v);
         else this.addFile(v);
     };
+    this.addUrl = function (data) {
+        if (!this.pluginCheck()) return;
+        this.app.addUrl(data);
+    };
+    this.addUrls = function (data) {
+        if (!this.pluginCheck()) return;
+        this.app.addUrls(data);
+    };
+    this.addJson = function (data) {
+        if (!this.pluginCheck()) return;
+        this.app.addJson(data);
+    };
     this.openConfig = function () {
         if (!this.pluginCheck()) return;
         this.app.openFolder();
