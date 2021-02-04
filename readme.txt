@@ -14,8 +14,9 @@ Install-Package Microsoft.Experimental.IO
 
 ========================================================================
 更新记录：
-2021-02-01
+2021-02-04
 2021-02-03
+2021-02-01
 	arrFilesComplete更名为data.cmps
 	data.browserName优化成 data.browser.name
 	删除this.nat_load
