@@ -12,12 +12,12 @@ namespace up6.db.biz
         /// <summary>
         /// 加载未上传完的文件和文件夹列表
         /// </summary>
-        private List<FileInf> files = new List<FileInf>();
+        protected List<FileInf> files = new List<FileInf>();
         public un_builder()
         {
         }
 
-        public string read(string uid)
+        public virtual string read(string uid)
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("select ");
@@ -67,7 +67,7 @@ namespace up6.db.biz
             return this.to_json();//
         }
 
-        string to_json()
+        protected string to_json()
         {
             if (this.files.Count > 0)
             {

@@ -1,11 +1,12 @@
 ﻿using System.Data.Common;
 using System.Text;
+using up6.filemgr.app;
 
 namespace up6.db.database
 {
     public class DBFolder
     {
-        static public void Remove(string id, int uid)
+        public virtual void Remove(string id, int uid)
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("update up6_files set f_deleted=1 where f_id=@id and f_uid=@uid;");
@@ -19,7 +20,30 @@ namespace up6.db.database
             db.ExecuteNonQuery(cmd);
         }
 
-        static public void Clear()
+        public virtual void del(string id,int uid)
+        {
+            DBConfig cfg = new DBConfig();
+            SqlExec se = cfg.se();
+            se.update("up6_files",
+                new SqlParam[] {
+                    new SqlParam("f_deleted",true)
+                },
+                new SqlParam[] {
+                    new SqlParam("f_id", id),
+                    new SqlParam("f_uid",uid)
+                });
+            se.update("up6_folders",
+                new SqlParam[] {
+                    new SqlParam("f_deleted",true)
+                },
+                new SqlParam[] 
+                {
+                    new SqlParam("f_id", id) ,
+                    new SqlParam("f_uid",uid)
+                });
+        }
+
+        public virtual void Clear()
         {
             string sql = "delete from up6_folders";
             DbHelper db = new DbHelper();

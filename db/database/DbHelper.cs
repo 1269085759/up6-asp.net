@@ -2,6 +2,8 @@
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
+using System.Data.OracleClient;
+using up6.filemgr.app;
 
 namespace up6.db.database
 {
@@ -58,6 +60,9 @@ namespace up6.db.database
     public class DbHelper
     {
         public DbConnection connection;
+        private bool m_isSql = true;
+        private bool m_isOracle = false;
+        private bool m_isOdbc = false;
 
         /// <summary>
         /// 获取数据库连接字符串
@@ -66,30 +71,47 @@ namespace up6.db.database
         /// <returns></returns>
         public static string GetConStr()
         {
-            var str = System.Configuration.ConfigurationManager.ConnectionStrings["sql"];
-            return str.ConnectionString;
+            ConfigReader cr = new ConfigReader();
+            var m_db = cr.m_files.SelectToken("$.database.connection.type").ToString();
+            var constr = cr.m_files.SelectToken(string.Format("$.database.connection.{0}.addr",m_db)).ToString();
+            return constr;
         }
 
         public static string GetProvider()
         {
-            var str = System.Configuration.ConfigurationManager.ConnectionStrings["sql"];
-            return str.ProviderName;
+            ConfigReader cr = new ConfigReader();
+            var m_db = cr.m_files.SelectToken("$.database.connection.type").ToString();
+            var constr = cr.m_files.SelectToken(string.Format("$.database.connection.{0}.provider",m_db)).ToString();
+            return constr;
         }
 
         public DbHelper()
         {
             this.connection = CreateConnection(GetConStr());
+            this.m_isOracle = string.Compare(GetProvider(), "System.Data.OracleClient") == 0;
+            this.m_isSql = string.Compare(GetProvider(), "System.Data.SqlClient") == 0;
+            this.m_isOdbc = string.Compare(GetProvider(), "System.Data.Odbc") == 0;
         }
 
-        public DbHelper(string connectionString)
+        public bool isOracle()
         {
-            this.connection = CreateConnection(GetConStr());
+            return this.m_isOracle;
+        }
+
+        public bool isOdbc()
+        {
+            return this.m_isOdbc;
+        }
+
+        public bool isSql()
+        {
+            return this.m_isSql;
         }
 
         public static DbConnection CreateConnection()
         {
-            //DbProviderFactory dbfactory = DbProviderFactories.GetFactory(DbHelper.GetProvider());
-            DbConnection con = SqlClientFactory.Instance.CreateConnection();
+            DbProviderFactory dbfactory = DbProviderFactories.GetFactory(DbHelper.GetProvider());
+            DbConnection con = dbfactory.CreateConnection();
             con.ConnectionString = GetConStr();
 
             return con;
@@ -97,8 +119,8 @@ namespace up6.db.database
 
         public static DbConnection CreateConnection(string connectionString)
         {
-            //DbProviderFactory dbfactory = DbProviderFactories.GetFactory(DbHelper.GetProvider());
-            DbConnection con = SqlClientFactory.Instance.CreateConnection();
+            DbProviderFactory dbfactory = DbProviderFactories.GetFactory(DbHelper.GetProvider());
+            DbConnection con = dbfactory.CreateConnection();
             con.ConnectionString = GetConStr();
             return con;
         }

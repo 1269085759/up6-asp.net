@@ -1,5 +1,20 @@
 ﻿{
     "database": {
+      "connection": {
+        "type": "sql",
+        "sql": {
+          "addr": "Data Source=(local)\\SQL2005;Initial Catalog=up6;User Id=sa;Password=123456;",
+          "provider": "System.Data.SqlClient"
+        },
+        "oracle": {
+          "addr": "User ID=system;Password=123456;Data Source=orcl;",
+          "provider": "System.Data.OracleClient"
+        },
+        "kingbase": {
+          "addr": "DSN=Kingbase;Uid=SYSTEM;Pwd=123456",
+          "provider": "System.Data.Odbc"
+        }
+      },
         "up6_files": "/filemgr/data/config/database/up6_files.json",
         "up6_folders": "/filemgr/data/config/database/up6_folders.json",
         "down_files": "/filemgr/data/config/database/down_files.json"

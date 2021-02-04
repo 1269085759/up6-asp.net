@@ -12,8 +12,8 @@
               , this.m_path["layerui"]
               , this.m_path["moment"]
               , this.m_path["vue"]
-              , this.m_path["up6"]
-              , this.m_path["down2"]
+              , this.m_path["fm-up6"]
+              , this.m_path["fm-down2"]
               , this.m_path["root"]+"/filemgr/data/vue-up6.js"
               , this.m_path["root"]+"/filemgr/data/vue-down2.js"
               , this.m_path["root"]+"/filemgr/data/vue-index.js"
@@ -38,7 +38,7 @@
                             <img :src="ico.btnPaste" />
                             粘贴上传</button>
                         <button class="btn btn-default btn-sm m-r-xs" role="button" @click="btnMkFolder_click">
-                            <img :src="ico.btnEdit" />
+                            <img :src="ico.folder1" />
                             新建文件夹</button>
                         <button class="btn btn-default btn-sm m-r-xs" role="button" @click="openUp_click">
                             <img :src="ico.btnPnlUp" />
@@ -58,25 +58,27 @@
                 <up6 id="pnl-up" ref="up6" style="display: none;" 
                     :fd_create="url.fd_create"
                     :f_create="url.f_create"
-                    :license="license.up6"
                     :fields="fields"
+                    :cookie="cookie"
                     @load_complete="up6_loadComplete"
                     @item_selected="up6_itemSelected"
                     @file_append="up6_fileAppend"
                     @file_complete="up6_fileComplete"
-                    @folder_complete="up6_folderComplete"></up6>
+                    @folder_complete="up6_folderComplete"
+                    @unsetup="up6_unsetup"></up6>
                 <!--下载面板-->
                 <down2 id="pnl-down" ref="down" style="display: none;"
                     :fd_data="url.fd_data"
-                    :license="license.down2"
                     :fields="fields"
                     @load_complete="down_loadComplete"
-                    @same_file_exist="down_sameFileExist"></down2>
+                    @same_file_exist="down_sameFileExist"
+                    @unsetup="down_unsetup"
+                    @folder_sel=down_folderSel></down2>
                 <!--路径导航-->
                 <ol class="breadcrumb  m-t-xs" style="margin-bottom: -5px;">
                     <template v-for="p in pathNav">
                         <li>
-                            <a class="link" @click="nav_click(p)">{{p.f_nameLoc}}</a>
+                           <a class="link" @click="nav_click(p)">{{p.f_nameLoc}}</a>
                         </li>
                     </template>
                 </ol>
@@ -109,7 +111,7 @@
                                 <div :name="'v'+index">
                                 <input type="checkbox" :value="f.f_id" v-model="idSels" :name="'ckb'+index"/>
                                 <img :src="ico.file" v-show="!f.f_fdTask" :name="'name'+index"/>
-                                <img :src="ico.folder" v-show="f.f_fdTask"/>
+                                <img :src="ico.folder1" v-show="f.f_fdTask"/>
                                 <a @click="open_folder(f)" class="link m-l-xs" :name="'name'+index">{{f.f_nameLoc}}</a>
                                     </div>
                                 <div :name="'edit'+index" style="display:none;">
@@ -137,6 +139,7 @@
                 </table>
                 <script type="text/javascript">
                     var v_app = null;
+                    var svrCookie = 'ASP.NET_SessionId=<%=Session.SessionID%>';
                     layui.use(['layer'], function () {
                         window.layer = layui.layer;
                     });

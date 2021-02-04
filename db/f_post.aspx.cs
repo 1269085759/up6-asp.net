@@ -1,9 +1,11 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.IO;
 using System.Web;
 using up6.db.biz;
 using up6.db.utils;
+using up6.filemgr.app;
 
 namespace up6.db
 {
@@ -49,9 +51,10 @@ namespace up6.db
             string blockMd5     = this.headString("blockMd5");//块MD5
             string complete     = this.headString("complete");//true/false
             string pathSvr      = Request.Form["pathSvr"];//
-            pathSvr             = HttpUtility.UrlDecode(pathSvr);
+            pathSvr = Server.UrlDecode(pathSvr);
 
             if( !this.safe_check(lenLoc,uid,f_id,blockOffset,pathSvr)) return;
+
 
             //有文件块数据
             if (Request.Files.Count > 0)
@@ -60,18 +63,31 @@ namespace up6.db
                 string msg = string.Empty;
                 string md5Svr = string.Empty;
                 HttpPostedFile file = Request.Files.Get(0);//文件块
+                var stm = file.InputStream;
+                var stmLen = int.Parse(blockSize);
+
+                //加密
+                ConfigReader cr = new ConfigReader();
+                var sec = cr.module("path");
+                var encrypt = (bool)sec.SelectToken("$.security.encrypt");
+                if (encrypt)
+                {
+                    CryptoTool ct = new CryptoTool();
+                    pathSvr = ct.decode(pathSvr);
+                    stm = ct.decode(file.InputStream,int.Parse(blockSize));
+                }
 
                 //计算文件块MD5
                 if (!string.IsNullOrEmpty(blockMd5))
                 {
-                    md5Svr = Md5Tool.calc(file.InputStream);
+                    md5Svr = Md5Tool.calc(stm);
                 }
 
                 //文件块大小验证
-                verify = int.Parse(blockSize) == file.InputStream.Length;
+                verify = int.Parse(blockSize) == stm.Length;
                 if (!verify)
                 {
-                    msg = "block size error sizeSvr:"+file.InputStream.Length + " sizeLoc:"+blockSize;
+                    msg = "block size error sizeSvr:"+ stm.Length + " sizeLoc:"+blockSize;
                 }
 
                 //块MD5验证
@@ -86,7 +102,7 @@ namespace up6.db
                     //2.0保存文件块数据
                     FileBlockWriter res = new FileBlockWriter();
                     res.make(pathSvr, Convert.ToInt64(lenLoc));
-                    res.write(pathSvr, Convert.ToInt64(blockOffset), ref file);
+                    res.write(pathSvr, Convert.ToInt64(blockOffset), stm);
                     up6_biz_event.file_post_block(f_id,Convert.ToInt32(blockIndex));
 
                     //生成信息

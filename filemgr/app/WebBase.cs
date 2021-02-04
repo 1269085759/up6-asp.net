@@ -85,17 +85,30 @@ namespace up6.filemgr.app
             return query;
         }
 
-        public string reqToString(string name)
+        public string reqString(string name)
         {
-            var v = HttpContext.Current.Request.QueryString[name];
-            if (string.IsNullOrEmpty(v)) return string.Empty;
-            return v;
+            if (!Request.QueryString.HasKeys()) return string.Empty;
+            if (string.IsNullOrEmpty(Request.QueryString[name])) return string.Empty;
+            return Request.QueryString[name].Trim();
+        }
+
+        public string reqStringDecode(string name)
+        {
+            var v = this.reqString(name);
+            return Server.UrlDecode(v);
         }
 
         public int reqToInt(string name) {
-            var v = this.reqToString(name);
+            var v = this.reqString(name);
             if (string.IsNullOrEmpty(v)) return 0;
             return int.Parse(v);
+        }
+
+        public string headString(string name)
+        {
+            if (!Request.Headers.HasKeys()) return string.Empty;
+            if (string.IsNullOrEmpty(Request.Headers[name])) return string.Empty;
+            return Request.Headers[name].Trim();
         }
 
         /// <summary>

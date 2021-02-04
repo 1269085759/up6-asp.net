@@ -4,22 +4,25 @@
         data: {
             items: []
             , count: 0
+            , pageCurr: 1
+            , pageLimit: 20
             , url: {
                 f_create: page.path.root + "filemgr/vue.aspx?op=f_create",
                 fd_create: page.path.root + "filemgr/vue.aspx?op=fd_create",
                 fd_data: page.path.root + "filemgr/vue.aspx?op=fd_data"
             }
-            , license: {up6:"",down2:""}
             , fields: {uid:0}
             , pathNav: []
             , pathCur: { f_id: "", f_pid: "", f_pidRoot: "", f_nameLoc: "根目录", f_pathRel: "/" }
             , pathRoot: { f_id: "", f_pid: "", f_pidRoot: "", f_nameLoc: "根目录", f_pathRel: "/" }
             , idSels: []
+            , fileCur:null
             , idSelAll: false
             , folderMker: {name:'',edit:false}
             , ico: {
                 file: page.path.res + 'imgs/16/file.png'
                 , folder: page.path.res + 'imgs/16/folder.png'
+                , folder1: page.path.res + 'imgs/16/folder1.png'
                 , btnUp: page.path.res + "imgs/16/upload.png"
                 , btnUpFd: page.path.res + "imgs/16/folder.png"
                 , btnPaste: page.path.res + "imgs/16/paste.png"
@@ -31,26 +34,27 @@
                 , ok: page.path.res + "imgs/16/ok1.png"
                 , cancel: page.path.res + "imgs/16/cancel.png"
             }
+            , cookie: svrCookie
         }
         , mounted: function () {
             this.pathNav.push(this.pathRoot);
-            this.page_init();
         }
         , methods: {
             tm_format: function (v) {
                 return moment(v).format('YYYY-MM-DD HH:mm:ss');
             }
             , init_data: function () {
-                var param = jQuery.extend({},this.fields, { time: new Date().getTime() });
+                var _this = this;
+                var param = jQuery.extend({}, this.fields, { time: new Date().getTime() });
                 $.ajax({
                     type: "GET"
                     , dataType: "json"
                     , url: "vue.aspx?op=data"
                     , data: param
                     , success: function (res) {
-                        v_app.items = res.data;
-                        v_app.count = res.count;
-
+                        _this.items = res.data;
+                        _this.count = res.count;
+                        _this.page_init();
                     }
                     , error: function (req, txt, err) { }
                     , complete: function (req, sta) { req = null; }
@@ -67,7 +71,10 @@
             }
             , btnMkFolder_click: function () {
                 this.folderMker.edit = true;
-                setTimeout(function () { }, 10);
+                var _this = this;
+                setTimeout(function () {
+                    _this.$refs.tbFdName.focus();
+                 }, 10);
             }
             , btnMkFdOk_click: function () {
                 var _this = this;
@@ -77,7 +84,7 @@
                     return;
                 }
 
-                var param = $.extend({}, {
+                var param = $.extend({},this.fields, {
                     f_pid: this.pathCur.f_id
                     , f_pathRel: this.pathCur.f_pathRel
                     , f_pidRoot: ""
@@ -94,9 +101,14 @@
                             layer.alert('创建失败,' + res.msg, { icon: 5 });
                         }
                         else {
+                            var fd = $.extend(param,res,
+                                {
+                                    f_nameLoc:_this.folderMker.name,
+                                    f_fdTask:true
+                                });
                             _this.folderMker.name = '';
-                            _this.page_changed(1, 20);
                             _this.folderMker.edit = false;
+                            _this.items.unshift(fd);
                         }
                     }
                     , error: function (req, txt, err) { }
@@ -159,9 +171,10 @@
                 });
             }
             , selAll_click: function () {
+                var _this = this;
                 if (this.idSelAll) {
                     $.each(this.items, function (i, n) {
-                        v_app.idSels.push(n.f_id);
+                        _this.idSels.push(n.f_id);
                     });
                 }
                 else {
@@ -169,6 +182,7 @@
                 }
             }
             , openUp_click: function () {
+                var _this = this;
                 layer.open({
                     type: 1
                     , maxmin: true
@@ -179,18 +193,19 @@
                     , content: $("#pnl-up")
                     , area: ['452px', '562px']
                     , success: function (layero, index) {
-                        $(v_app.$refs.up6).show();
+                        $(_this.$refs.up6).show();
                     }
                     , btn1: function (index, layero) {
                         layer.close(index);//关闭窗口
-                        $(v_app.$refs.up6).hide();
+                        $(_this.$refs.up6).hide();
                     }
                     , btn2: function (index, layero) {
-                        $(v_app.$refs.up6).hide();
+                        $(_this.$refs.up6).hide();
                     }
                 });
             }
             , openDown_click: function () {
+                var _this = this;
                 layer.open({
                     type: 1
                     , maxmin: true
@@ -201,14 +216,14 @@
                     , content: $("#pnl-down")
                     , area: ['452px', '562px']
                     , success: function (layero, index) {
-                        $(v_app.$refs.down2).show();                        
+                        $(_this.$refs.down2).show();                        
                     }
                     , btn1: function (index, layero) {
                         layer.close(index);
-                        $(v_app.$refs.down2).hide();                        
+                        $(_this.$refs.down2).hide();                        
                     }
                     , btn2: function (index, layero) {
-                        $(v_app.$refs.down2).hide();                        
+                        $(_this.$refs.down2).hide();                        
                     }
                 });
             }
@@ -217,7 +232,7 @@
                 this.idSels.length = 0;
                 this.idSelAll = false;
                 //加载路径
-                var param = jQuery.extend({}, p,{time: new Date().getTime() });
+                var param = jQuery.extend({},this.fields, p,{time: new Date().getTime() });
                 $.ajax({
                     type: "GET"
                     , dataType: "json"
@@ -242,7 +257,7 @@
                 var _this = this;
                 $.extend(this.pathCur, d);
                 //加载文件列表
-                var param = jQuery.extend({}, { pid: d.f_id, time: new Date().getTime() });
+                var param = jQuery.extend({},this.fields, { pid: d.f_id, time: new Date().getTime() });
                 $.ajax({
                     type: "GET"
                     , dataType: "json"
@@ -267,10 +282,13 @@
                         elem: 'pager' //
                         , count: _this.count//
                         , layout: ['prev', 'page', 'next', 'limit', 'count', 'skip']
-                        , limit: 20
+                        , limit: _this.pageLimit
+                        , curr: _this.pageCurr
                         , jump: function (obj, first) {
                             //首次不执行
                             if (!first) {
+                                _this.pageLimit = obj.limit;
+                                _this.pageCurr = obj.curr;
                                 _this.page_changed(obj.curr, obj.limit);
                             }
                         }
@@ -279,7 +297,7 @@
             }
             , page_changed: function (page,size) {
                 var _this = this;
-                var param = jQuery.extend({}, { "page": page, limit: size,pid:this.pathCur.f_id, time: new Date().getTime() });
+                var param = jQuery.extend({},this.fields, { "page": page, limit: size,pid:this.pathCur.f_id, time: new Date().getTime() });
                 $.ajax({
                     type: "GET"
                     , dataType: "json"
@@ -287,6 +305,8 @@
                     , data: param
                     , success: function (res) {
                         _this.items = res.data;
+                        _this.count = res.count;
+                        _this.page_init();
                     }
                     , error: function (req, txt, err) { }
                     , complete: function (req, sta) { req = null; }
@@ -294,6 +314,7 @@
 
             }
             , itemDown_click: function (f) {
+                this.fileCur=f;
                 if (!this.$refs.down.check_path()) return;
                 var _this = this;
                 var dt = {
@@ -328,8 +349,14 @@
                     , url: "vue.aspx?op=rename"
                     , data: param
                     , success: function (res) {
-                        f.f_nameLoc = nameNew;
-                        _this.btnRename_cancel(f,i);
+                        if (!res.state) {
+                            layer.alert('重命名失败,' + res.msg, { icon: 5 });
+                        }
+                        else
+                        {
+                            f.f_nameLoc = nameNew;
+                            _this.btnRename_cancel(f, i);
+                        }
                     }
                     , error: function (req, txt, err) { }
                     , complete: function (req, sta) { req = null; }
@@ -356,10 +383,16 @@
             }
             , up6_folderComplete: function (f) {
                 this.page_changed(1, 20);
+            },
+            up6_unsetup:function(html){
+                layer.open({
+                    title: '提示',
+                    content: html
+                  });
             }
             , up6_loadTask: function () {
                 var _this = this;
-                var param = jQuery.extend({}, { time: new Date().getTime() });
+                var param = jQuery.extend({}, this.fields, { time: new Date().getTime() });
                 $.ajax({
                     type: "GET"
                     , dataType: "json"
@@ -394,7 +427,13 @@
             , down_loadComplete: function () {
                 this.down_loadTask();
             }
-            , down_sameFileExist: function (n) { }
+            , down_sameFileExist: function (n) { },
+            down_unsetup:function(html){
+                layer.open({
+                    title: '提示',
+                    content: html
+                  });
+            }
             , down_loadTask: function () {
                 var _this = this;
                 //加载未完成的任务
@@ -425,14 +464,23 @@
                     , complete: function (req, sta) { req = null; }
                 });
             }
+            , down_folderSel : function(){                
+                var _this = this;
+                setTimeout(function(){
+                    if(_this.fileCur!=null) _this.itemDown_click(_this.fileCur);
+                    _this.btnDowns_click();
+                    _this.fileCur = null;
+                },1000);
+                this.openDown_click();
+            }
             , taskEmpty: function () {
                 var ept = this.$refs.up6.taskEmpty();
-                if (ept) ept = this.$refs.down2.taskEmpty();
+                if (ept) ept = this.$refs.down.taskEmpty();
                 return ept;
             }
             , taskEnd: function () {
                 this.$refs.up6.taskEnd();
-                this.$refs.down2.taskEnd();
+                this.$refs.down.taskEnd();
             }
         }
     });

@@ -10,7 +10,7 @@ function FileUploader(fileLoc, mgr)
     this.event = mgr.event;
     this.FileListMgr = mgr.FileListMgr;//文件列表管理器
     this.Config = mgr.Config;
-    this.fields = jQuery.extend({}, mgr.Config.Fields, fileLoc.fields);//每一个对象自带一个fields幅本
+    this.fields = $.extend({}, mgr.Config.Fields, fileLoc.fields);//每一个对象自带一个fields幅本
     this.State = this.Config.state.None;
     this.uid = this.fields.uid;
     this.fileSvr = {
@@ -34,7 +34,7 @@ function FileUploader(fileLoc, mgr)
         , complete: false
         , deleted: false
     };//json obj，服务器文件信息
-    this.fileSvr = jQuery.extend(this.fileSvr, fileLoc);
+    this.fileSvr = $.extend(this.fileSvr, fileLoc);
 
     //准备
     this.Ready = function ()
@@ -113,6 +113,23 @@ function FileUploader(fileLoc, mgr)
             , complete: function (req, sta) { req = null; }
         });
     };
+    this.svr_remove = function ()
+    {
+        debugger;
+        var param = $.extend(this.fields, { time: new Date().getTime() });
+        $.ajax({
+            type: "GET"
+            , dataType: 'jsonp'
+            , jsonp: "callback" //自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名
+            , url: this.Config["UrlDel"]
+            , data: param
+            , success: function (msg) { 
+
+            }
+            , error: function (req, txt, err) { alert("删除文件失败！" + req.responseText); }
+            , complete: function (req, sta) { req = null; }
+        });
+    };
     this.post_process = function (json)
     {
         this.fileSvr.lenSvr = json.lenSvr;//保存上传进度
@@ -133,7 +150,7 @@ function FileUploader(fileLoc, mgr)
         this.ui.process.css("width", "100%");
         this.ui.percent.text("(100%)");
         this.ui.msg.text("上传完成");
-        this.Manager.arrFilesComplete.push(this);
+        this.Manager.data.cmps.push(this);
         this.State = this.Config.state.Complete;
         //从上传列表中删除
         this.Manager.RemoveQueuePost(this.fileSvr.id);
@@ -166,7 +183,7 @@ function FileUploader(fileLoc, mgr)
         this.ui.process.css("width", "100%");
         this.ui.percent.text("(100%)");
         this.ui.msg.text("服务器存在相同文件，快速上传成功。");
-        this.Manager.arrFilesComplete.push(this);
+        this.Manager.data.cmps.push(this);
         this.State = this.Config.state.Complete;
         //从上传列表中删除
         this.Manager.RemoveQueuePost(this.fileSvr.id);
@@ -212,6 +229,13 @@ function FileUploader(fileLoc, mgr)
         //添加到未上传列表
         this.Manager.AppendQueueWait(this.fileSvr.id);
         this.post_next();
+
+        if (this.Config.AutoConnect.opened) {
+            setTimeout(function () {
+                if (_this.State == _this.Config.state.Posting) return;
+                _this.post();
+            }, this.Config.AutoConnect.time);
+        }
     };
     this.md5_process = function (json)
     {
@@ -227,7 +251,7 @@ function FileUploader(fileLoc, mgr)
         var loc_path = encodeURIComponent(this.fileSvr.pathLoc);
         var loc_len = this.fileSvr.lenLoc;
         var loc_size = this.fileSvr.sizeLoc;
-        var param = jQuery.extend({}, this.fields, { md5: json.md5, id: this.fileSvr.id, lenLoc: loc_len, sizeLoc: loc_size, pathLoc: loc_path, time: new Date().getTime() });
+        var param = $.extend({}, this.fields, { md5: json.md5, id: this.fileSvr.id, lenLoc: loc_len, sizeLoc: loc_size, pathLoc: loc_path, time: new Date().getTime() });
 
         $.ajax({
             type: "GET"
@@ -328,6 +352,7 @@ function FileUploader(fileLoc, mgr)
     //删除，一般在用户点击"删除"按钮时调用
     this.remove = function ()
     {
+        //this.svr_remove();
         this.Manager.del_file(this.fileSvr.id);
         this.app.delFile(this.fileSvr);
         this.ui.div.remove();

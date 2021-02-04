@@ -14,6 +14,47 @@ Install-Package Microsoft.Experimental.IO
 
 ========================================================================
 更新记录：
+2021-02-04
+2021-02-03
+2021-02-01
+	down2增加ligerui示例
+	single示例增加arm,mips环境判断
+	panel示例JS目录名称改为panel
+	panel示例增加arm,mips环境判断
+	arrFilesComplete更名为data.cmps
+	data.browserName优化成 data.browser.name
+	删除this.nat_load
+	删除this.chrVer
+	删除this.ffVer
+	jquery.extend写法优化
+	  jQuery.extend改为$.extend
+	down2界面更新，清除按钮移到工具栏中
+	down2构造函数增加配置参数
+	down2完善自动下载逻辑
+2021-01-14
+	增加mips,arm控件包
+2020-12-30
+	增加对人大金仓的支持。
+2020-11-16
+	sql类增加float,money类型
+2020-03-30
+	完善文件夹路径更新逻辑。
+2020-03-25
+	文件初始化(f_create.aspx)新增快速生成服务器路径逻辑。
+2020-03-19
+	更新项目路径的写法，
+	  HttpContext.Current.Server.MapPath改为HttpRuntime.AppDomainAppPath
+	文件管理器：
+	  1.增加同名文件上传功能。以覆盖模式上传，替换旧的同名文件。
+	  2.增加同名目录上传功能。以合并模式上传，替换同名子文件。
+2019-01-02
+	增加加密配置
+2019-12-21
+	控件包版本号，路径，数据库统一配置。
+2019-12-19
+	单面板示例更新，图标统一配置。
+2019-12-05
+	统一路径，授权码配置。
 2019-11-28
 	增加WebBase类，完善页面参数接收逻辑。
 2019-11-26

@@ -13,7 +13,7 @@ namespace up6.filemgr.app
     public class SqlParValSetter
     {
         public delegate void setterDelegate(DbCommand cmd, JToken fieldVal, JToken fieldInf);
-        Dictionary<string, setterDelegate> m_map;
+        protected Dictionary<string, setterDelegate> m_map;
 
         public setterDelegate this[string index]
         {
@@ -62,6 +62,22 @@ namespace up6.filemgr.app
                     p.Direction = ParameterDirection.Input;
                     p.ParameterName = "@" + field["name"];
                     p.DbType = DbType.Int64;
+                    p.Value = val[field["name"].ToString()];
+                    cmd.Parameters.Add(p);
+                } }
+                ,{ "double",(DbCommand cmd,JToken val,JToken field)=>{
+                    var p = cmd.CreateParameter();
+                    p.Direction = ParameterDirection.Input;
+                    p.ParameterName = "@" + field["name"];
+                    p.DbType = DbType.Double;
+                    p.Value = val[field["name"].ToString()];
+                    cmd.Parameters.Add(p);
+                } }
+                ,{ "decimal",(DbCommand cmd,JToken val,JToken field)=>{
+                    var p = cmd.CreateParameter();
+                    p.Direction = ParameterDirection.Input;
+                    p.ParameterName = "@" + field["name"];
+                    p.DbType = DbType.Decimal;
                     p.Value = val[field["name"].ToString()];
                     cmd.Parameters.Add(p);
                 } }

@@ -6,7 +6,7 @@ function FileDownloader(fileLoc, mgr)
     this.app = mgr.app;
     this.Manager = mgr;
     this.Config = mgr.Config;
-    this.fields = jQuery.extend({},mgr.Config.Fields);//每一个对象自带一个fields幅本
+    this.fields = $.extend({},mgr.Config.Fields);//每一个对象自带一个fields幅本
     this.State = this.Config.state.None;
     this.event = mgr.event;
     this.fileSvr = {
@@ -26,7 +26,7 @@ function FileDownloader(fileLoc, mgr)
         , svrInit: false
     };
     var url = this.Config["UrlDown"] + "?" + this.Manager.to_params(this.fields);
-    jQuery.extend(this.fileSvr, fileLoc, { fileUrl: url });//覆盖配置
+    $.extend(this.fileSvr, fileLoc, { fileUrl: url });//覆盖配置
 
     this.hideBtns = function ()
     {
@@ -59,10 +59,10 @@ function FileDownloader(fileLoc, mgr)
     this.reset_fields = function (v)
     {
         if (v == null) return;
-        jQuery.extend(this.fields, v);
+        $.extend(this.fields, v);
         //单独拼接url
         var url = this.Config["UrlDown"] + "?" + this.Manager.to_params(this.fields);
-        jQuery.extend(this.fileSvr, { fileUrl: url });//覆盖配置
+        $.extend(this.fileSvr, { fileUrl: url });//覆盖配置
     };
 
     //方法-开始下载
@@ -112,13 +112,13 @@ function FileDownloader(fileLoc, mgr)
     };
     this.init_complete = function (json)
     {
-        jQuery.extend(this.fileSvr, json);
+        $.extend(this.fileSvr, json);
         if (!this.fileSvr.svrInit) this.svr_create();//
     };
     //在出错，停止中调用
     this.svr_update = function ()
     {
-        var param = jQuery.extend({}, this.fields, this.fileSvr, { time: new Date().getTime() });
+        var param = $.extend({}, this.fields, this.fileSvr, { time: new Date().getTime() });
         $.ajax({
             type: "GET"
             , dataType: 'jsonp'
@@ -136,8 +136,8 @@ function FileDownloader(fileLoc, mgr)
     {
         if (this.fileSvr.svrInit) return;
         //已记录将不再记录
-        var param = jQuery.extend({}, this.fields, { time: new Date().getTime() });
-        jQuery.extend(param, {
+        var param = $.extend({}, this.fields, { time: new Date().getTime() });
+        $.extend(param, {
             id: this.fileSvr.id
             , pathLoc: encodeURIComponent(this.fileSvr.pathLoc)
             , nameLoc: encodeURIComponent(this.fileSvr.nameLoc)
@@ -172,7 +172,7 @@ function FileDownloader(fileLoc, mgr)
     this.isComplete = function () { return this.State == this.Config.state.Complete; };
     this.svr_delete = function ()
     {
-        var param = jQuery.extend({}, this.fields, { id: this.fileSvr.id }, {time:new Date().getTime()});
+        var param = $.extend({}, this.fields, { id: this.fileSvr.id }, {time:new Date().getTime()});
         $.ajax({
             type: "GET"
             , dataType: 'jsonp'

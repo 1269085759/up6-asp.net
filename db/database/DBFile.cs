@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Text;
 using up6.db.model;
+using up6.filemgr.app;
 
 namespace up6.db.database
 {
@@ -79,7 +80,7 @@ namespace up6.db.database
         /// <param name="md5"></param>
         /// <param name="inf"></param>
         /// <returns></returns>
-        public bool exist_file(string md5, ref FileInf inf)
+        public virtual bool exist_file(string md5, ref FileInf inf)
         {
             if (string.IsNullOrEmpty(md5)) return false;
 
@@ -135,7 +136,7 @@ namespace up6.db.database
         /// 文件名称，本地路径，远程路径，相对路径都使用原始字符串。
         /// d:\soft\QQ2012.exe
         /// </summary>
-        public void Add(ref FileInf model)
+        public virtual void Add(ref FileInf model)
         {
             StringBuilder sb = new StringBuilder();
             string sql = @"insert into up6_files(
@@ -210,12 +211,12 @@ namespace up6.db.database
             db.ExecuteNonQuery(cmd);
         }
 
-        static public void Clear()
+        public virtual void Clear()
         {
             DbHelper db = new DbHelper();
-            DbCommand cmd = db.GetCommand("delete from up6_files;");
+            DbCommand cmd = db.GetCommand("delete from up6_files");
             db.ExecuteNonQuery(cmd);
-            cmd.CommandText = "delete from up6_folders;";
+            cmd.CommandText = "delete from up6_folders";
             db.ExecuteNonQuery(cmd);
         }
 
@@ -224,7 +225,7 @@ namespace up6.db.database
         /// </summary>
         /// <param name="f_uid"></param>
         /// <param name="f_id">文件夹ID</param>
-        static public void fd_complete(string f_id,string uid)
+        public virtual void fd_complete(string f_id,string uid)
         {
             string sql = "update up6_files set f_perSvr='100%',f_lenSvr=f_lenLoc,f_complete=1 where f_id=@f_id and f_uid=@uid;";
             sql += "update up6_folders set f_complete=1 where f_id=@f_id and f_uid=@uid;";
@@ -242,7 +243,7 @@ namespace up6.db.database
         /// </summary>
         /// <param name="id"></param>
         /// <param name="uid"></param>
-        static public void fd_scan(string id,string uid)
+        public virtual void fd_scan(string id,string uid)
         {
             string sql = "update up6_files set f_scan=1 where f_id=@f_id and f_uid=@uid";
 
@@ -261,7 +262,7 @@ namespace up6.db.database
         ///<param name="f_pos">文件位置，大小可能超过2G，所以需要使用long保存</param>
         ///<param name="f_lenSvr">已上传长度，文件大小可能超过2G，所以需要使用long保存</param>
         ///<param name="f_perSvr">已上传百分比</param>
-        public bool f_process(int f_uid, string f_id, long offset, long f_lenSvr, string f_perSvr)
+        public virtual bool f_process(int f_uid, string f_id, long offset, long f_lenSvr, string f_perSvr)
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("update up6_files");
@@ -296,7 +297,7 @@ namespace up6.db.database
             db.ExecuteNonQuery(cmd);
         }
 
-        public void complete(string id)
+        public virtual void complete(string id)
         {
             string sql = "update up6_files set f_lenSvr=f_lenLoc,f_perSvr='100%',f_complete=1,f_scan=1 where f_id=@f_id";
             DbHelper db = new DbHelper();
@@ -311,7 +312,7 @@ namespace up6.db.database
         /// </summary>
         /// <param name="f_uid"></param>
         /// <param name="f_id"></param>
-        public void Delete(int f_uid, string f_id)
+        public virtual void Delete(int f_uid, string f_id)
         {
             string sql = "update up6_files set f_deleted=1 where f_uid=@f_uid and f_id=@f_id";
             DbHelper db = new DbHelper();
@@ -319,6 +320,19 @@ namespace up6.db.database
 
             db.AddInt(ref cmd, "@f_uid", f_uid);
             db.AddString(ref cmd, "@f_id", f_id,32);
+            db.ExecuteNonQuery(cmd);
+        }
+
+        public virtual void delete(string pid,string name,int uid,string id)
+        {
+            string sql = "update up6_files set f_deleted=1 where f_pid=@pid and f_nameLoc=@nameLoc and f_uid=@uid and f_id!=@f_id";
+            DbHelper db = new DbHelper();
+            DbCommand cmd = db.GetCommand(sql);
+
+            db.AddString(ref cmd, "@pid",pid,32);
+            db.AddString(ref cmd, "@nameLoc", name, 255);
+            db.AddInt(ref cmd, "@uid", uid);
+            db.AddString(ref cmd, "@f_id",id,32);
             db.ExecuteNonQuery(cmd);
         }
 

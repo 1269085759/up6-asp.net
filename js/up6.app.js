@@ -63,12 +63,12 @@ var up6_app = {
     , addFile: function (json)
     {
         var param = { name: "add_file", config: this.Config };
-        jQuery.extend(param, json);
+        $.extend(param, json);
         this.postMessage(param);
     }
     , addFolder: function (json) {
         var param = { name: "add_folder", config: this.Config };
-        jQuery.extend(param, json);
+        $.extend(param, json);
         this.postMessage(param);
     }
     , openFiles: function ()
@@ -89,19 +89,19 @@ var up6_app = {
     , checkFile: function (f)
     {
         var param = { name: "check_file", config: this.Config };
-        jQuery.extend(param, f);
+        $.extend(param, f);
         this.postMessage(param);
     }
     , checkFolder: function (fd)
     {
         var param = { name: "check_folder", config: this.Config };
-        jQuery.extend(param, fd);
+        $.extend(param, fd);
         param.name = "check_folder";
         this.postMessage(param);
     }
     , scanFolder: function (fd) {
         var param = { name: "scan_folder"};
-        jQuery.extend(param, fd);
+        $.extend(param, fd);
         this.postMessage(param);
     }
     , checkFolderNat: function (fd)
@@ -112,30 +112,30 @@ var up6_app = {
     , postFile: function (f)
     {
         var param = { name: "post_file", config: this.Config };
-        jQuery.extend(param, f);
+        $.extend(param, f);
         this.postMessage(param);
     }
     , postFolder: function (fd)
     {
         var param = { name: "post_folder", config: this.Config };
-        jQuery.extend(param, fd);
+        $.extend(param, fd);
         param.name = "post_folder";
         this.postMessage(param);
     }
     , updateFolder: function (fd) {
         var param = { name: "update_folder"};
-        jQuery.extend(param, fd);
+        $.extend(param, fd);
         this.postMessage(param);
     }
     , delFolder: function (v)
     {
         var param = { name: "del_folder"};
-        jQuery.extend(param, v);
+        $.extend(param, v);
         this.postMessage(param);
     }
     , stopFile: function (f)
     {
-        var param = jQuery.extend({},f,{ name: "stop_file"});
+        var param = $.extend({},f,{ name: "stop_file"});
         this.postMessage(param);
     }
     , delFile: function (f) {

@@ -61,10 +61,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="db\biz\fd_scan.cs" />
+    <Compile Include="db\biz\fd_scan_oracle.cs" />
     <Compile Include="db\biz\PathBuilder.cs" />
     <Compile Include="db\biz\PathBuilderMd5.cs" />
     <Compile Include="db\biz\PathBuilderUuid.cs" />
     <Compile Include="db\biz\un_builder.cs" />
+    <Compile Include="db\biz\un_builder_oracle.cs" />
     <Compile Include="db\biz\up6_biz_event.cs" />
     <Compile Include="db\clear.aspx.cs">
       <DependentUpon>clear.aspx</DependentUpon>
@@ -73,8 +75,11 @@
     <Compile Include="db\clear.aspx.designer.cs">
       <DependentUpon>clear.aspx</DependentUpon>
     </Compile>
+    <Compile Include="db\database\DBConfig.cs" />
     <Compile Include="db\database\DBFile.cs" />
+    <Compile Include="db\database\DBFileOracle.cs" />
     <Compile Include="db\database\DBFolder.cs" />
+    <Compile Include="db\database\DBFolderOracle.cs" />
     <Compile Include="db\database\DbHelper.cs" />
     <Compile Include="db\fd_complete.aspx.cs">
       <DependentUpon>fd_complete.aspx</DependentUpon>
@@ -140,6 +145,7 @@
       <DependentUpon>f_process.aspx</DependentUpon>
     </Compile>
     <Compile Include="db\model\FileInf.cs" />
+    <Compile Include="db\utils\CryptoTool.cs" />
     <Compile Include="db\utils\FileBlockWriter.cs" />
     <Compile Include="db\utils\Md5Tool.cs" />
     <Compile Include="db\utils\PathTool.cs" />
@@ -147,7 +153,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="down2\biz\DnFile.cs" />
+    <Compile Include="down2\biz\DnFileOracle.cs" />
     <Compile Include="down2\biz\DnFolder.cs" />
+    <Compile Include="down2\biz\DnFolderOracle.cs" />
     <Compile Include="down2\db\clear.aspx.cs">
       <DependentUpon>clear.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -204,12 +212,29 @@
     <Compile Include="down2\db\f_update.aspx.designer.cs">
       <DependentUpon>f_update.aspx</DependentUpon>
     </Compile>
+    <Compile Include="down2\index.aspx.cs">
+      <DependentUpon>index.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="down2\index.aspx.designer.cs">
+      <DependentUpon>index.aspx</DependentUpon>
+    </Compile>
     <Compile Include="down2\model\DnFileInf.cs" />
     <Compile Include="filemgr\app\ConfigReader.cs" />
     <Compile Include="filemgr\app\DbBase.cs" />
     <Compile Include="filemgr\app\DbFolder.cs" />
+    <Compile Include="filemgr\app\FolderBuilder.cs" />
     <Compile Include="filemgr\app\HtmlTemplater.cs" />
+    <Compile Include="filemgr\app\OracleCmdReader.cs" />
+    <Compile Include="filemgr\app\OracleDbBase.cs" />
+    <Compile Include="filemgr\app\OracleExec.cs" />
+    <Compile Include="filemgr\app\OracleParamCreater.cs" />
+    <Compile Include="filemgr\app\OracleParamSetter.cs" />
+    <Compile Include="filemgr\app\OracleParValSetter.cs" />
+    <Compile Include="filemgr\app\OracleValueSetter.cs" />
     <Compile Include="filemgr\app\PageTool.cs" />
+    <Compile Include="filemgr\app\PathRelBuilder.cs" />
+    <Compile Include="filemgr\app\SqlBuilder.cs" />
     <Compile Include="filemgr\app\SqlCmdReader.cs" />
     <Compile Include="filemgr\app\SqlExec.cs" />
     <Compile Include="filemgr\app\SqlParam.cs" />
@@ -231,12 +256,19 @@
     <Compile Include="filemgr\biz\form.aspx.designer.cs">
       <DependentUpon>form.aspx</DependentUpon>
     </Compile>
-    <Compile Include="filemgr\index.aspx.cs">
-      <DependentUpon>index.aspx</DependentUpon>
+    <Compile Include="filemgr\vue.aspx.cs">
+      <DependentUpon>vue.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="filemgr\index.aspx.designer.cs">
-      <DependentUpon>index.aspx</DependentUpon>
+    <Compile Include="filemgr\vue.aspx.designer.cs">
+      <DependentUpon>vue.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="index-single.aspx.cs">
+      <DependentUpon>index-single.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="index-single.aspx.designer.cs">
+      <DependentUpon>index-single.aspx</DependentUpon>
     </Compile>
     <Compile Include="index.aspx.cs">
       <DependentUpon>index.aspx</DependentUpon>
@@ -253,12 +285,12 @@
       <DependentUpon>index2.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="vue\index.aspx.cs">
-      <DependentUpon>index.aspx</DependentUpon>
+    <Compile Include="vue.aspx.cs">
+      <DependentUpon>vue.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="vue\index.aspx.designer.cs">
-      <DependentUpon>index.aspx</DependentUpon>
+    <Compile Include="vue.aspx.designer.cs">
+      <DependentUpon>vue.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -283,7 +315,7 @@
     <Content Include="down2\db\f_list.aspx" />
     <Content Include="down2\db\f_list_cmp.aspx" />
     <Content Include="down2\db\f_update.aspx" />
-    <Content Include="down2\index.htm" />
+    <Content Include="down2\index.aspx" />
     <Content Include="down2\js\down-single.js" />
     <Content Include="down2\js\down.app.js" />
     <Content Include="down2\js\down.css" />
@@ -296,9 +328,9 @@
     <Content Include="down2\js\jquery-1.4.min.js" />
     <Content Include="down2\js\json2.min.js" />
     <Content Include="filemgr\biz\form.aspx" />
-    <Content Include="filemgr\data\index.js" />
-    <Content Include="filemgr\data\ui-down.html" />
-    <Content Include="filemgr\data\ui-up.html" />
+    <Content Include="filemgr\data\vue-down2.js" />
+    <Content Include="filemgr\data\vue-index.js" />
+    <Content Include="filemgr\data\vue-up6.js" />
     <Content Include="filemgr\down2\down.app.js" />
     <Content Include="filemgr\down2\down.css" />
     <Content Include="filemgr\down2\down.edge.js" />
@@ -309,7 +341,6 @@
     <Content Include="filemgr\down2\folder.png" />
     <Content Include="filemgr\down2\jquery-1.4.min.js" />
     <Content Include="filemgr\down2\json2.min.js" />
-    <Content Include="filemgr\index.aspx" />
     <Content Include="filemgr\res\bootstrap\css\bootstrap-theme.css" />
     <Content Include="filemgr\res\bootstrap\css\bootstrap-theme.min.css" />
     <Content Include="filemgr\res\bootstrap\css\bootstrap.min.css" />
@@ -324,14 +355,18 @@
     <Content Include="filemgr\res\bootstrap\js\bootstrap.min.js" />
     <Content Include="filemgr\res\bootstrap\js\_notes\dwsync.xml" />
     <Content Include="filemgr\res\filemgr.css" />
+    <Content Include="filemgr\res\imgs\16\cancel.png" />
     <Content Include="filemgr\res\imgs\16\clear.png" />
     <Content Include="filemgr\res\imgs\16\config.png" />
     <Content Include="filemgr\res\imgs\16\del.png" />
     <Content Include="filemgr\res\imgs\16\down-panel.png" />
     <Content Include="filemgr\res\imgs\16\down.png" />
+    <Content Include="filemgr\res\imgs\16\edit.png" />
     <Content Include="filemgr\res\imgs\16\file.png" />
     <Content Include="filemgr\res\imgs\16\folder.png" />
+    <Content Include="filemgr\res\imgs\16\folder1.png" />
     <Content Include="filemgr\res\imgs\16\ok.png" />
+    <Content Include="filemgr\res\imgs\16\ok1.png" />
     <Content Include="filemgr\res\imgs\16\paste.png" />
     <Content Include="filemgr\res\imgs\16\start.png" />
     <Content Include="filemgr\res\imgs\16\stop.png" />
@@ -347,6 +382,18 @@
     <Content Include="filemgr\res\imgs\32\stop.png" />
     <Content Include="filemgr\res\jquery\jquery-1.9.1.min.js" />
     <Content Include="filemgr\res\jquery\jquery.serializejson.min.js" />
+    <Content Include="filemgr\res\jstree\jstree.js" />
+    <Content Include="filemgr\res\jstree\jstree.min.js" />
+    <Content Include="filemgr\res\jstree\themes\default-dark\32px.png" />
+    <Content Include="filemgr\res\jstree\themes\default-dark\40px.png" />
+    <Content Include="filemgr\res\jstree\themes\default-dark\style.css" />
+    <Content Include="filemgr\res\jstree\themes\default-dark\style.min.css" />
+    <Content Include="filemgr\res\jstree\themes\default-dark\throbber.gif" />
+    <Content Include="filemgr\res\jstree\themes\default\32px.png" />
+    <Content Include="filemgr\res\jstree\themes\default\40px.png" />
+    <Content Include="filemgr\res\jstree\themes\default\style.css" />
+    <Content Include="filemgr\res\jstree\themes\default\style.min.css" />
+    <Content Include="filemgr\res\jstree\themes\default\throbber.gif" />
     <Content Include="filemgr\res\layer.window.js" />
     <Content Include="filemgr\res\layui\css\layui.css" />
     <Content Include="filemgr\res\layui\css\layui.mobile.css" />
@@ -456,7 +503,6 @@
     <Content Include="filemgr\res\moment\moment-with-locales.min.js" />
     <Content Include="filemgr\res\moment\moment.min.js" />
     <Content Include="filemgr\res\vue.min.js" />
-    <Content Include="filemgr\up6\jquery-1.4.min.js" />
     <Content Include="filemgr\up6\json2.min.js" />
     <Content Include="filemgr\up6\setup.htm" />
     <Content Include="filemgr\up6\up6.app.js" />
@@ -466,7 +512,8 @@
     <Content Include="filemgr\up6\up6.file.js" />
     <Content Include="filemgr\up6\up6.folder.js" />
     <Content Include="filemgr\up6\up6.js" />
-    <Content Include="index-single.htm" />
+    <Content Include="filemgr\vue.aspx" />
+    <Content Include="index-single.aspx" />
     <Content Include="index.aspx" />
     <Content Include="index2.aspx" />
     <Content Include="js\16\clear.png" />
@@ -494,12 +541,13 @@
     <Content Include="js\up6.file.js" />
     <Content Include="js\up6.folder.js" />
     <Content Include="js\up6.js" />
+    <Content Include="js\vue.min.js" />
     <Content Include="readme.txt" />
     <Content Include="sql.down\down_files.sql" />
-    <Content Include="sql\fd_files_check.sql" />
+    <Content Include="sql\spPager.sql" />
     <Content Include="sql\up6_files.sql" />
     <Content Include="sql\up6_folders.sql" />
-    <Content Include="vue\index.aspx" />
+    <Content Include="vue.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>

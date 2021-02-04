@@ -1,5 +1,5 @@
 ﻿Vue.component('up6', {
-    props: ['f_create','fd_create','license','fields'],
+    props: ['f_create','fd_create','fields','cookie'],
     data: function () {
         return {
             mgr: null
@@ -35,7 +35,7 @@
         this.mgr = new HttpUploaderMgr();
         this.mgr.Config["UrlCreate"] = this.f_create;
         this.mgr.Config["UrlFdCreate"] = this.fd_create;
-        this.mgr.Config["License"] = this.license;
+        this.mgr.Config["Cookie"] = this.cookie;
         $.extend(this.mgr.Config.Fields, this.fields);
         this.mgr.event.loadComplete = function () {
             _this.pluginInited = true;
@@ -53,6 +53,9 @@
         };
         this.mgr.event.fileComplete = function (f) {
             _this.$emit('file_complete');
+        };
+        this.mgr.event.unsetup = function(html){
+            _this.$emit("unsetup",html);
         };
         this.mgr.load_to("#pnl-up");
     },

@@ -5,7 +5,7 @@
 控件下载：http://www.ncmem.com/webapp/down2/pack.aspx
 示例下载：http://www.ncmem.com/webapp/down2/versions.aspx
 联系邮箱：1085617561@qq.com
-版本：2.4.15
+版本：2.4.16
 更新记录：
     2009-11-05 创建
 	2014-02-27 优化版本号。
@@ -21,14 +21,15 @@ function DownloaderMgr()
 		, "Debug"		: false//调试模式
 		, "LogFile"		: "f:\\log.txt"//日志文件路径。
 		, "Company"		: "荆门泽优软件有限公司"
-		, "Version"		: "1,2,72,60650"
-		, "License"		: ""//
+		, "Version"		: page.path.version.down2
+		, "License2"	: page.path.license2.down2
 		, "Cookie"		: ""//
 		, "ThreadCount"	: 3//并发数
         , "ThreadBlock"	: 3//文件块线程数，每个文件使用多少线程下载数据。3~10
         , "ThreadChild" : 3//子文件线程数，提供给文件夹使用。3~10
 		, "FilePart"	: 5242880//文件块大小，计算器：http://www.beesky.com/newsite/bit_byte.htm
         , "FolderClear"	: true//下载前是否清空目录
+        , "Proxy"       : {url: ""/**http://192.168.0.1:8888 */,pwd: ""/**admin:123456 */}//代理
         //file
         , "UrlCreate"   : page.path.root + "down2/db/f_create.aspx"
         , "UrlDel"      : page.path.root + "down2/db/f_del.aspx"
@@ -41,20 +42,21 @@ function DownloaderMgr()
         //x86
         , ie: {
               part: { clsid: "6528602B-7DF7-445A-8BA0-F6F996472569", name: "Xproer.DownloaderPartition" }
-            , path: "http://www.ncmem.com/download/down2/2.4/down2.cab"
+            , path: page.path.plugin.down2.ie32
         }
         //x64
         , ie64: {
             part: { clsid: "19799DD1-7357-49de-AE5D-E7A010A3172C", name: "Xproer.DownloaderPartition64" }
-            , path: "http://www.ncmem.com/download/down2/2.4/down64.cab"
+            , path: page.path.plugin.down2.ie64
         }
-        , firefox: { name: "", type: "application/npHttpDown", path: "http://www.ncmem.com/download/down2/2.4/down2.xpi" }
-        , chrome: { name: "npHttpDown", type: "application/npHttpDown", path: "http://www.ncmem.com/download/down2/2.4/down2.crx" }
-	    //Chrome 45
-        , chrome45: { name: "com.xproer.down2", path: "http://www.ncmem.com/download/down2/2.4/down2.nat.crx" }
-        , exe: { path: "http://www.ncmem.com/download/down2/2.4/down2.exe" }
-        , mac: { path: "http://res2.ncmem.com/download/down2/pack/2.4.19/down2.pkg" }
-        , linux: { path: "http://res2.ncmem.com/download/down2/pack/2.4.19/down2.tar" }
+        , firefox: { name: "", type: "application/npHttpDown", path: page.path.plugin.down2.firefox }
+        , chrome: { name: "npHttpDown", type: "application/npHttpDown", path: page.path.plugin.down2.chr }
+        , chrome45: { name: "com.xproer.down2", path: page.path.plugin.down2.chr }
+        , exe: { path: page.path.plugin.down2.exe }
+        , mac: { path: page.path.plugin.down2.mac }
+        , linux: { path: page.path.plugin.down2.linux }
+        , arm64: { path: page.path.plugin.down2.arm64 }
+        , mips64: { path: page.path.plugin.down2.mips64 }
         , edge: {protocol:"down2",port:9700,visible:false}
         , "Fields": { "uname": "test", "upass": "test", "uid": "0" }
         , errCode: {
@@ -133,30 +135,35 @@ function DownloaderMgr()
 	};
 
     this.event = {
-          downComplete: function (obj) { }
-        , downError: function (obj, err) { }
-        , queueComplete: function () { }
-        , loadComplete: function () { }
+        downComplete: function (obj) { },
+        downError: function (obj, err) { },
+        queueComplete: function () { },
+        loadComplete: function () { },
+        unsetup:function(html){},
+        folderSel: function (path) { }
 	};
+    this.data={
+        browser:{name:navigator.userAgent.toLowerCase(),ie:true,ie64:false,firefox:false,chrome:false,edge:false,arm64:false,mips64:false}
+    };
+    this.ui = { file: null ,list:null,panel:null,header:null,footer:null};
 
     this.websocketInited = false;
-	var browserName = navigator.userAgent.toLowerCase();
-	this.ie = browserName.indexOf("msie") > 0;
-	this.ie = this.ie ? this.ie : browserName.search(/(msie\s|trident.*rv:)([\w.]+)/) != -1;
-	this.firefox = browserName.indexOf("firefox") > 0;
-	this.chrome = browserName.indexOf("chrome") > 0;
-	this.chrome45 = false;
-    this.nat_load = false;
+	this.data.browser.ie = this.data.browser.name.indexOf("msie") > 0;
+	this.data.browser.ie = this.data.browser.ie ? this.data.browser.ie : this.data.browser.name.search(/(msie\s|trident.*rv:)([\w.]+)/) != -1;
+	this.data.browser.firefox = this.data.browser.name.indexOf("firefox") > 0;
+	this.data.browser.chrome = this.data.browser.name.indexOf("chrome") > 0;
+	this.data.browser.arm64 = this.data.browser.name.indexOf("aarch64") > 0;
+	this.data.browser.mips64 = this.data.browser.name.indexOf("mips64") > 0;
+    this.data.browser.edge = this.data.browser.name.indexOf("edge") > 0;
     this.pluginInited = false;
     this.chrVer = navigator.appVersion.match(/Chrome\/(\d+)/);
-    this.edge = navigator.userAgent.indexOf("Edge") > 0;
     this.edgeApp = new WebServerDown2(this);
     this.edgeApp.ent.on_close = function () { _this.socket_close(); };
     this.app = down2_app;
     this.app.edgeApp = this.edgeApp;
     this.app.Config = this.Config;
     this.app.ins = this;
-    if (this.edge) { this.ie = this.firefox = this.chrome = this.chrome45 = false; }
+    if (this.data.browser.edge) { this.data.browser.ie = this.data.browser.firefox = this.data.browser.chrome = this.data.browser.chrome45 = false; }
 	
 	this.idCount = 1; 	//上传项总数，只累加
 	this.queueCount = 0;//队列总数
@@ -169,7 +176,6 @@ function DownloaderMgr()
 	this.btnSetup = null;//安装控件的按钮
     this.working = false;
     this.allStoped = false;//
-    this.ui = { file: null ,list:null,panel:null,header:null,footer:null};
 
     //api
     this.addFile = function (v) {
@@ -188,17 +194,10 @@ function DownloaderMgr()
 	this.getHtml = function()
 	{ 
 	    //自动安装CAB
-        var html = '<embed name="ffParter" type="' + this.Config.firefox.type + '" pluginspage="' + this.Config.firefox.path + '" width="1" height="1"/>';
-        if (this.chrome45) html = "";
-		//var acx = '<div style="display:none">';
-		/*
-			IE静态加载代码：
-			<object id="objDownloader" classid="clsid:E94D2BA0-37F4-4978-B9B9-A4F548300E48" codebase="http://www.qq.com/HttpDownloader.cab#version=1,2,22,65068" width="1" height="1" ></object>
-			<object id="objPartition" classid="clsid:6528602B-7DF7-445A-8BA0-F6F996472569" codebase="http://www.qq.com/HttpDownloader.cab#version=1,2,22,65068" width="1" height="1" ></object>
-		*/
+        var html = "";
         html += '<object name="parter" classid="clsid:' + this.Config.ie.part.clsid + '"';
         html += ' codebase="' + this.Config.ie.path + '#version=' + _this.Config["Version"] + '" width="1" height="1" ></object>';
-        if (this.edge) html = '';
+        if (this.data.browser.edge) html = '';
 	    return html;
 	};
 
@@ -214,7 +213,7 @@ function DownloaderMgr()
         }
         return paramStr.substr(1);
     };
-	this.set_config = function (v) { jQuery.extend(this.Config, v); };
+	this.set_config = function (v) { $.extend(this.Config, v); };
 	this.clearComplete = function ()
 	{
 	    $.each(this.filesCmp, function (i,n)
@@ -286,7 +285,7 @@ function DownloaderMgr()
     };
 	this.resume_folder = function (fdSvr)
     {
-        var fd = jQuery.extend({}, fdSvr, { svrInit: true });
+        var fd = $.extend({}, fdSvr, { svrInit: true });
 	    this.add_ui(fd);
 	    //if (null == obj) return;
         //obj.svr_inited = true;
@@ -294,7 +293,7 @@ function DownloaderMgr()
 	    //return obj;
     };
     this.resume_file = function (fSvr) {
-        var f = jQuery.extend({}, fSvr, { svrInit: true });
+        var f = $.extend({}, fSvr, { svrInit: true });
         this.add_ui(f);
         //if (null == obj) return;
         //obj.svr_inited = true;
@@ -306,7 +305,7 @@ function DownloaderMgr()
         this.app.initFile(f);
     };
     this.init_folder = function (f) {
-        this.app.initFolder(jQuery.extend({},this.Config,f));
+        this.app.initFolder($.extend({},this.Config,f));
     };
     this.init_file_cmp = function (json)
     {
@@ -386,6 +385,7 @@ function DownloaderMgr()
         //用户选择的路径
         //json.path
         this.Config["Folder"] = json.path;
+        this.event.folderSel(json.path);
     };
 	this.down_recv_size = function (json)
 	{
@@ -476,68 +476,71 @@ function DownloaderMgr()
 
     this.pluginLoad = function () {
         if (!this.pluginInited) {
-            if (this.edge) {
+            if (this.data.browser.edge) {
                 this.edgeApp.connect();
             }
         }
     };
     this.pluginCheck = function () {
-        if (!this.pluginInited) {
-            alert("控件没有加载成功，请安装控件或等待加载。");
+        if (!this.pluginInited) {       
+            var link = "<a target='_blank' href='%url%' class='btn btn-link btn-sm'安装控件</a>".replace("%url%",this.Config.exe.path);
+            var html = '控件没有加载成功，请%link%或等待加载。'.replace("%link%",link);
+            this.event.unsetup(html);
             this.pluginLoad();
             return false;
         }
         return true;
     };
-    this.checkVersion = function ()
+    this.checkBrowser = function ()
 	{
 	    //Win64
 	    if (window.navigator.platform == "Win64")
 	    {
-	        jQuery.extend(this.Config.ie, this.Config.ie64);
+	        $.extend(this.Config.ie, this.Config.ie64);
         }//macOS
         else if (window.navigator.platform == "MacIntel") {
-            this.edge = true;
+            this.data.browser.edge = true;
             this.app.postMessage = this.app.postMessageEdge;
             this.edgeApp.run = this.edgeApp.runChr;
             this.Config.exe.path = this.Config.mac.path;
         }//linux
         else if (window.navigator.platform == "Linux x86_64") {
-            this.edge = true;
+            this.data.browser.edge = true;
             this.app.postMessage = this.app.postMessageEdge;
             this.edgeApp.run = this.edgeApp.runChr;
             this.Config.exe.path = this.Config.linux.path;
+        }//Linux aarch64
+        else if (this.data.browser.arm64) {
+            this.data.browser.edge = true;
+            this.app.postMessage = this.app.postMessageEdge;
+            this.edgeApp.run = this.edgeApp.runChr;
+            this.Config.exe.path = this.Config.arm64.path;
+        }//Linux mips64
+        else if (this.data.browser.mips64) {
+            this.data.browser.edge = true;
+            this.app.postMessage = this.app.postMessageEdge;
+            this.edgeApp.run = this.edgeApp.runChr;
+            this.Config.exe.path = this.Config.mips64.path;
         }
-	    else if (this.firefox)
+	    else if (this.data.browser.firefox)
         {
-            //if (!this.app.checkFF())//仍然支持npapi
-            {
-                this.edge = true;
-                this.app.postMessage = this.app.postMessageEdge;
-                this.edgeApp.run = this.edgeApp.runChr;
-            }
-	    }
-	    else if (this.chrome)
+            this.data.browser.edge = true;
+            this.app.postMessage = this.app.postMessageEdge;
+            this.edgeApp.run = this.edgeApp.runChr;
+        }
+	    else if (this.data.browser.chrome)
 	    {
 	        this.app.check = this.app.checkFF;
-	        jQuery.extend(this.Config.firefox, this.Config.chrome);
-	        //44+版本使用Native Message
-	        //if (parseInt(this.chrVer[1]) >= 44)
-	        {
-                //_this.firefox = true;
-                //if (!this.app.checkFF())//仍然支持npapi
-                {
-                    this.edge = true;
-                    this.app.postMessage = this.app.postMessageEdge;
-                    this.edgeApp.run = this.edgeApp.runChr;
-                }
-	        }
+	        $.extend(this.Config.firefox, this.Config.chrome);
+            this.data.browser.edge = true;
+            this.app.postMessage = this.app.postMessageEdge;
+            this.edgeApp.run = this.edgeApp.runChr;
         }
-        else if (this.edge) {
+        else if (this.data.browser.edge) {
             this.app.postMessage = this.app.postMessageEdge;
         }
 	};
-    this.checkVersion();
+    this.checkBrowser();
 
     //升级通知
     this.update_notice = function () {
@@ -559,7 +562,7 @@ function DownloaderMgr()
         
 		$(window).bind("unload", function()
         {
-            if(this.edge) _this.edgeApp.close();
+            if (this.data.browser.edge) _this.edgeApp.close();
             if (_this.queueWork.length > 0)
             {
                 _this.stop_queue();
@@ -567,7 +570,7 @@ function DownloaderMgr()
         });
     };
     this.page_close = function () {
-        if (this.edge) _this.edgeApp.close();
+        if (this.data.browser.edge) _this.edgeApp.close();
         if (_this.queueWork.length > 0) {
             _this.stop_queue();
         }
@@ -618,27 +621,27 @@ function DownloaderMgr()
 
         //this.safeCheck();//
 
-        $(function () {
-            if (!_this.edge) {
-                if (_this.ie) {
+        setTimeout(function () {
+            if (!_this.data.browser.edge) {
+                if (_this.data.browser.ie) {
                     _this.parter = _this.ieParter;
                 }
                 _this.parter.recvMessage = _this.recvMessage;
             }
 
-            if (_this.edge) {
+            if (_this.data.browser.edge) {
                 _this.edgeApp.connect();
             }
             else {
                 _this.app.init();
             }
-        });
+        }, 500);
 	};
 
     //加载未未完成列表
 	this.loadFiles = function ()
 	{
-	    //var param = jQuery.extend({}, this.Config.Fields, { time: new Date().getTime()});
+	    //var param = $.extend({}, this.Config.Fields, { time: new Date().getTime()});
 	    //$.ajax({
 	    //    type: "GET"
      //       , dataType: 'jsonp'

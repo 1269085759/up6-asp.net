@@ -10,7 +10,7 @@ namespace up6.down2.biz
 {
     public class DnFile
     {
-        public void Add(ref model.DnFileInf inf)
+        public virtual void Add(ref model.DnFileInf inf)
         {
             StringBuilder sql = new StringBuilder();
             sql.Append("insert into down_files(");
@@ -51,7 +51,7 @@ namespace up6.down2.biz
         /// 删除文件
         /// </summary>
         /// <param name="fid"></param>
-        public void Delete(string fid, int uid)
+        public virtual void Delete(string fid, int uid)
         {
             string sql = "delete from down_files where f_id=@f_id and f_uid=@f_uid";
             DbHelper db = new DbHelper();
@@ -61,7 +61,7 @@ namespace up6.down2.biz
             db.ExecuteNonQuery(ref cmd);
         }
 
-        public void process(string fid, int uid, string lenLoc, string perLoc)
+        public virtual void process(string fid, int uid, string lenLoc, string perLoc)
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("update down_files set ");
@@ -79,7 +79,7 @@ namespace up6.down2.biz
             db.ExecuteNonQuery(ref cmd);
         }
 
-        static public void Clear()
+        public virtual void Clear()
         {
             DbHelper db = new DbHelper();
             DbCommand cmd = db.GetCommand("delete from down_files;");
@@ -91,7 +91,7 @@ namespace up6.down2.biz
         /// </summary>
         /// <param name="uid"></param>
         /// <returns></returns>
-        public string all_uncmp(int uid)
+        public virtual string all_uncmp(int uid)
         {
             List<DnFileInf> files = new List<DnFileInf>();
             StringBuilder sb = new StringBuilder();
@@ -137,7 +137,7 @@ namespace up6.down2.biz
         /// </summary>
         /// <param name="uid"></param>
         /// <returns></returns>
-        public string all_complete(int uid)
+        public virtual string all_complete(int uid)
         {
             List<DnFileInf> fs = new List<DnFileInf>();
             StringBuilder sb = new StringBuilder();

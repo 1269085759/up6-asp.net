@@ -13,7 +13,7 @@ namespace up6.filemgr.app
     public class SqlCmdReader
     {
         public delegate JToken readerDelegate(DbDataReader r, int index);
-        Dictionary<string, readerDelegate> m_map;
+        protected Dictionary<string, readerDelegate> m_map;
 
         public readerDelegate this[string index]
         {
@@ -49,6 +49,12 @@ namespace up6.filemgr.app
                 ,{ "long",(DbDataReader r,int index)=>{
                     return r.IsDBNull(index) ? 0:r.GetInt64(index);
                 } }
+                ,{ "double",(DbDataReader r,int index)=>{
+                    return r.IsDBNull(index) ? 0:r.GetFloat(index);
+                } }
+                ,{ "decimal",(DbDataReader r,int index)=>{
+                    return r.IsDBNull(index) ? 0:r.GetDecimal(index);
+                } }
                 ,{ "smallint",(DbDataReader r,int index)=>{
                     return r.IsDBNull(index) ? 0:r.GetInt16(index);
                 } }
@@ -62,7 +68,10 @@ namespace up6.filemgr.app
                     return r.IsDBNull(index) ? 0:r.GetByte(index);
                 } }
                 ,{ "bool",(DbDataReader r,int index)=>{
-                    return r.IsDBNull(index) ? false:r.GetBoolean(index);
+                    if(r.IsDBNull(index)) return false;
+                    string v = r.GetValue(index).ToString().ToLower();
+                    if(v=="1"||v=="true") return true;
+                    return false;
                 } }
             };
         }

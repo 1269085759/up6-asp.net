@@ -1,4 +1,5 @@
 ﻿using System;
+using up6.db.database;
 using up6.down2.biz;
 
 namespace up6.down2.db
@@ -7,7 +8,8 @@ namespace up6.down2.db
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            DnFile.Clear();
+            DBConfig cfg = new DBConfig();
+            cfg.downF().Clear();
         }
     }
 }

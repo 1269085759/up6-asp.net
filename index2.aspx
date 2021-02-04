@@ -4,15 +4,10 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>up6-单面板演示页面</title>
-    <link href="js/single-panel/up6.css" type="text/css" rel="Stylesheet" charset="gb2312"/>
     <script type="text/javascript" src="js/jquery-1.4.min.js"></script>
     <script type="text/javascript" src="js/json2.min.js" charset="utf-8"></script>
-    <script type="text/javascript" src="js/up6.config.js" charset="utf-8"></script>
-    <script type="text/javascript" src="js/up6.app.js" charset="utf-8"></script>
-    <script type="text/javascript" src="js/up6.edge.js" charset="utf-8"></script>
-    <script type="text/javascript" src="js/single-panel/up6.file.js" charset="utf-8"></script>
-    <script type="text/javascript" src="js/single-panel/up6.folder.js" charset="utf-8"></script>
-    <script type="text/javascript" src="js/single-panel/up6.js" charset="utf-8"></script>
+    <%=this.paramPage() %>
+    <%= this.require( this.m_path["up6-panel"] ) %>
     <script language="javascript" type="text/javascript">
         var cbMgr = new HttpUploaderMgr();
         cbMgr.event.md5Complete = function (obj, md5) { /*alert(md5);*/ };
@@ -29,12 +24,12 @@
             //上传指定文件
             $("#btnUpF").click(function () {
                 var path = $("#filePath").val();
-                cbMgr.app.addFile({ pathLoc: path });
+                cbMgr.addFile( path );
             });
             //上传指定目录
             $("#btnUpFd").click(function () {
                 var path = $("#folderPath").val();
-                cbMgr.app.addFolder({ pathLoc: path });
+                cbMgr.addFolder( path );
             });
         });
     </script>

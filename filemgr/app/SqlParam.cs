@@ -12,6 +12,8 @@ namespace up6.filemgr.app
         public bool m_valBool = false;
         public int m_valInt =0;
         public long m_valLong=0;
+        public double m_valDouble = 0;
+        public decimal m_valDecimal = 0;
         public string m_valStr=string.Empty;
         public DateTime m_valTm=DateTime.Now;
         protected string m_type;
@@ -55,6 +57,20 @@ namespace up6.filemgr.app
             this.m_valLong = v;
             this.m_typeDb = DbType.Int64;
             this.m_type = "long";
+        }
+        public SqlParam(string name, double v)
+        {
+            this.m_name = name;
+            this.m_valDouble = v;
+            this.m_typeDb = DbType.Double;
+            this.m_type = "double";
+        }
+        public SqlParam(string name, decimal v)
+        {
+            this.m_name = name;
+            this.m_valDecimal = v;
+            this.m_typeDb = DbType.Decimal;
+            this.m_type = "decimal";
         }
         public SqlParam(string name, DateTime v)
         {

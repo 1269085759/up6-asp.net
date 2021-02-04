@@ -6,6 +6,7 @@ using Newtonsoft.Json.Linq;
 using up6.db.biz;
 using up6.db.database;
 using up6.db.model;
+using up6.db.utils;
 using up6.filemgr.app;
 
 namespace up6.db
@@ -60,11 +61,13 @@ namespace up6.db
             //添加成根目录
             if (string.IsNullOrEmpty(pid))
             {
-                DBFile db = new DBFile();
+                DBConfig cfg = new DBConfig();
+                DBFile db = cfg.db();
                 db.Add(ref fileSvr);
             }//添加成子目录
             else {
-                SqlExec se = new SqlExec();
+                DBConfig cfg = new DBConfig();
+                SqlExec se = cfg.se();
                 se.insert("up6_folders", new SqlParam[] {
                      new SqlParam("f_id",fileSvr.id)
                     ,new SqlParam("f_nameLoc",fileSvr.nameLoc)
@@ -76,6 +79,16 @@ namespace up6.db
                     ,new SqlParam("f_pathSvr",fileSvr.pathSvr)
                     ,new SqlParam("f_uid",fileSvr.uid)
                 });
+            }
+
+            //加密
+            ConfigReader cr = new ConfigReader();
+            var sec = cr.module("path");
+            var encrypt = (bool)sec.SelectToken("$.security.encrypt");
+            if (encrypt)
+            {
+                CryptoTool ct = new CryptoTool();
+                fileSvr.pathSvr = ct.encode(fileSvr.pathSvr);
             }
 
             up6_biz_event.folder_create(fileSvr);

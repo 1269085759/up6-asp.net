@@ -20,7 +20,7 @@ namespace up6.filemgr.app
         /// <param name="field">字段类型信息</param>
         /// <param name="val">字段值</param>
         public delegate void dbValueSetDelegate(DbCommand cmd, JToken field, JToken val);
-        Dictionary<string, dbValueSetDelegate> m_map;
+        protected Dictionary<string, dbValueSetDelegate> m_map;
 
         public dbValueSetDelegate this[string index]
         {
@@ -68,6 +68,20 @@ namespace up6.filemgr.app
                     var p = cmd.Parameters["@"+pn];
                     p.Direction = ParameterDirection.Input;
                     p.DbType = DbType.Int64;
+                    p.Value = val[pn];
+                } }
+                ,{ "double",(DbCommand cmd,JToken field, JToken val)=>{
+                    var pn = field["name"].ToString();
+                    var p = cmd.Parameters["@"+pn];
+                    p.Direction = ParameterDirection.Input;
+                    p.DbType = DbType.Double;
+                    p.Value = val[pn];
+                } }
+                ,{ "decimal",(DbCommand cmd,JToken field, JToken val)=>{
+                    var pn = field["name"].ToString();
+                    var p = cmd.Parameters["@"+pn];
+                    p.Direction = ParameterDirection.Input;
+                    p.DbType = DbType.Decimal;
                     p.Value = val[pn];
                 } }
                 ,{ "smallint",(DbCommand cmd,JToken field, JToken val)=>{

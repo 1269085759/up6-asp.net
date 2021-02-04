@@ -4,18 +4,14 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>up6-多标签演示页面</title>
-    <link href="js/up6.css" type="text/css" rel="Stylesheet" charset="utf-8"/>
+    <%=this.paramPage() %>
     <script type="text/javascript" src="js/jquery-1.4.min.js"></script>
     <script type="text/javascript" src="js/json2.min.js" charset="utf-8"></script>
-    <script type="text/javascript" src="js/up6.config.js" charset="utf-8"></script>
-    <script type="text/javascript" src="js/up6.app.js" charset="utf-8"></script>
-    <script type="text/javascript" src="js/up6.edge.js" charset="utf-8"></script>
-    <script type="text/javascript" src="js/up6.file.js" charset="utf-8"></script>
-    <script type="text/javascript" src="js/up6.folder.js" charset="utf-8"></script>
-    <script type="text/javascript" src="js/up6.js" charset="utf-8"></script>
+    <%= this.require( this.m_path["up6"] ) %>
     <script language="javascript" type="text/javascript">
         var cbMgr = new HttpUploaderMgr();
         cbMgr.event.md5Complete = function (obj, md5) { /*alert(md5);*/ };
+        cbMgr.event.fileAppend = function (obj) { /*alert(obj.fileSvr.pathSvr);*/ };
         cbMgr.event.fileComplete = function (obj) { /*alert(obj.fileSvr.pathSvr);*/ };
         cbMgr.event.queueComplete = function () { $(document.body).append("队列完成<br/>"); }
         cbMgr.event.addFdError = function (jv) { alert("本地路径不存在：" + jv.path); };
@@ -29,12 +25,12 @@
             //上传指定文件
             $("#btnUpF").click(function () {
                 var path = $("#filePath").val();
-                cbMgr.app.addFile({ pathLoc: path });
+                cbMgr.addFile(path);
             });
             //上传指定目录
             $("#btnUpFd").click(function () {
                 var path = $("#folderPath").val();
-                cbMgr.app.addFolder({ pathLoc: path });
+                cbMgr.addFolder( path );
             });
         });
     </script>
@@ -42,11 +38,12 @@
 <body>
     <p>up6多标签上传演示页面</p>
     <p><a href="db/clear.aspx" target="_blank">清空数据库</a></p>
-    <p><a href="filemgr/vue.aspx" target="_blank">文件管理器演示</a></p>
-    <p><a href="index2.aspx" target="_blank">单面板演示</a></p>
-    <p><a href="down2/index.htm" target="_blank">打开下载页面</a></p>
-    <p><a href="index-single.htm" target="_blank">单文件上传演示</a></p>
-    <p><a href="vue.aspx" target="_blank">vue演示</a></p>
+    <p><a href="filemgr/vue.aspx" target="_blank">文件管理器示例</a></p>
+    <p><a href="index2.aspx" target="_blank">单面板示例</a></p>
+    <p><a href="index-single.aspx" target="_blank">单文件示例</a></p>
+    <p><a href="down2/index.aspx" target="_blank">文件下载示例</a></p>
+    <p><a href="down2/ligerui.aspx" target="_blank">ligerui下载示例</a></p>
+    <p><a href="vue.aspx" target="_blank">vue示例</a></p>
     <p>
         文件路径：<input id="filePath" type="text" size="50" value="D:\\360safe-inst.exe" />&nbsp;
         <input id="btnUpF" type="button" value="上传本地文件" />

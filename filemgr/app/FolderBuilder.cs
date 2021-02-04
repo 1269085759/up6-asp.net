@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using up6.db.database;
 
 namespace up6.filemgr.app
 {
@@ -22,7 +23,8 @@ namespace up6.filemgr.app
         /// <param name="id">文件夹ID</param>
         /// <returns></returns>
         public JToken build(string id) {
-            SqlExec se = new SqlExec();
+            DBConfig cfg = new DBConfig();
+            SqlExec se = cfg.se();
             var o = se.read("up6_files", "*", new SqlParam[] { new SqlParam("f_id", id) });
             //子目录
             if(o==null)
@@ -36,7 +38,8 @@ namespace up6.filemgr.app
             JArray fs = new JArray();
 
             //查询文件
-            string where = string.Format("CHARINDEX('{0}',f_pathRel)>0 and f_fdTask=0", pathRoot+"/");
+            string where = string.Format("CHARINDEX('{0}',f_pathRel)>0 and f_fdTask=0 and f_deleted=0", pathRoot+"/");
+            if(cfg.m_isOracle) where = string.Format("instr(f_pathRel,'{0}')>0 and f_fdTask=0 and f_deleted=0", pathRoot + "/");
             var files = (JArray)se.select("up6_files", "*", where);
             int count = files.Count();//获取数组的长度
             for (int i = 0; i < count; i++)

@@ -13,10 +13,10 @@ namespace up6.down2.biz
         /// <summary>
         /// 清空数据库
         /// </summary>
-        public static void Clear()
+        public virtual void Clear()
         {
             DbHelper db = new DbHelper();
-            DbCommand cmd = db.GetCommand("delete from down_folders;");
+            DbCommand cmd = db.GetCommand("delete from down_folders");
             db.ExecuteNonQuery(ref cmd);
         }
 
@@ -25,7 +25,7 @@ namespace up6.down2.biz
         /// </summary>
         /// <param name="id">文件夹id</param>
         /// <returns></returns>
-        public string files(string id)
+        public virtual string files(string id)
         {
             var se = new SqlExec();
             var fd = se.read("up6_folders", "f_pidRoot", new SqlParam[] { new SqlParam("f_id", id) });

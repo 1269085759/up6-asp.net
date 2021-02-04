@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using System.Web;
@@ -18,6 +17,7 @@ namespace up6.filemgr.app
             var r = db.ExecuteReader(cmd);
             return r;
         }
+
         public static DbDataReader all(string table,string fields)
         {
             string sql = string.Format("select {0} from {1}", table,fields);
@@ -27,78 +27,16 @@ namespace up6.filemgr.app
             return r;
         }
 
-        public static void allCompanys(ref List<string> arr)
-        {
-            string sql = "select DISTINCT  company from [bug]";
-            DbHelper db = new DbHelper();
-            var cmd = db.GetCommand(sql);
-            var r = db.ExecuteReader(cmd);
-            while (r.Read())
-            {
-                arr.Add(r.GetString(0));
-            }
-            r.Close();
-        }
-
-        public static void companys_tojstree(ref JArray arr)
-        {
-            string sql = "select DISTINCT  company from [bug]";
-            DbHelper db = new DbHelper();
-            var cmd = db.GetCommand(sql);
-            var r = db.ExecuteReader(cmd);
-            int count = 0;
-
-            while (r.Read())
-            {
-                var jo = new JObject {
-                    { "id",++count},
-                    {"parent","#" },
-                    {"text",r.GetString(0) },
-                    {"state",new JObject{
-                        {"selected",false },
-                        {"opened",false }
-                    } },
-                };
-                arr.Add(jo);
-            }
-            r.Close();
-        }
-
-        /// <summary>
-        /// 查询结果第一列为行号
-        /// </summary>
-        /// <param name="table"></param>
-        /// <param name="primaryKey"></param>
-        /// <param name="pageSize"></param>
-        /// <param name="pageIndex"></param>
-        /// <param name="where">id=1 and age=18 and qq=1</param>
-        /// <param name="sort">id desc</param>
-        /// <returns></returns>
-        public static DbDataReader page(string table,string primaryKey,string fields,int pageSize,int pageIndex,string where="",string sort="")
-        {
-            DbHelper db = new DbHelper();
-            var cmd = db.GetCommandStored("spPager");
-            db.AddString(ref cmd, "@table", table,200);
-            db.AddString(ref cmd, "@primarykey", primaryKey,50);
-            db.AddInInt32(cmd, "@pagesize", pageSize);
-            db.AddInInt32(cmd, "@pageindex", pageIndex);
-            db.AddBool(ref cmd, "@docount", false);
-            db.AddString(ref cmd, "@where", where,1000);
-            db.AddString(ref cmd, "@sort", sort,50);
-            db.AddString(ref cmd, "@fields", fields,500);
-            return db.ExecuteReader(cmd);
-        }
-
-        public static JToken page2(string table, string primaryKey, string fields, string where = "", string sort = "")
+        public virtual JToken page2(string table, string primaryKey, string fields, string where = "", string sort = "")
         {
             var pageSize = HttpContext.Current.Request.QueryString["limit"];
             var pageIndex = HttpContext.Current.Request.QueryString["page"];
             if (string.IsNullOrEmpty(pageSize)) pageSize = "20";
             if (string.IsNullOrEmpty(pageIndex)) pageIndex = "1";
-            return page2(table, primaryKey, fields, int.Parse(pageSize), int.Parse(pageIndex), where, sort);
+            return this.page2(table, primaryKey, fields, int.Parse(pageSize), int.Parse(pageIndex), where, sort);
         }
 
-        public static JToken page2(string table, string primaryKey, string fields, int pageSize, int pageIndex, string where = "", string sort = "")
+        public virtual JToken page2(string table, string primaryKey, string fields, int pageSize, int pageIndex, string where = "", string sort = "")
         {
             ConfigReader cr = new ConfigReader();
             var database = cr.module(string.Format("database.{0}",table));
@@ -158,14 +96,14 @@ namespace up6.filemgr.app
         /// <param name="where"></param>
         /// <param name="sort"></param>
         /// <returns></returns>
-        public static JToken page_to_layer_table(string table, string primaryKey, string fields, string where = "", string sort = "")
+        public JToken page_to_layer_table(string table, string primaryKey, string fields, string where = "", string sort = "")
         {
             var pageSize = HttpContext.Current.Request.QueryString["limit"];
             var pageIndex = HttpContext.Current.Request.QueryString["page"];
             if (string.IsNullOrEmpty(pageSize)) pageSize = "20";
             if (string.IsNullOrEmpty(pageIndex)) pageIndex = "1";
-            var data = page2(table, primaryKey, fields, int.Parse(pageSize), int.Parse(pageIndex), where, sort);
-            int count = DbBase.count(table, primaryKey, where);
+            var data = this.page2(table, primaryKey, fields, int.Parse(pageSize), int.Parse(pageIndex), where, sort);
+            int count = this.count(table, primaryKey, where);
 
             JObject o = new JObject();
             o["count"] = count;
@@ -183,7 +121,7 @@ namespace up6.filemgr.app
         /// <param name="primaryKey"></param>
         /// <param name="where">name=1</param>
         /// <returns></returns>
-        public static int count(string table ,string primaryKey,string where="")
+        public virtual int count(string table ,string primaryKey,string where="")
         {
             DbHelper db = new DbHelper();
             var cmd = db.GetCommandStored("spPager");
@@ -199,7 +137,7 @@ namespace up6.filemgr.app
             return Convert.ToInt32(obj);
         }
 
-        public static bool exist(string un)
+        public virtual bool exist(string un)
         {
             DbHelper db = new DbHelper();
             var cmd = db.GetCommand("select id from users where name=@name");
@@ -208,7 +146,7 @@ namespace up6.filemgr.app
             return Convert.ToInt32(obj) != 0;
         }
 
-        public static bool exist_email(string email)
+        public virtual bool exist_email(string email)
         {
             DbHelper db = new DbHelper();
             var cmd = db.GetCommand("select id from users where email=@email");

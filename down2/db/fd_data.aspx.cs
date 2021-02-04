@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Web;
+using up6.db.database;
 using up6.down2.biz;
 
 namespace up6.down2.db
@@ -17,7 +18,8 @@ namespace up6.down2.db
 
             if (!string.IsNullOrEmpty(id))
             {
-                DnFolder df = new DnFolder();
+                DBConfig cfg = new DBConfig();
+                DnFolder df = cfg.downFd();
                 string data = HttpUtility.UrlEncode(df.files(id));
                 data = data.Replace("+", "%20");
 

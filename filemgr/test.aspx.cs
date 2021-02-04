@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Odbc;
 using up6.down2.biz;
 using up6.filemgr.app;
 
@@ -8,15 +9,18 @@ namespace up6.filemgr
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            var id = Request.QueryString["id"];
-            if (string.IsNullOrEmpty(id)) return;
+            //OdbcConnection con = new OdbcConnection("Driver={KingbaseES 8.2 ODBC Driver ANSI};Server=192.168.0.117:54321/up6;Uid=SYSTEM;Pwd=123456");
+            //con.Open();
+            //con.Close();
+            //var id = Request.QueryString["id"];
+            //if (string.IsNullOrEmpty(id)) return;
             //DnFolder df = new DnFolder();
             //var data = df.files(id);
             //Response.Write(data);
 
-            FolderBuilder fb = new FolderBuilder();
+            //FolderBuilder fb = new FolderBuilder();
             //this.toContent(fb.build(id));
-            this.toContent(this.BytesToString(long.Parse(id)));
+            //this.toContent(this.BytesToString(long.Parse(id)));
         }
 
         string BytesToString(long byteCount)
