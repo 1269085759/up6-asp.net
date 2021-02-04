@@ -17,6 +17,7 @@ Install-Package Microsoft.Experimental.IO
 2021-02-04
 2021-02-03
 2021-02-01
+	down2增加ligerui示例
 	single示例增加arm,mips环境判断
 	panel示例JS目录名称改为panel
 	panel示例增加arm,mips环境判断

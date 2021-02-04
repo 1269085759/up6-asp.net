@@ -152,6 +152,7 @@
 <body>
     <p>此页为下载控件演示页面，与up6配合使用。可以下载up6数据库中的文件和文件夹</p>
     <ul>
+        <li><p><a target="_blank" href="ligerui.aspx">打开ligerui示例</a></p></li>
         <li><p><a target="_blank" href="../index.htm">打开上传页面</a></p></li>
         <li><p><a target="_blank" href="../db/clear.aspx">清空上传数据库</a></p></li>
         <li><p><a target="_blank" href="db/clear.aspx">清空下载数据库</a></p></li>

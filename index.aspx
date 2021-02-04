@@ -42,6 +42,7 @@
     <p><a href="index2.aspx" target="_blank">单面板示例</a></p>
     <p><a href="index-single.aspx" target="_blank">单文件示例</a></p>
     <p><a href="down2/index.aspx" target="_blank">文件下载示例</a></p>
+    <p><a href="down2/ligerui.aspx" target="_blank">ligerui下载示例</a></p>
     <p><a href="vue.aspx" target="_blank">vue示例</a></p>
     <p>
         文件路径：<input id="filePath" type="text" size="50" value="D:\\360safe-inst.exe" />&nbsp;
