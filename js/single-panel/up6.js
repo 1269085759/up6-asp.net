@@ -1,5 +1,5 @@
 /*
-	版权所有 2009-2019 荆门泽优软件有限公司
+	版权所有 2009-2021 荆门泽优软件有限公司
 	保留所有权利
 	官方网站：http://www.ncmem.com/
 	产品首页：http://www.ncmem.com/webapp/up6.2/index.asp
@@ -87,6 +87,8 @@ function HttpUploaderMgr()
         , mac: { path: page.path.plugin.up6.mac }
         , linux: { path: page.path.plugin.up6.linux }
         , edge: {protocol:"up6",port:9100,visible:false}
+        , arm64: { path: page.path.plugin.up6.arm64 }
+        , mips64: { path: page.path.plugin.up6.mips64 }
 		, "SetupPath": "http://localhost:4955/demoAccess/js/setup.htm"
         , "Fields": { "uname": "test", "upass": "test", "uid": "0" }
         , ui: {
@@ -146,6 +148,10 @@ function HttpUploaderMgr()
         addFdError: function (json) {/*添加文件夹失败*/ },
         unsetup: function (html) {/*控件未安装事件*/ }
 	};
+    this.data = {
+		browser: {name:navigator.userAgent.toLowerCase(),ie:true,ie64:false,firefox:false,chrome:false,edge:false,arm64:false,mips64:false},
+		cmps:[]/**已上传完的文件对象列表 */
+	};
 
 	//http://www.ncmem.com/
 	this.Domain = "http://" + document.location.host;
@@ -157,7 +163,6 @@ function HttpUploaderMgr()
 	this.QueueFiles = new Array();//文件队列，数据:id1,id2,id3
 	this.QueueWait = new Array(); //等待队列，数据:id1,id2,id3
 	this.QueuePost = new Array(); //上传队列，数据:id1,id2,id3
-	this.arrFilesComplete = new Array(); //已上传完的文件列表
     this.filesUI = null;//上传列表面板
     this.ieParter = null;
 	this.parter = null;
@@ -167,40 +172,36 @@ function HttpUploaderMgr()
 	this.uiSetupTip = null;
 	this.btnSetup = null;
     //检查版本 Win32/Win64/Firefox/Chrome
-	var browserName = navigator.userAgent.toLowerCase();
-	this.ie = browserName.indexOf("msie") > 0;
+	this.data.browser.ie = this.data.browser.name.indexOf("msie") > 0;
     //IE11检查
-	this.ie = this.ie ? this.ie : browserName.search(/(msie\s|trident.*rv:)([\w.]+)/) != -1;
-	this.firefox = browserName.indexOf("firefox") > 0;
-	this.chrome = browserName.indexOf("chrome") > 0;
-	this.chrome45 = false;
-	this.nat_load = false;
-    this.edge_load = false;
+	this.data.browser.ie = this.data.browser.ie ? this.data.browser.ie : this.data.browser.name.search(/(msie\s|trident.*rv:)([\w.]+)/) != -1;
+	this.data.browser.firefox = this.data.browser.name.indexOf("firefox") > 0;
+	this.data.browser.chrome = this.data.browser.name.indexOf("chrome") > 0;
+	this.data.browser.mips64 = this.data.this.data.browser.name.indexOf("mips64")>0;
+	this.data.browser.arm64 = this.data.this.data.browser.name.indexOf("aarch64")>0;
+	this.data.browser.edge = this.data.browser.name.indexOf("edge") > 0;
     this.pluginInited = false;
-	this.chrVer = navigator.appVersion.match(/Chrome\/(\d+)/);
-	this.ffVer = navigator.userAgent.match(/Firefox\/(\d+)/);
-	this.edge = navigator.userAgent.indexOf("Edge") > 0;
     this.edgeApp = new WebServerUp6(this);
     this.edgeApp.ent.on_close = function () { _this.socket_close(); };
     this.app = up6_app;
     this.app.edgeApp = this.edgeApp;
     this.app.Config = this.Config;
     this.app.ins = this;
-	if (this.edge) { this.ie = this.firefox = this.chrome = this.chrome45 = false;}
+	if (this.data.browser.edge) { this.data.browser = this.data.browser.firefox = this.data.browser.chrome = false;}
     
 	//容器的HTML代码
 	this.GetHtmlContainer = function()
 	{
 	    //npapi
 	    var com = "";
-	    if (this.ie)
+	    if (this.data.browser.ie)
 	    {
 	        //拖拽组件
 	        com += '<object name="droper" classid="clsid:' + this.Config.ie.drop.clsid + '"';
 	        com += ' codebase="' + this.Config.ie.path + '#version=' + this.Config.Version + '" width="192" height="192" >';
 	        com += '</object>';
 	    }
-	    if (this.edge) com = '';
+	    if (this.data.browser.edge) com = '';
 	    //文件夹选择控件
 	    com += '<object name="parter" classid="clsid:' + this.Config.ie.part.clsid + '"';
 	    com += ' codebase="' + this.Config.ie.path + '#version=' + this.Config.Version + '" width="1" height="1" ></object>';
@@ -340,7 +341,7 @@ function HttpUploaderMgr()
     this.del_file = function (id) {
         this.filesMap[id].fileSvr.pathLoc = "";
     };
-	this.set_config = function (v) { jQuery.extend(this.Config, v);};
+	this.set_config = function (v) { $.extend(this.Config, v);};
 
 	//msg
 	this.open_files = function (json)
@@ -428,7 +429,6 @@ function HttpUploaderMgr()
     };
 	this.load_complete_edge = function (json)
     {
-        this.edge_load = true;
         this.pluginInited = true;
         this.btnSetup.hide();
         _this.app.init();
@@ -472,7 +472,7 @@ function HttpUploaderMgr()
 
     this.pluginLoad = function () {
         if (!this.pluginInited) {
-            if (this.edge) {
+            if (this.data.browser.edge) {
                 this.edgeApp.connect();
             }
         }
@@ -494,35 +494,49 @@ function HttpUploaderMgr()
 	    //Win64
 	    if (window.navigator.platform == "Win64")
 	    {
-	        jQuery.extend(this.Config.ie, this.Config.ie64);
+	        $.extend(this.Config.ie, this.Config.ie64);
         }//macOS
         else if (window.navigator.platform == "MacIntel") {
-            this.edge = true;
+            this.data.browser.edge = true;
             this.app.postMessage = this.app.postMessageEdge;
             this.edgeApp.run = this.edgeApp.runChr;
             this.Config.exe.path = this.Config.mac.path;
-        }
+        }//linux
         else if (window.navigator.platform == "Linux x86_64") {
-            this.edge = true;
+            this.data.browser.edge = true;
             this.app.postMessage = this.app.postMessageEdge;
             this.edgeApp.run = this.edgeApp.runChr;
             this.Config.exe.path = this.Config.linux.path;
-        }
-	    else if (this.firefox)
+        }//Linux aarch64
+        else if (this.data.browser.arm64)
+        {
+            this.data.browser.edge = true;
+            this.app.postMessage = this.app.postMessageEdge;
+            this.edgeApp.run = this.edgeApp.runChr;
+            this.Config.exe.path = this.Config.arm64.path;
+		}//Linux mips64
+        else if (this.data.browser.mips64)
+        {
+            this.data.browser.edge = true;
+            this.app.postMessage = this.app.postMessageEdge;
+            this.edgeApp.run = this.edgeApp.runChr;
+            this.Config.exe.path = this.Config.mips64.path;
+		}
+	    else if (this.data.browser.firefox)
 	    {
-			this.edge = true;
+			this.data.browser.edge = true;
 			this.app.postMessage = this.app.postMessageEdge;
 			this.edgeApp.run = this.edgeApp.runChr;
 	    }
-	    else if (this.chrome)
+	    else if (this.data.browser.chrome)
 	    {
+			this.data.browser.edge = true;
             this.app.check = this.app.checkFF;
-	        jQuery.extend(this.Config.firefox, this.Config.chrome);
-			this.edge = true;
+	        $.extend(this.Config.firefox, this.Config.chrome);
 			this.app.postMessage = this.app.postMessageEdge;
 			this.edgeApp.run = this.edgeApp.runChr;
 	    }
-	    else if (this.edge)
+	    else if (this.data.browser.edge)
 	    {
             this.app.postMessage = this.app.postMessageEdge;
 	    }
@@ -561,7 +575,7 @@ function HttpUploaderMgr()
 
 		$(window).bind("unload", function()
 		{
-            if(this.edge) _this.edgeApp.close();
+            if(this.data.browser.edge) _this.edgeApp.close();
 			if (_this.QueuePost.length > 0)
             {
 				_this.StopAll();
@@ -631,15 +645,15 @@ function HttpUploaderMgr()
 	    this.SafeCheck();	    
 
         setTimeout(function () {
-            if (!_this.edge) {
-                if (_this.ie) {
+            if (!_this.data.browser.edge) {
+                if (_this.data.browser) {
                     _this.parter = _this.ieParter;
                     if (null != _this.Droper) _this.Droper.recvMessage = _this.recvMessage;
                 }
                 _this.parter.recvMessage = _this.recvMessage;
             }
 
-            if (_this.edge) {
+            if (_this.data.browser.edge) {
                 _this.edgeApp.connect();
             }
             else {
@@ -651,8 +665,8 @@ function HttpUploaderMgr()
     //清除已完成文件
 	this.ClearComplete = function()
 	{
-	    $.each(this.arrFilesComplete, function (i, n) { n.remove(); });
-	    this.arrFilesComplete.length = 0;
+	    $.each(this.data.cmps, function (i, n) { n.remove(); });
+	    this.data.cmps.length = 0;
 	};
 
 	//上传队列是否已满
@@ -878,7 +892,7 @@ function HttpUploaderMgr()
             return null;
         }
         //针对空文件夹的处理
-	    if (json.files == null) jQuery.extend(fdLoc,{files:[]});
+	    if (json.files == null) $.extend(fdLoc,{files:[]});
 	    //if (json.lenLoc == 0) return;
 
 		this.AppendQueue(json.id);//添加到队列

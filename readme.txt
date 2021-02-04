@@ -17,6 +17,7 @@ Install-Package Microsoft.Experimental.IO
 2021-02-04
 2021-02-03
 2021-02-01
+	panel示例增加arm,mips环境判断
 	arrFilesComplete更名为data.cmps
 	data.browserName优化成 data.browser.name
 	删除this.nat_load

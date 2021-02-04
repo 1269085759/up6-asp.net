@@ -9,7 +9,7 @@ function FileUploader(fileLoc, mgr)
     this.Manager = mgr; //上传管理器指针
     this.event = mgr.event;
     this.Config = mgr.Config;
-    this.fields = jQuery.extend({}, mgr.Config.Fields, fileLoc.fields);//每一个对象自带一个fields幅本
+    this.fields = $.extend({}, mgr.Config.Fields, fileLoc.fields);//每一个对象自带一个fields幅本
     this.State = this.Config.state.None;
     this.uid = this.fields.uid;
     this.fileSvr = {
@@ -33,7 +33,7 @@ function FileUploader(fileLoc, mgr)
         , complete: false
         , deleted: false
     };//json obj，服务器文件信息
-    this.fileSvr = jQuery.extend(this.fileSvr, fileLoc);
+    this.fileSvr = $.extend(this.fileSvr, fileLoc);
 
     //准备
     this.Ready = function ()
@@ -132,7 +132,7 @@ function FileUploader(fileLoc, mgr)
         this.ui.process.css("width", "100%");
         this.ui.percent.text("(100%)");
         this.ui.msg.text("上传完成");
-        this.Manager.arrFilesComplete.push(this);
+        this.Manager.data.cmps.push(this);
         this.State = this.Config.state.Complete;
         //从上传列表中删除
         this.Manager.RemoveQueuePost(this.fileSvr.id);
@@ -164,7 +164,7 @@ function FileUploader(fileLoc, mgr)
         this.ui.process.css("width", "100%");
         this.ui.percent.text("(100%)");
         this.ui.msg.text("服务器存在相同文件，快速上传成功。");
-        this.Manager.arrFilesComplete.push(this);
+        this.Manager.data.cmps.push(this);
         this.State = this.Config.state.Complete;
         //从上传列表中删除
         this.Manager.RemoveQueuePost(this.fileSvr.id);
@@ -230,7 +230,7 @@ function FileUploader(fileLoc, mgr)
         var loc_path = encodeURIComponent(this.fileSvr.pathLoc);
         var loc_len = this.fileSvr.lenLoc;
         var loc_size = this.fileSvr.sizeLoc;
-        var param = jQuery.extend({}, this.fields, { md5: json.md5, id: this.fileSvr.id, lenLoc: loc_len, sizeLoc: loc_size, pathLoc: loc_path, time: new Date().getTime() });
+        var param = $.extend({}, this.fields, { md5: json.md5, id: this.fileSvr.id, lenLoc: loc_len, sizeLoc: loc_size, pathLoc: loc_path, time: new Date().getTime() });
 
         $.ajax({
             type: "GET"
