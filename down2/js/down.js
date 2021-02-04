@@ -1,5 +1,5 @@
 ﻿/*
-版权所有(C) 2009-2019 荆门泽优软件有限公司
+版权所有(C) 2009-2021 荆门泽优软件有限公司
 保留所有权利
 产品网站：http://www.ncmem.com/webapp/down2/index.aspx
 控件下载：http://www.ncmem.com/webapp/down2/pack.aspx
