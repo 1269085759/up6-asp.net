@@ -130,9 +130,6 @@ function HttpUploaderMgr()
 		cmps:[]/**已上传完的文件对象列表 */
 	};
 
-    //http://www.ncmem.com/
-	this.Domain = "http://" + document.location.host;
-
 	this.FileFilter = new Array(); //文件过滤器
 	this.filesMap = new Object(); //本地文件列表映射表
 	this.parter = null;
