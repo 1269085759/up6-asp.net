@@ -1,5 +1,5 @@
 /*
-	版权所有 2009-2019 荆门泽优软件有限公司
+	版权所有 2009-2021 荆门泽优软件有限公司
 	保留所有权利
 	产品首页：http://www.ncmem.com/webapp/up6/index.aspx
 	联系信箱：1085617561@qq.com
@@ -65,6 +65,8 @@ function HttpUploaderMgr()
         , exe: { path: page.path.plugin.up6.exe }
         , mac: { path: page.path.plugin.up6.mac }
         , linux: { path: page.path.plugin.up6.linux }
+		, arm64: { path: page.path.plugin.up6.arm64 }
+        , mips64: { path: page.path.plugin.up6.mips64 }
 		, "SetupPath": "http://localhost:4955/demoAccess/js/setup.htm"
         , "Fields": { "uname": "test", "upass": "test", "uid": "0", "fid": "0" }
         , errCode: {
@@ -117,45 +119,47 @@ function HttpUploaderMgr()
 
     //biz event
 	this.event = {
-	      "md5Complete": function (obj/*HttpUploader对象*/, md5) { }
-        , "fileComplete": function (obj/*文件上传完毕，参考：HttpUploader*/) { }
-        , "fdComplete": function (obj/*文件夹上传完毕，参考：FolderUploader*/) { }
+          md5Complete: function (obj/*HttpUploader对象*/, md5) { },
+          fileComplete: function (obj/*文件上传完毕，参考：HttpUploader*/) { },
+          fdComplete: function (obj/*文件夹上传完毕，参考：FolderUploader*/) { },
+          loadComplete: function () {/*队列上传完毕*/ },
+          fileAppend: function (f) { /*文件和目录添加事件*/}
+	};
+    this.data = {
+		browser: {name:navigator.userAgent.toLowerCase(),ie:true,ie64:false,firefox:false,chrome:false,edge:false,arm64:false,mips64:false},
+		cmps:[]/**已上传完的文件对象列表 */
 	};
 
     //http://www.ncmem.com/
 	this.Domain = "http://" + document.location.host;
 
 	this.FileFilter = new Array(); //文件过滤器
-	this.idCount = 1; 	//上传项总数，只累加
 	this.filesMap = new Object(); //本地文件列表映射表
 	this.parter = null;
+    this.ieParter = null;
 	this.fileItem = null;//jquery object
 	this.fileCur = null;//当前文件上传项
 	this.btnSetup = null;
 	//检查版本 Win32/Win64/Firefox/Chrome
-	var browserName = navigator.userAgent.toLowerCase();
-	this.ie = browserName.indexOf("msie") > 0;
+	this.data.browser.ie = this.data.browser.name.indexOf("msie") > 0;
     //IE11检查
-	this.ie = this.ie ? this.ie : browserName.search(/(msie\s|trident.*rv:)([\w.]+)/) != -1;
-	this.firefox = browserName.indexOf("firefox") > 0;
-	this.chrome = browserName.indexOf("chrome") > 0;
-	this.chrome45 = false;
-	this.nat_load = false;
-	this.edge_load = false;
+	this.data.browser.ie = this.data.browser.ie ? this.data.browser.ie : this.data.browser.name.search(/(msie\s|trident.*rv:)([\w.]+)/) != -1;
+	this.data.browser.firefox = this.data.browser.name.indexOf("firefox") > 0;
+	this.data.browser.chrome = this.data.browser.name.indexOf("chrome") > 0;
+	this.data.browser.edge = this.data.browser.name.indexOf("edge") > 0;
+	this.data.browser.mips64 = this.data.this.data.browser.name.indexOf("mips64")>0;
+	this.data.browser.arm64 = this.data.this.data.browser.name.indexOf("aarch64")>0;
     this.pluginInited = false;
-	this.chrVer = navigator.appVersion.match(/Chrome\/(\d+)/);
-	this.ffVer = navigator.userAgent.match(/Firefox\/(\d+)/);
-	this.edge = navigator.userAgent.indexOf("Edge") > 0;
     this.edgeApp = new WebServerUp6(this);
     this.app = up6_app;
     this.app.edgeApp = this.edgeApp;
     this.app.Config = this.Config;
     this.app.ins = this;
-    if (this.edge) { this.ie = this.firefox = this.chrome = this.chrome45 = false; }
+    if (this.data.browser.edge) { this.data.browser.ie = this.data.browser.firefox = this.data.browser.chrome = false; }
 
     this.pluginLoad = function () {
         if (!this.pluginInited) {
-            if (this.edge) {
+            if (this.data.browser.edge) {
                 this.edgeApp.connect();
             }
         }
@@ -236,7 +240,6 @@ function HttpUploaderMgr()
         else { this.btnSetup.hide(); }
     };
     this.load_complete_edge = function (json) {
-        this.edge_load = true;
         this.pluginInited = true;
         this.btnSetup.hide();
         _this.app.init();
@@ -263,35 +266,49 @@ function HttpUploaderMgr()
 	    //Win64
 	    if (window.navigator.platform == "Win64")
 	    {
-	        jQuery.extend(this.Config.ie, this.Config.ie64);
+	        $.extend(this.Config.ie, this.Config.ie64);
 	    }//macOS
         else if (window.navigator.platform == "MacIntel") {
-            this.edge = true;
+            this.data.browser.edge = true;
             this.app.postMessage = this.app.postMessageEdge;
             this.edgeApp.run = this.edgeApp.runChr;
             this.Config.exe.path = this.Config.mac.path;
         }
         else if (window.navigator.platform == "Linux x86_64") {
-            this.edge = true;
+            this.data.browser.edge = true;
             this.app.postMessage = this.app.postMessageEdge;
             this.edgeApp.run = this.edgeApp.runChr;
             this.Config.exe.path = this.Config.linux.path;
-        }
-	    else if (this.firefox)
+        }//Linux aarch64
+        else if (this.data.browser.arm64)
+        {
+            this.data.browser.edge = true;
+            this.app.postMessage = this.app.postMessageEdge;
+            this.edgeApp.run = this.edgeApp.runChr;
+            this.Config.exe.path = this.Config.arm64.path;
+		}//Linux mips64
+        else if (this.data.browser.mips64)
+        {
+            this.data.browser.edge = true;
+            this.app.postMessage = this.app.postMessageEdge;
+            this.edgeApp.run = this.edgeApp.runChr;
+            this.Config.exe.path = this.Config.mips64.path;
+		}
+	    else if (this.data.browser.firefox)
 	    {
-            this.edge = true;
+            this.data.browser.edge = true;
             this.app.postMessage = this.app.postMessageEdge;
             this.edgeApp.run = this.edgeApp.runChr;
         }
-        else if (this.chrome)
+        else if (this.data.browser.chrome)
         {
             this.app.check = this.app.checkFF;
-            jQuery.extend(this.Config.firefox, this.Config.chrome);
-            this.edge = true;
+            $.extend(this.Config.firefox, this.Config.chrome);
+            this.data.browser.edge = true;
             this.app.postMessage = this.app.postMessageEdge;
             this.edgeApp.run = this.edgeApp.runChr;
         }
-        else if (this.edge) {
+        else if (this.data.browser.edge) {
             this.app.postMessage = this.app.postMessageEdge;
         }
 	};
@@ -331,8 +348,7 @@ function HttpUploaderMgr()
 	//文件上传面板。
 	this.GetHtml = function()
 	{
-		//加载拖拽控件
-        var acx = '<embed name="ffParter" type="' + this.Config.firefox.type + '" pluginspage="' + this.Config.firefox.path + '" width="1" height="1"/>';
+        var acx = "";
 		//文件夹选择控件
         acx += '<object name="parter" classid="clsid:' + this.Config.ie.part.clsid + '"';
         acx += ' codebase="' + this.Config.ie.path + '#version=' + this.Config.Version + '" width="1" height="1" ></object>';
@@ -398,14 +414,14 @@ function HttpUploaderMgr()
         });
 
         setTimeout(function () {
-            if (!_this.edge) {
-                if (_this.ie) {
-                    _this.parter = _this.ieParter;
+            if (!_this.data.browser.edge) {
+                if (_this.data.browser.ie) {
+                    _this.parter = _this.data.browser.ieParter;
                 }
                 _this.parter.recvMessage = _this.recvMessage;
             }
 
-            if (_this.edge) {
+            if (_this.data.browser.edge) {
                 _this.edgeApp.connect();
             }
             else {
@@ -450,7 +466,6 @@ function HttpUploaderMgr()
     
 	this.addFileLoc = function(fileLoc)
 	{
-		var idLoc = this.idCount++;
 		var nameLoc = fileLoc.nameLoc;
 
 		var ui = null;
@@ -514,7 +529,7 @@ function FileUploader(fileLoc, mgr)
     this.Manager = mgr; //上传管理器指针
     this.event = mgr.event;
     this.Config = mgr.Config;
-    this.fields = jQuery.extend({}, mgr.Config.Fields);//每一个对象自带一个fields幅本
+    this.fields = $.extend({}, mgr.Config.Fields);//每一个对象自带一个fields幅本
     this.State = this.Config.state.None;
     this.uid = this.fields.uid;
     this.fileSvr = {
@@ -538,7 +553,7 @@ function FileUploader(fileLoc, mgr)
         , complete: false
         , deleted: false
     };//json obj，服务器文件信息
-    this.fileSvr = jQuery.extend(this.fileSvr, fileLoc);
+    this.fileSvr = $.extend(this.fileSvr, fileLoc);
 
     //准备
     this.Ready = function ()
