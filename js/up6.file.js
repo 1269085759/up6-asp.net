@@ -150,7 +150,7 @@ function FileUploader(fileLoc, mgr)
         this.ui.process.css("width", "100%");
         this.ui.percent.text("(100%)");
         this.ui.msg.text("上传完成");
-        this.Manager.arrFilesComplete.push(this);
+        this.Manager.data.cmps.push(this);
         this.State = this.Config.state.Complete;
         //从上传列表中删除
         this.Manager.RemoveQueuePost(this.fileSvr.id);
@@ -183,7 +183,7 @@ function FileUploader(fileLoc, mgr)
         this.ui.process.css("width", "100%");
         this.ui.percent.text("(100%)");
         this.ui.msg.text("服务器存在相同文件，快速上传成功。");
-        this.Manager.arrFilesComplete.push(this);
+        this.Manager.data.cmps.push(this);
         this.State = this.Config.state.Complete;
         //从上传列表中删除
         this.Manager.RemoveQueuePost(this.fileSvr.id);

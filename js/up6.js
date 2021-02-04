@@ -139,8 +139,8 @@ function HttpUploaderMgr()
         , "addFdError": function (json) {/*添加文件夹失败*/ }
 	};
     this.data = {
-		browserName:navigator.userAgent.toLowerCase(),
-        browser: {ie:true,ie64:false,firefox:false,chrome:false,edge:false,arm64:false,mips64:false}
+		browser: {name:navigator.userAgent.toLowerCase(),ie:true,ie64:false,firefox:false,chrome:false,edge:false,arm64:false,mips64:false},
+		cmps:[]/**已上传完的文件对象列表 */
     };
 	//http://www.ncmem.com/
 	this.Domain = "http://" + document.location.host;
@@ -152,7 +152,6 @@ function HttpUploaderMgr()
 	this.QueueFiles = new Array();//文件队列，数据:id1,id2,id3
 	this.QueueWait = new Array(); //等待队列，数据:id1,id2,id3
 	this.QueuePost = new Array(); //上传队列，数据:id1,id2,id3
-	this.arrFilesComplete = new Array(); //已上传完的文件列表
     this.filesUI = null;//上传列表面板
     this.ieParter = null;
 	this.parter = null;
@@ -162,20 +161,15 @@ function HttpUploaderMgr()
 	this.uiSetupTip = null;
 	this.btnSetup = null;
     //检查版本 Win32/Win64/Firefox/Chrome
-	var browserName = navigator.userAgent.toLowerCase();
-	this.data.browser.ie = browserName.indexOf("msie") > 0;
+	this.data.browser.ie = this.data.browser.name.indexOf("msie") > 0;
     //IE11检查
-	this.data.browser.ie = this.data.browser.ie ? this.data.browser.ie : browserName.search(/(msie\s|trident.*rv:)([\w.]+)/) != -1;
-	this.data.browser.firefox = browserName.indexOf("firefox") > 0;
-	this.data.browser.chrome = browserName.indexOf("chrome") > 0;
-	this.data.browser.mips64 = this.data.browserName.indexOf("mips64")>0;
-	this.data.browser.arm64 = this.data.browserName.indexOf("aarch64")>0;
-	this.nat_load = false;
-	this.edge_load = false;
+	this.data.browser.ie = this.data.browser.ie ? this.data.browser.ie : this.data.browser.name.search(/(msie\s|trident.*rv:)([\w.]+)/) != -1;
+	this.data.browser.firefox = this.data.browser.name.indexOf("firefox") > 0;
+	this.data.browser.chrome = this.data.browser.name.indexOf("chrome") > 0;
+	this.data.browser.mips64 = this.data.browser.name.indexOf("mips64")>0;
+	this.data.browser.arm64 = this.data.browser.name.indexOf("aarch64")>0;
+	this.data.browser.edge = this.data.browser.name.indexOf("edge") > 0;
     this.pluginInited = false;
-    this.chrVer = navigator.appVersion.match(/Chrome\/(\d+)/);
-	this.ffVer = navigator.userAgent.match(/Firefox\/(\d+)/);
-	this.data.browser.edge = navigator.userAgent.indexOf("Edge") > 0;
     this.edgeApp = new WebServerUp6(this);
     this.edgeApp.ent.on_close = function () { _this.socket_close(); };
     this.app = up6_app;
@@ -601,7 +595,6 @@ function HttpUploaderMgr()
 	this.load_complete_edge = function (json)
     {
         this.pluginInited = true;
-	    this.edge_load = true;
         this.btnSetup.hide();
         _this.app.init();
     };
@@ -875,8 +868,8 @@ function HttpUploaderMgr()
     //清除已完成文件
 	this.ClearComplete = function()
 	{
-	    $.each(this.arrFilesComplete, function (i, n) { n.remove(); });
-	    this.arrFilesComplete.length = 0;
+	    $.each(this.data.cmps, function (i, n) { n.remove(); });
+	    this.data.cmps.length = 0;
 	};
 
 	//上传队列是否已满
