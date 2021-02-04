@@ -54,10 +54,10 @@
         "http://localhost:8888/js/up6.config.js",
         "http://localhost:8888/js/up6.app.js",
         "http://localhost:8888/js/up6.edge.js",
-        "http://localhost:8888/js/single-panel/up6.file.js",
-        "http://localhost:8888/js/single-panel/up6.folder.js",
-        "http://localhost:8888/js/single-panel/up6.css",
-        "http://localhost:8888/js/single-panel/up6.js"
+        "http://localhost:8888/js/panel/up6.file.js",
+        "http://localhost:8888/js/panel/up6.folder.js",
+        "http://localhost:8888/js/panel/up6.css",
+        "http://localhost:8888/js/panel/up6.js"
     ],
     "up6-single": [
         "http://localhost:8888/js/up6.config.js",
