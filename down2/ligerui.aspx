@@ -72,8 +72,8 @@
                 app.ui.table = $("#filegrid").ligerGrid({
                     checkbox: true,//复选框支持
                     toolbar:{items:[
-                            {text:"批量下载",click:app.toolbar_click,img:'/static/down2/js/down.png'},
-                            {text:"打开面板",click:app.toolbar_click,img:'/static/down2/js/show.png'}
+                            {text:"批量下载",click:app.toolbar_click,img:'/down2/js/down.png'},
+                            {text:"打开面板",click:app.toolbar_click,img:'/down2/js/show.png'}
                         ]},
                     columns: [
                         { display: '类型', name: 'fdTask', align: 'left', width: 40, type:'format_type' },
