@@ -177,8 +177,8 @@ function HttpUploaderMgr()
 	this.data.browser.ie = this.data.browser.ie ? this.data.browser.ie : this.data.browser.name.search(/(msie\s|trident.*rv:)([\w.]+)/) != -1;
 	this.data.browser.firefox = this.data.browser.name.indexOf("firefox") > 0;
 	this.data.browser.chrome = this.data.browser.name.indexOf("chrome") > 0;
-	this.data.browser.mips64 = this.data.this.data.browser.name.indexOf("mips64")>0;
-	this.data.browser.arm64 = this.data.this.data.browser.name.indexOf("aarch64")>0;
+	this.data.browser.mips64 = this.data.browser.name.indexOf("mips64")>0;
+	this.data.browser.arm64 = this.data.browser.name.indexOf("aarch64")>0;
 	this.data.browser.edge = this.data.browser.name.indexOf("edge") > 0;
     this.pluginInited = false;
     this.edgeApp = new WebServerUp6(this);
@@ -646,7 +646,7 @@ function HttpUploaderMgr()
 
         setTimeout(function () {
             if (!_this.data.browser.edge) {
-                if (_this.data.browser) {
+                if (_this.data.browser.ie) {
                     _this.parter = _this.ieParter;
                     if (null != _this.Droper) _this.Droper.recvMessage = _this.recvMessage;
                 }

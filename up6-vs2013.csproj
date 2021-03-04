@@ -741,11 +741,11 @@
     <Content Include="js\folder.png" />
     <Content Include="js\jquery-1.4.min.js" />
     <Content Include="js\json2.min.js" />
+    <Content Include="js\panel\up6.css" />
+    <Content Include="js\panel\up6.file.js" />
+    <Content Include="js\panel\up6.folder.js" />
+    <Content Include="js\panel\up6.js" />
     <Content Include="js\post.png" />
-    <Content Include="js\single-panel\up6.css" />
-    <Content Include="js\single-panel\up6.file.js" />
-    <Content Include="js\single-panel\up6.folder.js" />
-    <Content Include="js\single-panel\up6.js" />
     <Content Include="js\stop.png" />
     <Content Include="js\up6-single.js" />
     <Content Include="js\up6.app.js" />

@@ -203,8 +203,8 @@ function HttpUploaderMgr()
 	this.data.browser.ie = this.data.browser.ie ? this.data.browser.ie : this.data.browser.name.search(/(msie\s|trident.*rv:)([\w.]+)/) != -1;
 	this.data.browser.firefox = this.data.browser.name.indexOf("firefox") > 0;
 	this.data.browser.chrome = this.data.browser.name.indexOf("chrome") > 0;
-	this.data.browser.mips64 = this.data.this.data.browser.name.indexOf("mips64")>0;
-	this.data.browser.arm64 = this.data.this.data.browser.name.indexOf("aarch64")>0;
+	this.data.browser.mips64 = this.data.browser.name.indexOf("mips64")>0;
+	this.data.browser.arm64 = this.data.browser.name.indexOf("aarch64")>0;
 	this.data.browser.edge = navigator.userAgent.indexOf("edge") > 0;
     this.pluginInited = false;
     this.edgeApp = new WebServerUp6(this);

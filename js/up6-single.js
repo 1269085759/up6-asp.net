@@ -144,8 +144,8 @@ function HttpUploaderMgr()
 	this.data.browser.firefox = this.data.browser.name.indexOf("firefox") > 0;
 	this.data.browser.chrome = this.data.browser.name.indexOf("chrome") > 0;
 	this.data.browser.edge = this.data.browser.name.indexOf("edge") > 0;
-	this.data.browser.mips64 = this.data.this.data.browser.name.indexOf("mips64")>0;
-	this.data.browser.arm64 = this.data.this.data.browser.name.indexOf("aarch64")>0;
+	this.data.browser.mips64 = this.data.browser.name.indexOf("mips64")>0;
+	this.data.browser.arm64 = this.data.browser.name.indexOf("aarch64")>0;
     this.pluginInited = false;
     this.edgeApp = new WebServerUp6(this);
     this.app = up6_app;
