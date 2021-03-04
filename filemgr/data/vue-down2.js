@@ -37,7 +37,10 @@
         this.mgr.event.unsetup = function(html){
             _this.$emit("unsetup",html);
         };
-        this.mgr.event.folderSel=function(d){
+        this.mgr.event.fileAppend = function () {
+            _this.$emit("file_append");
+        };
+        this.mgr.event.folderSel = function (d) {
             _this.$emit("folder_sel");
         };
         this.mgr.loadTo("#pnl-down");

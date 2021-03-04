@@ -140,6 +140,7 @@ function DownloaderMgr()
         queueComplete: function () { },
         loadComplete: function () { },
         unsetup:function(html){},
+        fileAppend: function () { },
         folderSel: function (path) { }
 	};
     this.data={
@@ -282,6 +283,7 @@ function DownloaderMgr()
         ui.process.width(f.perLoc);
 
         downer.ready(); //准备
+        this.event.fileAppend();
     };
 	this.resume_folder = function (fdSvr)
     {

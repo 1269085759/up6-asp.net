@@ -427,6 +427,10 @@
             , down_loadComplete: function () {
                 this.down_loadTask();
             }
+            , down_fileAppend: function (f) {
+                var _this = this;
+                setTimeout(function () { _this.$refs.down.mgr.start_queue(); }, 1000);
+            }
             , down_sameFileExist: function (n) { },
             down_unsetup:function(html){
                 layer.open({

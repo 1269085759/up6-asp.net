@@ -73,6 +73,7 @@
                     @load_complete="down_loadComplete"
                     @same_file_exist="down_sameFileExist"
                     @unsetup="down_unsetup"
+                    @file_append="down_fileAppend"
                     @folder_sel=down_folderSel></down2>
                 <!--路径导航-->
                 <ol class="breadcrumb  m-t-xs" style="margin-bottom: -5px;">
