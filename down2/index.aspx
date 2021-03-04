@@ -94,7 +94,7 @@
             this.down_fileAppend = function(f){
                 setTimeout(function(){
                     _this.data.downer.start_queue();
-                },100);
+                },300);
             };
             //event
             this.mouse_over = function(data,e){
@@ -115,7 +115,7 @@
                     return; 
                 }
 
-                _this.data.downer.addFile(d);
+                _this.data.downer.addTask(d);
             };
             //批量下载
             this.btnDownBat_click = function(){
