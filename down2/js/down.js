@@ -593,7 +593,7 @@ function DownloaderMgr(cfg)
         
 		$(window).bind("unload", function()
         {
-            if (this.data.browser.edge) _this.edgeApp.close();
+            if (_this.data.browser.edge) _this.edgeApp.close();
             if (_this.queueWork.length > 0)
             {
                 _this.stop_queue();
