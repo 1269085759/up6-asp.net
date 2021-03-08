@@ -98,10 +98,22 @@
             };
             //event
             this.mouse_over = function(data,e){
-                $(e.srcElement).parent().addClass("bk-hover");
+                var o = $(e.srcElement);
+                if(!o.is("tr"))
+                {
+                    o = o.parent();
+                    while(!o.is("tr")) o = o.parent();
+                }
+                o.addClass("bk-hover");
             };
             this.mouse_out = function(data,e){
-                $(e.srcElement).parent().removeClass("bk-hover");
+                var o = $(e.srcElement);
+                if(!o.is("tr"))
+                {
+                    o = o.parent();
+                    while(!o.is("tr")) o = o.parent();
+                }
+                o.removeClass("bk-hover");
             };
             this.btnCbk_click = function(d,e){
                 _this.data.sels.push(d);
