@@ -164,11 +164,31 @@ function DownloaderMgr(cfg)
     this.ui = { file: null ,list:null,panel:null,header:null};
 
     //api
+    /**
+     * 添加up6文件任务
+     * 参数：
+     * lenSvr 远程文件大小
+     * pathSvr 远程文件路径
+     * nameLoc 文件名称
+     * fileUrl 文件URL
+     * folderLoc 本地下载路径
+     * f_id up6文件ID
+     */
     this.addFile = function (f) {
         if (!this.pluginCheck()) return;
         var pv = $.extend({},f,{fileUrl:this.Config["UrlDown"]});
         this.app.addFile(pv);
     };
+    /**
+     * 添加up6文件夹任务
+     * 参数：
+     * lenSvr 远程文件夹大小
+     * pathSvr 远程文件夹路径
+     * nameLoc 文件名称
+     * fileUrl 文件URL
+     * folderLoc 本地下载路径
+     * f_id up6文件夹ID
+     */
     this.addFolder = function (v) {
         if (!this.pluginCheck()) return;
         this.app.addFolder(v);
