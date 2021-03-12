@@ -137,11 +137,8 @@ function DownloaderMgr(cfg)
 	this.data.browser.chrome = this.data.browser.name.indexOf("chrome") > 0;
 	this.data.browser.arm64 = this.data.browser.name.indexOf("aarch64") > 0;
 	this.data.browser.mips64 = this.data.browser.name.indexOf("mips64") > 0;
-	this.nat_load = false;
-	this.edge_load = false;
+    this.data.browser.edge = this.data.browser.name.indexOf("edge") > 0;
     this.pluginInited = false;
-    this.chrVer = navigator.appVersion.match(/Chrome\/(\d+)/);
-    this.data.browser.edge = navigator.userAgent.indexOf("Edge") > 0;
     this.edgeApp = new WebServerDown2(this);
     this.edgeApp.ent.on_close = function () { _this.socket_close(); };
     this.app = down2_app;
@@ -494,7 +491,6 @@ function DownloaderMgr(cfg)
     };
     this.load_complete_edge = function (json) {
         this.pluginInited = true;
-        this.edge_load = true;
         this.btnSetup.hide();
         _this.app.init();
     };

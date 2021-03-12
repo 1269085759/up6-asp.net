@@ -187,7 +187,7 @@ function HttpUploaderMgr()
     this.app.edgeApp = this.edgeApp;
     this.app.Config = this.Config;
     this.app.ins = this;
-	if (this.data.browser.edge) { this.data.browser = this.data.browser.firefox = this.data.browser.chrome = false;}
+	if (this.data.browser.edge) { this.data.browser.ie = this.data.browser.firefox = this.data.browser.chrome = false;}
     
 	//容器的HTML代码
 	this.GetHtmlContainer = function()
