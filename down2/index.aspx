@@ -115,7 +115,7 @@
                     return; 
                 }
 
-                _this.data.downer.addFile(d);
+                _this.data.downer.addTask(d);
             };
             //批量下载
             this.btnDownBat_click = function(){
