@@ -211,6 +211,7 @@ function DownloaderMgr(cfg)
         this.app.openFolder();
     };
 
+    //biz
 	this.getHtml = function()
 	{ 
         var html = "";

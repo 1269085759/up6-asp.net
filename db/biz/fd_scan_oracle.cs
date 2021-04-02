@@ -28,7 +28,11 @@ namespace up6.db.biz
             this.cmd_cover.ExecuteNonQuery();
         }
 
-        public override void makeCmdF()
+        /// <summary>
+        /// 批量添加文件
+        /// </summary>
+        /// <param name="con"></param>
+        protected override void save_files()
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("insert into up6_files(");
@@ -69,33 +73,56 @@ namespace up6.db.biz
             sb.Append(",:f_lenSvr");
             sb.Append(",:f_perSvr");
             sb.Append(",:f_complete");
-            sb.Append(") ");
+            sb.Append(") ;");
 
-            this.cmd_add_f = this.db.connection.CreateCommand();
-            this.cmd_add_f.CommandText = sb.ToString();
-            this.cmd_add_f.CommandType = System.Data.CommandType.Text;
+            var cmd = db.connection.CreateCommand();
+            cmd.CommandText = sb.ToString();
+            cmd.CommandType = System.Data.CommandType.Text;
 
-            this.db.AddString(ref cmd_add_f, ":f_id", string.Empty, 32);
-            this.db.AddString(ref cmd_add_f, ":f_pid", string.Empty, 32);
-            this.db.AddString(ref cmd_add_f, ":f_pidRoot", string.Empty, 32);
-            this.db.AddBool  (ref cmd_add_f, ":f_fdTask", false);
-            this.db.AddString(ref cmd_add_f, ":f_sizeLoc", string.Empty, 32);
-            this.db.AddBool  (ref cmd_add_f, ":f_fdChild", true);
-            this.db.AddInt   (ref cmd_add_f, ":f_uid", 0);
-            this.db.AddString(ref cmd_add_f, ":f_nameLoc", string.Empty, 255);
-            this.db.AddString(ref cmd_add_f, ":f_nameSvr", string.Empty, 255);
-            this.db.AddString(ref cmd_add_f, ":f_pathLoc", string.Empty, 255);
-            this.db.AddString(ref cmd_add_f, ":f_pathSvr", string.Empty, 255);
-            this.db.AddString(ref cmd_add_f, ":f_pathRel", string.Empty, 255);
-            this.db.AddString(ref cmd_add_f, ":f_md5", string.Empty, 40);
-            this.db.AddInt64 (ref cmd_add_f, ":f_lenLoc", 0);
-            this.db.AddInt64 (ref cmd_add_f, ":f_lenSvr", 0);
-            this.db.AddString(ref cmd_add_f, ":f_perSvr", "0%", 6);
-            this.db.AddBool  (ref cmd_add_f, ":f_complete", false);
-            this.cmd_add_f.Prepare();
+            db.AddString(ref cmd, ":f_id", string.Empty, 32);
+            db.AddString(ref cmd, ":f_pid", string.Empty, 32);
+            db.AddString(ref cmd, ":f_pidRoot", string.Empty, 32);
+            db.AddBool(ref cmd, ":f_fdTask", false);
+            db.AddString(ref cmd, ":f_sizeLoc", string.Empty, 32);
+            db.AddBool(ref cmd, ":f_fdChild", true);
+            db.AddInt(ref cmd, ":f_uid", 0);
+            db.AddString(ref cmd, ":f_nameLoc", string.Empty, 255);
+            db.AddString(ref cmd, ":f_nameSvr", string.Empty, 255);
+            db.AddString(ref cmd, ":f_pathLoc", string.Empty, 255);
+            db.AddString(ref cmd, ":f_pathSvr", string.Empty, 255);
+            db.AddString(ref cmd, ":f_pathRel", string.Empty, 255);
+            db.AddString(ref cmd, ":f_md5", string.Empty, 40);
+            db.AddInt64(ref cmd, ":f_lenLoc", 0);
+            db.AddInt64(ref cmd, ":f_lenSvr", 0);
+            db.AddString(ref cmd, ":f_perSvr", "100%", 6);
+            db.AddBool(ref cmd, ":f_complete", true);
+            cmd.Prepare();
+
+            foreach (var f in this.m_files)
+            {
+                cmd.Parameters[":f_id"].Value = f.id;
+                cmd.Parameters[":f_pid"].Value = f.pid;
+                cmd.Parameters[":f_pidRoot"].Value = f.pidRoot;
+                cmd.Parameters[":f_sizeLoc"].Value = f.sizeLoc;
+                cmd.Parameters[":f_uid"].Value = f.uid;
+                cmd.Parameters[":f_nameLoc"].Value = f.nameLoc;
+                cmd.Parameters[":f_nameSvr"].Value = f.nameSvr;
+                cmd.Parameters[":f_pathLoc"].Value = f.pathLoc;
+                cmd.Parameters[":f_pathSvr"].Value = f.pathSvr;
+                cmd.Parameters[":f_pathRel"].Value = f.pathRel;
+                cmd.Parameters[":f_md5"].Value = f.md5;
+                cmd.Parameters[":f_lenLoc"].Value = f.lenLoc;
+                cmd.Parameters[":f_lenSvr"].Value = f.lenSvr;
+                cmd.ExecuteNonQuery();
+            }
+            cmd.Dispose();
         }
 
-        public override void makeCmdFD()
+        /// <summary>
+        /// 批量添加目录
+        /// </summary>
+        /// <param name="con"></param>
+        protected override void save_folders()
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("insert into up6_folders(");
@@ -115,65 +142,42 @@ namespace up6.db.biz
             sb.Append(",:f_pid");
             sb.Append(",:f_pidRoot");
             sb.Append(",:f_uid");
-            sb.Append(",:f_name");
+            sb.Append(",:f_nameLoc");
             sb.Append(",:f_pathLoc");
             sb.Append(",:f_pathSvr");
             sb.Append(",:f_pathRel");
             sb.Append(",:f_complete");
-            sb.Append(") ");
+            sb.Append(") ;");
 
-            this.cmd_add_fd = this.db.connection.CreateCommand();
-            this.cmd_add_fd.CommandText = sb.ToString();
-            this.cmd_add_fd.CommandType = System.Data.CommandType.Text;
+            var cmd = db.connection.CreateCommand();
+            cmd.CommandText = sb.ToString();
+            cmd.CommandType = System.Data.CommandType.Text;
 
-            this.db.AddString(ref cmd_add_fd, ":f_id", string.Empty, 32);
-            this.db.AddString(ref cmd_add_fd, ":f_pid", string.Empty, 32);
-            this.db.AddString(ref cmd_add_fd, ":f_pidRoot", string.Empty, 32);
-            this.db.AddInt   (ref cmd_add_fd, ":f_uid", 0);
-            this.db.AddString(ref cmd_add_fd, ":f_name", string.Empty, 255);
-            this.db.AddString(ref cmd_add_fd, ":f_pathLoc", string.Empty, 255);
-            this.db.AddString(ref cmd_add_fd, ":f_pathSvr", string.Empty, 255);
-            this.db.AddString(ref cmd_add_fd, ":f_pathRel", string.Empty, 255);
-            this.db.AddBool  (ref cmd_add_fd, ":f_complete", false);
-            this.cmd_add_fd.Prepare();
+            db.AddString(ref cmd, ":f_id", string.Empty, 32);
+            db.AddString(ref cmd, ":f_pid", string.Empty, 32);
+            db.AddString(ref cmd, ":f_pidRoot", string.Empty, 32);
+            db.AddInt(ref cmd, ":f_uid", 0);
+            db.AddString(ref cmd, ":f_nameLoc", string.Empty, 255);
+            db.AddString(ref cmd, ":f_pathLoc", string.Empty, 255);
+            db.AddString(ref cmd, ":f_pathSvr", string.Empty, 255);
+            db.AddString(ref cmd, ":f_pathRel", string.Empty, 255);
+            db.AddBool(ref cmd, ":f_complete", true);
+            cmd.Prepare();
+
+            foreach (var f in this.m_files)
+            {
+                cmd.Parameters[":f_id"].Value = f.id;
+                cmd.Parameters[":f_pid"].Value = f.pid;
+                cmd.Parameters[":f_pidRoot"].Value = f.pidRoot;
+                cmd.Parameters[":f_uid"].Value = f.uid;
+                cmd.Parameters[":f_nameLoc"].Value = f.nameLoc;
+                cmd.Parameters[":f_pathLoc"].Value = f.pathLoc;
+                cmd.Parameters[":f_pathSvr"].Value = f.pathSvr;
+                cmd.Parameters[":f_pathRel"].Value = f.pathRel;
+                cmd.ExecuteNonQuery();
+            }
+            cmd.Dispose();
         }
 
-        protected override void save_file(FileInf f)
-        {
-            this.cmd_add_f.Parameters[":f_id"].Value = f.id;
-            this.cmd_add_f.Parameters[":f_pid"].Value = f.pid;
-            this.cmd_add_f.Parameters[":f_pidRoot"].Value = f.pidRoot;
-            this.cmd_add_f.Parameters[":f_fdTask"].Value = f.fdTask;
-            this.cmd_add_f.Parameters[":f_sizeLoc"].Value = f.sizeLoc;
-            this.cmd_add_f.Parameters[":f_fdChild"].Value = true;
-            this.cmd_add_f.Parameters[":f_uid"].Value = f.uid;
-            this.cmd_add_f.Parameters[":f_nameLoc"].Value = f.nameLoc;
-            this.cmd_add_f.Parameters[":f_nameSvr"].Value = f.nameSvr;
-            this.cmd_add_f.Parameters[":f_pathLoc"].Value = f.pathLoc;
-            this.cmd_add_f.Parameters[":f_pathSvr"].Value = f.pathSvr;
-            this.cmd_add_f.Parameters[":f_pathRel"].Value = f.pathRel;
-            this.cmd_add_f.Parameters[":f_md5"].Value = f.md5;
-            this.cmd_add_f.Parameters[":f_lenLoc"].Value = f.lenLoc;
-            this.cmd_add_f.Parameters[":f_lenSvr"].Value = f.lenSvr;
-            this.cmd_add_f.Parameters[":f_perSvr"].Value = f.perSvr;
-            this.cmd_add_f.Parameters[":f_complete"].Value = f.complete;
-
-            cmd_add_f.ExecuteNonQuery();
-        }
-
-        protected override void save_folder(FileInf f)
-        {
-            this.cmd_add_fd.Parameters[":f_id"].Value = f.id;
-            this.cmd_add_fd.Parameters[":f_pid"].Value = f.pid;
-            this.cmd_add_fd.Parameters[":f_pidRoot"].Value = f.pidRoot;
-            this.cmd_add_fd.Parameters[":f_uid"].Value = f.uid;
-            this.cmd_add_fd.Parameters[":f_name"].Value = f.nameSvr;
-            this.cmd_add_fd.Parameters[":f_pathLoc"].Value = f.pathLoc;
-            this.cmd_add_fd.Parameters[":f_pathSvr"].Value = f.pathSvr;
-            this.cmd_add_fd.Parameters[":f_pathRel"].Value = f.pathRel;
-            this.cmd_add_fd.Parameters[":f_complete"].Value = f.complete;
-
-            cmd_add_fd.ExecuteNonQuery();
-        }
     }
 }
