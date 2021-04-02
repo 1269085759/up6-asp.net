@@ -1,38 +1,42 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Text;
-using System.Web;
 using up6.db.biz.folder;
-using up6.db.model;
+using up6.db.database;
 
 namespace up6.db.biz
 {
+    /// <summary>
+    /// 扫描目录，将数据保存到oracle数据库中
+    /// </summary>
     public class fd_scan_oracle : fd_scan
     {
-        protected override void makeCmdCover()
+        /// <summary>
+        /// 覆盖文件
+        /// </summary>
+        /// <param name="files"></param>
+        protected override void cover_files(List<string> files)
         {
+            DbHelper db = new DbHelper();
             string sql = "update up6_files set f_deleted=1 where f_pathRel=:pathRel";
 
-            this.cmd_cover = this.db.connection.CreateCommand();
-            this.cmd_cover.CommandText = sql;
-            this.cmd_cover.CommandType = System.Data.CommandType.Text;
+            var cmd = db.GetCommand(sql);
 
-            this.db.AddString(ref cmd_cover, ":pathRel", string.Empty, 512);
-            this.cmd_cover.Prepare();
-        }
-
-        protected override void cover_file(string pathRel)
-        {
-            this.cmd_cover.Parameters[":pathRel"].Value = pathRel;
-            this.cmd_cover.ExecuteNonQuery();
+            db.AddString(ref cmd, "@pathRel", string.Empty, 512);
+            cmd.Prepare();
+            cmd.Connection.Open();
+            foreach (var f in files)
+            {
+                cmd.Parameters[":pathRel"].Value = f;
+                cmd.ExecuteNonQuery();
+            }
+            cmd.Connection.Close();
         }
 
         /// <summary>
         /// 批量添加文件
         /// </summary>
         /// <param name="con"></param>
-        protected override void save_files()
+        protected override void save_files(DbHelper db)
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("insert into up6_files(");
@@ -122,7 +126,7 @@ namespace up6.db.biz
         /// 批量添加目录
         /// </summary>
         /// <param name="con"></param>
-        protected override void save_folders()
+        protected override void save_folders(DbHelper db)
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("insert into up6_folders(");
