@@ -15,8 +15,6 @@ namespace up6.db.biz.folder
     /// </summary>
     public class fd_scan
     {
-        protected DbHelper db;
-        protected DbCommand cmd_cover = null;
         public FileInf root = null;//根节点
         /// <summary>
         /// 文件列表
@@ -29,24 +27,28 @@ namespace up6.db.biz.folder
 
         public fd_scan()
         {
-            this.db = new DbHelper();
         }
 
-        protected virtual void makeCmdCover()
+        /// <summary>
+        /// 覆盖文件
+        /// </summary>
+        /// <param name="files"></param>
+        protected virtual void cover_files(List<string> files)
         {
+            DbHelper db = new DbHelper();
             string sql = "update up6_files set f_deleted=1 where f_pathRel=@pathRel";
 
-            this.cmd_cover = this.db.connection.CreateCommand();
-            this.cmd_cover.CommandText = sql;
-            this.cmd_cover.CommandType = System.Data.CommandType.Text;
+            var cmd = db.GetCommand(sql);
 
-            this.db.AddString(ref cmd_cover, "@pathRel", string.Empty, 512);
-            this.cmd_cover.Prepare();
-        }
-
-        protected virtual void cover_file(string pathRel) {
-            this.cmd_cover.Parameters["@pathRel"].Value = pathRel;
-            this.cmd_cover.ExecuteNonQuery();
+            db.AddString(ref cmd, "@pathRel", string.Empty, 512);
+            cmd.Prepare();
+            cmd.Connection.Open();
+            foreach(var f in files)
+            {
+                cmd.Parameters["@pathRel"].Value = f;
+                cmd.ExecuteNonQuery();
+            }
+            cmd.Connection.Close();
         }
 
         protected void GetAllFiles(FileInf parent, string root)
@@ -98,6 +100,13 @@ namespace up6.db.biz.folder
             }
         }
 
+        /// <summary>
+        /// 获取所有文件，并更新相对路径。
+        /// 相对路径=父目录.pathRel+f.nameLoc
+        /// </summary>
+        /// <param name="parent"></param>
+        /// <param name="root"></param>
+        /// <param name="files"></param>
         protected void getAllFiles(FileInf parent,string root,ref List<string> files)
         {
             DirectoryInfo dir = new DirectoryInfo(parent.pathSvr);
@@ -146,7 +155,7 @@ namespace up6.db.biz.folder
         /// 批量添加文件
         /// </summary>
         /// <param name="con"></param>
-        protected virtual void save_files()
+        protected virtual void save_files(DbHelper db)
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("insert into up6_files(");
@@ -234,7 +243,7 @@ namespace up6.db.biz.folder
         /// 批量添加目录
         /// </summary>
         /// <param name="con"></param>
-        protected virtual void save_folders()
+        protected virtual void save_folders(DbHelper db)
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("insert into up6_folders(");
@@ -301,7 +310,7 @@ namespace up6.db.biz.folder
         }
 
         /// <summary>
-        /// 覆盖同名文件
+        /// 覆盖同名文件，更新相对路径
         /// </summary>
         /// <param name="inf"></param>
         /// <param name="pathParent"></param>
@@ -310,13 +319,7 @@ namespace up6.db.biz.folder
             List<string> files = new List<string>();
             this.getAllFiles(inf, pathParent, ref files);
 
-            this.db.connection.Open();
-            this.makeCmdCover();
-            foreach(string f in files)
-            {
-                this.cover_file(f);
-            }
-            this.db.connection.Close();
+            this.cover_files(files);
         }
 
         public void scan(FileInf inf, string root)
@@ -324,11 +327,11 @@ namespace up6.db.biz.folder
             //扫描文件和目录
             this.GetAllFiles(inf,root);
 
-            this.db.connection.Open();
-            this.save_files();//保存文件列表
-            this.save_folders();//保存目录列表
-            this.db.connection.Close();
-
+            DbHelper db = new DbHelper();
+            db.connection.Open();
+            this.save_files(db);//保存文件列表
+            this.save_folders(db);//保存目录列表
+            db.connection.Close();
         }
     }
 }
