@@ -8,6 +8,9 @@ namespace up6.filemgr.app
 {
     /// <summary>
     /// 相对路径构建器。
+    /// 使用：
+    /// PathRelBuilder prb = new PathRelBuilder();
+    /// var fs = prb.build(id.pidRoot)
     /// </summary>
     public class PathRelBuilder
     {
