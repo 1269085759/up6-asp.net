@@ -22,8 +22,8 @@ namespace up6.db.biz
             var cmd = db.GetCommand(sql);
 
             db.AddString(ref cmd, "@pathRel", string.Empty, 512);
-            cmd.Prepare();
             cmd.Connection.Open();
+            cmd.Prepare();
             foreach (var f in files)
             {
                 cmd.Parameters[":pathRel"].Value = f;
