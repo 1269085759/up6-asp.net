@@ -177,7 +177,32 @@
             }
             , btnSearch_click: function () {
                 this.search.key = this.trim(this.search.key);
-                this.page_changed(1, this.pageLimit);
+
+                if (this.search.key.length == 0) {
+                    this.page_changed(1, this.pageLimit);
+                    return;
+                }
+
+                var _this = this;
+                var param = $.extend({}, this.fields, {
+                    "page": 1,
+                    limit: this.pageLimit,
+                    key: encodeURIComponent(this.search.key),
+                    time: new Date().getTime()
+                });
+                $.ajax({
+                    type: "GET"
+                    , dataType: "json"
+                    , url: "vue.aspx?op=search"
+                    , data: param
+                    , success: function (res) {
+                        _this.items = res.data;
+                        _this.count = res.count;
+                        _this.page_init();
+                    }
+                    , error: function (req, txt, err) { }
+                    , complete: function (req, sta) { req = null; }
+                });
             }
             , searchKey_changed: function () {
                 this.search.key = this.trim(this.search.key);
@@ -334,7 +359,6 @@
                     , error: function (req, txt, err) { }
                     , complete: function (req, sta) { req = null; }
                 });
-
             }
             , itemDown_click: function (f) {
                 this.fileCur=f;
