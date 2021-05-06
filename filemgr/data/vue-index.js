@@ -301,7 +301,13 @@
             }
             , page_changed: function (page,size) {
                 var _this = this;
-                var param = jQuery.extend({},this.fields, { "page": page, limit: size,pid:this.pathCur.f_id, time: new Date().getTime() });
+                var param = $.extend({}, this.fields, {
+                    "page": page,
+                    limit: size,
+                    pid: this.pathCur.f_id,
+                    pathRel: encodeURIComponent( this.pathCur.f_pathRel),
+                    time: new Date().getTime()
+                });
                 $.ajax({
                     type: "GET"
                     , dataType: "json"
