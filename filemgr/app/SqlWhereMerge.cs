@@ -101,6 +101,19 @@ namespace up6.filemgr.app
         }
 
         /// <summary>
+        /// 在字符串中查找数据
+        /// charindex(n,column)==index
+        /// </summary>
+        /// <param name="n"></param>
+        /// <param name="column">查询列</param>
+        /// <param name="index"></param>
+        public void charindex(string n,string column,int index)
+        {
+            string sql = string.Format("charindex('{0}',{1})=1",n,column,index);
+            this.m_cds.Add("",sql);
+        }
+
+        /// <summary>
         /// 以key结尾
         /// </summary>
         /// <param name="n"></param>
@@ -123,6 +136,15 @@ namespace up6.filemgr.app
             this.m_cds.Add(n, string.Format("{0} like '%{1}%'", n, v));
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="n">key</param>
+        /// <param name="v"></param>
+        public void add(string n,string v)
+        {
+            this.m_cds.Add(n, v);
+        }
         public void add(SqlWhereCondition c)
         {
             this.m_cds.Add(c.name, c.toSql());

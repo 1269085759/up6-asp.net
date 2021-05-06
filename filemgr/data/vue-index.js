@@ -237,7 +237,7 @@
                     type: "GET"
                     , dataType: "json"
                     , url: "vue.aspx?op=path"
-                    , data: { data: encodeURIComponent( JSON.stringify(param) ) }
+                    , data: { data: encodeURIComponent(JSON.stringify(param)), pathRel:encodeURIComponent(p.f_pathRel) }
                     , success: function (res) {
                         _this.pathNav = res;
                         _this.path_changed(p);
@@ -257,7 +257,11 @@
                 var _this = this;
                 $.extend(this.pathCur, d);
                 //加载文件列表
-                var param = jQuery.extend({},this.fields, { pid: d.f_id, time: new Date().getTime() });
+                var param = $.extend({}, this.fields, {
+                    pid: d.f_id,
+                    pathRel: encodeURIComponent( d.f_pathRel),
+                    time: new Date().getTime()
+                });
                 $.ajax({
                     type: "GET"
                     , dataType: "json"
@@ -383,8 +387,8 @@
             }
             , up6_folderComplete: function (f) {
                 this.page_changed(1, 20);
-            },
-            up6_unsetup:function(html){
+            }
+            , up6_unsetup:function(html){
                 layer.open({
                     title: '提示',
                     content: html
@@ -427,8 +431,8 @@
             , down_loadComplete: function () {
                 this.down_loadTask();
             }
-            , down_sameFileExist: function (n) { },
-            down_unsetup:function(html){
+            , down_sameFileExist: function (n) { }
+            , down_unsetup:function(html){
                 layer.open({
                     title: '提示',
                     content: html

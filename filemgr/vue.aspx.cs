@@ -581,13 +581,18 @@ namespace up6.filemgr
 
         /// <summary>
         /// 获取目录和文件列表
+        /// 1.根据相对路径获取数据
         /// </summary>
         /// <param name="toParam">注册到变量？</param>
         void load_data(bool toParam)
         {
             var pid = Request.QueryString["pid"];
+            var pathRel = this.reqStringDecode("pathRel");
+            pathRel += '/';
+
             SqlWhereMerge swm = new SqlWhereMerge();
-            if (!string.IsNullOrEmpty(pid)) swm.equal("f_pid", pid);
+            //if (!string.IsNullOrEmpty(pid)) swm.equal("f_pid", pid);
+            if(!string.IsNullOrEmpty(pid))swm.add("f_pathRel",string.Format("f_pathRel='{0}'+f_nameSvr",pathRel) );
             swm.equal("f_complete", true);
             swm.equal("f_deleted", false);
             swm.equal("f_uid", this.reqToInt("uid"));
@@ -614,6 +619,9 @@ namespace up6.filemgr
             {
                 //目录表
                 swm.del("f_fdChild");
+                swm.del("f_pathRel");
+                swm.add("f_pathRel", string.Format("f_pathRel='{0}'+f_nameLoc", pathRel));
+
                 where = swm.to_sql();
                 folders = (JArray)bs.page2("up6_folders"
                     , "f_id"
