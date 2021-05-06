@@ -53,8 +53,8 @@
                             <img :src="ico.btnDel" />
                             删除</button>
                         <div class="form-inline pull-right">
-                            <input type="text" class="form-control input-sm" placeholder="请输入关键字" v-model="search.key"/>
-                            <button class="btn btn-default btn-sm m-r-xs" role="button" @click="btnSearch_click" @input="searchKey_changed">
+                            <input type="text" class="form-control input-sm" placeholder="请输入关键字" v-model="search.key" @input="searchKey_changed" @keyup.enter="btnSearch_click"/>
+                            <button class="btn btn-default btn-sm m-r-xs" role="button" @click="btnSearch_click">
                                 <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                                 搜索</button>
                         </div>
