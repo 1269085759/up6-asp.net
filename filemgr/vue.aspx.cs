@@ -581,13 +581,18 @@ namespace up6.filemgr
 
         /// <summary>
         /// 获取目录和文件列表
+        /// 1.根据相对路径获取数据
         /// </summary>
         /// <param name="toParam">注册到变量？</param>
         void load_data(bool toParam)
         {
             var pid = Request.QueryString["pid"];
+            var pathRel = this.reqStringDecode("pathRel");
+            pathRel += '/';
+
             SqlWhereMerge swm = new SqlWhereMerge();
-            if (!string.IsNullOrEmpty(pid)) swm.equal("f_pid", pid);
+            //if (!string.IsNullOrEmpty(pid)) swm.equal("f_pid", pid);
+            if(!string.IsNullOrEmpty(pid))swm.add("f_pathRel",string.Format("f_pathRel='{0}'+f_nameLoc", pathRel) );
             swm.equal("f_complete", true);
             swm.equal("f_deleted", false);
             swm.equal("f_uid", this.reqToInt("uid"));
@@ -596,7 +601,6 @@ namespace up6.filemgr
             if (isRoot) swm.equal("f_fdChild", false);
             else swm.equal("f_fdChild", true);
 
-            swm.req_like("f_nameLoc", "key");
             string where = swm.to_sql();
 
             DBConfig cfg = new DBConfig();
@@ -614,6 +618,7 @@ namespace up6.filemgr
             {
                 //目录表
                 swm.del("f_fdChild");
+
                 where = swm.to_sql();
                 folders = (JArray)bs.page2("up6_folders"
                     , "f_id"
@@ -644,61 +649,56 @@ namespace up6.filemgr
 
         void search()
         {
-            SqlSearchComb ssc = new SqlSearchComb();
-            ssc.parse();
+            var pid = this.reqString("pid");
+            var key = this.reqStringDecode("key");
 
             SqlWhereMerge swm = new SqlWhereMerge();
-            swm.req_equal("f_pid", "pid", false);
-            swm.equal("f_complete", 1);
-            //swm.equal("f_deleted", 0);
-            //swm.req_like("f_nameLoc", "key");
+            swm.equal("f_complete", true);
+            swm.equal("f_deleted", false);
+            swm.equal("f_uid", this.reqToInt("uid"));
 
-            string where = ssc.union(swm);
+            if (!string.IsNullOrEmpty(key))
+            {
+                swm.add("key", string.Format("f_nameLoc like '%{0}%'", key));
+            }
+
+            string where = swm.to_sql();
 
             DBConfig cfg = new DBConfig();
             DbBase bs = cfg.bs();
             //文件表
             var files = (JArray)bs.page2("up6_files"
                 , "f_id"
-                , "f_id,f_pid,f_nameLoc,f_sizeLoc,f_time,f_pidRoot,f_fdTask"
+                , "f_id,f_pid,f_nameLoc,f_sizeLoc,f_lenLoc,f_time,f_pidRoot,f_fdTask,f_pathSvr,f_pathRel"
                 , where
                 , "f_fdTask desc,f_time desc");
 
-            //搜索时过滤f_pid
-            if (!string.IsNullOrEmpty(Request.QueryString["key"]))
-            {
-                swm.del("f_pid");
-                where = swm.to_sql();
-            }
-            var folders = (JArray)bs.page2("up6_folders"
+            //根目录不加载 up6_folders 表数据
+            JArray folders = new JArray();
+            //目录表
+            folders = (JArray)bs.page2("up6_folders"
                 , "f_id"
-                , "f_id,f_nameLoc,f_pid,f_pidRoot,f_time"
+                , "f_id,f_nameLoc,f_pid,f_sizeLoc,f_time,f_pidRoot,f_pathRel"
                 , where
                 , "f_time desc");
 
-            //合并表
             foreach (var fd in folders)
             {
-                files.Insert(0, new JObject {
-                    { "f_id",fd["f_id"]}
-                    ,{ "f_pid",fd["f_pid"]}
-                    ,{ "f_nameLoc",fd["f_nameLoc"]}
-                    ,{ "f_sizeLoc",""}
-                    ,{ "f_time",fd["f_time"]}
-                    ,{ "f_pidRoot",fd["f_pidRoot"]}
-                    ,{ "f_fdTask",true}
-                });
+                fd["f_fdTask"] = true;
+                fd["f_fdChild"] = false;
+                fd["f_pathSvr"] = string.Empty;
             }
+            foreach (var f in files) folders.Add(f);
 
-            int count = bs.count("up6_files", "f_id", where);
+            int count = files.Count + folders.Count;
 
             JObject o = new JObject();
             o["count"] = count;
             o["code"] = 0;
             o["msg"] = string.Empty;
-            o["data"] = files;
+            o["data"] = folders;
 
-            PageTool.to_content(o);
+            this.toContent(o);
         }
     }
 }

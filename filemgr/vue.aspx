@@ -52,7 +52,13 @@
                         <button class="btn btn-default btn-sm hide" role="button" @click="">
                             <img :src="ico.btnDel" />
                             删除</button>
+                        <div class="form-inline pull-right">
+                            <input type="text" class="form-control input-sm" placeholder="请输入关键字" v-model="search.key" @input="searchKey_changed" @keyup.enter="btnSearch_click"/>
+                            <button class="btn btn-default btn-sm m-r-xs" role="button" @click="btnSearch_click">
+                                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                                搜索</button>
                         </div>
+                    </div>
                 </div>
                 <!--上传面板-->
                 <up6 id="pnl-up" ref="up6" style="display: none;" 
@@ -73,8 +79,7 @@
                     @load_complete="down_loadComplete"
                     @same_file_exist="down_sameFileExist"
                     @unsetup="down_unsetup"
-                    @file_append="down_fileAppend"
-                    @folder_sel=down_folderSel></down2>
+                    @folder_sel=down_folderSel></down2>                
                 <!--路径导航-->
                 <ol class="breadcrumb  m-t-xs" style="margin-bottom: -5px;">
                     <template v-for="p in pathNav">

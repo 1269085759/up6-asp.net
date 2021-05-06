@@ -1,9 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.Collections.Generic;
 using System.Data.Common;
 using up6.db.database;
-using up6.down2.model;
 using up6.filemgr.app;
 
 namespace up6.down2.biz
@@ -21,38 +19,30 @@ namespace up6.down2.biz
         }
 
         /// <summary>
-        /// 获取指定目录的所有子文件
+        /// 取根目录下所有子文件
+        /// 注意：传进来的必须是根目录ID
         /// </summary>
-        /// <param name="id">文件夹id</param>
+        /// <param name="pidRoot"></param>
         /// <returns></returns>
-        public virtual string files(string id)
+        public string childs(string pidRoot)
         {
             var se = new SqlExec();
-            var fd = se.read("up6_folders", "f_pidRoot", new SqlParam[] { new SqlParam("f_id", id) });
-            string pidRoot = string.Empty;
-            //子目录表中不存在，表示当前目录是根目录
-            if (fd == null) pidRoot = id;
-            else
+            var fs = (JArray)se.select("up6_files", "f_id,f_nameLoc,f_pathSvr,f_pathRel,f_lenSvr",
+                new SqlParam[] { new SqlParam("f_pidRoot", pidRoot) }
+                );
+
+            var childs = new JArray();
+            foreach(var o in fs)
             {
-                //子目录表中存在，表示当前目录是子目录
-                pidRoot = fd["f_pidRoot"].ToString().Trim();
+                childs.Add(new JObject {
+                    { "f_id", o["f_id"]},
+                    { "nameLoc", o["f_nameLoc"]},
+                    { "pathSvr", o["f_pathSvr"]},
+                    { "pathRel", o["f_pathRel"]},
+                    { "lenSvr", o["f_lenSvr"]}
+                });
             }
-            
-            return this.filesChild(id,pidRoot);
-        }
-
-        /// <summary>
-        /// 取子目录所有文件
-        /// </summary>
-        /// <returns></returns>
-        public string filesChild(string id,string pidRoot)
-        {
-            //构建子目录路径
-            PathRelBuilder prb = new PathRelBuilder();
-            var fs = prb.build(id,pidRoot);
-            
-
-            return JsonConvert.SerializeObject(fs);
+            return JsonConvert.SerializeObject(childs);
         }
     }
 }

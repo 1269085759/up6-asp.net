@@ -446,11 +446,11 @@ function DownloaderMgr()
         _this.app.init();
     };
     this.socket_close = function () {
-        while (_this.QueuePost.length > 0)
+        while (_this.queueWork.length > 0)
         {
-            _this.filesMap[_this.QueuePost[0]].post_stoped(null);
+            _this.filesMap[_this.queueWork[0]].post_stoped(null);
         }
-		_this.QueuePost.length = 0;
+        _this.queueWork.length = 0;
     };
 	this.recvMessage = function (str)
 	{

@@ -8,6 +8,9 @@ namespace up6.filemgr.app
 {
     /// <summary>
     /// 相对路径构建器。
+    /// 使用：
+    /// PathRelBuilder prb = new PathRelBuilder();
+    /// var fs = prb.build(id.pidRoot)
     /// </summary>
     public class PathRelBuilder
     {
@@ -52,6 +55,7 @@ namespace up6.filemgr.app
                 , new SqlParam[] { new SqlParam("f_deleted", 0) }
                 , string.Empty);
 
+            //取所有子目录
             this.m_folders = folders.Children<JObject>().ToDictionary(x => x["f_id"].ToString(), x =>JToken.FromObject(x));
 
             //是根节点
@@ -61,7 +65,7 @@ namespace up6.filemgr.app
                 this.m_folders.Add(id, new JObject { { "f_id", id }, { "f_pid", string.Empty }, { "f_pidRoot", string.Empty }, { "f_nameLoc", root["f_nameLoc"].ToString() } });
             }
 
-            //查询文件
+            //查询pidRoot全部文件
             this.m_files = se.select("up6_files"
                 , "f_id,f_pid,f_nameLoc,f_pathSvr,f_pathRel,f_lenSvr,f_sizeLoc"
                 , new SqlParam[] {

@@ -35,6 +35,7 @@
                 , cancel: page.path.res + "imgs/16/cancel.png"
             }
             , cookie: svrCookie
+            , search: {key:''}
         }
         , mounted: function () {
             this.pathNav.push(this.pathRoot);
@@ -42,6 +43,10 @@
         , methods: {
             tm_format: function (v) {
                 return moment(v).format('YYYY-MM-DD HH:mm:ss');
+            }
+            , trim: function (v) {
+                v = v.replace(/^\s*|\s*$/gi, "");
+                return v;
             }
             , init_data: function () {
                 var _this = this;
@@ -170,6 +175,38 @@
                     }
                 });
             }
+            , btnSearch_click: function () {
+                this.search.key = this.trim(this.search.key);
+
+                if (this.search.key.length == 0) {
+                    this.page_changed(1, this.pageLimit);
+                    return;
+                }
+
+                var _this = this;
+                var param = $.extend({}, this.fields, {
+                    "page": 1,
+                    limit: this.pageLimit,
+                    key: encodeURIComponent(this.search.key),
+                    time: new Date().getTime()
+                });
+                $.ajax({
+                    type: "GET"
+                    , dataType: "json"
+                    , url: "vue.aspx?op=search"
+                    , data: param
+                    , success: function (res) {
+                        _this.items = res.data;
+                        _this.count = res.count;
+                        _this.page_init();
+                    }
+                    , error: function (req, txt, err) { }
+                    , complete: function (req, sta) { req = null; }
+                });
+            }
+            , searchKey_changed: function () {
+                this.search.key = this.trim(this.search.key);
+            }
             , selAll_click: function () {
                 var _this = this;
                 if (this.idSelAll) {
@@ -237,7 +274,7 @@
                     type: "GET"
                     , dataType: "json"
                     , url: "vue.aspx?op=path"
-                    , data: { data: encodeURIComponent( JSON.stringify(param) ) }
+                    , data: { data: encodeURIComponent(JSON.stringify(param)), pathRel:encodeURIComponent(p.f_pathRel) }
                     , success: function (res) {
                         _this.pathNav = res;
                         _this.path_changed(p);
@@ -257,7 +294,11 @@
                 var _this = this;
                 $.extend(this.pathCur, d);
                 //加载文件列表
-                var param = jQuery.extend({},this.fields, { pid: d.f_id, time: new Date().getTime() });
+                var param = $.extend({}, this.fields, {
+                    pid: d.f_id,
+                    pathRel: encodeURIComponent( d.f_pathRel),
+                    time: new Date().getTime()
+                });
                 $.ajax({
                     type: "GET"
                     , dataType: "json"
@@ -297,7 +338,14 @@
             }
             , page_changed: function (page,size) {
                 var _this = this;
-                var param = jQuery.extend({},this.fields, { "page": page, limit: size,pid:this.pathCur.f_id, time: new Date().getTime() });
+                var param = $.extend({}, this.fields, {
+                    "page": page,
+                    limit: size,
+                    pid: this.pathCur.f_id,
+                    pathRel: encodeURIComponent(this.pathCur.f_pathRel),
+                    key: encodeURIComponent( this.search.key),
+                    time: new Date().getTime()
+                });
                 $.ajax({
                     type: "GET"
                     , dataType: "json"
@@ -311,7 +359,6 @@
                     , error: function (req, txt, err) { }
                     , complete: function (req, sta) { req = null; }
                 });
-
             }
             , itemDown_click: function (f) {
                 this.fileCur=f;
@@ -383,8 +430,8 @@
             }
             , up6_folderComplete: function (f) {
                 this.page_changed(1, 20);
-            },
-            up6_unsetup:function(html){
+            }
+            , up6_unsetup:function(html){
                 layer.open({
                     title: '提示',
                     content: html
@@ -427,12 +474,8 @@
             , down_loadComplete: function () {
                 this.down_loadTask();
             }
-            , down_fileAppend: function (f) {
-                var _this = this;
-                setTimeout(function () { _this.$refs.down.mgr.start_queue(); }, 1000);
-            }
-            , down_sameFileExist: function (n) { },
-            down_unsetup:function(html){
+            , down_sameFileExist: function (n) { }
+            , down_unsetup:function(html){
                 layer.open({
                     title: '提示',
                     content: html
