@@ -143,6 +143,7 @@ namespace up6.filemgr.app
         /// <param name="v"></param>
         public void add(string n,string v)
         {
+            if (this.m_cds.ContainsKey(n)) this.m_cds.Remove(n);
             this.m_cds.Add(n, v);
         }
         public void add(SqlWhereCondition c)

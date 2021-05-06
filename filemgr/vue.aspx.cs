@@ -589,6 +589,7 @@ namespace up6.filemgr
             var pid = Request.QueryString["pid"];
             var pathRel = this.reqStringDecode("pathRel");
             pathRel += '/';
+            var key = this.reqStringDecode("key");
 
             SqlWhereMerge swm = new SqlWhereMerge();
             //if (!string.IsNullOrEmpty(pid)) swm.equal("f_pid", pid);
@@ -596,12 +597,13 @@ namespace up6.filemgr
             swm.equal("f_complete", true);
             swm.equal("f_deleted", false);
             swm.equal("f_uid", this.reqToInt("uid"));
+            if(!string.IsNullOrEmpty(key))swm.add("key", string.Format("f_nameLoc like '%{0}%'",key));
 
             bool isRoot = string.IsNullOrEmpty(pid);
             if (isRoot) swm.equal("f_fdChild", false);
             else swm.equal("f_fdChild", true);
 
-            swm.req_like("f_nameLoc", "key");
+            //swm.req_like("f_nameLoc", "key");
             string where = swm.to_sql();
 
             DBConfig cfg = new DBConfig();
@@ -619,7 +621,6 @@ namespace up6.filemgr
             {
                 //目录表
                 swm.del("f_fdChild");
-                swm.del("f_pathRel");
                 swm.add("f_pathRel", string.Format("f_pathRel='{0}'+f_nameLoc", pathRel));
 
                 where = swm.to_sql();

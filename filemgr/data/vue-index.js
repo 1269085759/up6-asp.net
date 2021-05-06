@@ -35,6 +35,7 @@
                 , cancel: page.path.res + "imgs/16/cancel.png"
             }
             , cookie: svrCookie
+            , search: {key:''}
         }
         , mounted: function () {
             this.pathNav.push(this.pathRoot);
@@ -42,6 +43,10 @@
         , methods: {
             tm_format: function (v) {
                 return moment(v).format('YYYY-MM-DD HH:mm:ss');
+            }
+            , trim: function (v) {
+                v = v.replace(/^\s*|\s*$/gi, "");
+                return v;
             }
             , init_data: function () {
                 var _this = this;
@@ -169,6 +174,13 @@
 
                     }
                 });
+            }
+            , btnSearch_click: function () {
+                this.search.key = this.trim(this.search.key);
+                this.page_changed(1, this.pageLimit);
+            }
+            , searchKey_changed: function () {
+                this.search.key = this.trim(this.search.key);
             }
             , selAll_click: function () {
                 var _this = this;
@@ -305,7 +317,8 @@
                     "page": page,
                     limit: size,
                     pid: this.pathCur.f_id,
-                    pathRel: encodeURIComponent( this.pathCur.f_pathRel),
+                    pathRel: encodeURIComponent(this.pathCur.f_pathRel),
+                    key: encodeURIComponent( this.search.key),
                     time: new Date().getTime()
                 });
                 $.ajax({
