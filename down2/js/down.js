@@ -245,7 +245,7 @@ function DownloaderMgr(cfg)
 						<span class="toolbar-btn" name="btnStart">全部下载</span>\
 						<span class="toolbar-btn" name="btnStop">全部停止</span>\
 						<span class="toolbar-btn" name="btnSetup">安装控件</span>\
-						<span class="toolbar-btn" name="btnClear">清除已完成文件</span>\
+						<span class="toolbar-btn" name="btnClear">清除已完成</span>\
 					</div>\
 					<div class="content" name="down_content">\
 						<div name="down_body" class="file-post-view"></div>\
