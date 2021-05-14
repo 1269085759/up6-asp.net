@@ -51,6 +51,28 @@ namespace up6.db.biz.folder
             cmd.Connection.Close();
         }
 
+        /// <summary>
+        /// 覆盖文件夹
+        /// </summary>
+        /// <param name="folders"></param>
+        protected virtual void cover_folders(List<string> folders)
+        {
+            DbHelper db = new DbHelper();
+            string sql = "update up6_folders set f_deleted=1 where f_pathRel=@pathRel";
+
+            var cmd = db.GetCommand(sql);
+
+            db.AddString(ref cmd, "@pathRel", string.Empty, 255);
+            cmd.Connection.Open();
+            cmd.Prepare();
+            foreach (var f in folders)
+            {
+                cmd.Parameters["@pathRel"].Value = f;
+                cmd.ExecuteNonQuery();
+            }
+            cmd.Connection.Close();
+        }
+
         protected void GetAllFiles(FileInf parent, string root)
         {
             DirectoryInfo dir = new DirectoryInfo(parent.pathSvr);
@@ -107,7 +129,7 @@ namespace up6.db.biz.folder
         /// <param name="parent"></param>
         /// <param name="root"></param>
         /// <param name="files"></param>
-        protected void getAllFiles(FileInf parent,string root,ref List<string> files)
+        protected void getAllFiles(FileInf parent,string root,ref List<string> files, ref List<string> folders)
         {
             DirectoryInfo dir = new DirectoryInfo(parent.pathSvr);
             FileInfo[] allFile = dir.GetFiles();
@@ -146,8 +168,9 @@ namespace up6.db.biz.folder
                 fd.pathRel = PathTool.combin(parent.pathRel, fd.nameLoc);
                 //fd.perSvr = "100%";
                 //fd.complete = true;
+                folders.Add(fd.pathRel);
 
-                this.getAllFiles(fd, root,ref files);
+                this.getAllFiles(fd, root,ref files, ref folders);
             }
         }
 
@@ -317,9 +340,11 @@ namespace up6.db.biz.folder
         public void cover(FileInf inf,string pathParent)
         {
             List<string> files = new List<string>();
-            this.getAllFiles(inf, pathParent, ref files);
+            List<string> folders = new List<string>();
+            this.getAllFiles(inf, pathParent, ref files, ref folders);
 
             this.cover_files(files);
+            this.cover_folders(folders);
         }
 
         public void scan(FileInf inf, string root)
