@@ -159,7 +159,11 @@
                     , yes: function (index) {
                         layer.close(index);
 
-                        var param = jQuery.extend({}, {id:f.f_id,time: new Date().getTime() });
+                        var param = jQuery.extend({}, {
+                            id: f.f_id,
+                            pathRel: encodeURIComponent(f.f_pathRel),
+                            time: new Date().getTime()
+                        });
                         $.ajax({
                             type: "GET"
                             , dataType: "json"
@@ -186,7 +190,9 @@
                 var _this = this;
                 var param = $.extend({}, this.fields, {
                     "page": 1,
-                    limit: this.pageLimit,
+                    limit: 100,
+                    pid: this.pathCur.f_id,
+                    pathRel: encodeURIComponent(this.pathCur.f_pathRel),
                     key: encodeURIComponent(this.search.key),
                     time: new Date().getTime()
                 });
@@ -198,7 +204,9 @@
                     , success: function (res) {
                         _this.items = res.data;
                         _this.count = res.count;
+                        _this.pageLimit = 100;
                         _this.page_init();
+                        _this.pageLimit = 20;
                     }
                     , error: function (req, txt, err) { }
                     , complete: function (req, sta) { req = null; }
