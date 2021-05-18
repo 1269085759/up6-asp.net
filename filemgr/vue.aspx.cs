@@ -659,6 +659,10 @@ namespace up6.filemgr
             foreach (var f in files) folders.Add(f);
 
             int count = bs.count("up6_files", "f_id", where);
+            if (!isRoot)
+            {
+                count += bs.count("up6_folders", "f_id", where);
+            }
 
             JObject o = new JObject();
             o["count"] = count;
