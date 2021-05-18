@@ -98,7 +98,6 @@ namespace up6.db.biz.folder
                 fl.perSvr = "100%";
                 fl.complete = true;
                 this.m_files.Add(fl);
-                //this.save_file(fl);
             }
             DirectoryInfo[] allDir = dir.GetDirectories();
             foreach (DirectoryInfo d in allDir)
