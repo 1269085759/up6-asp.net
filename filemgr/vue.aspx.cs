@@ -523,28 +523,41 @@ namespace up6.filemgr
         /// </summary>
         void file_del()
         {
-            var id = Request.QueryString["id"];
+            var id = this.reqString("id");
+            var pathRel = this.reqStringDecode("pathRel");
+            pathRel += '/';
 
+            SqlWhereMerge swm = new SqlWhereMerge();
             DBConfig cfg = new DBConfig();
+            if (cfg.m_isOracle || cfg.m_isOdbc)
+            {
+                swm.instr(pathRel, "f_pathRel");
+            }
+            else
+            {
+                swm.charindex(pathRel, "f_pathRel");
+            }
+            string where = swm.to_sql();
+
             SqlExec se = cfg.se();
             se.update("up6_folders"
                 , new SqlParam[] { new SqlParam("f_deleted", true) }
-                , new SqlParam[] {
-                    new SqlParam("f_id",id)
-                    ,new SqlParam("f_pid",id)
-                    ,new SqlParam("f_pidRoot",id)
-                }
-                , "or"
+                , where
+                );
+
+            se.update("up6_folders"
+                , new SqlParam[] { new SqlParam("f_deleted", true) }
+                , new SqlParam[] { new SqlParam("f_id",id)}
                 );
 
             se.update("up6_files"
                 , new SqlParam[] { new SqlParam("f_deleted", true) }
-                , new SqlParam[] {
-                    new SqlParam("f_id",id)
-                    ,new SqlParam("f_pid",id)
-                    ,new SqlParam("f_pidRoot",id)
-                }
-                , "or"
+                , where
+                );
+
+            se.update("up6_files"
+                , new SqlParam[] { new SqlParam("f_deleted", true) }
+                , new SqlParam[] { new SqlParam("f_id", id) }
                 );
 
             PageTool.to_content(new JObject { { "ret", 1 } });
@@ -591,8 +604,19 @@ namespace up6.filemgr
             pathRel += '/';
 
             SqlWhereMerge swm = new SqlWhereMerge();
+            DBConfig cfg = new DBConfig();
             //if (!string.IsNullOrEmpty(pid)) swm.equal("f_pid", pid);
-            if(!string.IsNullOrEmpty(pid))swm.add("f_pathRel",string.Format("f_pathRel='{0}'+f_nameLoc", pathRel) );
+            if (!string.IsNullOrEmpty(pid))
+            {
+                if (cfg.m_isOracle || cfg.m_isOdbc)
+                {
+                    swm.add("f_pathRel", string.Format("f_pathRel=CONCAT('{0}',f_nameLoc)", pathRel));
+                }
+                else
+                {
+                    swm.add("f_pathRel", string.Format("f_pathRel='{0}'+f_nameLoc", pathRel));
+                }
+            }
             swm.equal("f_complete", true);
             swm.equal("f_deleted", false);
             swm.equal("f_uid", this.reqToInt("uid"));
@@ -603,7 +627,6 @@ namespace up6.filemgr
 
             string where = swm.to_sql();
 
-            DBConfig cfg = new DBConfig();
             DbBase bs = cfg.bs();
             //文件表
             var files = (JArray)bs.page2("up6_files"
@@ -636,6 +659,10 @@ namespace up6.filemgr
             foreach (var f in files) folders.Add(f);
 
             int count = bs.count("up6_files", "f_id", where);
+            if (!isRoot)
+            {
+                count += bs.count("up6_folders", "f_id", where);
+            }
 
             JObject o = new JObject();
             o["count"] = count;
@@ -650,9 +677,23 @@ namespace up6.filemgr
         void search()
         {
             var pid = this.reqString("pid");
+            var pathRel = this.reqStringDecode("pathRel");
+            pathRel += '/';
             var key = this.reqStringDecode("key");
 
             SqlWhereMerge swm = new SqlWhereMerge();
+            DBConfig cfg = new DBConfig();
+            if (!string.IsNullOrEmpty(pid))
+            {
+                if (cfg.m_isOracle || cfg.m_isOdbc)
+                {
+                    swm.add("f_pathRel", string.Format("f_pathRel=CONCAT('{0}',f_nameLoc)", pathRel));
+                }
+                else
+                {
+                    swm.add("f_pathRel", string.Format("f_pathRel='{0}'+f_nameLoc", pathRel));
+                }
+            }
             swm.equal("f_complete", true);
             swm.equal("f_deleted", false);
             swm.equal("f_uid", this.reqToInt("uid"));
@@ -664,7 +705,6 @@ namespace up6.filemgr
 
             string where = swm.to_sql();
 
-            DBConfig cfg = new DBConfig();
             DbBase bs = cfg.bs();
             //文件表
             var files = (JArray)bs.page2("up6_files"
@@ -690,10 +730,8 @@ namespace up6.filemgr
             }
             foreach (var f in files) folders.Add(f);
 
-            int count = files.Count + folders.Count;
-
             JObject o = new JObject();
-            o["count"] = count;
+            o["count"] = folders.Count;
             o["code"] = 0;
             o["msg"] = string.Empty;
             o["data"] = folders;

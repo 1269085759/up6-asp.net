@@ -206,7 +206,8 @@ function DownloaderMgr()
         if (param instanceof String || param instanceof Number || param instanceof Boolean) {
             paramStr += "&" + key + "=" + encodeURIComponent(param);
         } else {
-            $.each(param, function (i) {
+            $.each(param, function (i,n) {
+                if (n == null) return;
                 var k = key == null ? i : key + (param instanceof Array ? "[" + i + "]" : "." + i);
                 paramStr += '&' + _this.to_params(this, k);
             });

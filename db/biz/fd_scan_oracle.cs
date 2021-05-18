@@ -21,10 +21,32 @@ namespace up6.db.biz
 
             var cmd = db.GetCommand(sql);
 
-            db.AddString(ref cmd, "@pathRel", string.Empty, 512);
+            db.AddString(ref cmd, ":pathRel", string.Empty, 512);
             cmd.Connection.Open();
             cmd.Prepare();
             foreach (var f in files)
+            {
+                cmd.Parameters[":pathRel"].Value = f;
+                cmd.ExecuteNonQuery();
+            }
+            cmd.Connection.Close();
+        }
+
+        /// <summary>
+        /// 覆盖文件夹
+        /// </summary>
+        /// <param name="folders"></param>
+        protected override void cover_folders(List<string> folders)
+        {
+            DbHelper db = new DbHelper();
+            string sql = "update up6_folders set f_deleted=1 where f_pathRel=:pathRel";
+
+            var cmd = db.GetCommand(sql);
+
+            db.AddString(ref cmd, ":pathRel", string.Empty, 255);
+            cmd.Connection.Open();
+            cmd.Prepare();
+            foreach (var f in folders)
             {
                 cmd.Parameters[":pathRel"].Value = f;
                 cmd.ExecuteNonQuery();
@@ -77,7 +99,7 @@ namespace up6.db.biz
             sb.Append(",:f_lenSvr");
             sb.Append(",:f_perSvr");
             sb.Append(",:f_complete");
-            sb.Append(") ;");
+            sb.Append(")");
 
             var cmd = db.connection.CreateCommand();
             cmd.CommandText = sb.ToString();
@@ -151,7 +173,7 @@ namespace up6.db.biz
             sb.Append(",:f_pathSvr");
             sb.Append(",:f_pathRel");
             sb.Append(",:f_complete");
-            sb.Append(") ;");
+            sb.Append(")");
 
             var cmd = db.connection.CreateCommand();
             cmd.CommandText = sb.ToString();
@@ -168,7 +190,7 @@ namespace up6.db.biz
             db.AddBool(ref cmd, ":f_complete", true);
             cmd.Prepare();
 
-            foreach (var f in this.m_files)
+            foreach (var f in this.m_folders)
             {
                 cmd.Parameters[":f_id"].Value = f.id;
                 cmd.Parameters[":f_pid"].Value = f.pid;

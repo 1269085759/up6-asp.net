@@ -118,6 +118,26 @@ namespace up6.filemgr.app
             db.ExecuteNonQuery(cmd);
         }
 
+        public override void update(string table, SqlParam[] fields, string where)
+        {
+            //加载结构
+            this.m_table = this.table(table);
+            var field_all = this.m_table.SelectToken("fields");
+            var field_sel = this.selFields(fields, field_all);
+            var field_cdt = this.selFields(where, field_all);
+
+            JObject o = new JObject();
+            string sql = string.Format("update {0} set {1} where {2}"
+                , table
+                , this.toSqlCondition(fields)
+                , where);
+
+            DbHelper db = new DbHelper();
+            var cmd = db.GetCommand(sql);
+            this.m_parSetter.setVal(cmd, field_sel, fields);
+            db.ExecuteNonQuery(cmd);
+        }
+
         public override void update(string table, string fields, string where, JObject obj)
         {
             //加载结构
