@@ -92,6 +92,37 @@ namespace up6.filemgr.app
             return Request.QueryString[name].Trim();
         }
 
+        /// <summary>
+        /// 特殊字符替换
+        /// </summary>
+        /// <param name="v"></param>
+        /// <returns></returns>
+        public string reqStringSafe(string name)
+        {
+            if (!Request.QueryString.HasKeys()) return string.Empty;
+            if (string.IsNullOrEmpty(Request.QueryString[name])) return string.Empty;
+            string v = Request.QueryString[name].Trim();
+
+            v = v.Replace("\r", string.Empty);
+            v = v.Replace("\n", string.Empty);
+            v = v.Replace("'", string.Empty);
+            v = v.Replace("\"", string.Empty);
+            v = v.Replace(",", string.Empty);
+            v = v.Replace(".", string.Empty);
+            v = v.Replace("&", string.Empty);
+            v = v.Replace(";", string.Empty);
+            v = v.Replace("$", string.Empty);
+            v = v.Replace("%", string.Empty);
+            v = v.Replace("@", string.Empty);
+            v = v.Replace(" ", string.Empty);
+            v = v.Replace("()", string.Empty);
+            v = v.Replace("+", string.Empty);
+            v = v.Replace("script", string.Empty);
+            v = v.Replace("document", string.Empty);
+            v = v.Replace("eval", string.Empty);
+            return v;
+        }
+
         public string reqStringDecode(string name)
         {
             var v = this.reqString(name);
@@ -112,7 +143,10 @@ namespace up6.filemgr.app
         }
 
         /// <summary>
-        /// 注册页面级变量
+        /// 向页面输出一个page变量，
+        /// page.query
+        /// page.url
+        /// page.path
         /// </summary>
         /// <returns></returns>
         public string paramPage()
@@ -231,6 +265,7 @@ namespace up6.filemgr.app
         public void toContent(JToken p)
         {
             Response.Clear();
+            Response.AddHeader("Content-Type", "application/json");
             Response.Write(JsonConvert.SerializeObject(p));
             Response.End();
         }
@@ -238,6 +273,27 @@ namespace up6.filemgr.app
         public void toContent(string v)
         {
             Response.Clear();
+            Response.Write(v);
+            Response.End();
+        }
+
+        /// <summary>
+        /// 指定输出类型
+        /// </summary>
+        /// <param name="v"></param>
+        /// <param name="contentType">
+        /// application/json
+        /// text/html ： HTML格式
+        /// text/plain ：纯文本格式      
+        /// text/xml ：  XML格式
+        /// image/gif ：gif图片格式    
+        /// application/json： JSON数据格式
+        /// application/octet-stream ： 二进制流数据（如常见的文件下载）
+        /// </param>
+        public void toContent(string v,string contentType= "text/html")
+        {
+            Response.Clear();
+            Response.AddHeader("Content-Type", contentType);
             Response.Write(v);
             Response.End();
         }
