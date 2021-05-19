@@ -107,10 +107,23 @@ namespace up6.filemgr.app
         /// <param name="n"></param>
         /// <param name="column">查询列</param>
         /// <param name="index"></param>
-        public void charindex(string n,string column,int index)
+        public void charindex(string n,string column)
         {
-            string sql = string.Format("charindex('{0}',{1})=1",n,column,index);
+            string sql = string.Format("charindex('{0}',{1})=1",n,column);
             this.m_cds.Add("",sql);
+        }
+
+        /// <summary>
+        /// 在字符串中查找数据
+        /// instr(column,n)==index
+        /// </summary>
+        /// <param name="n"></param>
+        /// <param name="column">查询列</param>
+        /// <param name="index"></param>
+        public void instr(string n, string column)
+        {
+            string sql = string.Format("instr({0},'{1}')=1", column, n);
+            this.m_cds.Add("", sql);
         }
 
         /// <summary>
