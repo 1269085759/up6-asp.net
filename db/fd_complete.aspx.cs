@@ -73,7 +73,7 @@ namespace up6.db
 
                 ret = 1;
             }
-            Response.Write(cak + "(" + ret + ")");
+            this.toContentJson(cak + "(" + ret + ")");
         }
     }
 }

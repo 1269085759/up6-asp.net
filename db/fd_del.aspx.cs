@@ -24,7 +24,7 @@ namespace up6.db
                 cfg.folder().Remove(fid, int.Parse(uid));
                 ret = 1;
             }
-            Response.Write(cbk + "({\"value\":" + ret + "})");//返回jsonp格式数据
+            this.toContentJson(cbk + "({\"value\":" + ret + "})");//返回jsonp格式数据
         }
     }
 }

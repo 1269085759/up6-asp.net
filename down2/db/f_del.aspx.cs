@@ -1,10 +1,11 @@
 ﻿using System;
 using up6.db.database;
 using up6.down2.biz;
+using up6.filemgr.app;
 
 namespace up6.down2.db
 {
-    public partial class f_del : System.Web.UI.Page
+    public partial class f_del : WebBase
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -15,7 +16,7 @@ namespace up6.down2.db
             if (string.IsNullOrEmpty(uid)
                 || string.IsNullOrEmpty(fid))
             {
-                Response.Write(cbk + "({\"value\":null})");
+                this.toContentJson(cbk + "({\"value\":null})");
                 return;
             }
 
@@ -23,7 +24,7 @@ namespace up6.down2.db
             DnFile db = cfg.downF();
             db.Delete(fid, int.Parse(uid));
 
-            Response.Write(cbk + "({\"value\":1})");
+            this.toContentJson(cbk + "({\"value\":1})");
         }
     }
 }

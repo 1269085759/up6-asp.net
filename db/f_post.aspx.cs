@@ -112,7 +112,7 @@ namespace up6.db
                     o["offset"] = blockOffset;//偏移
                     msg = JsonConvert.SerializeObject(o);
                 }
-                Response.Write(msg);
+                this.toContentJson(msg);
             }
         }
     }

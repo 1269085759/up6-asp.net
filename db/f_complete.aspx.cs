@@ -16,7 +16,7 @@ namespace up6.db
             var uid = this.reqToInt("uid");
             var id = this.reqString("id");
             var pid = this.reqString("pid");
-            var cbk = this.reqString("callback");
+            var cbk = this.reqStringSafe("callback");
             var cover = this.reqToInt("cover");//是否覆盖
             var nameLoc = this.reqStringDecode("nameLoc");//文件名称
 
@@ -38,7 +38,7 @@ namespace up6.db
                 up6_biz_event.file_post_complete(id);
                 ret = 1;
             }
-            Response.Write(cbk + "(" + ret + ")");//必须返回jsonp格式数据
+            this.toContentJson(cbk + "(" + ret + ")");//必须返回jsonp格式数据
         }
     }
 }

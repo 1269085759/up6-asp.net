@@ -98,7 +98,7 @@ namespace up6.db
             json = json.Replace("+", "%20");
             var jo = new JObject { { "value",json} };
             json = callback + string.Format("({0})",JsonConvert.SerializeObject(jo));
-            Response.Write(json);
+            this.toContentJson(json);
         }
     }
 }

@@ -277,6 +277,11 @@ namespace up6.filemgr.app
             Response.End();
         }
 
+        public void toContentJson(string v)
+        {
+            this.toContent(v, "application/json");
+        }
+
         /// <summary>
         /// 指定输出类型
         /// </summary>

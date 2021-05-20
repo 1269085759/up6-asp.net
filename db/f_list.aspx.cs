@@ -32,7 +32,7 @@ namespace up6.db
                     return;
                 }
             }
-            Response.Write(cbk+"({\"value\":null})");
+            this.toContentJson(cbk+"({\"value\":null})");
         }
     }
 }

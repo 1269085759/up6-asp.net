@@ -137,7 +137,7 @@ namespace up6.db
             jv = HttpUtility.UrlEncode(jv);
             jv = jv.Replace("+", "%20");
             string json = callback + "({\"value\":\"" + jv + "\",\"ret\":true})";//返回jsonp格式数据。
-            Response.Write(json);
+            this.toContentJson(json);
         }
     }
 }
