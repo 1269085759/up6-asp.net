@@ -1,13 +1,14 @@
 ﻿using System;
 using up6.db.database;
 using up6.down2.biz;
+using up6.filemgr.app;
 
 namespace up6.down2.db
 {
     /// <summary>
     /// 更新文件下载进度
     /// </summary>
-    public partial class f_update : System.Web.UI.Page
+    public partial class f_update : WebBase
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -22,8 +23,7 @@ namespace up6.down2.db
                 ||  string.IsNullOrEmpty(fid)
                 ||  string.IsNullOrEmpty(cbk))
             {
-                Response.Write(cbk+"({\"value\":0})");
-                Response.End();
+                this.toContent(cbk + "({\"value\":0})", "application/json");
                 return;
             }
 
@@ -31,7 +31,7 @@ namespace up6.down2.db
             DnFile db = cfg.downF();
             db.process( fid, int.Parse(uid), lenLoc, per);
             
-            Response.Write(cbk + "({\"value\":1})");
+            this.toContent(cbk + "({\"value\":1})", "application/json");
         }
     }
 }

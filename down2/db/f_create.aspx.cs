@@ -3,10 +3,11 @@ using System.Web;
 using Newtonsoft.Json;
 using up6.db.database;
 using up6.down2.biz;
+using up6.filemgr.app;
 
 namespace up6.down2.db
 {
-    public partial class f_create : System.Web.UI.Page
+    public partial class f_create : WebBase
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -26,8 +27,7 @@ namespace up6.down2.db
                 || string.IsNullOrEmpty(pathLoc)
                 || string.IsNullOrEmpty(lenSvr))
             {
-                Response.Write(cbk + "({\"value\":null})");
-                Response.End();
+                this.toContentJson(cbk + "({\"value\":null})");
                 return;
             }
 
@@ -47,7 +47,7 @@ namespace up6.down2.db
             json = HttpUtility.UrlEncode(json);
             json = json.Replace("+", "%20");
             json = cbk + "({\"value\":\"" + json + "\"})";//返回jsonp格式数据。
-            Response.Write(json);
+            this.toContentJson(json);
         }
     }
 }

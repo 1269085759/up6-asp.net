@@ -2,6 +2,7 @@
 using System.Web;
 using up6.db.database;
 using up6.down2.biz;
+using up6.filemgr.app;
 
 namespace up6.down2.db
 {
@@ -15,12 +16,12 @@ namespace up6.down2.db
     /// 文件夹：xdb_files.fd_json
     /// 
     /// </summary>
-    public partial class f_list_cmp : System.Web.UI.Page
+    public partial class f_list_cmp : WebBase
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            string uid = Request.QueryString["uid"];
-            string cbk = Request.QueryString["callback"];//jsonp
+            string uid = this.reqStringSafe("uid");
+            string cbk = this.reqStringSafe("callback");//jsonp
 
             if (!string.IsNullOrEmpty(uid))
             {
@@ -33,11 +34,11 @@ namespace up6.down2.db
                     json = HttpUtility.UrlEncode(json);
                     //UrlEncode会将空格解析成+号
                     json = json.Replace("+", "%20");
-                    Response.Write(cbk + "({\"value\":\"" + json + "\"})");
+                    this.toContent(cbk + "({\"value\":\"" + json + "\"})", "application/json");
                     return;
                 }
             }
-            Response.Write(cbk+"({\"value\":null})");
+            this.toContent(cbk + "({\"value\":null})", "application/json");
         }
     }
 }

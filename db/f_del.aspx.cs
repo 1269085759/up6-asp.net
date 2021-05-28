@@ -11,7 +11,7 @@ namespace up6.db
         {
             string fid = this.reqString("id");
             string uid = this.reqString("uid");
-            string callback = this.reqString("callback");
+            string callback = this.reqStringSafe("callback");
             int ret = 0;
 
             if (string.IsNullOrEmpty(fid) || 
@@ -27,7 +27,7 @@ namespace up6.db
                 up6_biz_event.file_del(fid,Convert.ToInt32(uid));
                 ret = 1;
             }
-            Response.Write(callback + "(" + ret + ")");//返回jsonp格式数据
+            this.toContentJson(callback + "(" + ret + ")");//返回jsonp格式数据
         }
     }
 }

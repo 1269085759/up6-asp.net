@@ -26,7 +26,7 @@ namespace up6.down2.db
 
                 json = "({\"value\":\""+ data + "\"})" ;
             }
-            Response.Write(cbk + json);
+            this.toContent(cbk + json, "application/json");
         }
     }
 }

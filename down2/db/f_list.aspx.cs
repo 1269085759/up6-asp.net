@@ -2,6 +2,7 @@
 using System.Web;
 using up6.db.database;
 using up6.down2.biz;
+using up6.filemgr.app;
 
 namespace up6.down2.db
 {
@@ -11,7 +12,7 @@ namespace up6.down2.db
     ///     [f1,f2,f3,f4]
     /// f1为xdb_files对象
     /// </summary>
-    public partial class f_list : System.Web.UI.Page
+    public partial class f_list : WebBase
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -20,8 +21,7 @@ namespace up6.down2.db
 
             if (string.IsNullOrEmpty(uid))
             {
-                Response.Write(cbk+"({\"value\":null})");
-                Response.End();
+                this.toContentJson(cbk + "({\"value\":null})");
                 return;
             }
 
@@ -36,7 +36,7 @@ namespace up6.down2.db
             }
             else { json = cbk + "({\"value\":null})"; };
 
-            Response.Write(json);
+            this.toContentJson(json);
         }
     }
 }
