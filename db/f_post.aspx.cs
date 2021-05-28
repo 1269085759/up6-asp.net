@@ -99,6 +99,8 @@ namespace up6.db
 
                 if (verify)
                 {
+                    PathBuilder pb = new PathBuilder();
+                    pathSvr = pb.relToAbs(pathSvr);
                     //2.0保存文件块数据
                     FileBlockWriter res = new FileBlockWriter();
                     res.make(pathSvr, Convert.ToInt64(lenLoc));

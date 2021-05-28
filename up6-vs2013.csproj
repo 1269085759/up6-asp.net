@@ -786,7 +786,6 @@
     <Compile Include="db\biz\fd_scan.cs" />
     <Compile Include="db\biz\fd_scan_oracle.cs" />
     <Compile Include="db\biz\PathBuilder.cs" />
-    <Compile Include="db\biz\PathBuilderMd5.cs" />
     <Compile Include="db\biz\PathBuilderUuid.cs" />
     <Compile Include="db\biz\un_builder.cs" />
     <Compile Include="db\biz\un_builder_odbc.cs" />

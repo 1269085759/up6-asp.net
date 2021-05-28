@@ -123,6 +123,8 @@ namespace up6.db
                 fr.make(fileSvr.pathSvr,fileSvr.lenLoc);
             }
 
+            //将路径转换成相对路径
+            fileSvr.pathSvr = pb.absToRel(fileSvr.pathSvr);
             //加密
             ConfigReader cr = new ConfigReader();
             var sec = cr.module("path");
