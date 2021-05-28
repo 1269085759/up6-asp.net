@@ -114,6 +114,7 @@
                             _this.folderMker.name = '';
                             _this.folderMker.edit = false;
                             _this.items.unshift(fd);
+                            _this.page_changed(1, 20);
                         }
                     }
                     , error: function (req, txt, err) { }
