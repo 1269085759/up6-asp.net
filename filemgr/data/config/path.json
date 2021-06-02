@@ -4,7 +4,8 @@
   "upload-folder": "{root}upload",
   "security": {
     "encrypt": false,
-    "key": "+Lm25MO1SnrSVPWdZ1Sg/w=="
+    "key": "+Lm25MO1SnrSVPWdZ1Sg/w==",
+    "token": true
   },
   "license2": {
     "up6": "",

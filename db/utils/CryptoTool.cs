@@ -2,6 +2,7 @@
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
+using up6.db.model;
 
 namespace up6.db.utils
 {
@@ -104,6 +105,34 @@ namespace up6.db.utils
             byte[] resultArray = cTransform.TransformFinalBlock(ms.ToArray(), 0, (int)ms.Length);
 
             return Convert.ToBase64String(resultArray,Base64FormattingOptions.None);
+        }
+
+        /// <summary>
+        /// 计算token，进行授权检查
+        /// token = encode( md5(id+nameLoc))
+        /// </summary>
+        /// <param name="f"></param>
+        /// <returns></returns>
+        public string token(FileInf f)
+        {
+            string str = f.id + f.nameLoc;
+            str = this.md5(str);
+            str = this.encode(str);
+            return str;
+        }
+
+        public string md5(string s)
+        {
+            byte[] sor = Encoding.UTF8.GetBytes(s);
+            MD5 md5 = MD5.Create();
+            byte[] result = md5.ComputeHash(sor);
+            StringBuilder strbul = new StringBuilder(40);
+            for (int i = 0; i < result.Length; i++)
+            {
+                strbul.Append(result[i].ToString("x2"));//加密结果"x2"结果为32位,"x3"结果为48位,"x4"结果为64位
+
+            }
+            return strbul.ToString();
         }
 
         public string cbc_encode(string key, string iv, string v)

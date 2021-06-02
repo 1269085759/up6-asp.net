@@ -792,6 +792,7 @@
     <Compile Include="db\biz\un_builder_odbc.cs" />
     <Compile Include="db\biz\un_builder_oracle.cs" />
     <Compile Include="db\biz\up6_biz_event.cs" />
+    <Compile Include="db\biz\WebSafe.cs" />
     <Compile Include="db\clear.aspx.cs">
       <DependentUpon>clear.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

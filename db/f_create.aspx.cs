@@ -57,6 +57,7 @@ namespace up6.db
             string uid          = this.reqString("uid");
             string lenLoc       = this.reqString("lenLoc");
             string sizeLoc      = this.reqString("sizeLoc");
+            string token      = this.reqString("token");
             string callback     = this.reqString("callback");//jsonp参数
             //客户端使用的是encodeURIComponent编码，
             string pathLoc      = this.reqStringDecode("pathLoc");//utf-8解码
@@ -90,6 +91,16 @@ namespace up6.db
             fileSvr.deleted = false;
             fileSvr.md5 = md5;
             fileSvr.nameSvr = fileSvr.nameLoc;
+
+            WebSafe ws = new WebSafe();
+            var ret = ws.validToken(token, fileSvr);
+            //token难失败
+            if(!ret)
+            {
+                string m = callback + "({\"value\":\"0\",\"ret\":false,\"msg\":\"token error\"})";//返回jsonp格式数据。
+                this.toContentJson(m);
+                return;
+            }
 
             //所有单个文件均以uuid/file方式存储
             PathBuilderUuid pb = new PathBuilderUuid();

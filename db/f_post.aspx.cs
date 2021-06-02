@@ -4,6 +4,7 @@ using System;
 using System.IO;
 using System.Web;
 using up6.db.biz;
+using up6.db.model;
 using up6.db.utils;
 using up6.filemgr.app;
 
@@ -51,6 +52,8 @@ namespace up6.db
             string blockMd5     = this.headString("blockMd5");//块MD5
             string complete     = this.headString("complete");//true/false
             string pathSvr      = Request.Form["pathSvr"];//
+            string pathLoc = string.Empty;
+            string token      = Request.Form["token"];//
             pathSvr = Server.UrlDecode(pathSvr);
 
             if( !this.safe_check(lenLoc,uid,f_id,blockOffset,pathSvr)) return;
@@ -65,6 +68,7 @@ namespace up6.db
                 HttpPostedFile file = Request.Files.Get(0);//文件块
                 var stm = file.InputStream;
                 var stmLen = int.Parse(blockSize);
+                pathLoc = file.FileName;
 
                 //加密
                 ConfigReader cr = new ConfigReader();
@@ -73,8 +77,23 @@ namespace up6.db
                 if (encrypt)
                 {
                     CryptoTool ct = new CryptoTool();
-                    pathSvr = ct.decode(pathSvr);
+                    pathLoc = ct.decode(file.FileName);
                     stm = ct.decode(file.InputStream,int.Parse(blockSize));
+                }
+
+                //token验证
+                WebSafe ws = new WebSafe();
+                FileInf fileSvr = new FileInf();
+                fileSvr.id = f_id;
+                fileSvr.pathLoc = file.FileName;
+                FileInfo fi = new FileInfo(pathLoc);
+                fileSvr.nameLoc = fi.Name;
+                var ret = ws.validToken(token, fileSvr);
+                //token难失败
+                verify = ret;
+                if(!verify)
+                {
+                    msg = string.Format("token error loc:{0}",token);
                 }
 
                 //计算文件块MD5
@@ -84,7 +103,7 @@ namespace up6.db
                 }
 
                 //文件块大小验证
-                verify = int.Parse(blockSize) == stm.Length;
+                if(verify) verify = int.Parse(blockSize) == stm.Length;
                 if (!verify)
                 {
                     msg = "block size error sizeSvr:"+ stm.Length + " sizeLoc:"+blockSize;
