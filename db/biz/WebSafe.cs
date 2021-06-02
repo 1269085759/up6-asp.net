@@ -14,8 +14,9 @@ namespace up6.db.biz
         /// </summary>
         /// <param name="token"></param>
         /// <param name="f"></param>
+        /// <param name="action">动作：init,block</param>
         /// <returns></returns>
-        public bool validToken(string token, FileInf f)
+        public bool validToken(string token, FileInf f,string action="init")
         {
             ConfigReader cr = new ConfigReader();
             var sec = cr.module("path");

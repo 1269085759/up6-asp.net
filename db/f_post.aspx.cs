@@ -88,7 +88,7 @@ namespace up6.db
                 fileSvr.pathLoc = file.FileName;
                 FileInfo fi = new FileInfo(pathLoc);
                 fileSvr.nameLoc = fi.Name;
-                var ret = ws.validToken(token, fileSvr);
+                var ret = ws.validToken(token, fileSvr,"block");
                 //token难失败
                 verify = ret;
                 if(!verify)

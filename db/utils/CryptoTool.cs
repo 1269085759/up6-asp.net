@@ -112,10 +112,11 @@ namespace up6.db.utils
         /// token = encode( md5(id+nameLoc))
         /// </summary>
         /// <param name="f"></param>
+        /// <param name="action">动作：init,block,cmp</param>
         /// <returns></returns>
-        public string token(FileInf f)
+        public string token(FileInf f,string action="init")
         {
-            string str = f.id + f.nameLoc;
+            string str = f.id + f.nameLoc + action;
             str = this.md5(str);
             str = this.encode(str);
             return str;
