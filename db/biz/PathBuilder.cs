@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using System.IO;
+using System.Web;
 using up6.db.model;
 using up6.filemgr.app;
 
@@ -32,9 +33,41 @@ namespace up6.db.biz
         {
             return string.Empty;
         }
+
         public virtual string genFile(int uid, string md5, string nameLoc)
         {
             return string.Empty;
+        }
+
+        /// <summary>
+        /// 相对路径转换成绝对路径
+        /// /2021/05/28/guid/nameLoc => d:/upload/2021/05/28/guid/nameLoc
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public string relToAbs(string path)
+        {
+            string root = this.getRoot();
+            root = root.Replace("\\", "/");
+            path = path.Replace("\\", "/");
+            if (path.StartsWith("/"))
+            {
+                path = PathTool.combin(root, path);
+            }
+            return path;
+        }
+
+        /// <summary>
+        /// 将路径转换成相对路径
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public string absToRel(string path)
+        {
+            string root = this.getRoot().Replace("\\","/");
+            path = path.Replace("\\", "/");
+            path = path.Replace(root, string.Empty);
+            return path;
         }
     }
 }
