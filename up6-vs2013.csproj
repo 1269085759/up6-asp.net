@@ -96,13 +96,16 @@
     <Content Include="down2\js\down.folder.js" />
     <Content Include="down2\js\down.js" />
     <Content Include="down2\js\down.png" />
+    <Content Include="down2\js\error.png" />
     <Content Include="down2\js\file.png" />
     <Content Include="down2\js\file1.png" />
     <Content Include="down2\js\folder.png" />
     <Content Include="down2\js\folder1.png" />
+    <Content Include="down2\js\inf.png" />
     <Content Include="down2\js\jquery-1.4.min.js" />
     <Content Include="down2\js\json2.min.js" />
     <Content Include="down2\js\knockout.js" />
+    <Content Include="down2\js\show.png" />
     <Content Include="down2\ligerui.aspx" />
     <Content Include="down2\ligerui\images\loading.gif" />
     <Content Include="down2\ligerui\images\top.jpg" />
