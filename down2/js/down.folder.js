@@ -47,6 +47,7 @@
         this.ui.btn.down.click(function () { _this.Manager.allStoped = false;_this.down(); });
         this.ui.btn.cancel.click(function () { _this.remove(); });
         this.ui.btn.open.click(function () { _this.open(); });
+        this.ui.btn.errInf.click(function () { _this.ui.errFiles.toggleClass("d-hide"); });
 
         this.ui.btn.down.show();
         this.ui.btn.cancel.show();
@@ -99,6 +100,8 @@
     {
         this.hideBtns();
         this.ui.btn.stop.show();
+        this.ui.btn.errInf.hide();
+        this.ui.errFiles.html("");
         this.ui.msg.text("开始连接服务器...");
         this.State = this.Config.state.Posting;
         this.Manager.add_work(this.fileSvr.id);
@@ -241,13 +244,36 @@
         this.Manager.filesCmp.push(this);
         this.Manager.del_work(this.fileSvr.id);//从工作队列中删除
         this.Manager.remove_wait(this.fileSvr.id);
+        this.Manager.remove_url(this.fileSvr.nameLoc);
         this.hideBtns();
+        this.ui.btn.errInf.show();
         this.event.downComplete(this);//biz event
-        this.ui.btn.open.show();
         this.ui.process.css("width", "100%");
         this.ui.percent.text("(100%)");
-        this.ui.msg.text("文件数：" + json.fileCount + " 成功：" + json.cmpCount);
+
+        if (typeof (json.errFiles) != "undefined") {
+            var fileErrs = new Array();
+            $.each(json.errFiles, function (i, n) {
+                var tmp = "<li class=\"txt-ico\"><img title=\"{error}\" src=\"/js/error.png\"/>名称：{name} 大小：{size} <a class=\"btn-link\" href=\"{url}\" target=\"_blank\">打开链接</a></li>";
+                tmp = tmp.replace(/{name}/gi, n.name);
+                tmp = tmp.replace(/{url}/gi, n.url);
+                tmp = tmp.replace(/{size}/gi, n.sizeSvr);
+                tmp = tmp.replace(/{error}/gi, _this.Config.errCode[n.errCode]);
+                fileErrs.push(tmp);
+            });
+            this.ui.errFiles.html(fileErrs.join(""));
+        }
+
+        var msg = ["下载完毕", " 共:", json.fileCount,
+            " 成功:", json.cmpCount,
+            "(空:", json.emptyCount,
+            ",重复:", json.repeatCount,
+            ") 失败:", json.errCount,
+            " 用时:", json.timeUse];
+        this.ui.msg.text(msg.join(""));
+        this.ui.btn.open.show();
         this.State = this.Config.state.Complete;
+
         this.svr_delete();
         setTimeout(function () { _this.Manager.down_next(); }, 500);
     };
@@ -256,9 +282,13 @@
     {
         this.fileSvr.lenLoc = json.lenLoc;//保存进度
         this.fileSvr.perLoc = json.percent;
-        this.ui.percent.text("("+json.percent+")");
+        this.ui.percent.text("(" + json.percent + ")");
         this.ui.process.css("width", json.percent);
-        var msg = [json.index, "/", json.fileCount, " ", json.sizeLoc, " ", json.speed, " ", json.time];
+        var msg = [json.index, "/", json.fileCount,
+            " ", json.sizeLoc,
+            " ", json.speed,
+            " 剩余:", json.time,
+            " 用时:", json.elapsed];
         this.ui.msg.text(msg.join(""));
     };
 
@@ -271,9 +301,53 @@
         this.hideBtns();
         this.ui.btn.down.show();
         this.ui.btn.del.show();
+        this.ui.btn.errInf.show();
         this.event.downError(this, json.code);//biz event
-        this.ui.msg.text(this.Config.errCode[json.code+""]);
+        this.ui.msg.text(this.Config.errCode[json.code + ""]);
+
+        var errors = new Array();
+        var tmp = "<li class=\"m-t-xs\">文件：{count},\
+        完成:{cmp}(空:{empty},重复:{repeat}),\
+        错误:{err}(网络:{network},长路径:{lpath},空间不足:{full})\
+        ,用时:{timeUse}</li>";
+        tmp = tmp.replace(/{count}/gi, json.fileCount);
+        tmp = tmp.replace(/{empty}/gi, json.emptyCount);
+        tmp = tmp.replace(/{cmp}/gi, json.cmpCount);
+        tmp = tmp.replace(/{err}/gi, json.errCount);
+        tmp = tmp.replace(/{network}/gi, json.netCount);
+        tmp = tmp.replace(/{repeat}/gi, json.repeatCount);
+        tmp = tmp.replace(/{lpath}/gi, json.lpathCount);
+        tmp = tmp.replace(/{full}/gi, json.fullCount);
+        tmp = tmp.replace(/{timeUse}/gi, json.timeUse);
+        errors.push(tmp);
+
+        if (typeof (json.errFiles) != "undefined") {
+            $.each(json.errFiles, function (i, n) {
+                tmp = "\
+                <li>\
+                    <div class=\"txt-ico m-t-xs txt-limit-sm\">\
+                        <a title=\"{name}\" class=\"txt-link\" href=\"{url}\" target=\"_blank\"><img name=\"err\"/>{name}</a>\
+                    </div>\
+                    <div style=\"margin:3px 0 0 0;\">大小：{size}</div>\
+                    <div class=\"txt-limit-sm m-t-xs\" title=\"{path}\">路径：{path}</div>\
+                    <div class=\"m-t-xs\">错误：{error}</div>\
+                    <div class=\"m-t-xs\">错误码：{errCode}</div>\
+                </li>";
+                tmp = tmp.replace(/{name}/gi, n.name);
+                tmp = tmp.replace(/{url}/gi, n.url);
+                tmp = tmp.replace(/{size}/gi, n.sizeSvr);
+                tmp = tmp.replace(/{error}/gi, _this.Config.errCode[n.errCode]);
+                tmp = tmp.replace(/{path}/gi, n.pathLoc);
+                tmp = tmp.replace(/{errCode}/gi, n.errCodeNet);
+                errors.push(tmp);
+            });
+        }
+        this.ui.errFiles.html(errors.join(""));
+        this.ui.errFiles.find("img[name='err']").each(function (n, i) {
+            $(this).attr("src", _this.Manager.data.ico.err);
+        });
         this.State = this.Config.state.Error;
+        this.svr_update();
         this.Manager.del_work(this.fileSvr.id);//从工作队列中删除
         this.Manager.add_wait(this.fileSvr.id);
     };

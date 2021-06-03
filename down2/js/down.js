@@ -20,9 +20,16 @@ function DownloaderMgr(cfg)
 		, "Version"		: page.path.version.down2
 		, "License2"	: page.path.license2.down2
 		, "Cookie"		: ""//
+        , "NameLimit": { fileLen: 0, folderLen: 0,/*名称长度限制*/hash:""/**防重复码生成规则,md5,crc*/, hashLen: 0 }
+        , "CfgFile": { gen: ""/**配置文件生成规则ori,crc,md5*/ }
 		, "ThreadCount"	: 3//并发数
         , "ThreadBlock"	: 3//文件块线程数，每个文件使用多少线程下载数据。3~10
         , "ThreadChild" : 3//子文件线程数，提供给文件夹使用。3~10
+        , "ThreadQuery"	: 5//查询线程,3~10
+        , "SpeedLimit"  : 0//限速，以字节为单位。0表示不限制
+        , "UrlEncode"	: true//url编码配置，默认开启
+        , "IgoChildErr" : true//忽略子文件下载错误。
+        , "TimeOut"     : 5//连接默认超时时间，以秒为单位
 		, "FilePart"	: 5242880//文件块大小，计算器：http://www.beesky.com/newsite/bit_byte.htm
         , "FolderClear"	: true//下载前是否清空目录
         , "Proxy"       : {url: ""/**http://192.168.0.1:8888 */,pwd: ""/**admin:123456 */}//代理
@@ -82,32 +89,42 @@ function DownloaderMgr(cfg)
             Waiting: 8
         }
         , ui: {
-            file: 'div[name="file"]'
-            ,panel: 'div[name="down_panel"]'
-            ,list: 'div[name="down_body"]'
-            , header: 'div[name="down_header"]'
-            , toolbar: 'div[name="down_toolbar"]'
-            , btn: {
-                setup: 'span[name="btnSetup"]'
-                , setFolder: "span[name='btnSetFolder']"
-            }
-            , ele: {
+            path: 'span[name="path"]',
+            file: 'div[name="file"]',
+            panel: 'div[name="down_panel"]',
+            list: 'div[name="down_body"]',
+            setupPnl: 'div[name="setupPnl"]',
+            header: 'div[name="down_header"]',
+            toolbar: 'div[name="down_toolbar"]',
+            btn: {
+                setFolder: "span[name='btnSetFolder']",
+                start: "span[name='btnStart']",
+                stop: "span[name='btnStop']",
+                setup: 'span[name="btnSetup"]',
+                clear: 'span[name="btnClear"]'
+            },
+            ele: {
                 ico: {
-                    file: 'img[name="file"]'
-                    , fd: 'img[name="folder"]'
-                }
-                ,name: 'div[name="name"]'
-                ,size: 'div[name="size"]'
-                , process: 'div[name="process"]'
-                , percent: 'div[name="percent"]'
-                , msg: 'div[name="msg"]'
-                , btn: {
-                    cancel: 'span[name="cancel"]'
-                    , stop: 'span[name="stop"]'
-                    , down: 'span[name="down"]'
-                    , del: 'span[name="del"]'
-                    , open: 'span[name="open"]'
-                    ,openFd:'span[name="open-fd"]'
+                    file: 'img[name="file"]',
+                    fd: 'img[name="folder"]',
+                    error: 'img[name="err"]',
+                    inf: 'img[name="inf"]'
+                },
+                name: 'div[name="name"]',
+                size: 'div[name="size"]',
+                process: 'div[name="process"]',
+                percent: 'div[name="percent"]',
+                msg: 'div[name="msg"]',
+                errPnl: 'div[name="errPnl"]',
+                errFiles: 'ul[name="errFiles"]',
+                btn: {
+                    cancel: 'span[name="cancel"]',
+                    stop: 'span[name="stop"]',
+                    down: 'span[name="down"]',
+                    del: 'span[name="del"]',
+                    open: 'span[name="open"]',
+                    openFd: 'span[name="open-fd"]',
+                    errInf: 'a[name="btnErrInf"]'
                 }
             }
         },
@@ -121,14 +138,27 @@ function DownloaderMgr(cfg)
           queueComplete: function () { },
           folderSel: function (path) { },
           ready: function () { },
-          fileAppend : function(obj){}/**添加任务 */
+        fileAppend: function (obj) { },/**添加任务 */
+        selFolder: function (dir) { }
     };
     $.extend(this.event,this.Config.event);
 
-    this.data={
-        browser:{
-            name:navigator.userAgent.toLowerCase(),ie:true,ie64:false,firefox:false,chrome:false,edge:false,arm64:false,mips64:false}
-        };
+    this.data = {
+        browser: {
+            name: navigator.userAgent.toLowerCase(), ie: true, ie64: false, firefox: false, chrome: false, edge: false, arm64: false, mips64: false
+        },
+        cur: null,
+        ico: {
+            file: "/down2/js/file.png",
+            folder: "/down2/js/folder.png",
+            err: "/down2/js/error.png",
+            inf: "/down2/js/inf.png"
+        },
+    };
+    this.ui = {
+        list: null, file: null, path: null, setupPnl: null,
+        btn: { selFolder: null, start: null, stop: null, setup: null, clear: null }
+    };
 
     this.websocketInited = false;
 	this.data.browser.ie = this.data.browser.name.indexOf("msie") > 0;
@@ -155,10 +185,8 @@ function DownloaderMgr(cfg)
     this.queueWait = new Array(); //等待队列，数据:id1,id2,id3
     this.queueWork = new Array(); //正在上传的队列，数据:id1,id2,id3
 	this.parter = null;
-	this.btnSetup = null;//安装控件的按钮
     this.working = false;
     this.allStoped = false;//
-    this.ui = { file: null ,list:null,panel:null,header:null};
 
     //api
     /**
@@ -218,40 +246,44 @@ function DownloaderMgr(cfg)
         html += '<object name="parter" classid="clsid:' + this.Config.ie.part.clsid + '"';
         html += ' codebase="' + this.Config.ie.path + '#version=' + _this.Config["Version"] + '" width="1" height="1" ></object>';
         if (this.data.browser.edge) html = '';
-	    //上传列表项模板
-	    html += '<div class="file-item file-item-single" name="file">\
+        //上传列表项模板
+        html += '<div class="file-item file-item-single" name="file">\
                     <div class="img-box"><img name="file" src="js/file.png"/><img class="d-hide" name="folder" src="js/folder.png"/></div>\
-					<div class="area-l">\
-						<div name="name" class="name">HttpUploader程序开发.pdf</div>\
-						<div name="percent" class="percent">(35%)</div>\
-						<div name="size" class="size" child="1">1000.23MB</div>\
-						<div class="process-border"><div name="process" class="process"></div></div>\
-						<div name="msg" class="msg top-space">15.3MB 20KB/S 10:02:00</div>\
-					</div>\
-					<div class="area-r">\
-                        <span tp="btn-item" class="btn-box d-hide" name="down" title="继续"><div>继续</div></span>\
-						<span tp="btn-item" class="btn-box d-hide" name="stop" title="停止"><div>停止</div></span>\
-                        <span tp="btn-item" class="btn-box" name="cancel" title="取消">取消</span>\
-						<span tp="btn-item" class="btn-box d-hide" name="del" title="删除"><div>删除</div></span>\
-						<span tp="btn-item" class="btn-box d-hide" name="open" title="打开"><div>打开</div></span>\
-						<span tp="btn-item" class="btn-box d-hide" name="open-fd" title="文件夹"><div>文件夹</div></span>\
-					</div>\
+                    <div>\
+                        <div class="area-l">\
+                            <div name="name" class="name">HttpUploader程序开发.pdf</div>\
+                            <div name="percent" class="percent">(35%)</div>\
+                            <div name="size" class="size" child="1">1000.23MB</div>\
+                            <div class="process-border"><div name="process" class="process"></div></div>\
+                            <div name="msg" class="msg top-space">15.3MB 20KB/S 10:02:00</div>\
+                        </div>\
+                        <div class="area-r">\
+                            <span class="btn-box d-hide" name="down" title="继续"><div>继续</div></span>\
+                            <span class="btn-box d-hide" name="stop" title="停止"><div>停止</div></span>\
+                            <span class="btn-box d-hide" name="cancel" title="取消">取消</span>\
+                            <span class="btn-box d-hide" name="del" title="删除"><div>删除</div></span>\
+                            <span class="btn-box d-hide" name="open" title="打开"><div>打开</div></span>\
+                            <span class="btn-box d-hide" name="open-fd" title="文件夹"><div>文件夹</div></span>\
+                        </div>\
+                        <div name="errPnl" class="msg top-space err-panel"><a name="btnErrInf" class="btn-ico"><img name="inf" src="js/inf.png"/>详细信息</a><ul name="errFiles" class="list-v d-hide"></ul></div>\
+                    </div>\
 				</div>';
-		//上传列表
-	    html += '<div class="files-panel" name="down_panel">\
-                    <div class="header" name="down_header">下载文件</div>\
+        //上传列表
+        html += '<div class="files-panel" name="down_panel">\
+                    <div class="header" name="down_header">下载文件<span name="path"></span></div>\
 					<div name="down_toolbar" class="toolbar">\
-						<span class="toolbar-btn" name="btnSetFolder"><div>设置下载目录</div></span>\
-						<span class="toolbar-btn" name="btnStart">全部下载</span>\
-						<span class="toolbar-btn" name="btnStop">全部停止</span>\
-						<span class="toolbar-btn" name="btnSetup">安装控件</span>\
-						<span class="toolbar-btn" name="btnClear">清除已完成</span>\
+						<span class="btn-t d-hide" name="btnSetFolder"><div>设置下载目录</div></span>\
+						<span class="btn-t d-hide" name="btnStart">全部下载</span>\
+						<span class="btn-t d-hide" name="btnStop">全部停止</span>\
+						<span class="btn-t" name="btnSetup">安装控件</span>\
+						<span class="btn-t d-hide" name="btnClear">清除已完成</span>\
 					</div>\
 					<div class="content" name="down_content">\
-						<div name="down_body" class="file-post-view"></div>\
+						<div name="down_body" class="file-post-view d-hide"></div>\
+                        <div name="setupPnl" class="file-post-view"></div>\
 					</div>\
 				</div>';
-	    return html;
+        return html;
 	};
 
     this.to_params= function (param, key) {
@@ -279,34 +311,45 @@ function DownloaderMgr(cfg)
     this.find_ui = function (o) {
         var tmp = {
             ico: {
-                file:o.find(this.Config.ui.ele.ico.file)
-                ,fd: o.find(this.Config.ui.ele.ico.fd)
+                file: o.find(this.Config.ui.ele.ico.file)
+                , fd: o.find(this.Config.ui.ele.ico.fd)
             }
-            ,name:o.find(this.Config.ui.ele.name)
-            ,size:o.find(this.Config.ui.ele.size)
+            , name: o.find(this.Config.ui.ele.name)
+            , size: o.find(this.Config.ui.ele.size)
             , process: o.find(this.Config.ui.ele.process)
             , percent: o.find(this.Config.ui.ele.percent)
             , msg: o.find(this.Config.ui.ele.msg)
+            , errPnl: o.find(this.Config.ui.ele.errPnl)
+            , errFiles: o.find(this.Config.ui.ele.errFiles)
             , btn: {
-                cancel:o.find(this.Config.ui.ele.btn.cancel)
-                ,stop: o.find(this.Config.ui.ele.btn.stop)
-                ,down: o.find(this.Config.ui.ele.btn.down)
-                ,del: o.find(this.Config.ui.ele.btn.del)
-                ,open: o.find(this.Config.ui.ele.btn.open)
+                cancel: o.find(this.Config.ui.ele.btn.cancel)
+                , stop: o.find(this.Config.ui.ele.btn.stop)
+                , down: o.find(this.Config.ui.ele.btn.down)
+                , del: o.find(this.Config.ui.ele.btn.del)
+                , open: o.find(this.Config.ui.ele.btn.open)
                 , openFd: o.find(this.Config.ui.ele.btn.openFd)
+                , errInf: o.find(this.Config.ui.ele.btn.errInf)
             }
-            ,div:o
+            , div: o
         };
+        $.each(tmp.btn, function (i, n) {
+            n.hover(function () {
+                $(this).addClass("bk-hover");
+            }, function () { $(this).removeClass("bk-hover"); });
+        });
         return tmp;
     };
 	this.add_ui = function (f)
-	{
-	    //存在相同项
-        if (this.exist_url(f.nameLoc)) {
-            alert("已存在相同名称的任务：" + f.nameLoc);
+    {
+        var sameTask = this.exist_url(f.fileUrl);
+        if (f.fdTask) sameTask = this.exist_url(f.nameLoc);
+        //存在相同项
+        if (sameTask) {
+            alert("存在相同URL，请重新添加");
             return null;
         }
-        this.filesUrl.push(f.nameLoc);
+        if (f.fdTask) this.filesUrl.push(f.nameLoc);
+        else this.filesUrl.push(f.fileUrl);
 
 	    var _this = this;
 
@@ -371,15 +414,16 @@ function DownloaderMgr(cfg)
 	{
 	    var obj = this.add_ui(f);
 	};
-	this.exist_url = function (url)
-	{
-	    var v = false;
-	    for (var i = 0, l = this.filesUrl.length; i < l; ++i)
-	    {
-	        v = this.filesUrl[i] == url;
-	        if (v) break;
-	    }
-	    return v;
+	this.exist_url = function (tn)
+    {
+        var ret = false;
+        $.each(this.filesUrl, function (i, n) {
+            if (n == tn) {
+                ret = true;
+                return true;
+            }
+        });
+        return ret;
 	};
     this.remove_url = function (url) {
         this.filesUrl = $.grep(this.filesUrl, function (n, i) {
@@ -476,11 +520,19 @@ function DownloaderMgr(cfg)
         if (this.websocketInited) return;
         this.websocketInited = true;
         this.pluginInited = true;
+
+        this.ui.btn.selFolder.removeClass("d-hide");
+        this.ui.btn.start.removeClass("d-hide");
+        this.ui.btn.stop.removeClass("d-hide");
+        this.ui.btn.clear.removeClass("d-hide");
+        this.ui.list.removeClass("d-hide");
+        this.ui.setupPnl.addClass("d-hide");
+        this.ui.btn.setup.hide();
+
         setTimeout(function () { 
             _this.loadFiles();//
             _this.event.ready(); }, 300);
 
-        this.btnSetup.hide();
         var needUpdate = true;
         if (typeof (json.version) != "undefined") {
             if (json.version == this.Config.Version) {
@@ -488,11 +540,11 @@ function DownloaderMgr(cfg)
             }
         }
         if (needUpdate) this.update_notice();
-        else { this.btnSetup.hide(); }
+        else { this.ui.btn.setup.hide(); }
     };
     this.load_complete_edge = function (json) {
         this.pluginInited = true;
-        this.btnSetup.hide();
+        this.ui.btn.setup.hide();
         _this.app.init();
     };
     this.socket_close = function () {
@@ -592,9 +644,9 @@ function DownloaderMgr(cfg)
 
     //升级通知
     this.update_notice = function () {
-        this.btnSetup.text("升级控件");
-        this.btnSetup.css("color", "red");
-        this.btnSetup.show();
+        this.ui.btn.setup.text("升级控件");
+        this.ui.btn.setup.css("color", "red");
+        this.ui.btn.setup.show();
     };
 
 	//安全检查，在用户关闭网页时自动停止所有上传任务。
@@ -633,32 +685,42 @@ function DownloaderMgr(cfg)
 	    this.initUI(ui);
 	};
 	this.initUI = function (ui/*jquery obj*/)
-	{
-	    this.down_panel = ui.find(this.Config.ui.panel);
-	    this.btnSetup = ui.find(this.Config.ui.btn.setup);
+    {
+        this.down_panel = ui.find(this.Config.ui.panel);
+        this.ui.btn.setup = ui.find(this.Config.ui.btn.setup);
         this.ui.file = ui.find(this.Config.ui.file);
+        this.ui.path = ui.find(this.Config.ui.path);
         this.parter = ui.find('embed[name="ffParter"]').get(0);
         this.ieParter = ui.find('object[name="parter"]').get(0);
 
-	    var down_body = ui.find(this.Config.ui.list);
-	    var down_head = ui.find(this.Config.ui.header);
-	    var post_bar = ui.find(this.Config.ui.toolbar);
-	    down_body.height(this.down_panel.height() - post_bar.height() - down_head.height() - 1);
+        var down_body = ui.find(this.Config.ui.list);
+        var down_head = ui.find(this.Config.ui.header);
+        var post_bar = ui.find(this.Config.ui.toolbar);
+        down_body.height(this.down_panel.height() - post_bar.height() - down_head.height() - 1);
 
-	    var btnSetFolder = ui.find(this.Config.ui.btn.setFolder);
-	    this.ui.list = down_body;
-
+        this.ui.btn.selFolder = ui.find(this.Config.ui.btn.setFolder);
+        this.ui.btn.start = ui.find(this.Config.ui.btn.start);
+        this.ui.btn.stop = ui.find(this.Config.ui.btn.stop);
+        this.ui.btn.clear = ui.find(this.Config.ui.btn.clear);
+        this.ui.list = down_body;
+        this.ui.setupPnl = ui.find(this.Config.ui.setupPnl);
+        this.ui.setupPnl.height(this.ui.list.height());
         //设置下载文件夹
-        btnSetFolder.click(function () { _this.openConfig(); });
-        this.btnSetup.click(function () { window.open(_this.Config.exe.path); });
-		//清除已完成
-        ui.find('span[name="btnClear"]').click(function () { _this.clearComplete(); });
-		ui.find('span[name="btnStart"]').click(function () { _this.start_queue(); });
-        ui.find('span[name="btnStop"]').click(function () { _this.stop_queue(); });
-        ui.find('span[class="toolbar-btn"]').hover(function () {
+        this.ui.btn.selFolder.click(function () { _this.openFolder(); });
+        this.ui.btn.setup.click(function () { window.open(_this.Config.exe.path); });
+        //清除已完成
+        this.ui.btn.clear.click(function () { _this.clearComplete(); });
+        this.ui.btn.start.click(function () { _this.start_queue(); });
+        this.ui.btn.stop.click(function () { _this.stop_queue(); });
+        ui.find('.btn-t').hover(function () {
             $(this).addClass("bk-hover");
         }, function () { $(this).removeClass("bk-hover"); });
+        //图标
+        ui.find(this.Config.ui.ele.ico.file).attr("src", this.data.ico.file);
+        ui.find(this.Config.ui.ele.ico.fd).attr("src", this.data.ico.folder);
+        ui.find(this.Config.ui.ele.ico.inf).attr("src", this.data.ico.inf);
 
+        //this.LoadData();
         this.safeCheck();//
 
         setTimeout(function () {
