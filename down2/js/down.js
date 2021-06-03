@@ -242,7 +242,7 @@ function DownloaderMgr(cfg)
         if (!this.pluginCheck()) return;
         this.app.addJson(data);
     };
-    this.openConfig = function () {
+    this.openFolder = function () {
         if (!this.pluginCheck()) return;
         this.app.openFolder();
     };
