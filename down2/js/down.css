@@ -4,20 +4,9 @@
     margin: 0;
     padding: 10px;
 }
-
-li {
-    list-style: none;
-}
-
-a {
-    text-decoration: none;
-    color: #004477;
-}
-
-    a:hover {
-        color: #004477;
-        text-decoration: underline;
-    }
+li {list-style: none;}
+a {text-decoration: none;color: #004477;cursor:pointer;}
+a:hover {color: #004477;text-decoration: underline;}
 /*文件列表框*/
 .downPanel {
     border: 1px solid #6FBCE2;
@@ -28,11 +17,7 @@ a {
     overflow-x: hidden;
     overflow-y: scroll;
 }
-
-div.top-space {
-    margin: 3px 0 0 0;
-}
-
+div.top-space {    margin: 3px 0 0 0;}
 .file-post-view {
     background-color: #FFF;
     font: 12px/12px 宋体,新宋体; /*防目外部样式破坏*/
