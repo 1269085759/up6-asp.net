@@ -117,6 +117,7 @@ namespace up6.db.utils
         public string token(FileInf f,string action="init")
         {
             string str = f.id + f.nameLoc + action;
+            if (action == "block") str = f.id + f.pathSvr + action;
             str = this.md5(str);
             str = this.encode(str);
             return str;

@@ -53,7 +53,7 @@ namespace up6.db
             string complete     = this.headString("complete");//true/false
             string pathSvr      = Request.Form["pathSvr"];//
             string pathLoc = string.Empty;
-            string token      = Request.Form["token"];//
+            string token      = this.headString("token");//
             pathSvr = Server.UrlDecode(pathSvr);
 
             if( !this.safe_check(lenLoc,uid,f_id,blockOffset,pathSvr)) return;
@@ -86,6 +86,7 @@ namespace up6.db
                 FileInf fileSvr = new FileInf();
                 fileSvr.id = f_id;
                 fileSvr.pathLoc = file.FileName;
+                fileSvr.pathSvr = pathSvr;
                 FileInfo fi = new FileInfo(pathLoc);
                 fileSvr.nameLoc = fi.Name;
                 var ret = ws.validToken(token, fileSvr,"block");

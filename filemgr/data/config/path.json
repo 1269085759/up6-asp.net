@@ -5,7 +5,7 @@
   "security": {
     "encrypt": false,
     "key": "+Lm25MO1SnrSVPWdZ1Sg/w==",
-    "token": false
+    "token": true
   },
   "license2": {
     "up6": "",

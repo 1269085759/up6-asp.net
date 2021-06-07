@@ -25,7 +25,7 @@ namespace up6.db.biz
             {
                 if (string.IsNullOrEmpty(token.Trim())) return false;
                 CryptoTool ct = new CryptoTool();
-                return ct.token(f) == token;
+                return ct.token(f,action) == token;
             }
             return true;
         }
