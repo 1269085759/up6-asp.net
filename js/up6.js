@@ -51,6 +51,7 @@ function HttpUploaderMgr()
         , "FdChildLimit"    : 0//文件夹子元素数量限制（子文件+子文件夹）。0表示不限制
         , "ProcSaveTm"      : 60//定时保存进度。单位：秒，默认：1分钟
         , "AutoConnect"     : {opened:false,time:3000}//启动错误自动重传
+        , "Window"          : {max:false}//自动调整窗口大小
 		//文件夹操作相关
 		, "UrlFdCreate"		: page.path.root+"db/fd_create.aspx"
 		, "UrlFdComplete"	: page.path.root+"db/fd_complete.aspx"
