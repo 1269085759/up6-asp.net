@@ -90,7 +90,7 @@ namespace up6.db
                 FileInfo fi = new FileInfo(pathLoc);
                 fileSvr.nameLoc = fi.Name;
                 var ret = ws.validToken(token, fileSvr,"block");
-                //token难失败
+                //token验证失败
                 verify = ret;
                 if(!verify)
                 {
