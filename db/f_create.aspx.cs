@@ -94,7 +94,7 @@ namespace up6.db
 
             WebSafe ws = new WebSafe();
             var ret = ws.validToken(token, fileSvr);
-            //token难失败
+            //token验证失败
             if(!ret)
             {
                 string m = callback + "({\"value\":\"0\",\"ret\":false,\"msg\":\"token error\"})";//返回jsonp格式数据。
