@@ -484,7 +484,7 @@ function HttpUploaderMgr()
 
 		$(window).bind("unload", function()
 		{
-            if (this.data.browser.edge) _this.edgeApp.close();
+            if (_this.data.browser.edge) _this.edgeApp.close();
 			if (_this.QueuePost.length > 0)
             {
 				_this.StopAll();
