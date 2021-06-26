@@ -12,16 +12,16 @@
     "down2": ""
   },
   "version": {
-    "up6": "2,7,121,6032",
+    "up6": "2,7,122,25521",
     "down2": "1,2,73,25530"
   },
   "plugin": {
     "up6": {
-      "ie32": "http://res2.ncmem.com/download/up6/pack/6.5.31/up6.cab",
-      "ie64": "http://res2.ncmem.com/download/up6/pack/6.5.31/up64.cab",
-      "chr": "http://res2.ncmem.com/download/up6/pack/6.5.31/up6.crx",
-      "firefox": "http://res2.ncmem.com/download/up6/pack/6.5.31/up6.xpi",
-      "exe": "http://res2.ncmem.com/download/up6/pack/6.5.31/up6.exe",
+      "ie32": "http://res2.ncmem.com/download/up6/pack/6.5.32/up6.cab",
+      "ie64": "http://res2.ncmem.com/download/up6/pack/6.5.32/up64.cab",
+      "chr": "http://res2.ncmem.com/download/up6/pack/6.5.32/up6.crx",
+      "firefox": "http://res2.ncmem.com/download/up6/pack/6.5.32/up6.xpi",
+      "exe": "http://res2.ncmem.com/download/up6/pack/6.5.32/up6.exe",
       "mac": "http://res2.ncmem.com/download/up6/mac/1.0.14/up6.pkg",
       "linux": "http://res2.ncmem.com/download/up6/linux/1.0.17/com.ncmem.up6_2020.12.3-1_amd64.deb",
       "arm64": "http://res2.ncmem.com/download/up6/arm64/1.0.8/com.ncmem.up6_2020.12.3-1_arm64.deb",
