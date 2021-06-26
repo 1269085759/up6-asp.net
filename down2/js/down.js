@@ -349,15 +349,11 @@ function DownloaderMgr(cfg)
     };
 	this.add_ui = function (f)
     {
-        var sameTask = this.exist_url(f.fileUrl);
-        if (f.fdTask) sameTask = this.exist_url(f.nameLoc);
-        //存在相同项
-        if (sameTask) {
-            alert("存在相同URL，请重新添加");
+		if (this.exist_url(f.nameLoc)) {
+            alert("已存在相同名称的任务：" + f.nameLoc);
             return null;
         }
-        if (f.fdTask) this.filesUrl.push(f.nameLoc);
-        else this.filesUrl.push(f.fileUrl);
+        this.filesUrl.push(f.nameLoc);
 
 	    var _this = this;
 
