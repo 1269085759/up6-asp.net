@@ -83,10 +83,9 @@
             , data: param
             , success: function (msg) {
                 var json = JSON.parse(decodeURIComponent(msg.value));
-                $.extend(true, _this.fileSvr, { files: json });
                 _this.ui.msg.text("正在初始文件夹...");
                 setTimeout(function () {
-                    _this.app.initFolder($.extend({},_this.Config,_this.fileSvr));
+                    _this.app.initFolder($.extend({}, _this.Config, _this.fileSvr, { files: json }));
                 }, 300);
                 
             }
