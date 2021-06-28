@@ -30,7 +30,7 @@ function DownloaderMgr(cfg)
         , "UrlEncode"	: true//url编码配置，默认开启
         , "IgoChildErr" : true//忽略子文件下载错误。
         , "TimeOut"     : 5//连接默认超时时间，以秒为单位
-		, "FilePart"	: 5242880//文件块大小，计算器：http://www.beesky.com/newsite/bit_byte.htm
+		, "FilePart"	: 104857600//文件块大小，计算器：http://www.beesky.com/newsite/bit_byte.htm
         , "FolderClear"	: true//下载前是否清空目录
         , "Proxy"       : {url: ""/**http://192.168.0.1:8888 */,pwd: ""/**admin:123456 */}//代理
         //file
@@ -349,15 +349,11 @@ function DownloaderMgr(cfg)
     };
 	this.add_ui = function (f)
     {
-        var sameTask = this.exist_url(f.fileUrl);
-        if (f.fdTask) sameTask = this.exist_url(f.nameLoc);
-        //存在相同项
-        if (sameTask) {
-            alert("存在相同URL，请重新添加");
+		if (this.exist_url(f.nameLoc)) {
+            alert("已存在相同名称的任务：" + f.nameLoc);
             return null;
         }
-        if (f.fdTask) this.filesUrl.push(f.nameLoc);
-        else this.filesUrl.push(f.fileUrl);
+        this.filesUrl.push(f.nameLoc);
 
 	    var _this = this;
 

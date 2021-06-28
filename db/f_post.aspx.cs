@@ -77,7 +77,7 @@ namespace up6.db
                 if (encrypt)
                 {
                     CryptoTool ct = new CryptoTool();
-                    pathLoc = ct.decode(file.FileName);
+                    pathSvr = ct.decode(pathSvr);
                     stm = ct.decode(file.InputStream,int.Parse(blockSize));
                 }
 
