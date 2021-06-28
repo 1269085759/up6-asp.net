@@ -15,6 +15,8 @@ Install-Package Microsoft.Experimental.IO
 ========================================================================
 更新记录：
 2021-06-28
+	down2新增接口initFolderJson
+	  为低版本IE提供支持
 	down2目录下载不再将files添加到fileSvr
 2021-06-16
 	新增配置-自动调整目录选择窗口大小

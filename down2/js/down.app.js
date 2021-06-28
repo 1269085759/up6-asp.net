@@ -130,6 +130,7 @@ var down2_app = {
     }
     , initFolderJson: function (f) {
         this.queueCount++;
+        //{files_json:"服务器返回的目录字符串（未进行url解码）"}
         var param = $.extend({}, f, { name: "init_folder_json" });
         this.postMessage(param);
     }
