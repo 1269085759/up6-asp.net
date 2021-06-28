@@ -128,6 +128,11 @@ var down2_app = {
         var param = $.extend({}, f, { name: "init_folder" });
         this.postMessage(param);
     }
+    , initFolderJson: function (f) {
+        this.queueCount++;
+        var param = $.extend({}, f, { name: "init_folder_json" });
+        this.postMessage(param);
+    }
     , addFile: function (f) {
         this.queueCount++;
         var param = $.extend({}, f, { name: "add_file" });
