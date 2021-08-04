@@ -36,7 +36,8 @@ function HttpUploaderMgr()
         , "CryptoType"      : "md5"//验证方式：md5,sha1,crc
 		, "security":{
 			"encrypt":page.path.security.encrypt,
-			"key":page.path.security.key
+			"key":page.path.security.key,
+            "token":page.path.security.token
 		}
         , "FileFilter"		: "*"//文件类型。所有类型：*。自定义类型：jpg,bmp,png,gif,rar,zip,7z,doc
 		, "FileSizeLimit"	: "0"//自定义允许上传的文件大小，以字节为单位。0表示不限制。字节计算工具：http://www.beesky.com/newsite/bit_byte.htm
