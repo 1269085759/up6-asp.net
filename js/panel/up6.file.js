@@ -32,6 +32,7 @@ function FileUploader(fileLoc, mgr)
         , perSvr: "0%"
         , complete: false
         , deleted: false
+        , token: ""
     };//json obj，服务器文件信息
     this.fileSvr = $.extend(this.fileSvr, fileLoc);
 
