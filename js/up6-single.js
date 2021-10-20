@@ -413,7 +413,7 @@ function HttpUploaderMgr()
         setTimeout(function () {
             if (!_this.data.browser.edge) {
                 if (_this.data.browser.ie) {
-                    _this.parter = _this.data.browser.ieParter;
+                    _this.parter = _this.ieParter;
                 }
                 _this.parter.recvMessage = _this.recvMessage;
             }
