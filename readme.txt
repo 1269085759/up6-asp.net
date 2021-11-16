@@ -14,6 +14,8 @@ Install-Package Microsoft.Experimental.IO
 
 ========================================================================
 更新记录：
+2021-11-19
+	优化down2控件加载逻辑。
 2021-06-28
 	down2新增接口initFolderJson
 	  为低版本IE提供支持

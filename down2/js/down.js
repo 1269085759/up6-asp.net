@@ -109,6 +109,7 @@ function DownloaderMgr(cfg)
                 start: "span[name='btnStart']",
                 stop: "span[name='btnStop']",
                 setup: 'span[name="btnSetup"]',
+                setupCmp: 'span[name="btnSetupCmp"]',
                 clear: 'span[name="btnClear"]'
             },
             ele: {
@@ -178,7 +179,7 @@ function DownloaderMgr(cfg)
     this.data.browser.edge = this.data.browser.name.indexOf("edge") > 0;
     this.pluginInited = false;
     this.edgeApp = new WebServerDown2(this);
-    this.edgeApp.ent.on_close = function () { _this.socket_close(); };
+    this.edgeApp.ent.on_close = function () { _this.stop_queue(); };
     this.app = down2_app;
     this.app.edgeApp = this.edgeApp;
     this.app.Config = this.Config;
@@ -284,6 +285,7 @@ function DownloaderMgr(cfg)
 						<span class="btn-t d-hide" name="btnStart">全部下载</span>\
 						<span class="btn-t d-hide" name="btnStop">全部停止</span>\
 						<span class="btn-t" name="btnSetup">安装控件</span>\
+						<span class="btn-t" name="btnSetupCmp">我已安装</span>\
 						<span class="btn-t d-hide" name="btnClear">清除已完成</span>\
 					</div>\
 					<div class="content" name="down_content">\
@@ -532,6 +534,7 @@ function DownloaderMgr(cfg)
         this.ui.list.removeClass("d-hide");
         this.ui.setupPnl.addClass("d-hide");
         this.ui.btn.setup.hide();
+        this.ui.btn.setupCmp.hide();
 
         setTimeout(function () { 
             _this.loadFiles();//
@@ -544,19 +547,16 @@ function DownloaderMgr(cfg)
             }
         }
         if (needUpdate) this.update_notice();
-        else { this.ui.btn.setup.hide(); }
+        else {
+            this.ui.btn.setup.hide();
+            this.ui.btn.setupCmp.hide();
+        }
     };
     this.load_complete_edge = function (json) {
         this.pluginInited = true;
         this.ui.btn.setup.hide();
+        this.ui.btn.setupCmp.hide();
         _this.app.init();
-    };
-    this.socket_close = function () {
-        while (_this.QueuePost.length > 0)
-        {
-            _this.filesMap[_this.QueuePost[0]].post_stoped(null);
-        }
-		_this.QueuePost.length = 0;
     };
 	this.recvMessage = function (str)
 	{
@@ -692,6 +692,7 @@ function DownloaderMgr(cfg)
     {
         this.down_panel = ui.find(this.Config.ui.panel);
         this.ui.btn.setup = ui.find(this.Config.ui.btn.setup);
+        this.ui.btn.setupCmp = ui.find(this.Config.ui.btn.setupCmp);
         this.ui.file = ui.find(this.Config.ui.file);
         this.ui.path = ui.find(this.Config.ui.path);
         this.parter = ui.find('embed[name="ffParter"]').get(0);
@@ -712,6 +713,7 @@ function DownloaderMgr(cfg)
         //设置下载文件夹
         this.ui.btn.selFolder.click(function () { _this.openFolder(); });
         this.ui.btn.setup.click(function () { window.open(_this.Config.exe.path); });
+        this.ui.btn.setupCmp.click(function () {alert("setupCmp"); _this.edgeApp.connect(); });
         //清除已完成
         this.ui.btn.clear.click(function () { _this.clearComplete(); });
         this.ui.btn.start.click(function () { _this.start_queue(); });
