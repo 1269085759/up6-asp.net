@@ -46,6 +46,7 @@ div.UploaderItemRight{width:54px; float:left;margin:3px 0 0 0;}
 .file-item .btn-box-hover{background-color:#DADADA;}
 .file-item .btn-box img{ width:32px;height:32px;margin:10px 0 0 0;}
 .hide{display:none;}
+.d-hide{display:none !important;}
 .BtnInfo{height:12px;}
 /*上传面板*/
 .files-panel{font:12px/12px 宋体;}

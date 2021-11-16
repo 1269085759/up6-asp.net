@@ -145,6 +145,7 @@ function HttpUploaderMgr()
 		browser: {name:navigator.userAgent.toLowerCase(),ie:true,ie64:false,firefox:false,chrome:false,edge:false,arm64:false,mips64:false},
 		cmps:[]/**已上传完的文件对象列表 */
     };
+	this.ui={btn:{selFile:null,selFolder:null,paste:null,clear:null,setup:null,setupCmp:null}};
 	//http://www.ncmem.com/
 	this.Domain = "http://" + document.location.host;
     this.working = false;
@@ -162,7 +163,6 @@ function HttpUploaderMgr()
 	this.tmpFile = null;
 	this.tmpFolder = null;
 	this.uiSetupTip = null;
-	this.btnSetup = null;
     //检查版本 Win32/Win64/Firefox/Chrome
 	this.data.browser.ie = this.data.browser.name.indexOf("msie") > 0;
     //IE11检查
@@ -448,11 +448,12 @@ function HttpUploaderMgr()
 		//上传列表
 		acx += '<div class="files-panel" name="post_panel">\
 					<div name="post_head" class="toolbar">\
-						<span class="btn" name="btnAddFiles">选择文件</span>\
-						<span class="btn" name="btnAddFolder">选择目录</span>\
-						<span class="btn" name="btnPasteFile">粘贴</span>\
+						<span class="btn d-hide" name="btnAddFiles">选择文件</span>\
+						<span class="btn d-hide" name="btnAddFolder">选择目录</span>\
+						<span class="btn d-hide" name="btnPasteFile">粘贴</span>\
+						<span class="btn d-hide" name="btnClear">清除已完成</span>\
 						<span class="btn" name="btnSetup">安装控件</span>\
-						<span class="btn" name="btnClear">清除已完成</span>\
+						<span class="btn" name="btnSetupCmp">我已安装</span>\
 					</div>\
 					<div class="content" name="post_content">\
 						<div name="post_body" class="file-post-view"></div>\
@@ -584,7 +585,13 @@ function HttpUploaderMgr()
         this.websocketInited = true;
         this.pluginInited = true;
 
-        this.btnSetup.hide();
+        this.ui.btn.selFile.removeClass("d-hide");
+        this.ui.btn.selFolder.removeClass("d-hide");
+        this.ui.btn.paste.removeClass("d-hide");
+        this.ui.btn.clear.removeClass("d-hide");
+        this.ui.btn.setup.hide();
+        this.ui.btn.setupCmp.hide();
+
         var needUpdate = true;
         if (typeof (json.version) != "undefined") {
             if (json.version == this.Config.Version) {
@@ -592,13 +599,13 @@ function HttpUploaderMgr()
             }
         }
         if (needUpdate) this.update_notice();
-        else { this.btnSetup.hide(); }
+        else { this.ui.btn.setup.hide(); }
         this.event.loadComplete();
     };
 	this.load_complete_edge = function (json)
     {
         this.pluginInited = true;
-        this.btnSetup.hide();
+        this.ui.btn.setup.hide();
         _this.app.init();
     };
     this.add_folder_error = function (json) {
@@ -709,9 +716,9 @@ function HttpUploaderMgr()
     this.checkBrowser();
     //升级通知
     this.update_notice = function () {
-        this.btnSetup.text("升级控件");
-        this.btnSetup.css("color", "red");
-        this.btnSetup.show();
+        this.ui.btn.setup.text("升级控件");
+        this.ui.btn.setup.css("color", "red");
+        this.ui.btn.setup.show();
     };
 	//安装控件
 	this.Install = function ()
@@ -783,12 +790,16 @@ function HttpUploaderMgr()
 	    this.tmpFile        = panel.find('div[name="fileItem"]');
 	    this.tmpFolder      = panel.find('div[name="folderItem"]');
 	    this.pnlHeader      = panel.find('div[name="pnlHeader"]');
-        this.btnSetup       = panel.find('span[name="btnSetup"]').click(function () {
-            window.open(_this.Config.exe.path);
-        });//("href",this.Config.exe.path);
-	    //drag files
+		this.ui.btn.selFile 	= panel.find('span[name="btnAddFiles"]');
+		this.ui.btn.selFolder 	= panel.find('span[name="btnAddFolder"]');
+		this.ui.btn.paste 		= panel.find('span[name="btnPasteFile"]');
+		this.ui.btn.clear 		= panel.find('span[name="btnClear"]');
+        this.ui.btn.setup     = panel.find('span[name="btnSetup"]');
+		this.ui.btn.setupCmp 	= panel.find('span[name="btnSetupCmp"]');
+		this.ui.btn.setup.click(function () {window.open(_this.Config.exe.path);});
+		this.ui.btn.setupCmp.click(function(){_this.edgeApp.connect();});
 
-        panel.find('span[class="btn"]').each(function ()
+        post_head.find('.btn').each(function ()
         {
             $(this).hover(function () {
                 $(this).addClass("btn-hover");
@@ -797,18 +808,13 @@ function HttpUploaderMgr()
             });
         });
 	    //添加多个文件
-	    panel.find('span[name="btnAddFiles"]').click(function () { _this.openFile(); });
+	    this.ui.btn.selFile.click(function () { _this.openFile(); });
 	    //添加文件夹
-        panel.find('span[name="btnAddFolder"]').click(function () { _this.openFolder(); });
+        this.ui.btn.selFolder.click(function () { _this.openFolder(); });
 	    //粘贴文件
-        panel.find('span[name="btnPasteFile"]').click(function () { _this.pasteFiles(); });
+        this.ui.btn.paste.click(function () { _this.pasteFiles(); });
 	    //清空已完成文件
-        panel.find('span[name="btnClear"]').click(function () { _this.ClearComplete(); })
-            .hover(function () {
-                $(this).addClass("btn-footer-hover");
-            }, function () {
-                $(this).removeClass("btn-footer-hover");
-            });
+        this.ui.btn.clear.click(function () { _this.ClearComplete(); });
 
 	    this.SafeCheck();
 	    this.FileListMgr.LoadTo(filesSvr);
