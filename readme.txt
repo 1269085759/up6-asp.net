@@ -15,6 +15,7 @@ Install-Package Microsoft.Experimental.IO
 ========================================================================
 更新记录：
 2021-11-19
+	down2面板新增我已安装按钮
 	优化down2控件加载逻辑。
 2021-06-28
 	down2新增接口initFolderJson

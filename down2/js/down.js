@@ -713,7 +713,7 @@ function DownloaderMgr(cfg)
         //设置下载文件夹
         this.ui.btn.selFolder.click(function () { _this.openFolder(); });
         this.ui.btn.setup.click(function () { window.open(_this.Config.exe.path); });
-        this.ui.btn.setupCmp.click(function () {alert("setupCmp"); _this.edgeApp.connect(); });
+        this.ui.btn.setupCmp.click(function () {_this.edgeApp.connect(); });
         //清除已完成
         this.ui.btn.clear.click(function () { _this.clearComplete(); });
         this.ui.btn.start.click(function () { _this.start_queue(); });
